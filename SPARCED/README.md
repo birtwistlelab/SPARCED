@@ -1,10 +1,12 @@
 # SPARCED: An SBML Model of Pan-Cancer RTK Signaling and Stochastic Gene Expression 
 
-SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwistle Lab, originally written in MATLAB. The cellular signaling portion of the earlier model is converted into an SBML model. The new scheme still uses the stochastic gene expression model, which exchanges mRNA concentration information with the SBML model every 30 seconds. Please refer to the orginial model at:
+SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwistle Lab, originally written in MATLAB. The cellular signaling portion of the earlier model is converted into an SBML model. The new scheme still combines stochastic gene expression with deterministic protein signaling. For more details please refer to:
 
-1) https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005985
+1) The bioxrviv: XXX
 
-2) https://github.com/birtwistlelab/Mechanistic_Pan-Cancer_Model
+2) The original model paper: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005985
+
+3) Older python version of the original model: https://github.com/birtwistlelab/Mechanistic_Pan-Cancer_Model
 
 
 
@@ -12,7 +14,7 @@ SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwi
 
 ### 1) Install Anaconda
   - Follow the instructions depending on your machine: https://docs.anaconda.com/anaconda/user-guide/getting-started/
-  - Install basic packages like python (3.7 or later), numpy, scipy, matplotlib, jupyter-notebooks...
+  - Install basic packages like python (3.7 or later), numpy, scipy, matplotlib, pandas, jupyter-notebooks...
 
 ### 2) Install AMICI
   - Follow the instructions on project home: https://github.com/ICB-DCM/AMICI
@@ -46,12 +48,12 @@ After completing the "Model Creation" part above or by using the provided files,
 
 ## Acknowledgements:
 
-This work is a product of [Birtwistle Lab](http://www.birtwistlelab.com/) and multiple colloborators.
+This work is a product of [Birtwistle Lab](http://www.birtwistlelab.com/) and multiple colloborators, including [Feltus Lab](https://www.clemson.edu/science/departments/genetics-biochemistry/people/profiles/ffeltus), [Hasenauer Lab](https://www.mathematics-and-life-sciences.uni-bonn.de/en/group-members/jan-hasenauer), and [Robert Blake](https://bbs.llnl.gov/RobertBlake.html) from LLNL.
 
 
 
 ## The Acronym:
-The acronym SPARCED is composed of following elements, based on the sub-models in the big mechanistic ODE model.
+The acronym SPARCED is composed of following elements, based on the sub-models in the mechanistic ODE model.
 
 ### S: SBML
   
@@ -66,8 +68,3 @@ The acronym SPARCED is composed of following elements, based on the sub-models i
 ###  E: Expression
   
 ###  D: Death
-
-
-
-
-
