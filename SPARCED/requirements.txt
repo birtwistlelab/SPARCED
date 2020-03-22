@@ -1,0 +1,6 @@
+openpyxl==3.0.3
+amici==0.10.20
+matplotlib==3.2.1
+numpy==1.18.2
+pandas==1.0.3
+xlrd==1.2.0
