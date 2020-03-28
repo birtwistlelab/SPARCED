@@ -5,6 +5,7 @@ process start {
   cd ..
 
   cd SPARCED
-  python3 tester.py
+  python3 SPARCED_ModelCreateWrite.py
+  python3 RunModel.py
   '''
 }
