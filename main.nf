@@ -1,7 +1,6 @@
 process start {
   '''
-  pip -V > where.txt
-  pip freeze > reqs.txt
+  pip3 freeze > reqs.txt
 
   cd ..
   cd ..
@@ -9,7 +8,6 @@ process start {
 
 
   cd SPARCED
-  pip install python-libsbml
   python3 SPARCED_ModelCreateWrite.py
   python3 RunModel.py
   '''
