@@ -6,10 +6,14 @@ endif(POLICY CMP0060)
 if(POLICY CMP0065)
   cmake_policy(SET CMP0065 NEW)
 endif(POLICY CMP0065)
+if(POLICY CMP0074)
+  # Use package_ROOT environment variables
+  cmake_policy(SET CMP0074 NEW)
+endif(POLICY CMP0074)
 
 project(SPARCEDv6)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -23,7 +27,7 @@ foreach(FLAG ${MY_CXX_FLAGS})
     endif()
 endforeach(FLAG)
 
-find_package(Amici 0.10.12 HINTS ${CMAKE_CURRENT_LIST_DIR}/../../build)
+find_package(Amici 0.10.20 HINTS ${CMAKE_CURRENT_LIST_DIR}/../../build)
 message(STATUS "Found AMICI ${Amici_DIR}")
 
 set(MODEL_DIR ${CMAKE_CURRENT_LIST_DIR})
@@ -39,7 +43,7 @@ SPARCEDv6_dJydy.cpp
 SPARCEDv6_dwdp.cpp 
 SPARCEDv6_dwdx.cpp 
 SPARCEDv6_dxdotdw.cpp 
-SPARCEDv6_dxdotdp.cpp 
+SPARCEDv6_dxdotdp_explicit.cpp 
 SPARCEDv6_dydx.cpp 
 SPARCEDv6_dydp.cpp 
 SPARCEDv6_dsigmaydp.cpp 
@@ -60,15 +64,28 @@ SPARCEDv6_JSparseB_colptrs.cpp
 SPARCEDv6_JSparseB_rowvals.cpp 
 SPARCEDv6_dJydy_colptrs.cpp
 SPARCEDv6_dJydy_rowvals.cpp 
+SPARCEDv6_dwdp_colptrs.cpp
+SPARCEDv6_dwdp_rowvals.cpp 
 SPARCEDv6_dwdx_colptrs.cpp
 SPARCEDv6_dwdx_rowvals.cpp 
 SPARCEDv6_dxdotdw_colptrs.cpp
 SPARCEDv6_dxdotdw_rowvals.cpp 
+SPARCEDv6_dxdotdp_explicit_colptrs.cpp
+SPARCEDv6_dxdotdp_explicit_rowvals.cpp 
+SPARCEDv6_dxdotdp_implicit_colptrs.cpp
+SPARCEDv6_dxdotdp_implicit_rowvals.cpp 
 ${MODEL_DIR}/wrapfunctions.cpp
 )
 
 add_library(${PROJECT_NAME} ${SRC_LIST_LIB})
 add_library(model ALIAS ${PROJECT_NAME})
+
+# This option can be helpful when using the Intel compiler and compilation of
+# wrapfunctions.cpp fails due to insufficient memory.
+option(ENABLE_WRAPFUNCTIONS_OPTIMIZATIONS "Enable compiler optimizations for wrapfunctions.cpp?" ON)
+if(NOT ENABLE_WRAPFUNCTIONS_OPTIMIZATIONS)
+    set_source_files_properties(wrapfunctions.cpp PROPERTIES COMPILE_FLAGS -O0)
+endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 

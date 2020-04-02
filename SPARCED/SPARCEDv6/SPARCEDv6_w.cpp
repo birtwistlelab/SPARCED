@@ -10,7 +10,7 @@
 #include "x.h"
 
 void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtype *p, const realtype *k, const realtype *h, const realtype *tcl){
-    w[0] = 5.2499999999999996e-12*k1_1 + 5.2499999999999996e-12*k1_2*pow(pS6K, k1_3)/(pow(k1_4, k1_3) + pow(pS6K, k1_3));
+    w[0] = 5.2499999999999996e-12*k1_1 + 5.2499999999999996e-12*k1_2*std::pow(pS6K, k1_3)/(std::pow(k1_4, k1_3) + std::pow(pS6K, k1_3));
     w[1] = 5.2499999999999996e-12*Ribosome*k2;
     w[2] = 1.75e-12*EIF4E*k3_1*m_TP53/(EIF4E + k3_2);
     w[3] = 1.75e-12*EIF4E*m_MDM2*(MDM2pro*k4_2 + k4_1)/(EIF4E + k4_3);
@@ -258,7 +258,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[245] = 5.2499999999999996e-12*EIF4E_mT*k250;
     w[246] = 1.75e-12*k251;
     w[247] = 1.75e-12*MDM2*k252_1*p53inac;
-    w[248] = 1.75e-12*k253_1 + 1.75e-12*k253_2*p53inac*(pow(ATMP, k253_3)/(pow(ATMP, k253_3) + pow(k253_4, k253_3)) + pow(ATRac, k253_3)/(pow(ATRac, k253_3) + pow(k253_4, k253_3)));
+    w[248] = 1.75e-12*k253_1 + 1.75e-12*k253_2*p53inac*(std::pow(ATMP, k253_3)/(std::pow(ATMP, k253_3) + std::pow(k253_4, k253_3)) + std::pow(ATRac, k253_3)/(std::pow(ATRac, k253_3) + std::pow(k253_4, k253_3)));
     w[249] = 1.75e-12*Wip1*k254_1*p53ac;
     w[250] = 1.75e-12*k255_1*p53inac;
     w[251] = 1.75e-12*MDM2*k256_1*p53ac;
@@ -269,10 +269,10 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[256] = 1.75e-12*MDM2*k261_1;
     w[257] = 1.75e-12*k262;
     w[258] = 1.75e-12*Wip1*k263_1;
-    w[259] = 1.75e-12*pow(damageDSB, k264_2)*k264_1/(pow(damageDSB, k264_2) + pow(k264_3, k264_2));
-    w[260] = 1.75e-12*ATMP*pow(Wip1, k265_2)*k265_1/(pow(Wip1, k265_2) + pow(k265_3, k265_2));
+    w[259] = 1.75e-12*std::pow(damageDSB, k264_2)*k264_1/(std::pow(damageDSB, k264_2) + std::pow(k264_3, k264_2));
+    w[260] = 1.75e-12*ATMP*std::pow(Wip1, k265_2)*k265_1/(std::pow(Wip1, k265_2) + std::pow(k265_3, k265_2));
     w[261] = 1.75e-12*ATMP*k266_1;
-    w[262] = 1.75e-12*pow(damageSSB, k267_2)*k267_1/(pow(damageSSB, k267_2) + pow(k267_3, k267_2));
+    w[262] = 1.75e-12*std::pow(damageSSB, k267_2)*k267_1/(std::pow(damageSSB, k267_2) + std::pow(k267_3, k267_2));
     w[263] = 1.75e-12*ATRac*k268_1;
     w[264] = 1.75e-12*MDM2product1/k269_1;
     w[265] = 1.75e-12*p53ac/k270_1;
@@ -321,7 +321,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[308] = 1.75e-12*BRCA2*damageDSB*k313_1;
     w[309] = 1.75e-12*MSH6*damageSSB*k314_1;
     w[310] = 1.75e-12*MGMT*damageSSB*k315_1;
-    w[311] = 1.75e-12*pow(Ma + Me, k316_5)*(k316_1 + k316_2*k316_3/(k316_3 + k316_4))/(pow(k316_6, k316_5) + pow(Ma + Me, k316_5));
+    w[311] = 1.75e-12*std::pow(Ma + Me, k316_5)*(k316_1 + k316_2*k316_3/(k316_3 + k316_4))/(std::pow(k316_6, k316_5) + std::pow(Ma + Me, k316_5));
     w[312] = 1.75e-12*k317_1;
     w[313] = 1.75e-12*E2F*k318*pRB;
     w[314] = 1.75e-12*k319*pRBc1;
@@ -463,11 +463,11 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[450] = 3.675e-13*Baxm*k455;
     w[451] = 3.675e-13*Baxm*Bcl2*k456;
     w[452] = 3.675e-13*Baxm_Bcl2*k457;
-    w[453] = 3.675e-13*pow(Baxm, 2)*k458;
+    w[453] = 3.675e-13*std::pow(Baxm, 2)*k458;
     w[454] = 3.675e-13*Bax2*k459;
     w[455] = 3.675e-13*Bax2*Bcl2*k460;
     w[456] = 3.675e-13*Bax2_Bcl2*k461;
-    w[457] = 3.675e-13*pow(Bax2, 2)*k462;
+    w[457] = 3.675e-13*std::pow(Bax2, 2)*k462;
     w[458] = 3.675e-13*Bax4*k463;
     w[459] = 3.675e-13*Bax4*Bcl2*k464;
     w[460] = 3.675e-13*Bax4_Bcl2*k465;
@@ -522,7 +522,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[509] = 5.2499999999999996e-12*E*EE1E1*k514;
     w[510] = 5.2499999999999996e-12*EE1EE1*k515;
     w[511] = 5.2499999999999996e-12*EE1EE1*k516;
-    w[512] = 5.2499999999999996e-12*pow(EE1, 2)*k517;
+    w[512] = 5.2499999999999996e-12*std::pow(EE1, 2)*k517;
     w[513] = 5.2499999999999996e-12*E3*EE1*k518;
     w[514] = 5.2499999999999996e-12*EE1E3*k519;
     w[515] = 5.2499999999999996e-12*EE1E3*H*k520;
@@ -550,7 +550,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[537] = 5.2499999999999996e-12*H*HE3E3*k542;
     w[538] = 5.2499999999999996e-12*HE3HE3*k543;
     w[539] = 5.2499999999999996e-12*HE3HE3*k544;
-    w[540] = 5.2499999999999996e-12*pow(HE3, 2)*k545;
+    w[540] = 5.2499999999999996e-12*std::pow(HE3, 2)*k545;
     w[541] = 5.2499999999999996e-12*Ev3*HE3*k546;
     w[542] = 5.2499999999999996e-12*HE3Ev3*k547;
     w[543] = 5.2499999999999996e-12*E4*HE3*k548;
@@ -578,7 +578,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[565] = 5.2499999999999996e-12*H*HE4E4*k570;
     w[566] = 5.2499999999999996e-12*HE4HE4*k571;
     w[567] = 5.2499999999999996e-12*HE4HE4*k572;
-    w[568] = 5.2499999999999996e-12*pow(HE4, 2)*k573;
+    w[568] = 5.2499999999999996e-12*std::pow(HE4, 2)*k573;
     w[569] = 5.2499999999999996e-12*E1*k574*ppERK;
     w[570] = 5.2499999999999996e-12*k575*pE1;
     w[571] = 5.2499999999999996e-12*E2*k576*ppERK;
@@ -592,24 +592,24 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[579] = 5.2499999999999996e-12*HGF*HGF_Met_Met*k584;
     w[580] = 5.2499999999999996e-12*HGF_Met_HGF_Met*k585;
     w[581] = 5.2499999999999996e-12*HGF_Met_HGF_Met*k586;
-    w[582] = 5.2499999999999996e-12*pow(HGF_Met, 2)*k587;
+    w[582] = 5.2499999999999996e-12*std::pow(HGF_Met, 2)*k587;
     w[583] = 5.2499999999999996e-12*P*Pr*k588;
     w[584] = 5.2499999999999996e-12*PPr*k589;
-    w[585] = 5.2499999999999996e-12*pow(PPr, 2)*k590;
+    w[585] = 5.2499999999999996e-12*std::pow(PPr, 2)*k590;
     w[586] = 5.2499999999999996e-12*PPrPPr*k591;
     w[587] = 5.2499999999999996e-12*PPrPPr*k592;
     w[588] = 5.2499999999999996e-12*PPrPr*k593;
     w[589] = 5.2499999999999996e-12*F*Fr*k594;
     w[590] = 5.2499999999999996e-12*FFr*k595;
-    w[591] = 5.2499999999999996e-12*pow(FFr, 2)*k596;
+    w[591] = 5.2499999999999996e-12*std::pow(FFr, 2)*k596;
     w[592] = 5.2499999999999996e-12*FFrFFr*k597;
     w[593] = 5.2499999999999996e-12*FFrFFr*k598;
     w[594] = 5.2499999999999996e-12*F*FFrFr*k599;
     w[595] = 5.2499999999999996e-12*FFrFr*k600;
     w[596] = 5.2499999999999996e-12*FFr*Fr*k601;
-    w[597] = 5.2499999999999996e-12*pow(Ir, 2)*k602;
+    w[597] = 5.2499999999999996e-12*std::pow(Ir, 2)*k602;
     w[598] = 5.2499999999999996e-12*IrIr*k603;
-    w[599] = 5.2499999999999996e-12*pow(Isr, 2)*k604;
+    w[599] = 5.2499999999999996e-12*std::pow(Isr, 2)*k604;
     w[600] = 5.2499999999999996e-12*Isr_Isr*k605;
     w[601] = 5.2499999999999996e-12*E1_ppERK*k606;
     w[602] = 5.2499999999999996e-12*E1_ppERK*k607;
@@ -617,7 +617,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[604] = 5.2499999999999996e-12*E2_ppERK*k609;
     w[605] = 5.2499999999999996e-12*E4_ppERK*k610;
     w[606] = 5.2499999999999996e-12*E4_ppERK*k611;
-    w[607] = 5.2499999999999996e-12*pow(E1, 2)*k612;
+    w[607] = 5.2499999999999996e-12*std::pow(E1, 2)*k612;
     w[608] = 5.2499999999999996e-12*E1E1*k613;
     w[609] = 5.2499999999999996e-12*E1*E2*k614;
     w[610] = 5.2499999999999996e-12*E1E2*k615;
@@ -625,7 +625,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[612] = 5.2499999999999996e-12*E1E3*k617;
     w[613] = 5.2499999999999996e-12*E1*E4*k618;
     w[614] = 5.2499999999999996e-12*E1E4*k619;
-    w[615] = 5.2499999999999996e-12*pow(E2, 2)*k620;
+    w[615] = 5.2499999999999996e-12*std::pow(E2, 2)*k620;
     w[616] = 5.2499999999999996e-12*E2E2*k621;
     w[617] = 5.2499999999999996e-12*E2*E3*k622;
     w[618] = 5.2499999999999996e-12*E2E3*k623;
@@ -633,7 +633,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[620] = 5.2499999999999996e-12*E2E4*k625;
     w[621] = 5.2499999999999996e-12*E3*E4*k626;
     w[622] = 5.2499999999999996e-12*E3E4*k627;
-    w[623] = 5.2499999999999996e-12*pow(E4, 2)*k628;
+    w[623] = 5.2499999999999996e-12*std::pow(E4, 2)*k628;
     w[624] = 5.2499999999999996e-12*E4E4*k629;
     w[625] = 5.2499999999999996e-12*E*E1E1*k630;
     w[626] = 5.2499999999999996e-12*EE1E1*k631;
@@ -655,11 +655,11 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[642] = 5.2499999999999996e-12*E3HE4*k647;
     w[643] = 5.2499999999999996e-12*E4E4*H*k648;
     w[644] = 5.2499999999999996e-12*HE4E4*k649;
-    w[645] = 5.2499999999999996e-12*pow(Met, 2)*k650;
+    w[645] = 5.2499999999999996e-12*std::pow(Met, 2)*k650;
     w[646] = 5.2499999999999996e-12*Met_Met*k651;
     w[647] = 5.2499999999999996e-12*HGF*Met_Met*k652;
     w[648] = 5.2499999999999996e-12*HGF_Met_Met*k653;
-    w[649] = 5.2499999999999996e-12*pow(Fr, 2)*k654;
+    w[649] = 5.2499999999999996e-12*std::pow(Fr, 2)*k654;
     w[650] = 5.2499999999999996e-12*FrFr*k655;
     w[651] = 5.2499999999999996e-12*F*FrFr*k656;
     w[652] = 5.2499999999999996e-12*FFrFr*k657;
@@ -1648,9 +1648,9 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[1635] = 5.2499999999999996e-12*RasT_CRaf*k1640;
     w[1636] = 5.2499999999999996e-12*BRaf*RasT*k1641;
     w[1637] = 5.2499999999999996e-12*RasT_BRaf*k1642;
-    w[1638] = 5.2499999999999996e-12*pow(RasT_CRaf, 2)*k1643;
+    w[1638] = 5.2499999999999996e-12*std::pow(RasT_CRaf, 2)*k1643;
     w[1639] = 5.2499999999999996e-12*RasT_CRaf_CRaf*k1644;
-    w[1640] = 5.2499999999999996e-12*pow(RasT_BRaf, 2)*k1645;
+    w[1640] = 5.2499999999999996e-12*std::pow(RasT_BRaf, 2)*k1645;
     w[1641] = 5.2499999999999996e-12*RasT_BRaf_BRaf*k1646;
     w[1642] = 5.2499999999999996e-12*RasT_BRaf*RasT_CRaf*k1647;
     w[1643] = 5.2499999999999996e-12*RasT_CRaf_BRaf*k1648;
@@ -1767,7 +1767,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[1754] = 5.2499999999999996e-12*GSK3b_ppAKT*k1759;
     w[1755] = 5.2499999999999996e-12*GSK3b_ppAKT*k1760;
     w[1756] = 5.2499999999999996e-12*k1761*pGSK3b;
-    w[1757] = 5.2499999999999996e-12*pow(GSK3b, k1762_2)*bCATENIN*k1762_1/(pow(GSK3b, k1762_2) + pow(k1762_3, k1762_2));
+    w[1757] = 5.2499999999999996e-12*std::pow(GSK3b, k1762_2)*bCATENIN*k1762_1/(std::pow(GSK3b, k1762_2) + std::pow(k1762_3, k1762_2));
     w[1758] = 5.2499999999999996e-12*k1763*pbCATENIN;
     w[1759] = 5.2499999999999996e-12*bCATENIN*k1764;
     w[1760] = 1.75e-12*bCATENINnuc*k1765;
@@ -1780,7 +1780,7 @@ void w_SPARCEDv6(realtype *w, const realtype t, const realtype *x, const realtyp
     w[1767] = 5.2499999999999996e-12*TSC1*TSC2*k1772;
     w[1768] = 5.2499999999999996e-12*TSC*k1773;
     w[1769] = 5.2499999999999996e-12*k1774*mTORC1;
-    w[1770] = 5.2499999999999996e-12*pow(TSC, k1775_2)*k1775_1*mTORC1active/(pow(TSC, k1775_2) + k1775_3);
+    w[1770] = 5.2499999999999996e-12*std::pow(TSC, k1775_2)*k1775_1*mTORC1active/(std::pow(TSC, k1775_2) + k1775_3);
     w[1771] = 5.2499999999999996e-12*Raptor*k1776*mTOR;
     w[1772] = 5.2499999999999996e-12*k1777*mTORC1;
     w[1773] = 5.2499999999999996e-12*EIF4EBP1*k1778*mTORC1active;

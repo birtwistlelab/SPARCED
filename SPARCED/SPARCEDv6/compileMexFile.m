@@ -3,6 +3,9 @@
 % in order to compile a mex-file from the Python generated C++ files.
 
 modelName = 'SPARCEDv6';
-amimodel.compileAndLinkModel(modelName, '', [], [], [], []);
-amimodel.generateMatlabWrapper(914, 3, 0, 2715, 0, 0, [], ...
-            ['simulate_' modelName '.m'], modelName, 'lin', 1, 1);
+amimodel.compileAndLinkModel(modelName, '', [], [], [],
+                        []);
+amimodel.generateMatlabWrapper(914, 
+                        3, 0, 2715,
+                        0, 0, [], ... ['simulate_' modelName 
+                        '.m'], modelName, 'lin', 1, 1);

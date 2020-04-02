@@ -3013,10 +3013,11 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_mapped_type swig_types[7]
 #define SWIGTYPE_p_reference swig_types[8]
 #define SWIGTYPE_p_size_type swig_types[9]
-#define SWIGTYPE_p_std__unique_ptrT_amici__Model_t swig_types[10]
-#define SWIGTYPE_p_value_type swig_types[11]
-static swig_type_info *swig_types[13];
-static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
+#define SWIGTYPE_p_std__functionT_void_fstd__string_const_R_std__string_const_RF_t swig_types[10]
+#define SWIGTYPE_p_std__unique_ptrT_amici__Model_t swig_types[11]
+#define SWIGTYPE_p_value_type swig_types[12]
+static swig_type_info *swig_types[14];
+static swig_module_info swig_module = {swig_types, 13, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4347,6 +4348,7 @@ static swig_type_info _swigt__p_key_type = {"_p_key_type", "key_type *", 0, 0, (
 static swig_type_info _swigt__p_mapped_type = {"_p_mapped_type", "mapped_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_reference = {"_p_reference", "reference *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__functionT_void_fstd__string_const_R_std__string_const_RF_t = {"_p_std__functionT_void_fstd__string_const_R_std__string_const_RF_t", "amici::outputFunctionType *|std::function< void (std::string const &,std::string const &) > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__unique_ptrT_amici__Model_t = {"_p_std__unique_ptrT_amici__Model_t", "std::unique_ptr< amici::Model > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 
@@ -4361,6 +4363,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_mapped_type,
   &_swigt__p_reference,
   &_swigt__p_size_type,
+  &_swigt__p_std__functionT_void_fstd__string_const_R_std__string_const_RF_t,
   &_swigt__p_std__unique_ptrT_amici__Model_t,
   &_swigt__p_value_type,
 };
@@ -4375,6 +4378,7 @@ static swig_cast_info _swigc__p_key_type[] = {  {&_swigt__p_key_type, 0, 0, 0},{
 static swig_cast_info _swigc__p_mapped_type[] = {  {&_swigt__p_mapped_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_reference[] = {  {&_swigt__p_reference, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__functionT_void_fstd__string_const_R_std__string_const_RF_t[] = {  {&_swigt__p_std__functionT_void_fstd__string_const_R_std__string_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__unique_ptrT_amici__Model_t[] = {  {&_swigt__p_std__unique_ptrT_amici__Model_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0, 0, 0},{0, 0, 0, 0}};
 
@@ -4389,6 +4393,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_mapped_type,
   _swigc__p_reference,
   _swigc__p_size_type,
+  _swigc__p_std__functionT_void_fstd__string_const_R_std__string_const_RF_t,
   _swigc__p_std__unique_ptrT_amici__Model_t,
   _swigc__p_value_type,
 };
