@@ -7,6 +7,15 @@ process start {
   cd ..
   pwd
   ls
+  cd ..
+  pwd
+  ls
+  cd ..
+  pwd
+  ls
+  cd ..
+  pwd
+  ls
   cd SPARCED
   python3 SPARCED_ModelCreateWrite.py
   python3 RunModel.py
