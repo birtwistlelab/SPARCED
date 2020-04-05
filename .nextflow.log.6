@@ -1,0 +1,38 @@
+Apr-03 00:35:15.102 [main] DEBUG nextflow.cli.Launcher - $> nextflow kuberun ebenz99/SPARCED -r b59687c8f6f6763f5e6a02c8683043fd3154b066
+Apr-03 00:35:15.257 [main] DEBUG nextflow.scm.RepositoryProvider - Request [credentials -:-] -> https://api.github.com/repos/ebenz99/SPARCED/contents/nextflow.config
+Apr-03 00:35:15.799 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/ethan/code/workspaces/SPARCED/nextflow.config
+Apr-03 00:35:15.800 [main] DEBUG nextflow.config.ConfigBuilder - User config file: nextflow.scm.ProviderPath@2796aeae
+Apr-03 00:35:15.800 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ethan/code/workspaces/SPARCED/nextflow.config
+Apr-03 00:35:15.800 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ethan/code/workspaces/SPARCED/nextflow.config
+Apr-03 00:35:15.820 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Apr-03 00:35:16.389 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Apr-03 00:35:24.359 [main] DEBUG nextflow.k8s.K8sConfig - Kubernetes workDir=/workspace/ethan/work; projectDir=/workspace/projects; volumeClaims=[deepgtex-prp]
+Apr-03 00:35:24.371 [main] ERROR nextflow.cli.Launcher - Illegal character(s) in message header value: Bearer Unable to connect to the server: failed to refresh token: oauth2: cannot fetch token: 500 Internal Server Error
+Response: error="server_error"
+error_description="No+transaction+found+for+identifier+%22https%3A%2F%2Fcilogon.org%2Foauth2%2FrefreshToken%2F5b7d1e15b7de91fa02feb127a1125b66%2F1585887301164%22"
+Unable to connect to the server: failed to refresh token: oauth2: cannot fetch token: 500 Internal Server Error
+Response: error="server_error"
+error_description="No+transaction+found+for+identifier+%22https%3A%2F%2Fcilogon.org%2Foauth2%2FrefreshToken%2F5b7d1e15b7de91fa02feb127a1125b66%2F1585887301164%22"
+java.lang.IllegalArgumentException: Illegal character(s) in message header value: Bearer Unable to connect to the server: failed to refresh token: oauth2: cannot fetch token: 500 Internal Server Error
+Response: error="server_error"
+error_description="No+transaction+found+for+identifier+%22https%3A%2F%2Fcilogon.org%2Foauth2%2FrefreshToken%2F5b7d1e15b7de91fa02feb127a1125b66%2F1585887301164%22"
+Unable to connect to the server: failed to refresh token: oauth2: cannot fetch token: 500 Internal Server Error
+Response: error="server_error"
+error_description="No+transaction+found+for+identifier+%22https%3A%2F%2Fcilogon.org%2Foauth2%2FrefreshToken%2F5b7d1e15b7de91fa02feb127a1125b66%2F1585887301164%22"
+	at sun.net.www.protocol.http.HttpURLConnection.checkMessageHeader(HttpURLConnection.java:542)
+	at sun.net.www.protocol.http.HttpURLConnection.isExternalMessageHeaderAllowed(HttpURLConnection.java:493)
+	at sun.net.www.protocol.http.HttpURLConnection.setRequestProperty(HttpURLConnection.java:3136)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.setRequestProperty(HttpsURLConnectionImpl.java:330)
+	at nextflow.k8s.client.K8sClient.makeRequest(K8sClient.groovy:347)
+	at nextflow.k8s.client.K8sClient.makeRequest(K8sClient.groovy)
+	at nextflow.k8s.client.K8sClient.get(K8sClient.groovy:378)
+	at nextflow.k8s.client.K8sClient.volumeClaimRead(K8sClient.groovy:428)
+	at nextflow.k8s.K8sConfig.checkStorageAndPaths(K8sConfig.groovy:215)
+	at nextflow.k8s.K8sConfig$checkStorageAndPaths$0.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:115)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:127)
+	at nextflow.k8s.K8sDriverLauncher.run(K8sDriverLauncher.groovy:122)
+	at nextflow.cli.CmdKubeRun.run(CmdKubeRun.groovy:74)
+	at nextflow.cli.Launcher.run(Launcher.groovy:460)
+	at nextflow.cli.Launcher.main(Launcher.groovy:642)

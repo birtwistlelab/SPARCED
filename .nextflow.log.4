@@ -1,0 +1,12 @@
+Apr-03 00:42:49.462 [main] DEBUG nextflow.cli.Launcher - $> nextflow kuberun ebenz99/SPARCED -r b59687c8f6f6763f5e6a02c8683043fd3154b066
+Apr-03 00:42:49.597 [main] DEBUG nextflow.scm.RepositoryProvider - Request [credentials -:-] -> https://api.github.com/repos/ebenz99/SPARCED/contents/nextflow.config
+Apr-03 00:42:50.151 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/ethan/code/workspaces/SPARCED/nextflow.config
+Apr-03 00:42:50.152 [main] DEBUG nextflow.config.ConfigBuilder - User config file: nextflow.scm.ProviderPath@2796aeae
+Apr-03 00:42:50.152 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ethan/code/workspaces/SPARCED/nextflow.config
+Apr-03 00:42:50.152 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ethan/code/workspaces/SPARCED/nextflow.config
+Apr-03 00:42:50.172 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Apr-03 00:42:50.722 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Apr-03 00:42:58.856 [main] DEBUG nextflow.k8s.K8sConfig - Kubernetes workDir=/workspace/ethan/work; projectDir=/workspace/projects; volumeClaims=[deepgtex-prp]
+Apr-03 00:42:59.835 [main] DEBUG nextflow.k8s.K8sDriverLauncher - Created K8s configMap with name: nf-config-a2b4f425
+Apr-03 00:47:40.421 [main] DEBUG nextflow.k8s.K8sDriverLauncher - Wait for pod termination name=tender-franklin
+Apr-03 00:47:43.939 [main] WARN  nextflow.k8s.K8sDriverLauncher - Unable to fetch pod exit status -- pod=tender-franklin state=[waiting:[reason:ContainerCreating]]

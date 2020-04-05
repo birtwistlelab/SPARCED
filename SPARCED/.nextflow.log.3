@@ -1,0 +1,40 @@
+Mar-25 11:50:30.635 [main] DEBUG nextflow.cli.Launcher - $> nextflow run main.nf -with-docker 'ebensma/sparced:latest'
+Mar-25 11:50:30.856 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 20.01.0
+Mar-25 11:50:30.883 [main] INFO  nextflow.cli.CmdRun - Launching `main.nf` [goofy_fermi] - revision: c03b605201
+Mar-25 11:50:30.926 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/ethan/code/workspaces/SPARCED/SPARCED/nextflow.config
+Mar-25 11:50:30.928 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ethan/code/workspaces/SPARCED/SPARCED/nextflow.config
+Mar-25 11:50:30.960 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Mar-25 11:50:31.515 [main] DEBUG nextflow.config.ConfigBuilder - Enabling execution in Docker container as requested by cli option `-with-docker ebensma/sparced:latest`
+Mar-25 11:50:31.588 [main] DEBUG nextflow.Session - Session uuid: ac8b6260-e4d6-41a2-8188-6ad77bc05df8
+Mar-25 11:50:31.589 [main] DEBUG nextflow.Session - Run name: goofy_fermi
+Mar-25 11:50:31.591 [main] DEBUG nextflow.Session - Executor pool size: 4
+Mar-25 11:50:31.636 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 20.01.0 build 5264
+  Created: 12-02-2020 10:14 UTC (05:14 EDT)
+  System: Linux 5.3.0-42-generic
+  Runtime: Groovy 2.5.8 on OpenJDK 64-Bit Server VM 11.0.6+10-post-Ubuntu-1ubuntu118.04.1
+  Encoding: UTF-8 (UTF-8)
+  Process: 30891@mint [127.0.1.1]
+  CPUs: 4 - Mem: 15.4 GB (2.5 GB) - Swap: 2 GB (2 GB)
+Mar-25 11:50:31.678 [main] DEBUG nextflow.Session - Work-dir: /home/ethan/code/workspaces/SPARCED/SPARCED/work [ext2/ext3]
+Mar-25 11:50:31.678 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/ethan/code/workspaces/SPARCED/SPARCED/bin
+Mar-25 11:50:31.709 [main] DEBUG nextflow.Session - Observer factory: TowerFactory
+Mar-25 11:50:31.713 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Mar-25 11:50:31.924 [main] DEBUG nextflow.Session - Session start invoked
+Mar-25 11:50:32.150 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Mar-25 11:50:32.171 [main] DEBUG nextflow.Session - Workflow process names [dsl1]: start
+Mar-25 11:50:32.250 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Mar-25 11:50:32.250 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Mar-25 11:50:32.262 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Mar-25 11:50:32.273 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=4; memory=15.4 GB; capacity=4; pollInterval=100ms; dumpInterval=5m
+Mar-25 11:50:32.413 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > start -- maxForks: 4; blocking: false
+Mar-25 11:50:32.465 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Mar-25 11:50:32.466 [main] DEBUG nextflow.Session - Session await
+Mar-25 11:50:32.713 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Mar-25 11:50:32.723 [Task submitter] INFO  nextflow.Session - [95/6a2453] Submitted process > start
+Mar-25 11:50:33.744 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: start; status: COMPLETED; exit: 0; error: -; workDir: /home/ethan/code/workspaces/SPARCED/SPARCED/work/95/6a2453644848c3bc0e790c9d62c324]
+Mar-25 11:50:33.791 [main] DEBUG nextflow.Session - Session await > all process finished
+Mar-25 11:50:33.798 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Mar-25 11:50:33.817 [main] DEBUG nextflow.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=1; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=913ms; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=1; peakCpus=1; peakMemory=0; ]
+Mar-25 11:50:33.937 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Mar-25 11:50:33.953 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

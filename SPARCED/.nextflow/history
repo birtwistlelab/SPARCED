@@ -1,0 +1,7 @@
+2020-03-25 11:39:38	2.7s	fabulous_perlman	OK	48f40550c3205893ce23d560217c4828	d44cc58d-1335-416b-9b6f-74da9d595c53	nextflow main.nf
+2020-03-25 11:40:34	2.8s	serene_mclean	OK	79643c6df8fe713fb7ea09ee7129aaaa	c189fda5-2380-4834-829a-8cdc1cd2302a	nextflow main.nf
+2020-03-25 11:41:17	2.2s	fervent_shockley	OK	226e4ee9dd872286cc021ebcd3f281ac	75f5be87-ca01-4fd5-a811-7009d747bcaa	nextflow main.nf
+2020-03-25 11:43:50	2.3s	exotic_keller	OK	656ec3e4a129eca666ca18ee0fc4194d	9d416bc4-ad23-499e-aaae-3a138738dff3	nextflow main.nf
+2020-03-25 11:45:18	2.5s	drunk_hugle	OK	b7009b775c40b068e5757c1452e2c554	2fdd51ad-47f3-4f33-a404-becb44ee2a49	nextflow main.nf
+2020-03-25 11:48:18	2.5s	reverent_becquerel	OK	c03b605201814236b344a917f141866c	296a0b5d-f4fe-4f31-a0f0-ac3009971f71	nextflow main.nf
+2020-03-25 11:50:31	2.9s	goofy_fermi	OK	c03b605201814236b344a917f141866c	ac8b6260-e4d6-41a2-8188-6ad77bc05df8	nextflow run main.nf -with-docker 'ebensma/sparced:latest'

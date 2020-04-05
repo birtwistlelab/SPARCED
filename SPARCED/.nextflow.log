@@ -1,0 +1,21 @@
+Mar-25 15:23:23.378 [main] DEBUG nextflow.cli.Launcher - $> nextflow kuberun ebenz99/SPARCED/SPARCED
+Mar-25 15:23:23.533 [main] DEBUG nextflow.cli.Launcher - Operation aborted
+nextflow.exception.AbortOperationException: Not a valid project name: ebenz99/SPARCED/SPARCED
+	at nextflow.scm.AssetManager.resolveName(AssetManager.groovy:262)
+	at nextflow.scm.AssetManager.build(AssetManager.groovy:121)
+	at nextflow.scm.AssetManager.<init>(AssetManager.groovy:105)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:490)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:80)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:105)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:59)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:237)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:257)
+	at nextflow.k8s.K8sDriverLauncher.loadConfig(K8sDriverLauncher.groovy:218)
+	at nextflow.k8s.K8sDriverLauncher.makeConfig(K8sDriverLauncher.groovy:248)
+	at nextflow.k8s.K8sDriverLauncher.run(K8sDriverLauncher.groovy:119)
+	at nextflow.cli.CmdKubeRun.run(CmdKubeRun.groovy:74)
+	at nextflow.cli.Launcher.run(Launcher.groovy:460)
+	at nextflow.cli.Launcher.main(Launcher.groovy:642)

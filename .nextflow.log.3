@@ -1,0 +1,62 @@
+Apr-03 12:28:18.380 [main] DEBUG nextflow.cli.Launcher - $> nextflow run ebenz99/SPARCED -r b59687c8f6f6763f5e6a02c8683043fd3154b066
+Apr-03 12:28:18.707 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 20.01.0
+Apr-03 12:28:18.910 [main] INFO  nextflow.cli.CmdRun - Pulling ebenz99/SPARCED ...
+Apr-03 12:28:18.912 [main] DEBUG nextflow.scm.RepositoryProvider - Request [credentials -:-] -> https://api.github.com/repos/ebenz99/SPARCED/contents/nextflow.config
+Apr-03 12:28:22.358 [main] DEBUG nextflow.scm.RepositoryProvider - Request [credentials -:-] -> https://api.github.com/repos/ebenz99/SPARCED/contents/main.nf
+Apr-03 12:28:22.553 [main] DEBUG nextflow.scm.RepositoryProvider - Request [credentials -:-] -> https://api.github.com/repos/ebenz99/SPARCED
+Apr-03 12:28:22.740 [main] DEBUG nextflow.scm.AssetManager - Pulling ebenz99/SPARCED -- Using remote clone url: https://github.com/ebenz99/SPARCED.git
+Apr-03 12:28:30.597 [main] INFO  nextflow.cli.CmdRun -  downloaded from https://github.com/ebenz99/SPARCED.git
+Apr-03 12:28:31.215 [main] DEBUG nextflow.scm.AssetManager - Git config: /home/ethan/.nextflow/assets/ebenz99/SPARCED/.git/config; branch: master; remote: origin; url: https://github.com/ebenz99/SPARCED.git
+Apr-03 12:28:31.215 [main] INFO  nextflow.cli.CmdRun - Launching `ebenz99/SPARCED` [nice_euclid] - revision: b59687c8f6f6763f5e6a02c8683043fd3154b066
+Apr-03 12:28:31.366 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /home/ethan/.nextflow/assets/ebenz99/SPARCED/nextflow.config
+Apr-03 12:28:31.367 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/ethan/code/workspaces/SPARCED/nextflow.config
+Apr-03 12:28:31.375 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ethan/.nextflow/assets/ebenz99/SPARCED/nextflow.config
+Apr-03 12:28:31.376 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/ethan/code/workspaces/SPARCED/nextflow.config
+Apr-03 12:28:31.416 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Apr-03 12:28:31.646 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Apr-03 12:28:31.846 [main] DEBUG nextflow.Session - Session uuid: 2ae3b0a7-b96d-469f-ab0b-c57eaa22708e
+Apr-03 12:28:31.846 [main] DEBUG nextflow.Session - Run name: nice_euclid
+Apr-03 12:28:31.848 [main] DEBUG nextflow.Session - Executor pool size: 4
+Apr-03 12:28:31.892 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 20.01.0 build 5264
+  Created: 12-02-2020 10:14 UTC (05:14 EDT)
+  System: Linux 5.3.0-42-generic
+  Runtime: Groovy 2.5.8 on OpenJDK 64-Bit Server VM 1.8.0_242-8u242-b08-0ubuntu3~18.04-b08
+  Encoding: UTF-8 (UTF-8)
+  Process: 13020@mint [127.0.1.1]
+  CPUs: 4 - Mem: 15.4 GB (1.5 GB) - Swap: 2 GB (1.6 GB)
+Apr-03 12:28:31.966 [main] DEBUG nextflow.Session - Work-dir: /home/ethan/code/workspaces/SPARCED/work [ext2/ext3]
+Apr-03 12:28:31.967 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/ethan/.nextflow/assets/ebenz99/SPARCED/bin
+Apr-03 12:28:32.081 [main] DEBUG nextflow.Session - Observer factory: TowerFactory
+Apr-03 12:28:32.098 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Apr-03 12:28:32.776 [main] DEBUG nextflow.Session - Session start invoked
+Apr-03 12:28:33.356 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Apr-03 12:28:33.462 [main] DEBUG nextflow.Session - Workflow process names [dsl1]: start
+Apr-03 12:28:33.684 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Apr-03 12:28:33.684 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Apr-03 12:28:33.734 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Apr-03 12:28:33.782 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=4; memory=15.4 GB; capacity=4; pollInterval=100ms; dumpInterval=5m
+Apr-03 12:28:34.362 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > start -- maxForks: 4; blocking: false
+Apr-03 12:28:34.595 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Apr-03 12:28:34.596 [main] DEBUG nextflow.Session - Session await
+Apr-03 12:28:35.242 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Apr-03 12:28:35.263 [Task submitter] INFO  nextflow.Session - [33/03a022] Submitted process > start
+Apr-03 12:33:34.011 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 1 -- submitted tasks are shown below
+~> TaskHandler[id: 1; name: start; status: RUNNING; exit: -; error: -; workDir: /home/ethan/code/workspaces/SPARCED/work/33/03a02273110061aa45aa29df0365a5]
+Apr-03 12:38:34.045 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 1 -- submitted tasks are shown below
+~> TaskHandler[id: 1; name: start; status: RUNNING; exit: -; error: -; workDir: /home/ethan/code/workspaces/SPARCED/work/33/03a02273110061aa45aa29df0365a5]
+Apr-03 12:43:34.089 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 1 -- submitted tasks are shown below
+~> TaskHandler[id: 1; name: start; status: RUNNING; exit: -; error: -; workDir: /home/ethan/code/workspaces/SPARCED/work/33/03a02273110061aa45aa29df0365a5]
+Apr-03 12:48:34.130 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 1 -- submitted tasks are shown below
+~> TaskHandler[id: 1; name: start; status: RUNNING; exit: -; error: -; workDir: /home/ethan/code/workspaces/SPARCED/work/33/03a02273110061aa45aa29df0365a5]
+Apr-03 12:53:34.139 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 1 -- submitted tasks are shown below
+~> TaskHandler[id: 1; name: start; status: RUNNING; exit: -; error: -; workDir: /home/ethan/code/workspaces/SPARCED/work/33/03a02273110061aa45aa29df0365a5]
+Apr-03 12:58:34.170 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 1 -- submitted tasks are shown below
+~> TaskHandler[id: 1; name: start; status: RUNNING; exit: -; error: -; workDir: /home/ethan/code/workspaces/SPARCED/work/33/03a02273110061aa45aa29df0365a5]
+Apr-03 13:01:09.477 [SIGINT handler] DEBUG nextflow.Session - Session aborted -- Cause: SIGINT
+Apr-03 13:01:09.521 [main] DEBUG nextflow.Session - Session await > all process finished
+Apr-03 13:01:09.521 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Apr-03 13:01:09.539 [main] WARN  n.processor.TaskPollingMonitor - Killing pending tasks (1)
+Apr-03 13:01:09.567 [main] DEBUG nextflow.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=0; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=1; succeedDuration=0ms; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=1; peakCpus=1; peakMemory=0; ]
+Apr-03 13:01:10.101 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Apr-03 13:01:10.131 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

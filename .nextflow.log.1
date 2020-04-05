@@ -1,0 +1,19 @@
+Apr-05 19:36:47.920 [main] DEBUG nextflow.cli.Launcher - $> nextflow run ebenz99/SPARCED -r 9f7b5804e89922c26b060ce1ad5389089c75d368
+Apr-05 19:36:48.117 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 20.01.0
+Apr-05 19:36:48.943 [main] DEBUG nextflow.scm.AssetManager - Git config: /home/ethan/.nextflow/assets/ebenz99/SPARCED/.git/config; branch: master; remote: origin; url: https://github.com/ebenz99/SPARCED.git
+Apr-05 19:36:48.958 [main] DEBUG nextflow.scm.AssetManager - Git config: /home/ethan/.nextflow/assets/ebenz99/SPARCED/.git/config; branch: master; remote: origin; url: https://github.com/ebenz99/SPARCED.git
+Apr-05 19:36:49.398 [main] DEBUG nextflow.cli.Launcher - Operation aborted
+org.eclipse.jgit.api.errors.JGitInternalException: Missing unknown 9f7b5804e89922c26b060ce1ad5389089c75d368
+	at org.eclipse.jgit.api.CheckoutCommand.call(CheckoutCommand.java:334)
+	at nextflow.scm.AssetManager.checkout(AssetManager.groovy:889)
+	at nextflow.cli.CmdRun.getScriptFile(CmdRun.groovy:346)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:245)
+	at nextflow.cli.Launcher.run(Launcher.groovy:460)
+	at nextflow.cli.Launcher.main(Launcher.groovy:642)
+Caused by: org.eclipse.jgit.errors.MissingObjectException: Missing unknown 9f7b5804e89922c26b060ce1ad5389089c75d368
+	at org.eclipse.jgit.internal.storage.file.WindowCursor.open(WindowCursor.java:168)
+	at org.eclipse.jgit.lib.ObjectReader.open(ObjectReader.java:236)
+	at org.eclipse.jgit.revwalk.RevWalk.parseAny(RevWalk.java:890)
+	at org.eclipse.jgit.revwalk.RevWalk.parseCommit(RevWalk.java:800)
+	at org.eclipse.jgit.api.CheckoutCommand.call(CheckoutCommand.java:264)
+	... 5 common frames omitted
