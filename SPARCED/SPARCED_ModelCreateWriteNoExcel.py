@@ -1,5 +1,5 @@
 # Antimony model name and text
-fileModel = open('SPARCEDv6.txt','w') # file name
+fileModel = open('SPARCEDv62.txt','w') # file name
 fileModel.write("// PanCancer Model by Birtwistle Lab \n") # some explanation
 fileModel.write("model SPARCEDv6()\n") # model name
 
@@ -28,6 +28,8 @@ import matplotlib.pyplot as plt
 import csv
 import re
 
+import pandas as pd
+
 compartments = []
 volumes = []
 
@@ -43,10 +45,8 @@ for row in compartment_data[1:]:
 fileModel.write("\n  // Compartments and Species:\n")
 for idx in range(len(compartments)):
     compName = compartments[idx]
-    print(compName)
     fileModel.write("  Compartment %s; " % (compName))
 fileModel.write("\n")
-
 
 # Write species and assign compartments
 species_data = np.array([np.array(line.strip().split(",")) for line in open('Species_v6.csv')])
@@ -62,40 +62,26 @@ numSpecies = len(species_compartments) - 1
 #is this whitespace necessary?
 fileModel.write("\n")
 
-print(numSpecies)
 
-# ##----------------------REFACTORED TO HERE---------------------------
-#
-# ICf = pd.read_excel(fileSpecies,header=0,index_col=0)
-# count = 0
-# count2 = 0
-#
-# species_csv = csv.reader(open("Species_v6.csv"))
-# for val in ICf.index:
-#     if count2 == 0:
-#         fileModel.write("  Species ")
-#     if count == numSpecies:
-#         fileModel.write("%s in %s;" % (val, SpComps[count]))
-#     elif count2 < 4:
-#         fileModel.write("%s in %s," % (val, SpComps[count]))
-#         count2 = count2 + 1
-#     else:
-#         fileModel.write("%s in %s;\n" % (val, SpComps[count]))
-#         count2 = 0
-#     count = count + 1
+ICf = pd.read_excel(fileSpecies,header=0,index_col=0)
+SpComps = ICf.values[:,0]
 
-# for val in ICf.index:
-#     if count2 == 0:
-#         fileModel.write("  Species ")
-#     if count == numSpecies:
-#         fileModel.write("%s in %s;" % (val, SpComps[count]))
-#     elif count2 < 4:
-#         fileModel.write("%s in %s," % (val, SpComps[count]))
-#         count2 = count2 + 1
-#     else:
-#         fileModel.write("%s in %s;\n" % (val, SpComps[count]))
-#         count2 = 0
-#     count = count + 1
+
+fileModel.write("  Species ")
+for idx,val in enumerate(species_data[1:]):
+    #not sure why this happens every fifth element but it was in the original
+    fileModel.write("%s in %s" % (val[0], species_compartments[idx]))
+    if (idx+1) % 5 != 0:
+        fileModel.write(",")
+    else:
+        fileModel.write(";\n")
+        fileModel.write("  Species ")
+
+
+exit(1)
+
+##----------------------REFACTORED TO HERE---------------------------
+
 #
 # # Write reactions and rate laws
 # fileModel.write("\n\n  // Reactions:\n")
