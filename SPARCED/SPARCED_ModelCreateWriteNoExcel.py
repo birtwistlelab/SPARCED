@@ -50,7 +50,7 @@ fileModel.write("\n")
 
 # Write species and assign compartments
 species_data = np.array([np.array(line.strip().split(",")) for line in open('Species_v6.csv')])
-species_headers = compartment_data[0]
+
 species_compartments = []
 for row in species_data[1:]:
     species_compartments.append(row[1])
@@ -147,25 +147,23 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
     fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
 
 
-#----------------------REFACTORED TO HERE---------------------------
-exit(1)
+#not necessary
 paramsSet =  pd.DataFrame(paramvals, columns = ['param_values'], index=paramnames)
 paramsSet.to_excel(fileParams)
 
-#
-# # Write compartment ICs
-# fileModel.write("\n  // Compartment initializations:\n")
-# for inds in range(lenCmps):
-#     fileModel.write("  %s = %.6e;\n" % (Comps[inds], np.double(Vols[inds]))) # '%.3e'  "%.4g"
-#     fileModel.write("  %s has volume;\n" % (Comps[inds]))
-#
-# # Write species ICs
-# fileModel.write("\n  // Species initializations:\n")
-# count = 0
-# for sp in ICf.index:
-#     vall = np.double(ICf.values[count,1])
-#     fileModel.write("  %s = %.6e;\n" % (sp,vall)) # '%.3e'  "%.4g"
-#     count += 1
+# Write compartment ICs
+fileModel.write("\n  // Compartment initializations:\n")
+for idx in range(len(compartments)):
+    fileModel.write("  %s = %.6e;\n" % (compartments[idx], np.double(volumes[idx]))) # '%.3e'  "%.4g"
+    fileModel.write("  %s has volume;\n" % (compartments[idx]))
+
+# Write species ICs
+fileModel.write("\n  // Species initializations:\n")
+for idx, val in enumerate(species_data[1:]):
+    fileModel.write("  %s = %.6e;\n" % (val[0],np.double(val[2]))) # '%.3e'  "%.4g"
+
+
+#----------------------REFACTORED TO HERE---------------------------
 #
 # # Write parameter ICs
 # fileModel.write("\n  // Parameter initializations:\n")
