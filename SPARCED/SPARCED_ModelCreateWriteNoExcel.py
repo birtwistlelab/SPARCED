@@ -69,7 +69,6 @@ SpComps = ICf.values[:,0]
 
 fileModel.write("  Species ")
 for idx,val in enumerate(species_data[1:]):
-    #not sure why this happens every fifth element but it was in the original
     fileModel.write("%s in %s" % (val[0], species_compartments[idx]))
     if (idx+1) % 5 != 0:
         fileModel.write(",")
@@ -77,81 +76,82 @@ for idx,val in enumerate(species_data[1:]):
         fileModel.write(";\n")
         fileModel.write("  Species ")
 
+# Write reactions and rate laws
+fileModel.write("\n\n  // Reactions:\n")
 
+#reads in file from excel and gets rid of first row and column (they're data labels)
+stoic_sheet = np.array([np.array(line.strip().split(",")) for line in open('StoicMat_v6.csv')])
+
+#gets first column minus blank space at the beginning
+stoic_columnnames = stoic_sheet[0,1:]
+stoic_rownames = stoic_sheet[1:,0]
+stoic_data = stoic_sheet[1:,1:]
+
+ratelaw_data = np.array([np.array(line.strip().split(",")) for line in open('Ratelaws_v6.csv')])[1:,1:]
+
+paramnames = []
+paramvals = []
+for rowNum, ratelaw in enumerate(ratelaw_data):
+    reactants = []
+    products = []
+    formula="k"+str(rowNum+1)+"*"
+
+    for i, stoic_rowname in enumerate(stoic_rownames):
+        stoic_value = int(stoic_data[i,rowNum])
+        if stoic_value < 0:
+            for j in range(0,stoic_value*-1):
+                reactants.append(stoic_rowname)
+                formula=formula+stoic_rowname+"*"
+        elif stoic_value > 0:
+            for j in range(0,stoic_value):
+                products.append(stoic_rowname)
+        i +=1
+    if "k" not in ratelaw[1]:
+        # the mass-action formula
+        formula=formula[:-1]
+        #the parameter
+        paramnames.append("k"+str(rowNum+1))
+        paramvals.append(np.double(ratelaw[1]))
+    else:
+        # specific formula (non-mass-action)
+        formula = ratelaw[1]
+        j = 1
+        params = np.genfromtxt(ratelaw[2:], float) # parameters
+        params = params[~np.isnan(params)]
+        if len(params) == 1:
+            paramnames.append("k"+str(rowNum+1)+"_"+str(j))
+            paramvals.append(float(ratelaw[j+1]))
+            pattern = 'k\D*\d*'
+            compiled = re.compile(pattern)
+            matches = compiled.finditer(formula)
+            for ematch in matches:
+                formula = formula.replace(ematch.group(),paramnames[-1])
+        else:
+            for p in params:
+                paramnames.append("k"+str(rowNum+1)+"_"+str(j))
+                paramvals.append(float(ratelaw[j+1]))
+                pattern1 = 'k(\D*)\d*'+'_'+str(j)
+                compiled1 = re.compile(pattern1)
+                matches1 = compiled1.finditer(formula)
+                for ematch in matches1:
+                    formula = formula.replace(ematch.group(),paramnames[-1])
+                j +=1
+    if ratelaw[0] == 'Cytoplasm':
+        valcomp = 5.25e-12
+    elif ratelaw[0] == 'Extracellular':
+        valcomp = 5.00e-5
+    elif ratelaw[0] == 'Nucleus':
+        valcomp = 1.75e-12
+    elif ratelaw[0] == 'Mitochondrion':
+        valcomp = 3.675e-13
+    fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
+
+
+#----------------------REFACTORED TO HERE---------------------------
 exit(1)
+paramsSet =  pd.DataFrame(paramvals, columns = ['param_values'], index=paramnames)
+paramsSet.to_excel(fileParams)
 
-##----------------------REFACTORED TO HERE---------------------------
-
-#
-# # Write reactions and rate laws
-# fileModel.write("\n\n  // Reactions:\n")
-#
-# Sdf = pd.read_excel(fileStoic,header=0,index_col=0)
-# S = Sdf.values
-# Ratelawsf = pd.read_excel(fileRatelaws,header=0,index_col=0)
-# numRlaws = Ratelawsf.shape[0]
-#
-# paramnames = []
-# paramvals = []
-# count = 0
-# for rr in range(numRlaws):
-#     reactants = []
-#     products = []
-#     i = 0
-#     formula="k"+str(count+1)+"*"
-#     line = np.array(Ratelawsf.iloc[rr])
-#     for sp in Sdf.index:
-#         if S[i,count] < 0:
-#             for j in range(0,S[i,count]*-1):
-#                 reactants.append(sp)
-#                 formula=formula+sp+"*"
-#         elif S[i,count] > 0:
-#             for j in range(0,S[i,count]):
-#                 products.append(sp)
-#         i +=1
-#     if "k" not in str(line[1]):
-#         # the mass-action formula
-#         formula=formula[:-1]
-#         #the parameter
-#         paramnames.append("k"+str(count+1))
-#         paramvals.append(np.double(line[1]))
-#     else:
-#         # specific formula (non-mass-action)
-#         formula = line[1]
-#         j = 1
-#         params = np.array(list(line[2:])) # parameters
-#         params = params[~np.isnan(params)]
-#         if len(params) == 1:
-#             paramnames.append("k"+str(count+1)+"_"+str(j))
-#             paramvals.append(float(line[j+1]))
-#             pattern = 'k\D*\d*'
-#             compiled = re.compile(pattern)
-#             matches = compiled.finditer(formula)
-#             for ematch in matches:
-#                 formula = formula.replace(ematch.group(),paramnames[-1])
-#         else:
-#             for p in params:
-#                 paramnames.append("k"+str(count+1)+"_"+str(j))
-#                 paramvals.append(float(line[j+1]))
-#                 pattern1 = 'k(\D*)\d*'+'_'+str(j)
-#                 compiled1 = re.compile(pattern1)
-#                 matches1 = compiled1.finditer(formula)
-#                 for ematch in matches1:
-#                     formula = formula.replace(ematch.group(),paramnames[-1])
-#                 j +=1
-#     if line[0] == 'Cytoplasm':
-#         valcomp = 5.25e-12
-#     elif line[0] == 'Extracellular':
-#         valcomp = 5.00e-5
-#     elif line[0] == 'Nucleus':
-#         valcomp = 1.75e-12
-#     elif line[0] == 'Mitochondrion':
-#         valcomp = 3.675e-13
-#     fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (Sdf.columns[count], " + ".join(reactants), " + ".join(products), formula, valcomp))
-#     count +=1
-# paramsSet =  pd.DataFrame(paramvals, columns = ['param_values'], index=paramnames)
-# paramsSet.to_excel(fileParams)
-#
 #
 # # Write compartment ICs
 # fileModel.write("\n  // Compartment initializations:\n")
