@@ -1,3 +1,6 @@
+import time
+start_time = time.time()
+
 # Antimony model name and text
 fileModel = open('SPARCEDv62.txt','w') # file name
 fileModel.write("// PanCancer Model by Birtwistle Lab \n") # some explanation
@@ -34,10 +37,10 @@ compartments = []
 volumes = []
 
 # Create/write compartments
-compartment_data = np.array([np.array(line.strip().split(",")) for line in open('Compartments_v6.csv')])
-compartment_headers = compartment_data[0]
+compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Compartments_v6.txt')])
 
-for row in compartment_data[1:]:
+#read in each line minus the header row
+for row in compartment_sheet[1:]:
     compartments.append(row[0])
     volumes.append(row[1])
 
@@ -49,27 +52,20 @@ for idx in range(len(compartments)):
 fileModel.write("\n")
 
 # Write species and assign compartments
-species_data = np.array([np.array(line.strip().split(",")) for line in open('Species_v6.csv')])
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species_v6.txt', encoding='latin-1')])
 
 species_compartments = []
-for row in species_data[1:]:
+for row in species_sheet[1:]:
     species_compartments.append(row[1])
 species_compartments = np.array(species_compartments)
-
-#suspicious minus 1
-numSpecies = len(species_compartments) - 1
 
 #is this whitespace necessary?
 fileModel.write("\n")
 
-
-ICf = pd.read_excel(fileSpecies,header=0,index_col=0)
-SpComps = ICf.values[:,0]
-
-
 fileModel.write("  Species ")
-for idx,val in enumerate(species_data[1:]):
+for idx,val in enumerate(species_sheet[1:]):
     fileModel.write("%s in %s" % (val[0], species_compartments[idx]))
+    #write 4 per line, then newline
     if (idx+1) % 5 != 0:
         fileModel.write(",")
     else:
@@ -80,14 +76,16 @@ for idx,val in enumerate(species_data[1:]):
 fileModel.write("\n\n  // Reactions:\n")
 
 #reads in file from excel and gets rid of first row and column (they're data labels)
-stoic_sheet = np.array([np.array(line.strip().split(",")) for line in open('StoicMat_v6.csv')])
+stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open('StoicMat_v6.txt')])
 
 #gets first column minus blank space at the beginning
-stoic_columnnames = stoic_sheet[0,1:]
-stoic_rownames = stoic_sheet[1:,0]
-stoic_data = stoic_sheet[1:,1:]
+stoic_columnnames = stoic_sheet[0]
+stoic_rownames = [line[0] for line in stoic_sheet[1:]]
+stoic_data = np.array([line[1:] for line in stoic_sheet[1:]])
 
-ratelaw_data = np.array([np.array(line.strip().split(",")) for line in open('Ratelaws_v6.csv')])[1:,1:]
+
+ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws_v6.txt')])
+ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 paramnames = []
 paramvals = []
@@ -97,7 +95,7 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
     formula="k"+str(rowNum+1)+"*"
 
     for i, stoic_rowname in enumerate(stoic_rownames):
-        stoic_value = int(stoic_data[i,rowNum])
+        stoic_value = int(stoic_data[i][rowNum])
         if stoic_value < 0:
             for j in range(0,stoic_value*-1):
                 reactants.append(stoic_rowname)
@@ -147,6 +145,14 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
     fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
 
 
+exit(1)
+
+#----------------------REFACTORED TO HERE---------------------------
+
+
+
+
+
 #not necessary
 paramsSet =  pd.DataFrame(paramvals, columns = ['param_values'], index=paramnames)
 paramsSet.to_excel(fileParams)
@@ -163,111 +169,115 @@ for idx, val in enumerate(species_data[1:]):
     fileModel.write("  %s = %.6e;\n" % (val[0],np.double(val[2]))) # '%.3e'  "%.4g"
 
 
-#----------------------REFACTORED TO HERE---------------------------
-#
-# # Write parameter ICs
-# fileModel.write("\n  // Parameter initializations:\n")
-# count = 0
-# for param in paramnames:
-#     fileModel.write("  %s = %.6e;\n" % (param, np.double(paramvals[count]))) # '%.3e'  "%.4g"
-#     count += 1
-#
-# # Write other declarations
-# constantVars = ['Cytoplasm','Extracellular','Nucleus','Mitochondrion']
-# # constantVars = ['Cytoplasm']
-# lenConVs = len(constantVars)
-#
-# fileModel.write("\n  // Other declarations:\n")
-# fileModel.write("  const")
-# count = 1
-# for teconst in constantVars:
-#     if count<lenConVs:
-#         fileModel.write("  %s," % (teconst))
-#         count+=1
-#     else:
-#         fileModel.write("  %s;\n" % (teconst))
-#
-# # Write unit definitions
-# fileModel.write("\n  // Unit definitions:")
-# fileModel.write("\n  unit time_unit = second;")
-# fileModel.write("\n  unit volume = litre;")
-# fileModel.write("\n  unit substance = 1e-9 mole;")
-# fileModel.write("\n  unit nM = 1e-9 mole / litre;")
-# fileModel.write("\n")
-#
-# # End the model file
-# fileModel.write("\nend")
-# # Close the file
-# fileModel.close()
-#
-# # To add annotations for the species, read-in the xml and Species files, then write a new xml with annotations.
-# # This is because Antimony does not support annotations
-#
-# sbml_reader = libsbml.SBMLReader()
-# sbml_doc = sbml_reader.readSBML(sbml_file)
-# sbml_model = sbml_doc.getModel()
-#
-# # Set species annotations
-# ICf = pd.read_excel(fileSpecies,header=0,index_col=0)
-# for count,val in enumerate(ICf.index):
-#     Annot=""
-#     for col in range(3,(ICf.shape[1])):
-#         aa=str(ICf.values[count,col])
-#         if aa=="nan":
-#             break
-#         else:
-#             Annot=Annot+" "+ICf.values[count,col]
-#     sbml_model.getSpecies(val).setAnnotation(Annot)
-#
-# # Set compartment annotations
-# CoVols = pd.read_excel(fileComps,header=0,index_col=0)
-# for count,val in enumerate(CoVols.index):
-#     sbml_model.getCompartment(val).setAnnotation(CoVols.values[count,1])
-#
-# # Write with the same name or use the next section instead of below lines
+# Write parameter ICs
+fileModel.write("\n  // Parameter initializations:\n")
+count = 0
+for param in paramnames:
+    fileModel.write("  %s = %.6e;\n" % (param, np.double(paramvals[count]))) # '%.3e'  "%.4g"
+    count += 1
+
+# Write other declarations
+constantVars = ['Cytoplasm','Extracellular','Nucleus','Mitochondrion']
+lenConVs = len(constantVars)
+
+fileModel.write("\n  // Other declarations:\n")
+fileModel.write("  const")
+for constVar in constantVars[:-1]:
+    fileModel.write("  %s," % (constVar))
+
+#last item in row needs semicolon
+fileModel.write("  %s;\n" % (constantVars[-1]))
+
+# Write unit definitions
+fileModel.write("\n  // Unit definitions:")
+fileModel.write("\n  unit time_unit = second;")
+fileModel.write("\n  unit volume = litre;")
+fileModel.write("\n  unit substance = 1e-9 mole;")
+fileModel.write("\n  unit nM = 1e-9 mole / litre;")
+fileModel.write("\n")
+
+# End the model file
+fileModel.write("\nend")
+# Close the file
+fileModel.close()
+
+print("--- %s seconds ---" % (time.time() - start_time))
+
+# To add annotations for the species, read-in the xml and Species files, then write a new xml with annotations.
+# This is because Antimony does not support annotations
+
+sbml_reader = libsbml.SBMLReader()
+sbml_doc = sbml_reader.readSBML(sbml_file)
+sbml_model = sbml_doc.getModel()
+
+# Set species annotations
+
+ICf = pd.read_excel(fileSpecies,header=0,index_col=0)
+j = 0
+for idx,row in enumerate(species_data[1:]):
+    Annot=""
+    for col in range(4,(len(row))):
+        aa=str(row[col].strip())
+        print(aa)
+        if aa=="nan" or aa == "":
+            break
+        else:
+            print(row[col])
+            if j > 10:
+                exit(1)
+            j+=1
+            Annot=Annot+" "+row[col]
+    # sbml_model.getSpecies(species_data[0]).setAnnotation(Annot)
+
+# Set compartment annotations
+CoVols = pd.read_excel(fileComps,header=0,index_col=0)
+for count,val in enumerate(CoVols.index):
+    sbml_model.getCompartment(val).setAnnotation(CoVols.values[count,1])
+
+# Write with the same name or use the next section instead of below lines
+writer = libsbml.SBMLWriter()
+writer.writeSBML(sbml_doc, sbml_file)
+
+# # Change model name and write with a new name
+# sbml_model.setName(model_name+'_Annot')
+# sbml_model.setId(model_name+'_Annot')
+# sbml_filewAnnot = model_name+'_Annot.xml'
 # writer = libsbml.SBMLWriter()
-# writer.writeSBML(sbml_doc, sbml_file)
-#
-# # # Change model name and write with a new name
-# # sbml_model.setName(model_name+'_Annot')
-# # sbml_model.setId(model_name+'_Annot')
-# # sbml_filewAnnot = model_name+'_Annot.xml'
-# # writer = libsbml.SBMLWriter()
-# # writer.writeSBML(sbml_doc, sbml_filewAnnot)
-#
-# # sbml_file = sbml_filewAnnot # Comment-out to use the file name  w/t annotations
-# model_name = sbml_file[0:-4]
-# model_output_dir = model_name
-#
-# sbml_reader = libsbml.SBMLReader()
-# sbml_doc = sbml_reader.readSBML(sbml_file)
-# sbml_model = sbml_doc.getModel()
-#
-# # Create an SbmlImporter instance for our SBML model
-# sbml_importer = amici.SbmlImporter(sbml_file)
-#
-# constantParameters = [params.getId() for params in sbml_model.getListOfParameters()]
-# constantParameters[-1]
-#
-# observables={'actp53':{'formula': 'p53ac'},'phERK':{'formula': 'ppERK'},'egfLR':{'formula': 'EE1'}}
-#
-# sbml_importer.sbml2amici(model_name,
-#                          model_output_dir,
-#                          verbose=False,
-#                          observables=observables,
-#                          constantParameters=constantParameters)
-#
-# sys.path.insert(0, os.path.abspath(model_output_dir))
-# model_module = importlib.import_module(model_name)
-# model = model_module.getModel()
-#
-# # set timepoints for which we want to simulate the model
-# model.setTimepoints(np.linspace(0, 86400, 2881))
-# # Create solver instance
-# solver = model.getSolver()
-# solver.setMaxSteps = 1e10
-# # Run simulation using default model parameters and solver options
-# rdata = amici.runAmiciSimulation(model, solver)
+# writer.writeSBML(sbml_doc, sbml_filewAnnot)
+
+# sbml_file = sbml_filewAnnot # Comment-out to use the file name  w/t annotations
+model_name = sbml_file[0:-4]
+model_output_dir = model_name
+
+sbml_reader = libsbml.SBMLReader()
+sbml_doc = sbml_reader.readSBML(sbml_file)
+sbml_model = sbml_doc.getModel()
+
+# Create an SbmlImporter instance for our SBML model
+sbml_importer = amici.SbmlImporter(sbml_file)
+
+constantParameters = [params.getId() for params in sbml_model.getListOfParameters()]
+constantParameters[-1]
+
+observables={'actp53':{'formula': 'p53ac'},'phERK':{'formula': 'ppERK'},'egfLR':{'formula': 'EE1'}}
+
+sbml_importer.sbml2amici(model_name,
+                         model_output_dir,
+                         verbose=False,
+                         observables=observables,
+                         constantParameters=constantParameters)
+
+sys.path.insert(0, os.path.abspath(model_output_dir))
+model_module = importlib.import_module(model_name)
+model = model_module.getModel()
+
+# set timepoints for which we want to simulate the model
+model.setTimepoints(np.linspace(0, 86400, 2881))
+# Create solver instance
+solver = model.getSolver()
+solver.setMaxSteps = 1e10
+# Run simulation using default model parameters and solver options
+rdata = amici.runAmiciSimulation(model, solver)
 #
 #
 # rdata['x'][:,1]
