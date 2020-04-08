@@ -28,10 +28,8 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-import csv
 import re
 
-import pandas as pd
 
 compartments = []
 volumes = []
@@ -144,18 +142,9 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
         valcomp = 3.675e-13
     fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
 
-
-exit(1)
-
-#----------------------REFACTORED TO HERE---------------------------
-
-
-
-
-
-#not necessary
-paramsSet =  pd.DataFrame(paramvals, columns = ['param_values'], index=paramnames)
-paramsSet.to_excel(fileParams)
+# #not necessary
+# paramsSet =  pd.DataFrame(paramvals, columns = ['param_values'], index=paramnames)
+# paramsSet.to_excel(fileParams)
 
 # Write compartment ICs
 fileModel.write("\n  // Compartment initializations:\n")
@@ -165,7 +154,7 @@ for idx in range(len(compartments)):
 
 # Write species ICs
 fileModel.write("\n  // Species initializations:\n")
-for idx, val in enumerate(species_data[1:]):
+for idx, val in enumerate(species_sheet[1:]):
     fileModel.write("  %s = %.6e;\n" % (val[0],np.double(val[2]))) # '%.3e'  "%.4g"
 
 
@@ -201,38 +190,25 @@ fileModel.write("\nend")
 # Close the file
 fileModel.close()
 
-print("--- %s seconds ---" % (time.time() - start_time))
-
-# To add annotations for the species, read-in the xml and Species files, then write a new xml with annotations.
-# This is because Antimony does not support annotations
 
 sbml_reader = libsbml.SBMLReader()
 sbml_doc = sbml_reader.readSBML(sbml_file)
 sbml_model = sbml_doc.getModel()
 
 # Set species annotations
-
-ICf = pd.read_excel(fileSpecies,header=0,index_col=0)
-j = 0
-for idx,row in enumerate(species_data[1:]):
+for idx,row in enumerate(species_sheet[1:]):
     Annot=""
     for col in range(4,(len(row))):
         aa=str(row[col].strip())
-        print(aa)
         if aa=="nan" or aa == "":
             break
         else:
-            print(row[col])
-            if j > 10:
-                exit(1)
-            j+=1
             Annot=Annot+" "+row[col]
-    # sbml_model.getSpecies(species_data[0]).setAnnotation(Annot)
+    sbml_model.getSpecies(row[0]).setAnnotation(Annot)
 
 # Set compartment annotations
-CoVols = pd.read_excel(fileComps,header=0,index_col=0)
-for count,val in enumerate(CoVols.index):
-    sbml_model.getCompartment(val).setAnnotation(CoVols.values[count,1])
+for row in compartment_sheet[1:]:
+    sbml_model.getCompartment(row[0]).setAnnotation(row[2])
 
 # Write with the same name or use the next section instead of below lines
 writer = libsbml.SBMLWriter()
@@ -283,3 +259,5 @@ rdata = amici.runAmiciSimulation(model, solver)
 # rdata['x'][:,1]
 #
 # rdata['y'][:,0]
+
+print("--- %s seconds ---" % (time.time() - start_time))
