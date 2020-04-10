@@ -24,7 +24,7 @@ def RunPrep(flagD,Vn):
     # tcnrs = Hill coefficients for transcriptional repressors
     # tck50rs = K50 values for transcriptional repressors
 
-    kGsRead_sheet = np.array([np.array(line.strip().split("\t")) for line in open('kGeneMod.txt', encoding='latin-1')])
+    kGsRead_sheet = np.array([np.array(line.strip().split("\t")) for line in open('input_data/kGeneMod.txt', encoding='latin-1')])
     kGsRead_data = []
     for row in kGsRead_sheet[1:]:
         kGsRead_data.append(row[1:])
@@ -39,7 +39,7 @@ def RunPrep(flagD,Vn):
     kTCd = np.float64(kGsRead_data[:,6])
 
     # Read-in the activators matrix and assign concentrations of activators
-    TAs_sheet = np.array([np.array(line.strip().split(",")) for line in open('TAs.csv', encoding='latin-1')])
+    TAs_sheet = np.array([np.array(line.strip().split(",")) for line in open('input_data/TAs.csv', encoding='latin-1')])
     TAs_data = []
     for row in TAs_sheet[1:]:
         TAs_data.append(row[1:])
@@ -47,7 +47,7 @@ def RunPrep(flagD,Vn):
 
 
     # Read-in the repressors matrix and assign concentrations of repressors
-    TRs_sheet = np.array([np.array(line.strip().split(",")) for line in open('TRs.csv', encoding='latin-1')])
+    TRs_sheet = np.array([np.array(line.strip().split(",")) for line in open('input_data/TRs.csv', encoding='latin-1')])
     TRs_data = []
     for row in TRs_sheet[1:]:
         TRs_data.append(row[1:])

@@ -30,7 +30,7 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
     tck50as,tck50rs = RunPrep(flagD,Vn)
 
     if len(species_initializations)==0:
-        species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species_v6.txt', encoding='latin-1')])
+        species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('input_data/Species_v6.txt', encoding='latin-1')])
         species_initializations = []
         for row in species_sheet[1:]:
             species_initializations.append(float(row[2]))
