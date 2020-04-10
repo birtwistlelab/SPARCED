@@ -38,14 +38,16 @@ nmxlsfile = 'GrowthStim_stoc_'
 
 sys.path.insert(0, os.path.abspath(model_output_dir))
 
-spdata0 = pd.read_excel('Species_v6.xlsx',header=0,index_col=0)
-spdata = np.double(spdata0.values[:,1])
-spdata[np.argwhere(spdata <= 1e-6)] = 0.0
 
-startTime = datetime.now()
-print(startTime)
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species_v6.txt', encoding='latin-1')])
+
+species_initializations = []
+for row in species_sheet[1:]:
+    species_initializations.append(float(row[2]))
+species_initializations = np.array(species_initializations)
+
 for nn in range(numStocCells):
-    spdata[155:162] = STIMligs
+    species_initializations[155:162] = STIMligs
 
     model_module = importlib.import_module(model_name)
     model = model_module.getModel()
@@ -53,7 +55,7 @@ for nn in range(numStocCells):
     solver.setMaxSteps = 1e10
     model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,spdata,[],Vn,Vc,model)
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model)
 
     if flagWr==1:
         columnsS=[ele for ele in model.getStateIds()]
@@ -67,8 +69,6 @@ for nn in range(numStocCells):
         condsGDF = pd.DataFrame(data=xoutG_all,columns=columnsG2)
         condsGDF.to_excel(nmxlsfile+'G_'+str(nn)+'.xlsx')
         condsGDF = None
-    print(datetime.now() - startTime)
-print(datetime.now())
 
 
 flagD = 1
@@ -81,14 +81,10 @@ nmxlsfile = 'GrowthStim_det_'
 
 sys.path.insert(0, os.path.abspath(model_output_dir))
 
-spdata0 = pd.read_excel('Species_v6.xlsx',header=0,index_col=0)
-spdata = np.double(spdata0.values[:,1])
-spdata[np.argwhere(spdata <= 1e-6)] = 0.0
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 
-startTime = datetime.now()
-print(startTime)
 for nn in range(numStocCells):
-    spdata[155:162] = STIMligs
+    species_initializations[155:162] = STIMligs
 
     model_module = importlib.import_module(model_name)
     model = model_module.getModel()
@@ -96,7 +92,7 @@ for nn in range(numStocCells):
     solver.setMaxSteps = 1e10
     model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,spdata,[],Vn,Vc,model)
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model)
 
     if flagWr==1:
         columnsS=[ele for ele in model.getStateIds()]
@@ -110,5 +106,3 @@ for nn in range(numStocCells):
         condsGDF = pd.DataFrame(data=xoutG_all,columns=columnsG2)
         condsGDF.to_excel(nmxlsfile+'G_'+str(nn)+'.xlsx')
         condsGDF = None
-    print(datetime.now() - startTime)
-print(datetime.now())

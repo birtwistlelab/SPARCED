@@ -1,4 +1,0 @@
-sudo apt install libatlas-base-dev
-sudo apt-get install libhdf5-serial-dev
-sudo apt-get install swig
-pip3 install requirements.txt

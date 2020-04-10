@@ -9,6 +9,12 @@ SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwi
 3) Older python version of the original model: https://github.com/birtwistlelab/Mechanistic_Pan-Cancer_Model
 
 
+## New installation instructions
+sudo apt install libatlas-base-dev
+sudo apt-get install libhdf5-serial-dev
+sudo apt-get install swig
+pip3 install requirements.txt
+
 
 ## Installation:
 
@@ -68,3 +74,4 @@ The acronym SPARCED is composed of following elements, based on the sub-models i
 ###  E: Expression
   
 ###  D: Death
+
