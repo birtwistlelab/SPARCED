@@ -1,8 +1,5 @@
 *
-!*/
-!*/*/
-!SPARCED/input_data
-!SPARCED/modules/
+!SPARCED/*/
 !SPARCED/createModel.py
 !SPARCED/runModel.py
 !SPARCEDDockerfile
