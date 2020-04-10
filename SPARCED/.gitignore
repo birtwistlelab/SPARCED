@@ -1,2 +1,9 @@
-.dockerignore
-dock.sh
+*
+!input_data
+!modules
+!createModel.py
+!runModel.py
+!Dockerfile
+!requirements.txt
+!LICENSE.txt
+!README.md
