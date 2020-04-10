@@ -1,3 +1,5 @@
 SPARCED/SPARCED*
 SPARCED/dock.sh
 z
+*_pycache_*
+SPARCED/*xlsx

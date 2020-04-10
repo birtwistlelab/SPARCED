@@ -10,9 +10,9 @@ import pandas as pd
 from datetime import datetime
 import scipy.stats
 
-from SGEmodule import SGEmodule
-from RunPrep import RunPrep
-from RunSPARCED import RunSPARCED
+from modules.SGEmodule import SGEmodule
+from modules.RunPrep import RunPrep
+from modules.RunSPARCED import RunSPARCED
 
 
 # SBML model we want to import
