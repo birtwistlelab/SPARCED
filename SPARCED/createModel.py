@@ -20,7 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import re
 from antimony import *
-open('
+
 
 compartments = []
 volumes = []
@@ -176,8 +176,16 @@ fileModel.write("\nend")
 # Close the file
 fileModel.close()
 
-print(loadFile("SPARCEDv6.txt"))
-print(writeSBMLFile("SPARCEDv6.xml","SPARCEDv6"))
+if loadFile("SPARCEDv6.txt") == 1:
+    print("Success loading antimony file")
+else:
+    print("Failed to load antimony file")
+
+if writeSBMLFile("SPARCEDv6.xml","SPARCEDv6") == 1:
+    print("Success converting antimony to SBML")
+else:
+    print("Failure converting antimony to SBML")
+
 
 sbml_reader = libsbml.SBMLReader()
 sbml_doc = sbml_reader.readSBML(sbml_file)

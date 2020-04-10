@@ -3,8 +3,8 @@ import importlib
 import amici
 import numpy as np
 
-from SGEmodule import SGEmodule
-from RunPrep import RunPrep
+from modules.SGEmodule import SGEmodule
+from modules.RunPrep import RunPrep
 
 def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
     # Inputs:
