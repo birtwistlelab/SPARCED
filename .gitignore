@@ -1,7 +1,8 @@
 .nextflow*
-SPARCED/SPARCED*
-SPARCED/dock.sh
+SPARCED*
+dock.sh
 z
 *_pycache_*
 SPARCED/*xlsx
 kube-uncorrupt.sh
+

@@ -1,0 +1,9 @@
+dock.sh
+*xlsx
+*_pycache_*
+SPARCEDv*
+old-*
+README.md
+kube*
+*nextflow*
+main*
