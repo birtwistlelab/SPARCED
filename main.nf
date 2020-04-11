@@ -1,23 +1,12 @@
 process start {
   '''
-  pip3 freeze > reqs.txt
-
+  pwd > where.txt
+  ls > stuff.txt
   cd ..
+  pwd > where.txt
+  ls > stuff.txt
   cd ..
-  cd ..
-  pwd
-  ls
-  cd ..
-  pwd
-  ls
-  cd ..
-  pwd
-  ls
-  cd ..
-  pwd
-  ls
-  cd SPARCED
-  python3 SPARCED_ModelCreateWrite.py
-  python3 RunModel.py
+  pwd > where.txt
+  ls > stuff.txt
   '''
 }
