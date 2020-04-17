@@ -1,7 +1,12 @@
-process start {
+datasets = Channel.fromPath(params.input.data)
+
+process model_create {
+  input:
+  file input_datafile from datasets
+
+  script:
   '''
-  input_dir = ${k8s.launchDir}/${params.input.dir}
-  echo ${k8s.launchDir}/${params.input.dir} > bd.txt
-  echo ${input_dir} > bd2.txt
+  touch fs.txt
+  echo ${input_datafile} >>  fs.txt
   '''
 }
