@@ -1,3 +1,3 @@
 process start {
-  echo $PATH
+  echo $PATH > p.txt
 }
