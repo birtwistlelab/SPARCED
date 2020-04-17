@@ -15,6 +15,7 @@
 process model_create {
   script:
     """
+    echo $PATH > p.txt
     ./createModel.py ${params.input_dir}
     """
 }
