@@ -1,5 +1,7 @@
 .nextflow*
 SPARCED*
+vers
+pod.yaml
 dock.sh
 z
 *_pycache_*
