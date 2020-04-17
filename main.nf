@@ -1,5 +1,7 @@
 process start {
   '''
-  echo $PATH > p.txt
+  which createModel.py
+  which createModel.py > where.txt
+  ./createModel.py
   '''
 }

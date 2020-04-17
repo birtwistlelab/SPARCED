@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Antimony model name and text
 fileModel = open('SPARCEDv6.txt','w') # file name
 fileModel.write("# PanCancer Model by Birtwistle Lab \n") # some explanation
