@@ -1,6 +1,3 @@
 process start {
-  '''
-  which createModel.py
-
-  '''
+  echo $PATH
 }
