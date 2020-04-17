@@ -14,7 +14,8 @@
 
 process model_create {
   script:
-  '''
-  ./createModel.py ${params.input.dir}
-  '''
+    '''
+    FOLDER=${params.input.dir}
+    ./createModel.py $FOLDER
+    '''
 }
