@@ -1,6 +1,6 @@
 process start {
   '''
-  python3 runModel.py
+  which createModel.py
 
   '''
 }
