@@ -1,17 +1,7 @@
 #!/usr/bin/env python3
 
-# Antimony model name and text
-fileModel = open('SPARCEDv6.txt','w') # file name
-fileModel.write("# PanCancer Model by Birtwistle Lab \n") # some explanation
-fileModel.write("model SPARCEDv6()\n") # model name
 
-# SBML model we want to import
-sbml_file = 'SPARCEDv6.xml'
-# Name of the model that will also be the name of the python module
-model_name = sbml_file[0:-4] # 'BigModel_byparts_v1'
-# Directory to which the generated model code is written
-model_output_dir = model_name
-
+import sys
 import libsbml
 import importlib
 import amici
@@ -24,11 +14,31 @@ import re
 from antimony import *
 
 
+input_data_folder = 'input_data/'
+if len(sys.argv) > 1:
+    input_data_folder = sys.argv[1]
+
+
+
+
+# Antimony model name and text
+fileModel = open('SPARCEDv6.txt','w') # file name
+fileModel.write("# PanCancer Model by Birtwistle Lab \n") # some explanation
+fileModel.write("model SPARCEDv6()\n") # model name
+
+# SBML model we want to import
+sbml_file = 'SPARCEDv6.xml'
+# Name of the model that will also be the name of the python module
+model_name = sbml_file[0:-4] # 'BigModel_byparts_v1'
+# Directory to which the generated model code is written
+model_output_dir = model_name
+
+
 compartments = []
 volumes = []
 
 # Create/write compartments
-compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open('input_data/Compartments_v6.txt')])
+compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Compartments_v6.txt')])
 
 #read in each line minus the header row
 for row in compartment_sheet[1:]:
@@ -43,7 +53,7 @@ for idx in range(len(compartments)):
 fileModel.write("\n")
 
 # Write species and assign compartments
-species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('input_data/Species_v6.txt', encoding='latin-1')])
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Species_v6.txt', encoding='latin-1')])
 
 species_compartments = []
 for row in species_sheet[1:]:
@@ -62,7 +72,7 @@ for idx,val in enumerate(species_sheet[1:]):
 fileModel.write("\n\n  # Reactions:\n")
 
 #reads in file from excel and gets rid of first row and column (they're data labels)
-stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open('input_data/StoicMat_v6.txt')])
+stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'StoicMat_v6.txt')])
 
 #gets first column minus blank space at the beginning
 stoic_columnnames = stoic_sheet[0]
@@ -70,7 +80,7 @@ stoic_rownames = [line[0] for line in stoic_sheet[1:]]
 stoic_data = np.array([line[1:] for line in stoic_sheet[1:]])
 
 
-ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('input_data/Ratelaws_v6.txt')])
+ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Ratelaws_v6.txt')])
 ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 paramnames = []

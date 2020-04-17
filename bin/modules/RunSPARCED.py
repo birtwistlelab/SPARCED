@@ -6,7 +6,7 @@ import numpy as np
 from modules.SGEmodule import SGEmodule
 from modules.RunPrep import RunPrep
 
-def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
+def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model, input_data_folder):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
     # ts = time step
@@ -30,7 +30,7 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
     tck50as,tck50rs = RunPrep(flagD,Vn)
 
     if len(species_initializations)==0:
-        species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('input_data/Species_v6.txt', encoding='latin-1')])
+        species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Species_v6.txt', encoding='latin-1')])
         species_initializations = []
         for row in species_sheet[1:]:
             species_initializations.append(float(row[2]))
