@@ -1,12 +1,6 @@
 process start {
   '''
-  pwd > where.txt
-  ls > stuff.txt
-  cd ..
-  pwd > where.txt
-  ls > stuff.txt
-  cd ..
-  pwd > where.txt
-  ls > stuff.txt
+  python3 runModel.py
+
   '''
 }
