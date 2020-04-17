@@ -7,3 +7,5 @@ z
 *_pycache_*
 SPARCED/*xlsx
 kube-uncorrupt.sh
+cleanH
+work/

@@ -15,7 +15,6 @@
 process model_create {
   script:
     '''
-    #!/bin/bash
     FOLDER=${params.input_dir}
     ./createModel.py $FOLDER
     '''
