@@ -28,7 +28,7 @@ def RunPrep(flagD,Vn, input_data_folder):
     kGsRead_data = []
     for row in kGsRead_sheet[1:]:
         kGsRead_data.append(row[1:])
-    kGsRead_data = np.array(kGsRead_data)input_data/T
+    kGsRead_data = np.array(kGsRead_data)
 
     gExp_mpc = np.float64(kGsRead_data[:,0])
     mExp_mpc = np.float64(kGsRead_data[:,1])
