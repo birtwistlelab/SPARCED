@@ -27,7 +27,7 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model, input_data
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
 
     genedata0,mRNA_mpc,GenePositionMatrix,AllGenesVec,kTCmaxs,kTCleak,kTCleak2,kGin_1,kGac_1,kTCd,TAs0,TRs0,tcnas,tcnrs, \
-    tck50as,tck50rs = RunPrep(flagD,Vn)
+    tck50as,tck50rs = RunPrep(flagD,Vn, input_data_folder)
 
     if len(species_initializations)==0:
         species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Species_v6.txt', encoding='latin-1')])
