@@ -1,18 +1,19 @@
 #!/bin/bash
-# Load input data to a Persistent Volume on a Kubernetes cluster.
+# Save output data from a Persistent Volume on a Kubernetes cluster.
 # Written by Ben Shealy (https://github.com/bentsherman) as a part of his kube-runner repository
+
 
 # parse command-line arguments
 if [[ $# != 2 ]]; then
-	echo "usage: $0 <pvc-name> <local-path>"
+	echo "usage: $0 <pvc-name> <remote-path>"
 	exit -1
 fi
 
 PVC_NAME="$1"
 PVC_PATH="/workspace"
 POD_FILE="pod.yaml"
-POD_NAME="${USER}-load-$(printf %04x ${RANDOM})"
-LOCAL_PATH="$(realpath $2)"
+POD_NAME="${USER}-save-$(printf %04x ${RANDOM})"
+REMOTE_PATH="$2"
 
 # create pod config file
 cat > ${POD_FILE} <<EOF
@@ -46,11 +47,11 @@ while [[ ${POD_STATUS} != "Running" ]]; do
 	POD_STATUS="$(kubectl get pod --no-headers --output jsonpath={.status.phase} ${POD_NAME})"
 done
 
-# copy input data to pod
+# copy output data from pod
 echo "copying data..."
 
-kubectl exec ${POD_NAME} -- bash -c "mkdir -p ${PVC_PATH}/${USER}"
-kubectl cp "${LOCAL_PATH}" "${POD_NAME}:${PVC_PATH}/${USER}/$(basename ${LOCAL_PATH})"
+kubectl exec ${POD_NAME} -- bash -c "for f in \$(find ${PVC_PATH}/${USER}/${REMOTE_PATH} -type l); do cp --remove-destination \$(readlink \$f) \$f; done"
+kubectl cp "${POD_NAME}:${PVC_PATH}/${USER}/${REMOTE_PATH}" "$(basename ${REMOTE_PATH})"
 
 # delete pod
 kubectl delete -f ${POD_FILE}

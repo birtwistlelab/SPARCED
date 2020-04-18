@@ -1,5 +1,6 @@
 #!/bin/bash
 # Run a nextflow pipeline on a Kubernetes cluster.
+# Written by Ben Shealy (https://github.com/bentsherman) as a part of his kube-runner repository
 
 # parse command-line arguments
 if [[ $# != 1 ]]; then

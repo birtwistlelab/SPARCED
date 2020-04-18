@@ -9,28 +9,23 @@ SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwi
 3) Older python version of the original model: https://github.com/birtwistlelab/Mechanistic_Pan-Cancer_Model
 
 
-## Use Instructions
+## Cloud Use Instructions
+1. Fork this repository in Github
+2. Clone your forked repository
+3. Install Nextflow
+4. Move your input data in tab-separated format into the `input_data` directory (or edit the files already there)
+5. Use `./kube-scripts/kube-load.sh <pvc-name> input_data` to load your input data to the PVC
+6. Change the `nextflow.config` file to meet your specifications (for more details, check the **Editing your nextflow.config** section of this README)
+7. Commit and push your changed files to your forked Github repository
+8. Run from the command line with `nextflow kuberun <your-github-username>/SPARCED`
+9. After the run is finished, save your data from the PVC down to your laptop with `./kube-scripts/kube-save.sh <pvc-name> <work-directory>` (this work directory path is relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)
 
-1. Clone this repository from Github
-2. Install Nextflow
-3. Move your input data in tab-separated format into the `input_data` directory
-4. Use `./kube-scripts/kube-load.sh <pvc-name> input_data` to load your input data to the PVC
-5. Change the `nextflow.config` file to meet your specifications (to check your username, type `echo $USER` in your terminal)
 
-
-
-
-## New installation instructions
+## Containerized requirements
 sudo apt install libatlas-base-dev
 sudo apt-get install libhdf5-serial-dev
 sudo apt-get install swig
 pip3 install requirements.txt
-
-
-## Model simulation:
-
-After completing the "Model Creation" part above or by using the provided files, you can use the jupyter-notebook called "RunModel.ipynb" to run the model for the specified conditions.
-
 
 
 ## Acknowledgements:
