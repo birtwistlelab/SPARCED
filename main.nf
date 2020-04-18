@@ -11,11 +11,23 @@
 //   '''
 // }
 
+// process move_folder {
+//   output:
+//     val ${params.input_dir} into result
+// }
+//
+// process model_create {
+//   input:
+//     val x from result
+//   script:
+//     """
+//     createModel.py $x
+//     """
+// }
 
-process model_create {
+process mc {
   script:
     """
-    echo $PATH > p.txt
-    ./createModel.py ${params.input_dir}
+    createModel.py ${params.input_dir}
     """
 }
