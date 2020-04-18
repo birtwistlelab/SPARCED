@@ -10,14 +10,12 @@ SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwi
 
 
 ## Cloud Use Instructions
-1. Fork this repository in Github
-2. Clone your forked repository
+1. Clone this repository
 3. Install Nextflow
 4. Move your input data in tab-separated format into the `input_data` directory (or edit the files already there)
 5. Use `./kube-scripts/kube-load.sh <pvc-name> input_data` to load your input data to the PVC
 6. Change the `nextflow.config` file to meet your specifications (for more details, check the **Editing your nextflow.config** section of this README)
-7. Commit and push your changed files to your forked Github repository
-8. Run from the command line with `nextflow kuberun <your-github-username>/SPARCED`
+8. Run from the command line with `nextflow kuberun ebenz99/SPARCED -C nextflow.config`
 9. After the run is finished, save your data from the PVC down to your laptop with `./kube-scripts/kube-save.sh <pvc-name> <work-directory>` (this work directory path is relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)
 
 

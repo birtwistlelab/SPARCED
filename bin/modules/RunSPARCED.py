@@ -6,7 +6,7 @@ import numpy as np
 from modules.SGEmodule import SGEmodule
 from modules.RunPrep import RunPrep
 
-def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model, input_data_folder):
+def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model,input_data_folder):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
     # ts = time step
@@ -15,6 +15,7 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model, input_data
     # Vn = nuclear volume
     # Vc = cytoplasmic volume
     # model = The SBML model instance to run
+    # input_data_folder path to input txt and csv files
 
     # Outputs:
     # xoutS_all = Concentrations of all species

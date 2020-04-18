@@ -23,6 +23,7 @@ def RunPrep(flagD,Vn, input_data_folder):
     # tck50as = K50 values for transcriptional activators
     # tcnrs = Hill coefficients for transcriptional repressors
     # tck50rs = K50 values for transcriptional repressors
+    # input_data_folder path to input txt and csv files
 
     kGsRead_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'kGeneMod.txt', encoding='latin-1')])
     kGsRead_data = []
