@@ -1,4 +1,4 @@
-# SPARCED: An SBML Model of Pan-Cancer RTK Signaling and Stochastic Gene Expression 
+# SPARCED: An SBML Model of Pan-Cancer RTK Signaling and Stochastic Gene Expression
 
 SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwistle Lab, originally written in MATLAB. The cellular signaling portion of the earlier model is converted into an SBML model. The new scheme still combines stochastic gene expression with deterministic protein signaling. For more details please refer to:
 
@@ -9,41 +9,22 @@ SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwi
 3) Older python version of the original model: https://github.com/birtwistlelab/Mechanistic_Pan-Cancer_Model
 
 
+## Use Instructions
+
+1. Clone this repository from Github
+2. Install Nextflow
+3. Move your input data in tab-separated format into the `input_data` directory
+4. Use `./kube-scripts/kube-load.sh <pvc-name> input_data` to load your input data to the PVC
+5. Change the `nextflow.config` file to meet your specifications (to check your username, type `echo $USER` in your terminal)
+
+
+
+
 ## New installation instructions
 sudo apt install libatlas-base-dev
 sudo apt-get install libhdf5-serial-dev
 sudo apt-get install swig
 pip3 install requirements.txt
-
-
-## Installation:
-
-### 1) Install Anaconda
-  - Follow the instructions depending on your machine: https://docs.anaconda.com/anaconda/user-guide/getting-started/
-  - Install basic packages like python (3.7 or later), numpy, scipy, matplotlib, pandas, jupyter-notebooks...
-
-### 2) Install AMICI
-  - Follow the instructions on project home: https://github.com/ICB-DCM/AMICI
-  - For WINDOWS machines, we recommend installation via creating a new dedicated conda environment. 
-
-### 3) Install QTAntimony GUI (or Tellurium package): 
-  - http://antimony.sourceforge.net/
-  - https://tellurium.readthedocs.io/en/latest/installation.html#installation-options
-
-
-
-## Model creation (OPTIONAL):
-
-1) Modify the input files for desired model conditions.
-
-2) Use the jupyter-notebook called "SPARCED_ModelCreateWrite.ipynb" to create the model (the Antimony text file) locally.
-
-3) Use QTAntimony GUI to create the SBML xml file from the text file above.
-
-4) (OPTIONAL) Use the second part of the "SPARCED_ModelCreateWrite.ipynb" to add annotations for model elements (i.e. species, compartments, and ratelaws).
-
-5) Use the third part of the "SPARCED_ModelCreateWrite.ipynb" to convert the SBML (.xml) file to an AMICI model.
-
 
 
 ## Model simulation:
@@ -62,16 +43,15 @@ This work is a product of [Birtwistle Lab](http://www.birtwistlelab.com/) and mu
 The acronym SPARCED is composed of following elements, based on the sub-models in the mechanistic ODE model.
 
 ### S: SBML
-  
-### P: Proliferation
-  
-### A: Apoptosis
-  
-###  R: Receptor
-  
-###  C: Cell Cycle
-  
-###  E: Expression
-  
-###  D: Death
 
+### P: Proliferation
+
+### A: Apoptosis
+
+###  R: Receptor
+
+###  C: Cell Cycle
+
+###  E: Expression
+
+###  D: Death
