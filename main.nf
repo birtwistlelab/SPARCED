@@ -1,13 +1,7 @@
-process modelCreate {
+process model {
   script:
     """
     createModel.py ${params.input_dir}
-    """
-}
-
-process modelRun {
-  script:
-    """
     runModel.py ${params.input_dir}
     """
 }
