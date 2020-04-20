@@ -12,14 +12,15 @@ process sweep {
   input:
     file x from nums
   output:
-    val parameters into paramVals
+    file "*.txt" into paramVals
 
   script:
     '''
     #!/usr/bin/env python3
 
     sweepParams = ""
-    parameters = []
+
+    fcount = 0
 
     with open("sweep.txt","r") as f:
       sweepParams = f.readline().strip()
@@ -54,16 +55,13 @@ process sweep {
       else:
         #only one param
         print(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals))
-        parameters.append(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals))
+        with open(str(str(fcount)+".txt"),"w") as outfile:
+          outfile.write(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals + "\n"))
     else:
       for param in paramVals.split(","):
-        print(str(fileName + ":" + rowName + ":" + colName + ":" + param))
-        parameters.append(str(fileName + ":" + rowName + ":" + colName + ":" + param))
-
-    with open("outp.txt","w") as f:
-      f.write(sweepParams)
-
-    return parameters
+        with open(str(str(fcount)+".txt"),"w") as outfile:
+          outfile.write(str(fileName + ":" + rowName + ":" + colName + ":" + param + "\n"))
+          fcount += 1
 
     '''
 }
@@ -72,12 +70,12 @@ process sweep {
 // issue is that I'm not enumerating them from the channel -- all are popping out at once
 process model {
   input:
-    val paramVal from paramVals.buffer(size:1)
+    file paramFile from paramVals
 
   script:
     """
     echo ${params.input_dir} > direc.txt
-    echo ${paramVal} > sval.txt
+    echo ${paramFile} > sval.txt
     """
 }
 
