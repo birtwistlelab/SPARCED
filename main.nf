@@ -12,7 +12,7 @@ process sweep {
   input:
     file x from nums
   output:
-    file "*.txt" into paramFiles
+    file "*.txt" into paramFiles mode flatten
 
   script:
     '''
@@ -65,12 +65,11 @@ else:
 // issue is that I'm not enumerating them from the channel -- all are popping out at once
 process model {
   input:
-    file paramFile from paramFiles.buffer(size:1)
+    file paramFile from paramFiles
 
   script:
     """
     echo ${paramFile} > sval.txt
-    sleep 30
     """
 }
 
