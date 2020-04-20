@@ -10,7 +10,7 @@ fi
 PVC_NAME="$1"
 PVC_PATH="/workspace"
 POD_FILE="pod.yaml"
-POD_NAME="${USER}-load-$(printf %04x ${RANDOM})"
+POD_NAME="${USER}-uncorrupt-$(printf %04x ${RANDOM})"
 
 # create pod config file
 cat > ${POD_FILE} <<EOF

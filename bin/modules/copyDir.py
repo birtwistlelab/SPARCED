@@ -1,3 +1,5 @@
+import shutil
+
 def copyDirectory(src, dest):
     try:
         shutil.copytree(src, dest)
