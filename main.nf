@@ -51,10 +51,12 @@ if "," not in paramVals:
     exit(1)
   else:
     #only one param
-    print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=str(str(fcount)+".txt"))
+    with open(str(str(fcount)+".txt"), "w") as outfile:
+      print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
 else:
   for param in paramVals.split(","):
-    print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=str(str(fcount)+".txt"))
+    with open(str(str(fcount)+".txt"),"w") as outfile:
+      print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
     fcount += 1
     '''
 }
