@@ -25,7 +25,7 @@ if len(sys.argv) < 2:
 input_data_folder = sys.argv[1]
 
 #move input data into working directory
-copyDirectory(input_data_folder, os.getcwd())
+copyDirectory(input_data_folder, os.getcwd()+"/")
 
 
 #make param sweep calls
