@@ -66,8 +66,9 @@ process model {
   script:
     """
     echo ${params.input_dir} > direc.txt
-    echo ${paramVal} > sval.txt
-    // createModel.py ${params.input_dir} ${paramVal}
-    // runModel.py ${params.input_dir} ${paramVal}
+    echo !{paramVal} > sval.txt
     """
 }
+
+// createModel.py ${params.input_dir} ${paramVal}
+// runModel.py ${params.input_dir} ${paramVal}
