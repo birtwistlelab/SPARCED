@@ -12,7 +12,7 @@ process sweep {
   input:
     file x from nums
   output:
-    stdout into paramVals
+    val parameters into paramVals
 
   script:
     '''
@@ -53,9 +53,11 @@ process sweep {
       else:
         #only one param
         print(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals))
+        parameters.append(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals))
     else:
       for param in paramVals.split(","):
         print(str(fileName + ":" + rowName + ":" + colName + ":" + param))
+        parameters.append(str(fileName + ":" + rowName + ":" + colName + ":" + param))
 
     with open("outp.txt","w") as f:
       f.write(sweepParams)
