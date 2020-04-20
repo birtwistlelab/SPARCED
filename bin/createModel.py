@@ -50,7 +50,7 @@ compartments = []
 volumes = []
 
 # Create/write compartments
-compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Compartments_v6.txt')])
+compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Compartments.txt')])
 
 #read in each line minus the header row
 for row in compartment_sheet[1:]:
@@ -65,7 +65,7 @@ for idx in range(len(compartments)):
 fileModel.write("\n")
 
 # Write species and assign compartments
-species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species_v6.txt', encoding='latin-1')])
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
 
 species_compartments = []
 for row in species_sheet[1:]:
@@ -84,7 +84,7 @@ for idx,val in enumerate(species_sheet[1:]):
 fileModel.write("\n\n  # Reactions:\n")
 
 #reads in file from excel and gets rid of first row and column (they're data labels)
-stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open('StoicMat_v6.txt')])
+stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open('StoicMat.txt')])
 
 #gets first column minus blank space at the beginning
 stoic_columnnames = stoic_sheet[0]
@@ -92,7 +92,7 @@ stoic_rownames = [line[0] for line in stoic_sheet[1:]]
 stoic_data = np.array([line[1:] for line in stoic_sheet[1:]])
 
 
-ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws_v6.txt')])
+ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws.txt')])
 ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 paramnames = []
