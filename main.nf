@@ -1,6 +1,6 @@
 process getSweepParams {
   output:
-    file c.txt into nums
+    file "c.txt" into nums
   script:
     """
     saveParams.sh ${params.sweep}
