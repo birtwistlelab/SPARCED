@@ -16,49 +16,49 @@ process sweep {
 
   script:
     '''
-    #!/usr/bin/env python3
+#!/usr/bin/env python3
 
-    fcount = 0
-    with open("sweep.txt","r") as f:
-      sweepParams = f.readline().strip()
+fcount = 0
+with open("sweep.txt","r") as f:
+  sweepParams = f.readline().strip()
 
-    if sweepParams == None:
-      print(" ")
-      exit(1)
+if sweepParams == None:
+  print(" ")
+  exit(1)
 
-    #if malformatted nextflow config file
-    if ":" not in sweepParams:
-      print("MalformedConfigError")
-      exit(1)
+#if malformatted nextflow config file
+if ":" not in sweepParams:
+  print("MalformedConfigError")
+  exit(1)
 
-    fileName, remainder = tuple(sweepParams.split(":",1))
+fileName, remainder = tuple(sweepParams.split(":",1))
 
-    if ":" not in remainder:
-      print("MalformedConfigError")
-      exit(1)
+if ":" not in remainder:
+  print("MalformedConfigError")
+  exit(1)
 
-    rowName, remainder = tuple(remainder.split(":",1))
+rowName, remainder = tuple(remainder.split(":",1))
 
-    if ":" not in remainder:
-      print("MalformedConfigError")
-      exit(1)
+if ":" not in remainder:
+  print("MalformedConfigError")
+  exit(1)
 
-    colName, paramVals = tuple(remainder.split(":",1))
+colName, paramVals = tuple(remainder.split(":",1))
 
-    if "," not in paramVals:
-      if len(paramVals) == 0:
-        print("MalformedConfigError")
-        exit(1)
-      else:
-        #only one param
-        print(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals))
-        with open(str(str(fcount)+".txt"),"w") as outfile:
-          outfile.write(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals + "\n"))
-    else:
-      for param in paramVals.split(","):
-        with open(str(str(fcount)+".txt"),"w") as outfile:
-          outfile.write(str(fileName + ":" + rowName + ":" + colName + ":" + param + "\n"))
-          fcount += 1
+if "," not in paramVals:
+  if len(paramVals) == 0:
+    print("MalformedConfigError")
+    exit(1)
+  else:
+    #only one param
+    print(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals))
+    with open(str(str(fcount)+".txt"),"w") as outfile:
+      outfile.write(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals + "\n"))
+else:
+  for param in paramVals.split(","):
+    with open(str(str(fcount)+".txt"),"w") as outfile:
+      outfile.write(str(fileName + ":" + rowName + ":" + colName + ":" + param + "\n"))
+      fcount += 1
     '''
 }
 
