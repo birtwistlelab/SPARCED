@@ -1,12 +1,17 @@
 process getSweepParams {
+  output:
+    file c.txt into nums
   script:
     """
     saveParams.sh ${params.sweep}
+    echo testing > c.txt
     """
 }
 
 
 process sweep {
+  input:
+    file x from nums
   output:
     stdout paramVals
 
