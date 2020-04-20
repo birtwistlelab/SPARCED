@@ -12,7 +12,7 @@ process sweep {
   input:
     file x from nums
   output:
-    stdout into paramVals.buffer(size:1)
+    stdout into paramVals
 
   script:
     '''
