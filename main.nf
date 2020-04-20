@@ -62,16 +62,13 @@ else:
 }
 
 
-// issue is that I'm not enumerating them from the channel -- all are popping out at once
 process model {
   input:
     file paramFile from paramFiles
 
   script:
     """
-    echo ${paramFile} > sval.txt
+    createModel.py ${params.input_dir} ${paramFile}
+    runModel.py ${params.input_dir} ${paramFile}
     """
 }
-
-// createModel.py ${params.input_dir} ${paramVal}
-// runModel.py ${params.input_dir} ${paramVal}
