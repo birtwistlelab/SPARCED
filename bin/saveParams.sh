@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo hi > a.txt
+
 # parse command-line arguments
 if [[ $# != 1 ]]; then
 	touch sweep.txt
@@ -7,3 +9,5 @@ if [[ $# != 1 ]]; then
 fi
 
 echo "$1" > sweep.txt
+
+echo hello > b.txt
