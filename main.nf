@@ -8,7 +8,7 @@ process getSweepParams {
 
 process sweep {
   ouput:
-    stdout into paramVals
+  stdout paramVals
 
   script:
     '''
