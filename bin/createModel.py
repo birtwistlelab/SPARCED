@@ -28,7 +28,7 @@ input_data_folder = sys.argv[1]
 copyDirectory(input_data_folder, os.getcwd())
 
 #make param sweep calls
-paramsweep(sys.argv[2])
+paramSweep(sys.argv[2])
 
 # Antimony model name and text
 fileModel = open('SPARCEDv6.txt','w') # file name
