@@ -18,10 +18,7 @@ process sweep {
     '''
     #!/usr/bin/env python3
 
-    sweepParams = ""
-
     fcount = 0
-
     with open("sweep.txt","r") as f:
       sweepParams = f.readline().strip()
 
@@ -62,7 +59,6 @@ process sweep {
         with open(str(str(fcount)+".txt"),"w") as outfile:
           outfile.write(str(fileName + ":" + rowName + ":" + colName + ":" + param + "\n"))
           fcount += 1
-
     '''
 }
 
