@@ -1,10 +1,7 @@
 process getSweepParams {
   script:
     """
-    echo ${params.sweep}
-    echo hi > test.txt
-    echo hi
-    echo ${params.sweep} > sweep.txt
+    saveParams.sh ${params.sweep}
     """
 }
 
@@ -20,6 +17,10 @@ process sweep {
     sweepParams = ""
     with open("sweep.txt","r") as f:
       sweepParams = f.readline().strip()
+
+    if sweepParams == None:
+      print(" ")
+      exit(1)
 
     #if malformatted nextflow config file
     if ":" not in sweepParams:
