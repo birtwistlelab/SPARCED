@@ -1,6 +1,9 @@
 process getSweepParams {
   script:
     """
+    echo ${params.sweep}
+    echo hi > test.txt
+    echo hi
     echo ${params.sweep} > sweep.txt
     """
 }
@@ -43,10 +46,10 @@ process sweep {
         exit(1)
       else:
         #only one param
-        print(str(fileName + ":" rowName + ":" + colName + ":" +paramVals))
+        print(str(fileName + ":" + rowName + ":" + colName + ":" + paramVals))
     else:
       for param in paramVals.split(","):
-        print(str(fileName + ":" rowName + ":" + colName + ":" +param))
+        print(str(fileName + ":" + rowName + ":" + colName + ":" + param))
 
     '''
 }
