@@ -8,7 +8,7 @@ process getSweepParams {
 }
 
 
-process sweep {
+process sweepParse {
   input:
     file x from nums
   output:

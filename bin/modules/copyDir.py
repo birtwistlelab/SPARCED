@@ -1,11 +1,13 @@
 import shutil
 
 def copyDirectory(src, dest):
+    print(src)
+    print(dest)
     try:
         shutil.copytree(src, dest)
     except shutil.Error as e:
         #directories are the same
-        print('Directory not copied. Error: %s' % e)
+        print('Directory not copied. Error is %s' % e)
     except OSError as e:
         #invalid directory
         print('Directory not copied. Error: %s' % e)
