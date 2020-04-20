@@ -7,19 +7,29 @@ import importlib
 import amici
 import amici.plotting
 import os
+import shutil
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import re
 from antimony import *
 
-
-input_data_folder = 'input_data/'
-if len(sys.argv) > 1:
-    input_data_folder = sys.argv[1]
+from modules.paramSweep import paramSweep
+from modules.copyDir import copyDirectory
 
 
+if len(sys.argv) < 2:
+    print("Error: Not enough arguments to runModel")
+    print("Syntax is python3 createModel.py <input_data_path> <param_sweep>")
+    exit(1)
 
+input_data_folder = sys.argv[1]
+
+#move input data into working directory
+copyDirectory(input_data_folder, os.getcwd())
+
+#make param sweep calls
+paramsweep(sys.argv[2])
 
 # Antimony model name and text
 fileModel = open('SPARCEDv6.txt','w') # file name
@@ -38,7 +48,7 @@ compartments = []
 volumes = []
 
 # Create/write compartments
-compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Compartments_v6.txt')])
+compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Compartments_v6.txt')])
 
 #read in each line minus the header row
 for row in compartment_sheet[1:]:
@@ -53,7 +63,7 @@ for idx in range(len(compartments)):
 fileModel.write("\n")
 
 # Write species and assign compartments
-species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Species_v6.txt', encoding='latin-1')])
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species_v6.txt', encoding='latin-1')])
 
 species_compartments = []
 for row in species_sheet[1:]:
@@ -72,7 +82,7 @@ for idx,val in enumerate(species_sheet[1:]):
 fileModel.write("\n\n  # Reactions:\n")
 
 #reads in file from excel and gets rid of first row and column (they're data labels)
-stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'StoicMat_v6.txt')])
+stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open('StoicMat_v6.txt')])
 
 #gets first column minus blank space at the beginning
 stoic_columnnames = stoic_sheet[0]
@@ -80,7 +90,7 @@ stoic_rownames = [line[0] for line in stoic_sheet[1:]]
 stoic_data = np.array([line[1:] for line in stoic_sheet[1:]])
 
 
-ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Ratelaws_v6.txt')])
+ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws_v6.txt')])
 ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 paramnames = []

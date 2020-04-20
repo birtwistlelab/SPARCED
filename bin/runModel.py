@@ -18,9 +18,9 @@ from modules.RunPrep import RunPrep
 from modules.RunSPARCED import RunSPARCED
 
 
-input_data_folder = 'input_data/'
-if len(sys.argv) > 1:
-    input_data_folder = sys.argv[1]
+# input_data_folder = 'input_data/'
+# if len(sys.argv) > 1:
+#     input_data_folder = sys.argv[1]
 
 # SBML model we want to import
 sbml_file = 'SPARCEDv6.xml'
@@ -32,7 +32,6 @@ model_output_dir = model_name
 Vn = 1.75E-12
 Vc = 5.25E-12
 
-currentDirectory = os.getcwd()
 
 
 flagD = 0
@@ -46,7 +45,7 @@ nmxlsfile = 'GrowthStim_stoc_'
 sys.path.insert(0, os.path.abspath(model_output_dir))
 
 
-species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Species_v6.txt', encoding='latin-1')])
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species_v6.txt', encoding='latin-1')])
 
 species_initializations = []
 for row in species_sheet[1:]:
@@ -62,7 +61,7 @@ for nn in range(numStocCells):
     solver.setMaxSteps = 1e10
     model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model,input_data_folder)
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model)
 
     if flagWr==1:
         columnsS=[ele for ele in model.getStateIds()]
@@ -99,7 +98,7 @@ for nn in range(numStocCells):
     solver.setMaxSteps = 1e10
     model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model,input_data_folder)
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model)
 
     if flagWr==1:
         columnsS=[ele for ele in model.getStateIds()]

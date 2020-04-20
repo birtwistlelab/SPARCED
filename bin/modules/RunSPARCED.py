@@ -6,7 +6,7 @@ import numpy as np
 from modules.SGEmodule import SGEmodule
 from modules.RunPrep import RunPrep
 
-def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model,input_data_folder):
+def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
     # ts = time step
@@ -15,7 +15,6 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model,input_data_
     # Vn = nuclear volume
     # Vc = cytoplasmic volume
     # model = The SBML model instance to run
-    # input_data_folder path to input txt and csv files
 
     # Outputs:
     # xoutS_all = Concentrations of all species
@@ -28,10 +27,10 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model,input_data_
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
 
     genedata0,mRNA_mpc,GenePositionMatrix,AllGenesVec,kTCmaxs,kTCleak,kTCleak2,kGin_1,kGac_1,kTCd,TAs0,TRs0,tcnas,tcnrs, \
-    tck50as,tck50rs = RunPrep(flagD,Vn, input_data_folder)
+    tck50as,tck50rs = RunPrep(flagD,Vn)
 
     if len(species_initializations)==0:
-        species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(input_data_folder+'Species_v6.txt', encoding='latin-1')])
+        species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species_v6.txt', encoding='latin-1')])
         species_initializations = []
         for row in species_sheet[1:]:
             species_initializations.append(float(row[2]))

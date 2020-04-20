@@ -22,8 +22,8 @@ fcount = 0
 with open("sweep.txt","r") as f:
   sweepParams = f.readline().strip()
 
-if sweepParams == None:
-  print(" ")
+if sweepParams == None or sweepParams == '' or sweepParams == "none" or sweepParams == "None":
+  print("None", file=outfile)
   exit(1)
 
 #if malformatted nextflow config file
@@ -50,7 +50,7 @@ if "," not in paramVals:
     print("MalformedConfigError")
     exit(1)
   else:
-    #only one param
+    #only one Inpuparam
     with open(str(str(fcount)+".txt"), "w") as outfile:
       print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
 else:
