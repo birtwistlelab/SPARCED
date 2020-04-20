@@ -12,7 +12,7 @@ process sweep {
   input:
     file x from nums
   output:
-    stdout into paramVals
+    stdout into paramVals.buffer(size:1)
 
   script:
     '''
@@ -64,9 +64,10 @@ process sweep {
 }
 
 
+// issue is that I'm not enumerating them from the channel -- all are popping out at once
 process model {
   input:
-    val paramVal from paramVals
+    val paramVal from paramVals.buffer(size:1)
 
   script:
     """
