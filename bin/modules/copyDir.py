@@ -1,10 +1,8 @@
-import shutil
+from distutils.dir_util import copy_tree
 
 def copyDirectory(src, dest):
-    print(src)
-    print(dest)
     try:
-        shutil.copytree(src, dest)
+        copytree(src, dest)
     except shutil.Error as e:
         #directories are the same
         print('Directory not copied. Error is %s' % e)
