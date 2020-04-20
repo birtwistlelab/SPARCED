@@ -63,6 +63,8 @@ process sweep {
     with open("outp.txt","w") as f:
       f.write(sweepParams)
 
+    return parameters
+
     '''
 }
 
