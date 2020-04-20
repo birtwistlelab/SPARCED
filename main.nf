@@ -11,20 +11,15 @@ process getSweepParams {
 process sweep {
   input:
     file x from nums
-  // output:
-  //   stdout paramVals
+  output:
+    stdout into paramVals
 
   script:
     '''
     #!/usr/bin/env python3
 
-    sweepParams = "abcd"
+    sweepParams = ""
 
-
-    with open("outp.txt","w") as f:
-      f.write(sweepParams)
-
-      
     with open("sweep.txt","r") as f:
       sweepParams = f.readline().strip()
 
@@ -68,16 +63,17 @@ process sweep {
     '''
 }
 
-// process model {
-//   input:
-//     val paramVal from paramVals
-//
-//   script:
-//     """
-//     echo ${params.input_dir} > direc.txt
-//     echo ${paramVal} > sval.txt
-//     """
-// }
+
+process model {
+  input:
+    val paramVal from paramVals
+
+  script:
+    """
+    echo ${params.input_dir} > direc.txt
+    echo ${paramVal} > sval.txt
+    """
+}
 
 // createModel.py ${params.input_dir} ${paramVal}
 // runModel.py ${params.input_dir} ${paramVal}
