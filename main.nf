@@ -12,7 +12,7 @@ process sweep {
 
   script:
     '''
-    #!/usr/bin/env python
+    #!/usr/bin/env python3
 
     sweepParams = ""
     with open("sweep.txt","r") as f:
