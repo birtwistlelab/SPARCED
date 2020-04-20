@@ -19,6 +19,7 @@ process sweep {
     #!/usr/bin/env python3
 
     sweepParams = ""
+    parameters = []
 
     with open("sweep.txt","r") as f:
       sweepParams = f.readline().strip()
