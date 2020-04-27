@@ -93,7 +93,12 @@ elif flagD == 1:
     nmxlsfile = 'GrowthStim_det_'
 
     sys.path.insert(0, os.path.abspath(model_output_dir))
+    species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
 
+    species_initializations = []
+    for row in species_sheet[1:]:
+        species_initializations.append(float(row[2]))
+    species_initializations = np.array(species_initializations)
     species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 
     for nn in range(numStocCells):
