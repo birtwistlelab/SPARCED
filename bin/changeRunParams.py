@@ -10,7 +10,6 @@ def changeSpeciesVals(valString):
     for item in valString.split(','):
         paramName, paramVal = tuple(item.split(":"))
         print(paramName)
-        print(file_data.at[paramName])
         file_data.at[paramName, 'IC_Xinitialized'] =  paramVal
     file_data.to_csv("Species.txt", sep="\t")
 
