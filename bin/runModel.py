@@ -97,7 +97,11 @@ elif flagD == 1:
 
     species_initializations = []
     for row in species_sheet[1:]:
-        species_initializations.append(float(row[2]))
+        try:
+            species_initializations.append(float(row[2]))
+        except:
+            print(row)
+            exit(1)
     species_initializations = np.array(species_initializations)
     species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 
