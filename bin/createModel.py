@@ -12,26 +12,39 @@ import numpy as np
 import matplotlib.pyplot as plt
 import re
 from antimony import *
+import argparse
 
 from modules.paramSweep import paramSweep
 from modules.copyDir import copyDirectory
 
 
-if len(sys.argv) < 2:
-    print("Error: Not enough arguments to runModel")
-    print("Syntax is python3 createModel.py <input_data_path> <param_sweep>")
+parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
+parser.add_argument('--folder', metavar='folder', help='input data folder path')
+parser.add_argument('--paramfile', metavar='paramfile', help='file containing any non-default values')
+args = parser.parse_args()
+
+
+if args.folder == None:
+    print("ERROR: No input folder given. Folder must be supplied with --folder option. Use -h for more information.")
     exit(1)
 
-input_data_folder = sys.argv[1]
+input_data_folder = args.folder
 
 #move input data into working directory
 copyDirectory(input_data_folder, os.getcwd()+"/")
 
-
-#make param sweep calls
-with open(sys.argv[2], "r") as f:
-    paramVal = f.readline().strip()
-paramSweep(paramVal)
+paramVal == None
+if args.paramfile == None:
+    print("Warning: no paramfile specified.")
+else:
+    #make param sweep calls
+    with open(args.paramfile, "r") as f:
+        paramVal = f.readline().strip()
+        if paramVal == None or paramVal == "None":
+            print("Warning: no sweep values specified.")
+        else:
+            #edits input files with values from paramfile
+            paramSweep(paramVal)
 
 # Antimony model name and text
 fileModel = open('SPARCEDv6.txt','w') # file name

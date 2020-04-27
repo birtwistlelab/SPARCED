@@ -23,7 +23,8 @@ with open("sweep.txt","r") as f:
   sweepParams = f.readline().strip()
 
 if sweepParams == None or sweepParams == '' or sweepParams == "none" or sweepParams == "None":
-  print("None", file=outfile)
+  with open("0.txt"),"w") as outfile:
+    print("None", file=outfile)
   exit(1)
 
 #if malformatted nextflow config file
@@ -62,13 +63,15 @@ else:
 }
 
 
+
 process model {
   input:
     file paramFile from paramFiles
 
   script:
     """
-    createModel.py ${params.input_dir} ${paramFile}
-    runModel.py ${params.input_dir} ${paramFile}
+    createModel.py --folder ${params.input_dir} --paramfile ${paramFile}
+    changeRunParams.py --speciesVals ${params.speciesVals}
+    runModel.py --deterministic ${params.deterministic} --time ${params.time} --feedTime ${params.feedTime} --cells ${params.numCells} --Vn ${params.Vn} --Vc ${params.Vc}
     """
 }

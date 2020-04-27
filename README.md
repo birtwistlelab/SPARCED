@@ -18,6 +18,8 @@ SPARCED is a new version of the mechanistic pan-cancer signaling model by Birtwi
 8. Run from the command line with `nextflow kuberun ebenz99/SPARCED -C nextflow.config`
 9. After the run is finished, save your data from the PVC down to your laptop with `./kube-scripts/kube-save.sh <pvc-name> <work-directory>` (this work directory path is relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)
 
+## Editing the config
+1. Previous sweep mechanism->  sweep = 'Species:m_PDGFB:IC_Xinitialized:0,0.395'
 
 ## Containerized requirements
 sudo apt install libatlas-base-dev
