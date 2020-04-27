@@ -10,7 +10,7 @@ def changeSpeciesVals(valString):
         paramName, paramVal = tuple(item.split(":"))
         file_data = pd.read_csv("Species.txt", sep="\t", header=0, index_col=0, encoding="latin-1")
         file_data.at[paramName, 'IC_Xinitialized'] =  paramVal
-    file_data.to_csv(fname+".txt", sep="\t")
+    file_data.to_csv("Species.txt", sep="\t")
 
 
 parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
