@@ -17,4 +17,4 @@ parser = argparse.ArgumentParser(description='Provide arguments to build the SPA
 parser.add_argument('--speciesVals', metavar='speciesVals', help='values to change in the species input data file')
 args = parser.parse_args()
 
-changeSpecVals(args.speciesVals)
+changeSpeciesVals(args.speciesVals)
