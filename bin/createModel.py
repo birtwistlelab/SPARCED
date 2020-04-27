@@ -33,7 +33,7 @@ input_data_folder = args.folder
 #move input data into working directory
 copyDirectory(input_data_folder, os.getcwd()+"/")
 
-paramVal == None
+paramVal = None
 if args.paramfile == None:
     print("Warning: no paramfile specified.")
 else:
