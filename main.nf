@@ -18,6 +18,7 @@ process sweepParse {
     '''
 #!/usr/bin/env python3
 
+done = False
 fcount = 0
 with open("sweep.txt","r") as f:
   sweepParams = f.readline().strip()
@@ -25,41 +26,42 @@ with open("sweep.txt","r") as f:
 if sweepParams == None or sweepParams == '' or sweepParams == "none" or sweepParams == "None":
   with open("0.txt"),"w") as outfile:
     print("None", file=outfile)
-  exit(1)
+    done = True
 
-#if malformatted nextflow config file
-if ":" not in sweepParams:
-  print("MalformedConfigError")
-  exit(1)
-
-fileName, remainder = tuple(sweepParams.split(":",1))
-
-if ":" not in remainder:
-  print("MalformedConfigError")
-  exit(1)
-
-rowName, remainder = tuple(remainder.split(":",1))
-
-if ":" not in remainder:
-  print("MalformedConfigError")
-  exit(1)
-
-colName, paramVals = tuple(remainder.split(":",1))
-
-if "," not in paramVals:
-  if len(paramVals) == 0:
+if done == False:
+  #if malformatted nextflow config file
+  if ":" not in sweepParams:
     print("MalformedConfigError")
     exit(1)
+
+  fileName, remainder = tuple(sweepParams.split(":",1))
+
+  if ":" not in remainder:
+    print("MalformedConfigError")
+    exit(1)
+
+  rowName, remainder = tuple(remainder.split(":",1))
+
+  if ":" not in remainder:
+    print("MalformedConfigError")
+    exit(1)
+
+  colName, paramVals = tuple(remainder.split(":",1))
+
+  if "," not in paramVals:
+    if len(paramVals) == 0:
+      print("MalformedConfigError")
+      exit(1)
+    else:
+      #only one Inpuparam
+      with open(str(str(fcount)+".txt"), "w") as outfile:
+        print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
   else:
-    #only one Inpuparam
-    with open(str(str(fcount)+".txt"), "w") as outfile:
-      print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
-else:
-  for param in paramVals.split(","):
-    with open(str(str(fcount)+".txt"),"w") as outfile:
-      print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
-    fcount += 1
-    '''
+    for param in paramVals.split(","):
+      with open(str(str(fcount)+".txt"),"w") as outfile:
+        print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
+      fcount += 1
+      '''
 }
 
 
