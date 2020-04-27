@@ -24,7 +24,7 @@ with open("sweep.txt","r") as f:
   sweepParams = f.readline().strip()
 
 if sweepParams == None or sweepParams == '' or sweepParams == "none" or sweepParams == "None":
-  with open("0.txt"),"w") as outfile:
+  with open("0.txt","w") as outfile:
     print("None", file=outfile)
     done = True
 
