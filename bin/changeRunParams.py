@@ -14,7 +14,7 @@ def changeSpeciesVals(valString):
 
 
 parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
-parser.add_argument('--speciesVals', metavar='speciesVals', type=int, help='values to change in the species input data file')
+parser.add_argument('--speciesVals', metavar='speciesVals', help='values to change in the species input data file')
 args = parser.parse_args()
 
 changeVals(args.speciesVals)
