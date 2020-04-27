@@ -6,11 +6,11 @@ import argparse
 
 def changeSpeciesVals(valString):
     file_data = None #initialize outside of if statement
+    file_data = pd.read_csv("Species.txt", sep="\t", header=0, index_col=0, encoding="latin-1")
     for item in valString.split(','):
         paramName, paramVal = tuple(item.split(":"))
         print(paramName)
         print(file_data.at[paramName])
-        file_data = pd.read_csv("Species.txt", sep="\t", header=0, index_col=0, encoding="latin-1")
         file_data.at[paramName, 'IC_Xinitialized'] =  paramVal
     file_data.to_csv("Species.txt", sep="\t")
 
