@@ -1,4 +1,5 @@
 process getSweepParams {
+  scratch true
   output:
     file "sweep.txt" into nums
   script:
@@ -9,6 +10,7 @@ process getSweepParams {
 
 
 process sweepParse {
+  scratch true
   input:
     file x from nums
   output:
