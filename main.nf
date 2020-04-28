@@ -75,6 +75,5 @@ process model {
     createModel.py --folder ${params.input_dir} --paramfile ${paramFile}
     changeRunParams.py --speciesVals ${params.speciesVals}
     runModel.py --deterministic ${params.deterministic} --time ${params.time} --feedTime ${params.feedTime} --cells ${params.numCells} --Vn ${params.Vn} --Vc ${params.Vc}
-    #./runModel.py --deterministic 1 --time 2 --feedTime 30 --cells 1 --Vn 1.75E-12 --Vc 5.25E-12
     """
 }
