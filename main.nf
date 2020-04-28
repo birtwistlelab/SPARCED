@@ -12,7 +12,7 @@ process sweepParse {
   input:
     file x from nums
   output:
-    file "*.txt" into paramFiles mode flatten
+    file "Sweep*.txt" into paramFiles mode flatten
 
   script:
     '''
@@ -24,7 +24,7 @@ with open("sweep.txt","r") as f:
   sweepParams = f.readline().strip()
 
 if sweepParams == None or sweepParams == '' or sweepParams == "none" or sweepParams == "None":
-  with open("0.txt","w") as outfile:
+  with open("Sweep0.txt","w") as outfile:
     print("None", file=outfile)
     done = True
 
@@ -54,11 +54,11 @@ if done == False:
       exit(1)
     else:
       #only one Inpuparam
-      with open(str(str(fcount)+".txt"), "w") as outfile:
+      with open("Sweep"+str(fcount)+".txt", "w") as outfile:
         print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
   else:
     for param in paramVals.split(","):
-      with open(str(str(fcount)+".txt"),"w") as outfile:
+      with open("Sweep"+str(fcount)+".txt","w") as outfile:
         print(str(fileName + ":" + rowName + ":" + colName + ":" + param), file=outfile)
       fcount += 1
       '''
