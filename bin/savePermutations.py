@@ -35,7 +35,7 @@ else:
             else:
                 current = float(lower_bound)
                 while round(current,7) <= float(upper_bound):
-                    valueRange.append(productID + ":" + str(current))
+                    valueRange.append(productID + ":" + str(round(current,6)))
                     current+=round(float(increment),7)
                 originalLen = len(params)
                 params = params * len(valueRange)

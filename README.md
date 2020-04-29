@@ -28,7 +28,7 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 
 1. Edit the files in the `input_data` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the next step.
 2. (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> input_data` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_data/`.
-3. Edit the values in *either* the `cloud` or `standard` section of the `nextflow.config` file (for help, see the `Editing the config` section of this README)
+3. Edit the values in either `kube-nextflow.config` or `local-nextflow.config` section of the `nextflow.config` file (for help, see the config README [here](https://github.com/ebenz99/SPARCED-nf/blob/master/configs/README.md))
 
 ### Running the workflow
 
@@ -36,9 +36,11 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 
 If you're running locally, run from the command line with
 
-`nextflow kuberun ebenz99/SPARCED -c configs/kube-nextflow.config`
+`nextflow run ebenz99/SPARCED -c configs/local-nextflow.config`
 
 For Kubernetes runs use
+
+`nextflow kuberun ebenz99/SPARCED -v <PVC-name> -c configs/kube-nextflow.config`
 
 
 2. Retrieving data
@@ -46,9 +48,6 @@ For Kubernetes runs use
 For local runs, all of your data should already be available to you in your new `work` directory.
 
 For Kubernetes, after the run is finished, save your data from the PVC down to your local machine with `./kube-runner/kube-save.sh <pvc-name> <work-directory>` (`kube-save.sh` will find your `work directory` path as relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)
-
-
-## Editing the config
 
 ## Debugging
 
