@@ -19,9 +19,9 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 ### Setting up the model
 
 1. Edit the files in the `input_data` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the configuration step.
-2. (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> input_data` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_data/`.
+2. (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> input_data` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_data/`.  __Important__: If you do this more than once, `kube-login` into the cluster and delete the original copy--otherwise it will not be overwritten.
 3. Edit the values in either `kube-nextflow.config` or `local-nextflow.config` section of the `nextflow.config` file (for help, see the config README [here](https://github.com/ebenz99/SPARCED-nf/blob/master/configs/README.md))
-4. (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> configs` in the same way you did earlier to move your configuration files to the PVC.
+4. (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> configs` in the same way you did earlier to move your configuration files to the PVC. __Important__: If you do this more than once, `kube-login` into the cluster and delete the original copy--otherwise it will not be overwritten.
 
 ### Running the workflow
 
