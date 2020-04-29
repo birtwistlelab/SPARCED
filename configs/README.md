@@ -21,7 +21,7 @@ In the above case, the parameter is targeting the value of four different specie
 ## Kube Config
 
 Make the following edits to the `kube-nextflow.config`
-1. Change the value of `params.input_dir` to be the absolute path of the input directory on your PVC. If you want to check this, use `./kube-scripts/kube-login.sh <pvc-name>`.
+1. Change the value of `params.input_dir` to be the absolute path of the input directory on your PVC. If you want to check this, use `./kube-runner/kube-login.sh <pvc-name>`.
 2. Edit the `K8s` parameter values such that `workspace` is replaced with whatever the path is for your persistent volume, and `ethan` is replaced with the output of `$USER` on your machine. The rest can be left unchanged.
 3. Edit the `params.speciesVals` value to the string that encompasses any parameter sweeps or changes you want reflected in the run-time environment to the model (Important Note: If you want any of these values built into the *creation* of the model, not just its simulation, you'll need to edit their values in the input_data files directly. More details in the main repository README.)
 
