@@ -20,7 +20,7 @@ from modules.copyDir import copyDirectory
 
 parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
 parser.add_argument('--folder', metavar='folder', help='input data folder path')
-parser.add_argument('--paramfile', metavar='paramfile', help='file containing any non-default values')
+# parser.add_argument('--paramfile', metavar='paramfile', help='file containing any non-default values')
 args = parser.parse_args()
 
 
@@ -32,19 +32,6 @@ input_data_folder = args.folder
 
 #move input data into working directory
 copyDirectory(input_data_folder, os.getcwd()+"/")
-
-# paramVal = None
-# if args.paramfile == None:
-#     print("Warning: no paramfile specified.")
-# else:
-#     #make param sweep calls
-#     with open(args.paramfile, "r") as f:
-#         paramVal = f.readline().strip()
-#         if paramVal == None or paramVal == "None":
-#             print("Warning: no sweep values specified.")
-#         else:
-#             #edits input files with values from paramfile
-#             paramSweep(paramVal)
 
 # Antimony model name and text
 fileModel = open('SPARCEDv6.txt','w') # file name

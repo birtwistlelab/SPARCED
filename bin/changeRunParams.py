@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import pandas as pd
 import argparse
 
@@ -17,4 +16,8 @@ parser = argparse.ArgumentParser(description='Provide arguments to build the SPA
 parser.add_argument('--speciesVals', metavar='speciesVals', help='values to change in the species input data file')
 args = parser.parse_args()
 
-changeSpeciesVals(args.speciesVals)
+directive = None
+with open(args.paramFile,"r") as f:
+    directive = f.readline().strip()
+    
+changeSpeciesVals(directive)

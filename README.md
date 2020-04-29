@@ -7,7 +7,7 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 
 - [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html)
 - [Docker](https://docs.docker.com/get-docker/)
-- (Optional)[kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- (Optional) [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 ## Instructions to run locally
 1. Clone this repository
@@ -30,11 +30,12 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 
 - Verify the path to your input data -> `kube-runner/kube-login.sh <pvc-name>` - find the files and check its path with `pwd`
 - `Repository corrupted` or `Newer revision available` -> `kube-runner/kube-login.sh <pvc-name>` - the workflow has been updated since your last run, so manually delete the workflow contents stored in the PVC (which Nextflow stores in the `projects` folder)
+ - Using `kube-login.sh` to obtain a shell into the PVC is also helpful for checking workflow output in any of the `.command` files nextflow generates in its `workDir` during runtime
 
 
 ## Acknowledgements:
 
-This work is a product of [Birtwistle Lab](http://www.birtwistlelab.com/) and multiple colloborators, including [Feltus Lab](https://www.clemson.edu/science/departments/genetics-biochemistry/people/profiles/ffeltus), [Hasenauer Lab](https://www.mathematics-and-life-sciences.uni-bonn.de/en/group-members/jan-hasenauer), and [Robert Blake](https://bbs.llnl.gov/RobertBlake.html) from LLNL.
+The SPARCED model and SPARCED-nf pipeline is a product of [Birtwistle Lab](http://www.birtwistlelab.com/) and multiple colloborators, including [Feltus Lab](https://www.clemson.edu/science/departments/genetics-biochemistry/people/profiles/ffeltus), [Hasenauer Lab](https://www.mathematics-and-life-sciences.uni-bonn.de/en/group-members/jan-hasenauer), and [Robert Blake](https://bbs.llnl.gov/RobertBlake.html) from LLNL.
 
 
 
