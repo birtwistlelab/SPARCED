@@ -9,22 +9,46 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 - [Docker](https://docs.docker.com/get-docker/)
 - (Optional) [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
-## Instructions to run locally
+## Walkthrough to run locally
 1. Clone this repository
 2. Make sure the dependencies listed above are installed
 3. Edit the files in the `input_data` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the next step.
 4. Edit the `local-nextflow.config` file located in the `configs` folder. (for help, see [here](https://github.com/ebenz99/SPARCED-nf/tree/master/configs))
 5. Navigate to the base directory of this project, and run the workflow with `nextflow kuberun . -c configs/local-nextflow.config`
 
-## Instructions to run with Kubernetes
-1. Clone this repository
+## Walkthrough to run with Kubernetes
+### Set up your environment
+1. Clone this repository from the command-line using `git clone --recursive https://github.com/ebenz99/SPARCED-nf.git`
+
 2. Make sure the dependencies listed above are installed
-3. Ensure you have a Kubernetes `config` file for your chosen cluster located in your `~/.kube` folder
-4. Edit the files in the `input_data` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the next step.
-5. Use `./kube-runner/kube-load.sh <pvc-name> input_data` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_data/`.
-6. Edit the `kube-nextflow.config` file located in the `configs` folder. (for help, see [here](https://github.com/ebenz99/SPARCED-nf/tree/master/configs))
-8. Run from the command line with `nextflow kuberun ebenz99/SPARCED -c configs/kube-nextflow.config`
-9. After the run is finished, save your data from the PVC down to your laptop with `./kube-runner/kube-save.sh <pvc-name> <work-directory>` (`kube-save.sh` will find your `work directory` path as relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)
+
+3. (Kubernetes only) Ensure you have a Kubernetes `config` file for your chosen cluster located in your `~/.kube` folder
+
+### Setting up the model
+
+1. Edit the files in the `input_data` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the next step.
+2. (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> input_data` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_data/`.
+3. Edit the values in *either* the `cloud` or `standard` section of the `nextflow.config` file (for help, see the `Editing the config` section of this README)
+
+### Running the workflow
+
+1. To start the workflow:
+
+If you're running locally, run from the command line with
+
+`nextflow kuberun ebenz99/SPARCED -c configs/kube-nextflow.config`
+
+For Kubernetes runs use
+
+
+2. Retrieving data
+
+For local runs, all of your data should already be available to you in your new `work` directory.
+
+For Kubernetes, after the run is finished, save your data from the PVC down to your local machine with `./kube-runner/kube-save.sh <pvc-name> <work-directory>` (`kube-save.sh` will find your `work directory` path as relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)
+
+
+## Editing the config
 
 ## Debugging
 
