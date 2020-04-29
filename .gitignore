@@ -1,5 +1,4 @@
 .nextflow*
-SPARCED*
 vers
 pod.yaml
 dock.sh
@@ -8,16 +7,4 @@ z
 SPARCED/*xlsx
 cleanH
 work/
-bin/sweep.txt
 ToDo*
-Compartments.txt
-GrowthStim_det_G_0.xlsx
-GrowthStim_det_S_0.xlsx
-GrowthStim_stoc_G_0.xlsx
-GrowthStim_stoc_S_0.xlsx
-Ratelaws.txt
-Species.txt
-StoicMat.txt
-TAs.csv
-TRs.csv
-kGeneMod.txt
