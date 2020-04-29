@@ -29,6 +29,7 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 1. Edit the files in the `input_data` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the next step.
 2. (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> input_data` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_data/`.
 3. Edit the values in either `kube-nextflow.config` or `local-nextflow.config` section of the `nextflow.config` file (for help, see the config README [here](https://github.com/ebenz99/SPARCED-nf/blob/master/configs/README.md))
+3.  (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> configs` in the same way you did earlier to move your configuration files to the PVC.
 
 ### Running the workflow
 
@@ -51,6 +52,7 @@ For Kubernetes, after the run is finished, save your data from the PVC down to y
 
 ## Debugging
 
+- A known problem with Docker on Mac is running Docker containers that make any use of the `/var/` directory (there's a symlink involved, look it up at your own peril). To fix this and run the pipeline locally on Mac, you have to change your default Docker settings. Go to Docker->Preferences->File Sharing and remove `/private` from your shared directories. Then add `/private/var/folders` and `/var/folders`. This should fix any related issues.
 - Verify the path to your input data -> `kube-runner/kube-login.sh <pvc-name>` - find the files and check its path with `pwd`
 - `Repository corrupted` or `Newer revision available` -> `kube-runner/kube-login.sh <pvc-name>` - the workflow has been updated since your last run, so manually delete the workflow contents stored in the PVC (which Nextflow stores in the `projects` folder)
  - Using `kube-login.sh` to obtain a shell into the PVC is also helpful for checking workflow output in any of the `.command` files nextflow generates in its `workDir` during runtime
