@@ -26,11 +26,11 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 ### Running the workflow
 
 1. To start the workflow:
-  - If you're running locally: `nextflow run ebenz99/SPARCED -c configs/local-nextflow.config`
-  - If you're running with Kubernetes: `nextflow kuberun ebenz99/SPARCED -v \<PVC-name\> -c configs/kube-nextflow.config`
+    - If you're running locally: `nextflow run ebenz99/SPARCED -c configs/local-nextflow.config`
+    - If you're running with Kubernetes: `nextflow kuberun ebenz99/SPARCED -v \<PVC-name\> -c configs/kube-nextflow.config`
 2. Retrieving data
-  - For local runs, all of your data should already be available to you in your new `work` directory.
-  - For Kubernetes, after the run is finished, save your data from the PVC down to your local machine with `./kube-runner/kube-save.sh \<pvc-name\> \<work-directory\>` (`kube-save.sh` will find your `work directory` path as relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)
+    - For local runs, all of your data should already be available to you in your new `work` directory.
+    - For Kubernetes, after the run is finished, save your data from the PVC down to your local machine with `./kube-runner/kube-save.sh \<pvc-name\> \<work-directory\>` (`kube-save.sh` will find your `work directory` path as relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)
 
 ## Debugging
 
@@ -50,15 +50,9 @@ The SPARCED model and SPARCED-nf pipeline is a product of [Birtwistle Lab](http:
 The acronym SPARCED is composed of following elements, based on the sub-models in the mechanistic ODE model.
 
 ### S: SBML
-
 ### P: Proliferation
-
 ### A: Apoptosis
-
 ###  R: Receptor
-
-###  C: Cell Cycle
-
+###  C: Cell
 ###  E: Expression
-
 ###  D: Death
