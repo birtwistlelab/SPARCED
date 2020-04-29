@@ -27,15 +27,8 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 
 ## Debugging
 
-- `kube-scripts/kube-login.sh <pvc-name>` - this command allows you to get a shell into the PVC you specify. This can be helpful to delete unwanted data, verify the path to data, and more. 
-
-
-
-## Containerized requirements
-sudo apt install libatlas-base-dev
-sudo apt-get install libhdf5-serial-dev
-sudo apt-get install swig
-pip3 install requirements.txt
+- Verify the path to your input data -> `kube-scripts/kube-login.sh <pvc-name>` - find the files and check its path with `pwd`
+- `Repository corrupted` or `Newer revision available` -> `kube-scripts/kube-login.sh <pvc-name>` - the workflow has been updated since your last run, so manually delete the workflow contents stored in the PVC (which Nextflow stores in the `projects` folder)
 
 
 ## Acknowledgements:
