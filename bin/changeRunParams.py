@@ -31,11 +31,11 @@ parser.add_argument('--paramfile', metavar='paramfile', help='file contains valu
 args = parser.parse_args()
 
 speciesDirective = None
-ratelawDirective
+ratelawDirective = None
 with open(args.paramfile,"r") as f:
     speciesDirective = f.readline().strip()
     ratelawDirective = f.readline().strip()
 
 
 changeSpeciesVals(speciesDirective)
-changeSpeciesVals(ratelawDirective)
+changeRatelawVals(ratelawDirective)
