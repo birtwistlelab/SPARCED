@@ -4,7 +4,25 @@ process getSweepParams {
     file "sweep*.txt" into paramFiles mode flatten
   script:
     """
-    savePermutations.py '${params.speciesVals}'
+    speciesVals=''
+    ratelawVals=''
+    if [ -z '${params.speciesVals}' ]
+    then
+      speciesVals='None'
+    else
+      speciesVals='${params.speciesVals}'
+    fi
+
+    if [ -z '${params.ratelawVals}' ]
+    then
+      ratelawVals='None'
+    else
+      ratelawVals='${params.ratelawVals}'
+    fi
+
+
+    savePermutations.py \$speciesVals \$ratelawVals
+    exit
     """
 }
 
@@ -17,5 +35,6 @@ process model {
     createModel.py --folder ${params.input_dir}
     changeRunParams.py --paramfile ${paramFile}
     runModel.py --deterministic ${params.deterministic} --time ${params.time} --feedTime ${params.feedTime} --cells ${params.numCells} --Vn ${params.Vn} --Vc ${params.Vc}
+    rm -rf SPARCEDv6
     """
 }

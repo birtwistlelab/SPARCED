@@ -2,6 +2,8 @@
 
 import pandas as pd
 import argparse
+import numpy as np
+import csv
 
 def changeSpeciesVals(valString):
     file_data = None #initialize outside of if statement
@@ -12,12 +14,28 @@ def changeSpeciesVals(valString):
     file_data.to_csv("Species.txt", sep="\t")
 
 
+def changeRatelawVals(valString):
+    file_data = None #initialize outside of if statement
+    file_data = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws.txt')])
+    for item in valString.split(','):
+        paramName, paramOffset, paramVal = tuple(item.split(":"))
+        for idx,line in enumerate(file_data):
+            if file_data[idx][0] == paramName:
+                file_data[idx][2+int(paramOffset)] = paramVal
+    with open('Ratelaws.txt', 'w') as f:
+        csv.writer(f, delimiter="\t", lineterminator="\n").writerows(file_data)
+
+
 parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
 parser.add_argument('--paramfile', metavar='paramfile', help='file contains values to change in the species input data file')
 args = parser.parse_args()
 
-directive = None
+speciesDirective = None
+ratelawDirective
 with open(args.paramfile,"r") as f:
-    directive = f.readline().strip()
+    speciesDirective = f.readline().strip()
+    ratelawDirective = f.readline().strip()
 
-changeSpeciesVals(directive)
+
+changeSpeciesVals(speciesDirective)
+changeSpeciesVals(ratelawDirective)
