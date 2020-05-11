@@ -82,9 +82,6 @@ else:
                         params[(idx*originalLen)+i]+=str(value+",")
 
 
-
-print(params)
-
 for idx, entry in enumerate(params):
     with open(str("sweep"+str(idx)+".txt"),"w") as f:
         if entry != "":
