@@ -6,6 +6,8 @@ import numpy as np
 import csv
 
 def changeSpeciesVals(valString):
+    if len(valString) == 0:
+        return
     file_data = None #initialize outside of if statement
     file_data = pd.read_csv("Species.txt", sep="\t", header=0, index_col=0, encoding="latin-1")
     for item in valString.split(','):
@@ -15,6 +17,8 @@ def changeSpeciesVals(valString):
 
 
 def changeRatelawVals(valString):
+    if len(valString) == 0:
+        return
     file_data = None #initialize outside of if statement
     file_data = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws.txt')])
     for item in valString.split(','):
