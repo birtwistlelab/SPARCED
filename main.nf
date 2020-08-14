@@ -1,11 +1,11 @@
-process build {
+process makeBuild {
   script:
     """
     createModel.py --folder ${params.input_dir}
     """
 }
 
-process getSweepParams {
+process splitSweepParams {
   scratch true
   output:
     file "outputFolder*" into paramFiles mode flatten
@@ -35,7 +35,7 @@ process getSweepParams {
     """
 }
 
-process model {
+process test {
   input:
     file paramFile from paramFiles
 
