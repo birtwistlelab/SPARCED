@@ -5,6 +5,34 @@ process build {
     """
 }
 
+process getSweepParams {
+  scratch true
+  output:
+    file "sweep*.txt" into paramFiles mode flatten
+  script:
+    """
+    speciesVals=''
+    ratelawVals=''
+    if [ -z '${params.speciesVals}' ]
+    then
+      speciesVals='None'
+    else
+      speciesVals='${params.speciesVals}'
+    fi
+
+    if [ -z '${params.ratelawVals}' ]
+    then
+      ratelawVals='None'
+    else
+      ratelawVals='${params.ratelawVals}'
+    fi
+
+
+    savePermutations.py \$speciesVals \$ratelawVals
+    exit
+    """
+}
+
 
 // procee doStuff {
 //   input
