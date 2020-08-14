@@ -8,7 +8,7 @@ process build {
 process getSweepParams {
   scratch true
   output:
-    file "sweep*.txt" into paramFiles mode flatten
+    file "outputFolder*" into paramFiles mode flatten
   script:
     """
     speciesVals=''
@@ -39,6 +39,16 @@ process getSweepParams {
     done
 
     exit
+    """
+}
+
+process model {
+  input:
+    file paramFile from paramFiles
+
+  script:
+    """
+    echo hi
     """
 }
 
