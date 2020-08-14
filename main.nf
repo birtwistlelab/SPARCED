@@ -1,4 +1,6 @@
 process makeBuild {
+  output:
+   file "*" into buildFiles
   script:
     """
     createModel.py --folder ${params.input_dir}
@@ -7,6 +9,8 @@ process makeBuild {
 
 process splitSweepParams {
   scratch true
+  input:
+    file testfiles from buildFiles
   output:
     file "outputFolder*" into paramFiles mode flatten
   script:
