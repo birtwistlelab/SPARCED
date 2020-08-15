@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 # install system dependencies
-RUN apt-get update -qq && apt-get install -qq -y curl git python3-dev python3-pip libhdf5-serial-dev libatlas-base-dev swig && ln -s /usr/bin/python3 python
+RUN apt-get update -qq && apt-get install -qq -y curl git python3-dev python3-pip libhdf5-serial-dev libatlas-base-dev swig rsync && ln -s /usr/bin/python3 python
 
 #changing working directory in Docker container
 WORKDIR /app
