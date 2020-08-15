@@ -39,7 +39,7 @@ process splitSweepParams {
     """
 }
 
-process test {
+process model {
   input:
     file buildFolder from buildFolders
 
@@ -51,7 +51,7 @@ process test {
     rm -rf SPARCEDv6
     """
 }
-}
+
 
 
 
