@@ -12,7 +12,7 @@ process splitSweepParams {
   input:
     file testfiles from buildFiles
   output:
-    file "outputFolder*" into paramFiles mode flatten
+    file "outputFolder*" into buildFolders mode flatten
   script:
     """
     speciesVals=''
@@ -41,18 +41,20 @@ process splitSweepParams {
 
 process test {
   input:
-    file paramFile from paramFiles
+    file buildFolder from buildFolders
 
   script:
     """
-    echo hi
+    cd ${buildFolder}
+    changeRunParams.py --paramfile ${paramFile}
+    runModel.py --deterministic ${params.deterministic} --time ${params.time} --feedTime ${params.feedTime} --cells ${params.numCells} --Vn ${params.Vn} --Vc ${params.Vc}
+    rm -rf SPARCEDv6
     """
+}
 }
 
 
-// procee doStuff {
-//   input
-// }
+
 
 // process getSweepParams {
 //   scratch true
