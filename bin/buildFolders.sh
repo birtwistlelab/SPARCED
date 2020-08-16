@@ -8,6 +8,6 @@ for i in $( seq 0 $(( $numItems-1 )) )
     for j in $( seq 1 ${numCopies} )
         do
         rsync -avr --exclude="sweep*" --exclude="outputFolder*" "." "outputFolder${i}copy${j}"
-        mv "sweep$i.txt" "outputFolder${i}copy${j}"
+        cp "sweep$i.txt" "outputFolder${i}copy${j}"
     done
 done
