@@ -31,9 +31,11 @@ process splitSweepParams {
       ratelawVals='${params.ratelawVals}'
     fi
 
+    numCopies='${params.copiesPerRun}'
+
 
     savePermutations.py \$speciesVals \$ratelawVals
-    buildFolders.sh
+    buildFolders.sh \$numCopies
 
     exit
     """
