@@ -46,7 +46,7 @@ process model {
   script:
     """
     cd ${buildFolder}
-    changeRunParams.py --paramfile ${paramFile}
+    changeRunParams.py
     runModel.py --deterministic ${params.deterministic} --time ${params.time} --feedTime ${params.feedTime} --cells ${params.numCells} --Vn ${params.Vn} --Vc ${params.Vc}
     rm -rf SPARCEDv6
     """
