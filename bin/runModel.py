@@ -48,10 +48,10 @@ th = args.time
 Vn = float(args.Vn)
 Vc = float(args.Vc)
 
-NSteps1 = th1*3600/ts
-NSteps1 = int(NSteps1)
-NSteps2 = th2*3600/ts
-NSteps2 = int(NSteps2)
+# NSteps1 = th1*3600/ts
+# NSteps1 = int(NSteps1)
+# NSteps2 = th2*3600/ts
+# NSteps2 = int(NSteps2)
 
 
 if flagD == 0:
@@ -67,6 +67,8 @@ if flagD == 0:
     for row in species_sheet[1:]:
         species_initializations.append(float(row[2]))
     species_initializations = np.array(species_initializations)
+    print("checking")
+    print(species_initializations[155:162])
 
     for nn in range(numStocCells):
         # species_initializations[155:162] = STIMligs
@@ -80,7 +82,7 @@ if flagD == 0:
         xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model)
 
         # Additions
-        lenSim, lenSps = xoutS_all.shape
+        # lenSim, lenSps = xoutS_all.shape
 
         if flagWr==1:
             columnsS=[ele for ele in model.getStateIds()]
