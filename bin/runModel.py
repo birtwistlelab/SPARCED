@@ -37,7 +37,7 @@ parser.add_argument('--Vc', metavar='Vc', help='?')
 args = parser.parse_args()
 
 
-if args.time == None or args.feedTime == None or args.cells == None or args.deterministic == None or args.Vn == None or args.Vc == None:
+if args.time == None or args.feedTime == None or args.deterministic == None or args.Vn == None or args.Vc == None:
     print("ERRROR: missing arguments. Need to pass --time, --feedTime, --deterministic. Use -h for help.")
 
 flagD = args.deterministic
