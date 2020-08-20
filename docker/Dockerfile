@@ -11,9 +11,3 @@ COPY . /app/
 
 # install python dependencies
 RUN pip3 install -r requirements.txt
-
-# install system dependencies
-RUN apt-get install libatlas-base-dev
-RUN apt-get install libhdf5-serial-dev
-RUN apt-get install swig
-
