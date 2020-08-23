@@ -13,8 +13,6 @@ from datetime import datetime
 import scipy.stats
 import argparse
 
-from modules.SGEmodule import SGEmodule
-from modules.RunPrep import RunPrep
 from modules.RunSPARCED import RunSPARCED
 
 

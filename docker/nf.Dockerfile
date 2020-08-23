@@ -1,3 +1,6 @@
+# should be built from the SPARCED/docker directory (avoids adding excess files)
+# docker build -t sparced -f docker/nf.Dockerfile .
+
 FROM ubuntu:18.04
 
 # install system dependencies
@@ -7,7 +10,7 @@ RUN apt-get update -qq && apt-get install -qq -y curl git python3-dev python3-pi
 WORKDIR /app
 
 # copy data from local into Docker container
-COPY . /app/
+ADD . /app/
 
 # install python dependencies
 RUN pip3 install -r requirements.txt

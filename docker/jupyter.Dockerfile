@@ -1,4 +1,5 @@
 # must be built from root directory using the -f directive
+# docker build -t sparced-notebook -f docker/jupyter.Dockerfile .
 
 FROM ubuntu:18.04
 

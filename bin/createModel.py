@@ -177,7 +177,6 @@ for param in paramnames:
 
 # Write other declarations
 constantVars = ['Cytoplasm','Extracellular','Nucleus','Mitochondrion']
-lenConVs = len(constantVars)
 
 fileModel.write("\n  # Other declarations:\n")
 fileModel.write("  const")
@@ -204,11 +203,13 @@ if loadFile("SPARCEDv6.txt") == 1:
     print("Success loading antimony file")
 else:
     print("Failed to load antimony file")
+    exit(1)
 
 if writeSBMLFile("SPARCEDv6.xml","SPARCEDv6") == 1:
     print("Success converting antimony to SBML")
 else:
     print("Failure converting antimony to SBML")
+    exit(1)
 
 
 sbml_reader = libsbml.SBMLReader()
