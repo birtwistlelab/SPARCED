@@ -18,7 +18,7 @@ from modules.RunSPARCED import RunSPARCED
 
 
 # SBML model we want to import
-sbml_file = 'SPARCEDv6.xml'
+sbml_file = 'SPARCED.xml'
 # Name of the model that will also be the name of the python module
 model_name = sbml_file[0:-4]
 # Directory to which the generated model code is written

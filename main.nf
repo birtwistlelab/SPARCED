@@ -50,7 +50,7 @@ process model {
     cd ${buildFolder}
     changeRunParams.py
     runModel.py --deterministic ${params.deterministic} --time ${params.time} --feedTime ${params.feedTime} --Vn ${params.Vn} --Vc ${params.Vc}
-    rm -rf SPARCEDv6
+    rm -rf SPARCED
     cd ..
     cp -rf ${buildFolder}/* .
     rm -rf ${buildFolder}

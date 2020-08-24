@@ -34,12 +34,12 @@ input_data_folder = args.folder
 copyDirectory(input_data_folder, os.getcwd()+"/")
 
 # Antimony model name and text
-fileModel = open('SPARCEDv6.txt','w') # file name
+fileModel = open('SPARCED.txt','w') # file name
 fileModel.write("# PanCancer Model by Birtwistle Lab \n") # some explanation
-fileModel.write("model SPARCEDv6()\n") # model name
+fileModel.write("model SPARCED()\n") # model name
 
 # SBML model we want to import
-sbml_file = 'SPARCEDv6.xml'
+sbml_file = 'SPARCED.xml'
 # Name of the model that will also be the name of the python module
 model_name = sbml_file[0:-4] # 'BigModel_byparts_v1'
 # Directory to which the generated model code is written
@@ -199,13 +199,13 @@ fileModel.write("\nend")
 # Close the file
 fileModel.close()
 
-if loadFile("SPARCEDv6.txt") == 1:
+if loadFile("SPARCED.txt") == 1:
     print("Success loading antimony file")
 else:
     print("Failed to load antimony file")
     exit(1)
 
-if writeSBMLFile("SPARCEDv6.xml","SPARCEDv6") == 1:
+if writeSBMLFile("SPARCED.xml","SPARCED") == 1:
     print("Success converting antimony to SBML")
 else:
     print("Failure converting antimony to SBML")
