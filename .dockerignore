@@ -1,4 +1,5 @@
 dock.sh
+*.ipynb_check*
 *xlsx
 *_pycache_*
 SPARCEDv*

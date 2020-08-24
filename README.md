@@ -28,6 +28,7 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 1. To start the workflow:
     - If you're running locally: `nextflow run ebenz99/SPARCED-nf -c configs/local-nextflow.config`
     - If you're running with Kubernetes: `nextflow kuberun ebenz99/SPARCED-nf -v <PVC-name> -c configs/kube-nextflow.config`
+    - *Optional:* add `-N <email address>` to be notified via email when your workflow completes
 2. Retrieving data
     - For local runs, all of your data should already be available to you in your new `work` directory.
     - For Kubernetes, after the run is finished, save your data from the PVC down to your local machine with `./kube-runner/kube-save.sh <pvc-name> <work-directory>` (`kube-save.sh` will find your `work directory` path as relative to your `workspace/$USER` directory in the PVC. So with the default configurations, it should just be `work`)

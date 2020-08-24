@@ -12,7 +12,7 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
     tout_all = np.arange(0,th*3600+1,30)    
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
     
-    genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep2(flagD,Vn,model)
+    genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)
     
     if len(spdata)==0:
         spdata0 = pd.read_csv('Species_v6.txt',header=0,index_col=0,sep="\t")
