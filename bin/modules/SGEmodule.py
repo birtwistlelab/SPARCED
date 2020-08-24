@@ -3,8 +3,8 @@ import scipy.stats
 from random import *
 import pandas as pd
 
-def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,TAs0,TRs0,kGin_1,kGac_1,tcnas, \
-        tck50as,tcnrs,tck50rs):
+def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1,tcnas, \
+        tck50as,tcnrs,tck50rs,spIDs):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
     # ts = time step
@@ -33,7 +33,9 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
     
     mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
     mpc2nmcf_Vc = 1.0E9/(Vc*6.023E+23)
-    numberofgenes = int(len(kTCleak))
+
+    numberofgenes = len(tcnas)
+    numberofTARs = len(tcnas[0])
 
     # gm species
     ix = 0
@@ -42,22 +44,16 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
     xgin = genedata[ix:ix+numberofgenes]
     xm = np.divide(spdata[773:],mpc2nmcf_Vc)
     
-    # Get the latest concentrations of TARs
-    pcFos_cJun = spdata[684] #1
-    cMyc = spdata[685] #2
-    p53ac = spdata[2] #3
-    FOXOnuc = spdata[766] #4
-    ppERKnuc = spdata[675] #5
-    pRSKnuc = spdata[678] #6
-    bCATENINnuc = spdata[686] #7
-
-    cc = np.multiply(TAs0,np.array([pcFos_cJun, cMyc, p53ac, FOXOnuc, ppERKnuc, pRSKnuc, bCATENINnuc]))
-    dd = cc*(1/mpc2nmcf_Vn) # convert to mpc from nM
-    TAs = dd
+    TARarr = np.array(spdata[spIDs])
+    TAs = np.zeros((numberofgenes,numberofTARs))
+    TRs = np.zeros((numberofgenes,numberofTARs))
+    for qq in range(numberofTARs):
+    TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
+    TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
+    TAs = TAs*(1.0/mpc2nmcf_Vn) # convert to mpc from nM
     TAs.flatten()
-    ee = np.multiply(TRs0,np.array([pcFos_cJun, 1, 1, 1, 1, 1, 1]))
-    ff = ee*(1/mpc2nmcf_Vn)   
-    TRs = ff
+
+    TRs = TRs*(1.0/mpc2nmcf_Vn)
     TRs.flatten()
     
     # make hills
@@ -73,7 +69,6 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
     
     # vTC
     hills = np.matrix(hills)
-    # hills = np.matrix.transpose(hills)
     induced = np.multiply(np.multiply(xgac,kTCmaxs),hills)
     induced = induced.flatten()
     leak = np.multiply(xgac,kTCleak)
@@ -82,13 +77,13 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
     vTC = np.squeeze(np.asarray(vTC))
 
     # vTCd
-    vTCd= np.transpose(np.multiply(kTCd,xm));
+    vTCd= np.transpose(np.multiply(kTCd,xm))
     vTCd = np.squeeze(np.asarray(vTCd))
     
     # If deterministic simulation:
     if flagD: 
-        Nb = vTC*ts;
-        Nd = vTCd*ts;
+        Nb = vTC*ts
+        Nd = vTCd*ts
         xgacN = genedata[0:numberofgenes]
         xginN = genedata[numberofgenes:numberofgenes*2]
         AllGenesVecN = []
@@ -129,9 +124,9 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
     # Finish mRNA
     xmN = xm+Nb-Nd
     xmN[xmN<0.0] = 0.0
-    xmN_nM = np.dot(xmN,mpc2nmcf_Vc)
+    xmN_nM = xmN*mpc2nmcf_Vc
 
     genedataNew = []
     genedataNew = np.concatenate((xgacN, xginN), axis=None)
 
-    return genedataNew, xmN_nM, AllGenesVecN
+    return genedataNew, xmN, AllGenesVecN

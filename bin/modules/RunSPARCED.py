@@ -26,8 +26,7 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
     tout_all = np.arange(0,th*3600+1,30)
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
 
-    genedata0,mRNA_mpc,GenePositionMatrix,AllGenesVec,kTCmaxs,kTCleak,kTCleak2,kGin_1,kGac_1,kTCd,TAs0,TRs0,tcnas,tcnrs, \
-    tck50as,tck50rs = RunPrep(flagD,Vn)
+    genedata0,mRNA_mpc,GenePositionMatrix,AllGenesVec,kTCmaxs,kTCleak,kTCleak2,kGin_1,kGac_1,kTCd,TAs0,TRs0,tcnas,tcnrs,tck50as,tck50rs,spIDs = RunPrep(flagD,Vn)
 
     if len(species_initializations)==0:
         species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
@@ -48,9 +47,9 @@ def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
     solver.setMaxSteps = 1e10
 
     for qq in range(NSteps):
-        genedata,xmNnM,AllGenesVec = SGEmodule(flagD,ts,xoutG_all[qq,:],xoutS_all[qq,:],Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec, \
-                                        GenePositionMatrix,TAs0,TRs0,kGin_1,kGac_1,tcnas,tck50as,tcnrs,tck50rs)
-        xoutS_all[qq,773:914] = xmNnM # Update mRNA concentrations
+        genedata,xmN,AllGenesVec = SGEmodule(flagD,ts,xoutG_all[qq,:],xoutS_all[qq,:],Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec, \
+                                        GenePositionMatrix,TAs0,TRs0,kGin_1,kGac_1,tcnas,tck50as,tcnrs,tck50rs,spIDs)
+        xoutS_all[qq,773:914] = np.dot(xmN,mpc2nM_Vc)
         model.setInitialStates(xoutS_all[qq,:]) # Set new starting ICs
         rdata = amici.runAmiciSimulation(model, solver)  # Run simulation
         xoutS_all[qq+1,:] = rdata['x'][-1,:]
