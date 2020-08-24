@@ -6,7 +6,7 @@ import numpy as np
 from modules.SGEmodule import SGEmodule
 from modules.RunPrep import RunPrep
 
-def RunSPARCED(flagD,th,species_initializations,genedata,Vn,Vc,model):
+def RunSPARCED(flagD,th,spdata,genedata,Vn,Vc,model):
     ts = 30 # time-step to update mRNA numbers
     NSteps = int(th*3600/ts)
     tout_all = np.arange(0,th*3600+1,30)    
