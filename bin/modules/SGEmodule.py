@@ -3,58 +3,43 @@ import scipy.stats
 from random import *
 import pandas as pd
 
-def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1,tcnas, \
-        tck50as,tcnrs,tck50rs,spIDs):
+def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1, 
+              tcnas,tck50as,tcnrs,tck50rs,spIDs):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
-    # ts = time step
+    # ts = time
     # genedata = 1D array of latest gene-expression module concentrations
     # spdata = 1D array of latest species concentrations
     # Vn = nuclear volume
     # Vc = cytoplasmic volume
-    # kTCmaxs = Maximal transcription rates
-    # kTCleak = Transcription leakage rates
-    # kTCd = mRNA degradation rates
-    # AllGenesVec = Number of active genes
-    # GenePositionMatrix = matrix showing which genes are active
-    # TAs0 = Genes x Transcriptional activators
-    # TRs0 = Genes x Transcriptional repressors
-    # kGin_1 = rate of gene inactivation
-    # kGac_1 = rate of gene activation
-    # tcnas = Hill coefficients for transcriptional activators
-    # tck50as = K50 values for transcriptional activators
-    # tcnrs = Hill coefficients for transcriptional repressors
-    # tck50rs = K50 values for transcriptional repressors
-   
+
     # Outputs:
-    # genedataNew = new active genes and inactive genes
-    # xmN = new mRNA mpc (or xmN_nM = new mRNA in nM)
+    # genedataNew = new active genes, inactive genes, and mRNA concentrations
     # AllGenesVecNew = New array of all genes
-    
+    # kmRNAlist = list of names for paramters to change with new mRNA concentrations
+
     mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
     mpc2nmcf_Vc = 1.0E9/(Vc*6.023E+23)
-
     numberofgenes = len(tcnas)
     numberofTARs = len(tcnas[0])
-
+    
     # gm species
     ix = 0
     xgac = genedata[ix:ix+numberofgenes]
     ix = ix+numberofgenes
     xgin = genedata[ix:ix+numberofgenes]
     xm = np.divide(spdata[773:],mpc2nmcf_Vc)
-    
+        
     TARarr = np.array(spdata[spIDs])
     TAs = np.zeros((numberofgenes,numberofTARs))
     TRs = np.zeros((numberofgenes,numberofTARs))
     for qq in range(numberofTARs):
-    TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
-    TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
+        TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
+        TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
     TAs = TAs*(1.0/mpc2nmcf_Vn) # convert to mpc from nM
     TAs.flatten()
-
     TRs = TRs*(1.0/mpc2nmcf_Vn)
-    TRs.flatten()
+    TRs.flatten() 
     
     # make hills
     aa = np.divide(TAs,tck50as)
@@ -77,13 +62,13 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
     vTC = np.squeeze(np.asarray(vTC))
 
     # vTCd
-    vTCd= np.transpose(np.multiply(kTCd,xm))
+    vTCd= np.transpose(np.multiply(kTCd,xm));
     vTCd = np.squeeze(np.asarray(vTCd))
     
     # If deterministic simulation:
     if flagD: 
-        Nb = vTC*ts
-        Nd = vTCd*ts
+        Nb = vTC*ts;
+        Nd = vTCd*ts;
         xgacN = genedata[0:numberofgenes]
         xginN = genedata[numberofgenes:numberofgenes*2]
         AllGenesVecN = []
@@ -94,6 +79,7 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
 
         # Generating random numbers and deciding which genes should turn off and on
         RandomNumbers = np.random.uniform(0,1,len(AllGenesVec))
+        # geneson=logical(AllGenesVec);
         geneson = AllGenesVec.astype(bool).astype(int)
         genesoff = np.logical_not(geneson).astype(int)
         ac2in = np.logical_and(np.transpose(geneson.flatten()),RandomNumbers>=poff)

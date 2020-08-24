@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-def RunPrep(flagD,Vn):
+def RunPrep(flagD,Vn,model):
     kGsRead = pd.read_csv('OmicsData.txt',header=0,index_col=0,sep="\t")
     gExp_mpc = np.float64(kGsRead.values[:,0])
     mExp_mpc = np.float64(kGsRead.values[:,1])
@@ -86,4 +86,4 @@ def RunPrep(flagD,Vn):
     tck50as = tck50as*(1/mpc2nmcf_Vn)
     tck50rs = tck50rs*(1/mpc2nmcf_Vn)
     
-    return genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs
+    return genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs 
