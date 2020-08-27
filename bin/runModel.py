@@ -29,20 +29,19 @@ model_output_dir = model_name
 parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
 parser.add_argument('--deterministic', metavar='flagD', type=int, help='0 for deterministic run, 1 for stochastic')
 parser.add_argument('--time', metavar='time', type=int, help='experiment run time (in hours)')
-parser.add_argument('--feedTime', metavar='time', type=int, help='time frame for gene to feed into smbl (seconds)')
 parser.add_argument('--Vn', metavar='Vn', help='?')
 parser.add_argument('--Vc', metavar='Vc', help='?')
 args = parser.parse_args()
 
 
-if args.time == None or args.feedTime == None or args.deterministic == None or args.Vn == None or args.Vc == None:
-    print("ERRROR: missing arguments. Need to pass --time, --feedTime, --deterministic. Use -h for help.")
+if args.time == None or args.deterministic == None or args.Vn == None or args.Vc == None:
+    print("ERRROR: missing arguments. Need to pass --time, --deterministic. Use -h for help.")
 
 flagD = args.deterministic
-ts = args.feedTime
 th = args.time
 Vn = float(args.Vn)
 Vc = float(args.Vc)
+ts = 30
 
 
 if flagD == 0:

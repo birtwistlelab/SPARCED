@@ -19,10 +19,7 @@ ADD . /app/
 RUN pip3 install -r requirements.txt
 RUN pip3 install jupyter
 
-#changing working directory in Docker container
-WORKDIR jupyter_notebooks
-
-WORKDIR /app/jupyter_notebooks
+# open directory as jupyter notebook
 ENV TINI_VERSION v0.6.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
