@@ -1,6 +1,6 @@
-# SPARCED-nf: A Nextflow Pipeline for SPARCED
+# SPARCED 
 
-SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friendly version of the SPARCED model (previously the mechanistic pan-cancer signaling model) by the Birtwistle Lab. With minimal set-up, a user can configure the model for high-intensity runs on a Kubernetes cluster (SPARCED-nf), or small-scale experiments on their local machine (SPARCED-jupyter). More information on the model itself can be found [here](https://github.com/birtwistlelab/SPARCED).
+SPARCED is a cell simulation application built from sub-models in the mechanistic ODE model. With minimal set-up, a user can configure the model for high-intensity runs on a Kubernetes cluster (SPARCED-nf), or small-scale experiments on their local machine (SPARCED-jupyter). More information on the model itself can be found [here](https://github.com/birtwistlelab/SPARCED).
 
 
 ## Dependencies
@@ -23,7 +23,6 @@ SPARCED-nf is a Nextflow pipeline designed to be a more scalable and user-friend
 1. Edit the files in the `input_data` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the configuration step.
 2. Use `./kube-runner/kube-load.sh <pvc-name> input_data` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_data/`.  __Important__: Before every run where you plan on uploading new data to the PVC, it's important that you run `./kube-runner/kube-login.sh <pvc-name>` and delete the currently existing `/workspaces/$USER/input_data/` folder. If not, you run the risk of your model selecting the wrong files.
 3. Edit the values in the `kube-nextflow.config` file in the `configs` folder (for help, see the config README [here](https://github.com/ebenz99/SPARCED-nf/blob/master/configs/README.md))
-<!-- 4. (Kubernetes only) Use `./kube-runner/kube-load.sh <pvc-name> configs` in the same way you did earlier to move your configuration files to the PVC. __Important__: If you do this more than once, `kube-login` into the cluster and delete the original copy--otherwise it will not be overwritten. -->
 
 #### Executing the workflow
 
