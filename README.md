@@ -33,7 +33,7 @@ SPARCED is a cell simulation application built from sub-models in the mechanisti
 
 #### Final SPARCED-nf notes
 
-- For problems, feel free to consult our [troubleshooting guide](https://github.com/ebenz99/SPARCED-nf/TROUBLESHOOTING.md) or create issue requests. 
+- For problems, feel free to consult our [troubleshooting guide](https://github.com/ebenz99/SPARCED-nf/blob/master/TROUBLESHOOTING.md) or create issue requests. 
 - For brave souls with a lot of local computer power but no Kubernetes cluster, SPARCED-nf is also built to be able to run locally. Simply launch with `nextflow run` instead of `kuberun` and work from the `configs/local-nextflow.config` template.
 
 ### SPARCED-jupyter
