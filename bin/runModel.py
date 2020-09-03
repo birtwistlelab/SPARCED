@@ -29,24 +29,26 @@ model_output_dir = model_name
 parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
 parser.add_argument('--deterministic', metavar='flagD', type=int, help='0 for deterministic run, 1 for stochastic')
 parser.add_argument('--time', metavar='time', type=int, help='experiment run time (in hours)')
-parser.add_argument('--Vn', metavar='Vn', help='?')
-parser.add_argument('--Vc', metavar='Vc', help='?')
+parser.add_argument('--Vn', metavar='Vn', help='the volume of the nucleus in liters')
+parser.add_argument('--Vc', metavar='Vc', help='the volume of the cytoplasm in liters')
+parser.add_argument('--outfile', metavar='outfile', help='the prefix for the name of the output files')
 args = parser.parse_args()
 
 
-if args.time == None or args.deterministic == None or args.Vn == None or args.Vc == None:
-    print("ERRROR: missing arguments. Need to pass --time, --deterministic. Use -h for help.")
+if args.time == None or args.deterministic == None or args.Vn == None or args.Vc == None or args.outfile == None:
+    print("ERROR: missing arguments. Need to pass --time, --deterministic, --Vn, --Vc, --outfile. Use -h for help.")
 
 flagD = args.deterministic
 th = args.time
 Vn = float(args.Vn)
 Vc = float(args.Vc)
+outfile = args.outfile
 ts = 30
 
 
 if flagD == 0:
     flagWr = 1
-    nmxlsfile = 'GrowthStim_stoc_'
+    nmxlsfile = outfile
     
     sys.path.insert(0, os.path.abspath(model_output_dir))
 
@@ -80,7 +82,7 @@ if flagD == 0:
 
 elif flagD == 1:
     flagWr = 1
-    nmxlsfile = 'GrowthStim_det_'
+    nmxlsfile = outfile
 
     sys.path.insert(0, os.path.abspath(model_output_dir))
     species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])

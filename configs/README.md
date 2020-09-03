@@ -21,6 +21,7 @@ For SPARCED-nf runs, unless you're intentionally trying to run locally (you'll k
 - `speciesVals` - what species value changes should be simulated in the runtime environment for the model (as opposed to the default build species)
 - `ratelawVals` - see above, but for ratelaws
 - `numCells` - how many cell lines should be run in parallel for each permutation of runtime parameters
+- `outfile` - the prefix for the file outputs of the model
 
 
 ### Background on the speciesVals Parameter
@@ -33,7 +34,7 @@ params {
 }
 ```
 
-In the above case, the parameter is targeting the value of four different species products (HGF, E, P, and INS). Each product is comma-separated and named by its unique identifier in the first column of `input_data/Species.txt`, followed by a colon, followed by whatever value that product should be initialized to for simulation. There are two types of initializations the config can parse: single and sweep. If you'd like that product to be initialized to a single value across all simulations, just enter that value after the colon for that product. For a sweep, the syntax is `<lower-bound>-<upper-bound>(<increment>)`. In this case, both bounds are inclusive, and if the increment isn't valid for those two bounds, the job will exit prematurely. If unused, set to an empty string.
+In the above case, the parameter is targeting the value of four different species products (HGF, E, P, and INS). Each product is comma-separated and named by its unique identifier in the first column of `input_files/Species.txt`, followed by a colon, followed by whatever value that product should be initialized to for simulation. There are two types of initializations the config can parse: single and sweep. If you'd like that product to be initialized to a single value across all simulations, just enter that value after the colon for that product. For a sweep, the syntax is `<lower-bound>-<upper-bound>(<increment>)`. In this case, both bounds are inclusive, and if the increment isn't valid for those two bounds, the job will exit prematurely. If unused, set to an empty string.
 
 
 ### Background on the ratelawVals Parameter

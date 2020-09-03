@@ -31,20 +31,13 @@ def changeRatelawVals(valString):
     with open('Ratelaws.txt', 'w') as f:
         csv.writer(f, delimiter="\t", lineterminator="\n").writerows(file_data)
 
-
-# parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
-# parser.add_argument('--paramfile', metavar='paramfile', help='file contains values to change in the species input data file')
-# args = parser.parse_args()
-
 paramfile = glob.glob('sweep*.txt')[0]
     
-
 speciesDirective = None
 ratelawDirective = None
 with open(paramfile,"r") as f:
     speciesDirective = f.readline().strip()
     ratelawDirective = f.readline().strip()
-
 
 changeSpeciesVals(speciesDirective)
 changeRatelawVals(ratelawDirective)

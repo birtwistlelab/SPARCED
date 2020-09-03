@@ -49,7 +49,7 @@ process model {
     """
     cd ${buildFolder}
     changeRunParams.py
-    runModel.py --deterministic ${params.deterministic} --time ${params.time} --Vn ${params.Vn} --Vc ${params.Vc}
+    runModel.py --deterministic ${params.deterministic} --time ${params.time} --Vn ${params.Vn} --Vc ${params.Vc} --outfile ${params.outfile}
     rm -rf SPARCED
     cd ..
     cp -rf ${buildFolder}/* .

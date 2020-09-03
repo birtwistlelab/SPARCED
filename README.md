@@ -20,8 +20,8 @@ SPARCED is a cell simulation application built from sub-models in the mechanisti
 
 #### Setting up the model
 
-1. Edit the files in the `input_data` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the configuration step.
-2. Use `./kube-runner/kube-load.sh <pvc-name> input_data` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_data/`.  __Important__: Before every run where you plan on uploading new data to the PVC, it's important that you run `./kube-runner/kube-login.sh <pvc-name>` and delete the currently existing `/workspaces/$USER/input_data/` folder. If not, you run the risk of your model selecting the wrong files.
+1. Edit the files in the `input_files` folder as needed. These values will be built into the *creation* of the model. For editing the values present for the model's *simulation*, see the directions accompanying the configuration step.
+2. Use `./kube-runner/kube-load.sh <pvc-name> input_files` to load your input data to the PVC of the kube cluster. `kube-load.sh` assumes a `/workspaces` folder as the base of the PVC, and saves this input data at the path `/workspaces/$USER/input_files/`.  __Important__: Before every run where you plan on uploading new data to the PVC, it's important that you run `./kube-runner/kube-login.sh <pvc-name>` and delete the currently existing `/workspaces/$USER/input_files/` folder. If not, you run the risk of your model selecting the wrong files.
 3. Edit the values in the `kube-nextflow.config` file in the `configs` folder (for help, see the config README [here](https://github.com/ebenz99/SPARCED-nf/blob/master/configs/README.md))
 
 #### Executing the workflow
@@ -47,7 +47,7 @@ Once you have Docker installed, this requires very little setup.
     - N.B. `testnb1` is just a sample name for the container you're creating with this command. If you try to create another container with this name, delete the old one first with `docker rm testnb1`
 4. Viola! You can now begin stepping through the commands in each of the files in the `jupyter_notebooks` folder to learn more about the model and perform small runs.
 
-To use custom data in the SPARCED-jupyter workflow, start a container with the commands above, and look at the `input_data` directory. Delete the files currently there you'd like to replace, then run `docker cp <datafile> <container-name(e.g. testnb1)>:/app/input_data/<datafile>` to replace them.
+To use custom data in the SPARCED-jupyter workflow, start a container with the commands above, and look at the `input_files` directory. Delete the files currently there you'd like to replace, then run `docker cp <datafile> <container-name(e.g. testnb1)>:/app/input_files/<datafile>` to replace them.
 
 ## Acknowledgements:
 
