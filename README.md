@@ -1,6 +1,6 @@
-# SPARCED 
+# SPARCED
 
-SPARCED is a cell simulation application built from sub-models in the mechanistic ODE model. With minimal set-up, a user can configure the model for high-intensity runs on a Kubernetes cluster (SPARCED-nf), or small-scale experiments on their local machine (SPARCED-jupyter). More information on the model itself can be found [here](https://github.com/birtwistlelab/SPARCED).
+SPARCED is a simple and efficient pipeline for construction, merging, expansion, and simulation of large-scale, single-cell mechanistic models. With minimal set-up, users can configure the model for high-intensity runs on a Kubernetes cluster (SPARCED-nf), or small-scale experiments on their local machine (SPARCED-jupyter). More information on the model itself can be found [here](THEPAPERLINKHERE).
 
 
 ## Dependencies
@@ -9,7 +9,7 @@ SPARCED is a cell simulation application built from sub-models in the mechanisti
 - [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html) *(Optional: SPARCED-nf requirement only)*
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) *(Optional: SPARCED-nf requirement only)* 
 
-## Walkthrough/Instructions
+## Instructions
 ### Setting up your environment
 
 1. Clone this repository from the command-line using `git clone --recursive https://github.com/birtwistlelab/SPARCED.git`
@@ -39,7 +39,7 @@ SPARCED is a cell simulation application built from sub-models in the mechanisti
 ### SPARCED-jupyter
 
 #### Setup
-Once you have Docker installed, this requires very little setup.
+Once you have Docker installed, follow the simple steps below.
 
 1. In a terminal window, use the command `docker login` with your account credentials. If you don't have an account yet, head over to hub.docker.com to set one up.
 2. Use `docker pull ebensma/sparced-notebook:latest` to download the latest version of the docker image
@@ -47,19 +47,19 @@ Once you have Docker installed, this requires very little setup.
     - N.B. `testnb1` is just a sample name for the container you're creating with this command. If you try to create another container with this name, delete the old one first with `docker rm testnb1`
 4. Viola! You can now begin stepping through the commands in each of the files in the `jupyter_notebooks` folder to learn more about the model and perform small runs.
 
-To use custom data in the SPARCED-jupyter workflow, start a container with the commands above, and look at the `input_files` directory. Delete the files currently there you'd like to replace, then run `docker cp <datafile> <container-name(e.g. testnb1)>:/app/input_files/<datafile>` to replace them.
+To use custom data in the SPARCED-jupyter workflow, start a container with the commands above, and look at the `input_files` directory. Delete the current files and run `docker cp <datafile> <container-name(e.g. testnb1)>:/app/input_files/<datafile>` to replace them.
 
 ## Acknowledgements:
 
-SPARCED is a product of [Birtwistle Lab](http://www.birtwistlelab.com/) and multiple colloborators, including [Feltus Lab](https://www.clemson.edu/science/departments/genetics-biochemistry/people/profiles/ffeltus), [Hasenauer Lab](https://www.mathematics-and-life-sciences.uni-bonn.de/en/group-members/jan-hasenauer), and [Robert Blake](https://bbs.llnl.gov/RobertBlake.html) from LLNL.
+SPARCED is a product of [Birtwistle Lab](http://www.birtwistlelab.com/) and we greatly appreciate the help from multiple colloborators, including [Feltus Lab](https://www.clemson.edu/science/departments/genetics-biochemistry/people/profiles/ffeltus), [Hasenauer Lab](https://www.mathematics-and-life-sciences.uni-bonn.de/en/group-members/jan-hasenauer), and [Robert C. Blake](https://bbs.llnl.gov/RobertBlake.html) from LLNL.
 
 ## The Acronym:
-The acronym SPARCED is composed of following elements, based on the sub-models in the mechanistic ODE model.
+The acronym SPARCED is composed of following elements, based on the sub-models in the large-scale mechanistic model.
 
 ### S: SBML
 ### P: Proliferation
 ### A: Apoptosis
-###  R: Receptor
-###  C: Cell
+###  R: Receptor Signaling
+###  C: Cell Cycle
 ###  E: Expression
-###  D: Death
+###  D: DNA Damage
