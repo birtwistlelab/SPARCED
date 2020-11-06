@@ -1,6 +1,6 @@
 # SPARCED
 
-SPARCED is a simple and efficient pipeline for construction, merging, expansion, and simulation of large-scale, single-cell mechanistic models. With minimal set-up, users can configure the model for high-intensity runs on a Kubernetes cluster (SPARCED-nf), or small-scale experiments on their local machine (SPARCED-jupyter). More information on the model itself can be found [here](THEPAPERLINKHERE).
+SPARCED is a simple and efficient pipeline for construction, merging, expansion, and simulation of large-scale, single-cell mechanistic models. With minimal set-up, users can configure the model for parallel runs on a Kubernetes cluster (SPARCED-nf), or small-scale experiments on their local machine (SPARCED-jupyter). More information on the model itself can be found [here](THEPAPERLINKHERE).
 
 
 ## Dependencies
