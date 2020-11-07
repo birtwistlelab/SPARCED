@@ -1,4 +1,4 @@
-# should be built from the SPARCED/docker directory (avoids adding excess files)
+# should be built from the root directory of the repo
 # BUILD: docker build -t sparced -f docker/nf.Dockerfile .
 # TAG: docker tag sparced birtwistlelab/sparced:latest
 # PUSH: docker push birtwistlelab/sparced:latest

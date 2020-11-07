@@ -1,6 +1,6 @@
-# must be built from root directory using the -f directive
+# must be built from root directory of the repo
 # BUILD: docker build -t sparced-notebook -f docker/jupyter.Dockerfile .
-# TEST LOCAL: docker run -p 8888:8888 --name testnb1 -i -t sparced-notebook
+# TEST LOCAL (optional): docker run -p 8888:8888 --name testnb1 -i -t sparced-notebook
 # TAG: docker tag sparced-notebook birtwistlelab/sparced-notebook:latest
 # PUSH: docker push birtwistlelab/sparced-notebook:latest
 
