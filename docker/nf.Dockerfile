@@ -1,7 +1,7 @@
 # should be built from the SPARCED/docker directory (avoids adding excess files)
 # BUILD: docker build -t sparced -f docker/nf.Dockerfile .
-# TAG: docker tag sparced ebensma/sparced:latest
-# PUSH: docker push ebensma/sparced:latest
+# TAG: docker tag sparced birtwistlelab/sparced:latest
+# PUSH: docker push birtwistlelab/sparced:latest
 
 FROM ubuntu:18.04
 

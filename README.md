@@ -42,12 +42,16 @@ SPARCED is a simple and efficient pipeline for construction, merging, expansion,
 Once you have Docker installed, follow the simple steps below.
 
 1. In a terminal window, use the command `docker login` with your account credentials. If you don't have an account yet, head over to hub.docker.com to set one up.
-2. Use `docker pull ebensma/sparced-notebook:latest` to download the latest version of the docker image
-3. Once the download is complete, use `docker run -p 8888:8888 --name testnb1 -i -t ebensma/sparced-notebook:latest`, and in your browser, go to the last URL produced in your terminal from this command
+2. Use `docker pull birtwistlelab/sparced-notebook:latest` to download the latest version of the docker image
+3. Once the download is complete, use `docker run -p 8888:8888 --name testnb1 -i -t birtwistlelab/sparced-notebook:latest`, and in your browser, go to the last URL produced in your terminal from this command
     - N.B. `testnb1` is just a sample name for the container you're creating with this command. If you try to create another container with this name, delete the old one first with `docker rm testnb1`
 4. Viola! You can now begin stepping through the commands in each of the files in the `jupyter_notebooks` folder to learn more about the model and perform small runs.
 
 To use custom data in the SPARCED-jupyter workflow, start a container with the commands above, and look at the `input_files` directory. Delete the current files and run `docker cp <datafile> <container-name(e.g. testnb1)>:/app/input_files/<datafile>` to replace them.
+
+### SPARCED_Brep
+
+Original source for the model.
 
 ## Acknowledgements:
 

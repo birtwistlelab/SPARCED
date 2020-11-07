@@ -1,8 +1,8 @@
 # must be built from root directory using the -f directive
 # BUILD: docker build -t sparced-notebook -f docker/jupyter.Dockerfile .
 # TEST LOCAL: docker run -p 8888:8888 --name testnb1 -i -t sparced-notebook
-# TAG: docker tag sparced-notebook ebensma/sparced-notebook:latest
-# PUSH: docker push ebensma/sparced-notebook:latest
+# TAG: docker tag sparced-notebook birtwistlelab/sparced-notebook:latest
+# PUSH: docker push birtwistlelab/sparced-notebook:latest
 
 FROM ubuntu:18.04
 
