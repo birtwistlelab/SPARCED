@@ -53,12 +53,41 @@ ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 
 
+#%%
 
-
-
-
-gene_params = pd.read_csv(os.path.join('input_files',"cell_definition_mcf10a_sparced.csv"), index_col="gene")
+gene_params = pd.read_csv(os.path.join('input_files','OmicsData_extended.txt'), sep=',', index_col=0, header=0)
 model_genes = gene_params.index
+
+
+
+
+
+gene_params['kTLd'] = np.log(2)/gene_params['Protein_half_life_lit_h']/3600
+
+gene_params['kTLd'][np.isnan(gene_params['kTLd'].values)] = np.log(2)/gene_params['Protein_half_life_Schwan_h'][np.isnan(gene_params['kTLd'].values)]/3600
+
+gene_params['kTLd'][np.isnan(gene_params['kTLd'].values)] = 0
+
+gene_params['kTL_nat_cells'] = gene_params['Exp Protein']*gene_params['kTLd']/gene_params['Exp RNA']
+
+gene_params['kTL_nat_cells'][np.isnan(gene_params['kTL_nat_cells']) | np.isinf(gene_params['kTL_nat_cells'])] = 0
+
+gene_params['kTL_nat'] = gene_params['kTL_nat_cells']
+
+gene_params['kTL_nat'][np.where(gene_params['kTL_nat']==0)[0]] = gene_params['kTLnatLit_s'][np.where(gene_params['kTL_nat']==0)[0]]
+
+gene_params['kTL_nat'][np.where(gene_params['kTL_nat']==0)[0]] = gene_params['kTLnatSchwan_s'][np.where(gene_params['kTL_nat']==0)[0]]
+
+gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])] = gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])].values * 5
+
+
+CC_mrna = list(model_genes[5:25])
+del(CC_mrna[4:7])
+
+gene_params['Exp RNA'][np.isin(gene_params['Exp RNA'].index, CC_mrna)] = 17
+
+#%%
+
 numberofgenes = len(model_genes)
 S_PARCDL = pd.read_csv(os.path.join('input_files',"StoicMat.txt"), header=0, index_col=0, sep='\t')
 S_TL = S_PARCDL.iloc[:,2:(2+numberofgenes)]
@@ -90,6 +119,8 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
             
             if 'MDM2pro' in str(ratelaw[1]):
                 k50E_id_i = "k"+str(rowNum+1)+"_3"
+            elif 'CCND1' in str(ratelaw[1]) or 'CCND2' in str(ratelaw[1]) or 'CCND3' in str(ratelaw[1]):
+                k50E_id_i = "k"+str(rowNum+1)+"_5"
             else:
                 k50E_id_i = "k"+str(rowNum+1)+"_2"
             k50E_id.append(k50E_id_i)
@@ -109,6 +140,8 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
         kA87_id = "k"+str(rowNum)
     if ratelaw_sheet[rowNum][0] == 'vC104':
         kC82_id = "k"+str(rowNum)
+        
+
 
 #%%
 CC_species = model.getStateIds()[39:78]
@@ -128,12 +161,12 @@ DD_IC = pd.Series(index=DD_species, data=DD_IC)
 obs2exclude = ObsMat.columns[:26]
 obs2include = ObsMat.columns[26:]
 
-kTLest = gene_params['kTLnat_s'].values
+kTLest = gene_params['kTL_nat'].values
 
 
 
 
-mExp_mpc = gene_params['mrna_mpc'].copy()
+mExp_mpc = gene_params['Exp RNA'].copy()
 
 cell_params = pd.read_csv(os.path.join('input_files',"Compartments.txt"), header=0, index_col=0, sep='\t')
 Vc = cell_params.loc['Cytoplasm','volume']
@@ -178,9 +211,14 @@ for i in range(np.shape(S_TL)[1]):
         VxTL[i] = VxPARCDL[obs_ind]
         
 
-xp_mpc = gene_params['prot_mpc'].copy()
+# xp_mpc = gene_params['prot_mpc'].copy()
+
+xp_mpc = gene_params['kTL_nat'].values*mExp_mpc.values/gene_params['kTLd'].values
+
+xp_mpc[np.isnan(xp_mpc)] = 0
+
 pExp_nM = xp_mpc*1e9/(VxTL*6.023e23)
-x0PARCDL = np.matmul(S_TL.values,pExp_nM.values)
+x0PARCDL = np.matmul(S_TL.values,pExp_nM)
 x0PARCDL = pd.Series(x0PARCDL)
 x0PARCDL.index = S_TL.index
 mpc2nmcf_Vc=1E9/(Vc*6.023E+23)
@@ -339,14 +377,25 @@ model.setFixedParameterById(kdR0_id, kdR0)
 
 x0 = x0PARCDL
 model.setInitialStates(x0.values)
-kTL_initial = kTLest
 
 # [model.setParameterById(kTL_id[k],kTL_initial[k]) for k in range (len(kTL_id))]
-[model.setFixedParameterById(kTL_id[k],kTL_initial[k]) for k in range (len(kTL_id))]
+# [model.setFixedParameterById(kTL_id[k],kTL_initial[k]) for k in range (len(kTL_id))]
 
 
 solver = model.getSolver()
 solver.setMaxSteps = 1e10
+
+kC173 = 1.1111e-4
+
+kTL10_12 = kC173*17/sum(mExp_nM[9:12])
+model.setFixedParameterById('k12_1',kTL10_12)
+model.setFixedParameterById('k13_1',kTL10_12)
+model.setFixedParameterById('k14_1',kTL10_12)
+
+
+kTLest[9:12] = kTL10_12
+
+kTL_initial = kTLest
 
 
 #%%
@@ -547,8 +596,64 @@ kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kT
 kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=1)
 
 
+#%%
+
+totalcyclinDfromdata = sum(pExp_nM[9:12])
+totalp21fromdata = pExp_nM[25]
+
+kC173 = 1.1111e-4
+kC82 = 1.6667e-5*17
+
+x_in = rdata_new['x'][-1]
+
+th=0.001
+
+ratio_cd=0.5
+ratio_p21 = 0.5
+model.setInitialStates(x_in)
 
 
+
+kTL10_12 = kC173*17/sum(mExp_nM[9:12])
+model.setFixedParameterById('k12_1',kTL10_12)
+model.setFixedParameterById('k13_1',kTL10_12)
+model.setFixedParameterById('k14_1',kTL10_12)
+
+
+model.setFixedParameterById(kC82_id,kC82)
+
+ratio_cd_list = []
+kC173_list = []
+
+# for i in range(0,100):
+
+while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p21 > (1+th)):
+
+    rdata_loop = amici.runAmiciSimulation(model,solver)
+    
+    ratio_cd = totalcyclinDfromdata/sum(rdata_loop['x'][-1][[43,44,45,46,79]])
+    
+    if ratio_cd < (1-th) or ratio_cd > (1+th):        
+        f = 1 + (ratio_cd-1)*0.5
+        kC173 = kC173*f
+        kTL10_12 = kC173*17/sum(mExp_nM[9:12])
+        model.setFixedParameterById('k12_1',kTL10_12)
+        model.setFixedParameterById('k13_1',kTL10_12)
+        model.setFixedParameterById('k14_1',kTL10_12)
+
+    kC173_list.append(kC173)
+    ratio_cd_list.append(ratio_cd)
+    
+    ratio_p21 = totalp21fromdata/sum(rdata_loop['x'][-1][78:83])
+    
+    if ratio_p21 < (1-th) or ratio_p21 > (1+th):  
+        p = 1 + (ratio_p21-1)*0.5
+        kC82 = kC82/p
+        model.setFixedParameterById(kC82_id,kC82)
+    
+
+    
+    
 
 #%%
 
