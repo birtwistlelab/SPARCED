@@ -498,7 +498,7 @@ kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kT
 kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=1)
 
 
-#%% ajust Cd, p21
+#%% adjust Cd, p21
 
 totalcyclinDfromdata = sum(pExp_nM[9:12])
 totalp21fromdata = pExp_nM[25]
@@ -573,15 +573,171 @@ for k in range(len(kA87s)):
         x5last = x5
         kTLnew4last = kTLnew4
     
-    if flagA ==1:
+    if flagA == 1:
         kA87 = kA87s[k-1]
         model.setFixedParameterById(kA87_id, kA87)
         break
+
+x5 = x5last
+#%% adjust basal dna damage
+
+BRCA2 = x5['BRCA2']
+MSH6 = x5['MSH6']
+MGMT = x5['MGMT']
+Me = x5['Me']
+Ma = x5['Ma']
+
+fixdsb1 = model.getFixedParameterById('k313_1')
+fixmsh = model.getFixedParameterById('k314_1')
+fixmgmt = model.getFixedParameterById('k315_1')
+kDDE = model.getFixedParameterById('k316_2')
+kDEtop = model.getFixedParameterById('k316_4')
+Etop = model.getFixedParameterById('k316_3')
+kDnSP = model.getFixedParameterById('k316_5')
+kDkmSP = model.getFixedParameterById('k316_6')
+kDkmSS = model.getFixedParameterById('k267_3')
+kDkmDS = model.getFixedParameterById('k264_3')
+
+kDDbasal = 1e-6 # set this value manually
+
+damageDSB_cycling = kDDbasal/(fixdsb1*BRCA2)
+damageSSB_cycling = kDDbasal/(fixmsh*MSH6+fixmgmt*MGMT)
+
+#%%
+if damageDSB_cycling > kDkmDS:
+    np.disp('ERROR --- DSB damage is too high, must reduce kDDbasal or increase strength of repair')
     
-    
+if damageSSB_cycling > kDkmSS:
+    np.disp('ERROR --- SSB damage is too high, must reduce kDDbasal or increase strentgh of repair')
 
 
-    
+#%%
+# vdamage_on = (kDDbasal + kDDE*(Etop/(Etop+kDEtop)))*((Me+Ma)**kDnSP)/(((Me+Ma)**kDnSP)+(kDkmSP**kDnSP))
+
+vdamage_on = (kDDbasal + kDDE*(Etop/(Etop+kDEtop)))*(((Me+Ma)**kDnSP)/(((Me+Ma)**kDnSP)+(kDkmSP**kDnSP)))
+
+damageDSB = vdamage_on/(fixdsb1*BRCA2)
+damageSSB = vdamage_on/(fixmsh*MSH6+fixmgmt*MGMT)
+
+model.setFixedParameterById('k316_1', kDDbasal)
+
     
 
 #%%
+
+# Run simulation and get new steady state
+
+x5['damageDSB'] = damageDSB
+x5['damageSSB'] = damageSSB
+
+rdata_new = amici.runAmiciSimulation(model,solver)
+
+x6 = rdata_new['x'][-1]
+x6[x6<1e-6] = 0
+x6 = pd.Series(data=x6, index=ObsMat.index)
+
+#%%
+
+pcFos_cJun = x6['pcFos_cJun']
+cMyc = x6['cMyc']
+p53ac = x6['p53ac']
+FOXOnuc = x6['FOXOnuc']
+ppERKnuc = x6['ppERKnuc']
+pRSKnuc = x6['pRSKnuc']
+bCATENINnuc = x6['bCATENINnuc']
+
+genereg = pd.read_csv(os.path.join('input_files','GeneReg.txt'), sep='\t', header=0, index_col=0)
+
+numberofgenes = int(len(genereg.index))
+numberofTARs = int(len(genereg.columns))
+
+TAs = np.zeros([numberofgenes,numberofTARs])
+
+
+#%%
+
+kGsRead = pd.read_csv(os.path.join('input_files','OmicsData.txt'),header=0,index_col=0,sep='\t')
+gExp_mpc = np.float64(kGsRead.loc[:,'Exp GCN'].values)
+mExp_mpc = np.float64(kGsRead.loc[:,'Exp RNA'].values)
+kGin = np.float64(kGsRead.loc[:,'kGin'].values)
+kGac = np.float64(kGsRead.loc[:,'kGac'].values)
+# kTCleak = np.float64(kGsRead.loc[:,'kTCleak'].values)
+kTCmaxs = np.float64(kGsRead.loc[:,'kTCmaxs'].values)
+kTCd = np.float64(kGsRead.loc[:,'kTCd'].values)
+
+xgac_mpc_D = (kGac*gExp_mpc)/(kGin+kGac)
+
+TARsRead = pd.read_csv('GeneReg.txt',header=0,index_col=0,sep="\t")
+TARs0 = (TARsRead.values)
+
+tcnas = np.ones((numberofgenes, numberofTARs))
+tck50as = np.zeros((numberofgenes, numberofTARs))
+tcnrs = np.ones((numberofgenes, numberofTARs))
+tck50rs = np.zeros((numberofgenes, numberofTARs))
+
+for qq in range(numberofgenes):
+    for ww in range(numberofTARs):
+        pars = TARs0[qq,ww].find(';')
+        if pars>0:
+            nH = np.float(TARs0[qq,ww][0:pars])
+            kH = np.float(TARs0[qq,ww][pars+2::])
+            if nH>0:
+                tcnas[qq,ww] = nH
+                tck50as[qq,ww] = kH
+            else:
+                tcnrs[qq,ww] = abs(nH)
+                tck50rs[qq,ww] = kH
+
+mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
+# Convert to molecules per cell
+tck50as = tck50as*(1/mpc2nmcf_Vn)
+tck50rs = tck50rs*(1/mpc2nmcf_Vn)
+
+spnames = [ele for ele in model.getStateIds()]
+spIDs = []
+for qq in range(numberofTARs):
+    sps = spnames.index(TARsRead.columns[qq]) 
+    spIDs.append(sps)
+
+    
+TARarr = np.array(x6[spIDs])
+TAs = np.zeros((numberofgenes,numberofTARs))
+TRs = np.zeros((numberofgenes,numberofTARs))
+for qq in range(numberofTARs):
+    TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
+    TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
+TAs = TAs*(1.0/mpc2nmcf_Vn) # convert to mpc from nM
+TAs.flatten()
+TRs = TRs*(1.0/mpc2nmcf_Vn)
+TRs.flatten() 
+
+# make hills
+aa = np.divide(TAs,tck50as)
+TFa = np.power(aa,tcnas)
+TFa[np.isnan(TFa)] = 0.0
+bb = np.divide(TRs,tck50rs)
+TFr = np.power(bb,tcnrs)
+TFr[np.isnan(TFr)] = 0.0
+hills = np.sum(TFa,axis=1)/(1 + np.sum(TFa,axis=1) + np.sum(TFr,axis=1))
+# With AP1*cMYC exception:
+hills[9:12] = np.multiply((TFa[9:12,0]/(1+TFa[9:12,0])),(TFa[9:12,1]/(1+TFa[9:12,1])))
+
+# vTCd
+vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));
+vTCd = np.squeeze(np.asarray(vTCd))
+
+induced = np.multiply(np.multiply(xgac_mpc_D,kTCmaxs),hills)
+induced = induced.flatten()
+
+negativecheck = np.array(mExp_mpc,dtype=bool).astype(int)*(vTCd - induced)
+
+i2c = np.nonzero(negativecheck<0)[0]
+
+if len(i2c)!=0:
+    np.disp('WARNING -- Some induction term exceed degradation terms')
+    
+leak = vTCd-induced
+kTCleak_new=leak/xgac_mpc_D
+
+kTCleak_new[np.isnan(kTCleak_new)] = 0
+kTCleak_new[np.isinf(kTCleak_new)] = 0
