@@ -2768,7 +2768,7 @@
       <parameter id="k21_2" value="10" constant="true"/>
       <parameter id="k21_3" value="200" constant="true"/>
       <parameter id="k22_1" value="70.2683" constant="true"/>
-      <parameter id="k22_2" value="0.0878" constant="true"/>
+      <parameter id="k22_2" value="0.087800005" constant="true"/>
       <parameter id="k22_3" value="10" constant="true"/>
       <parameter id="k22_4" value="200" constant="true"/>
       <parameter id="k23_1" value="9.6619" constant="true"/>
