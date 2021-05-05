@@ -156,6 +156,8 @@ DD_IC = [296.62,6.2458,205.62,2.2305,0,0,6.2458,6.2458,6.2458,6.2457,6.2457,6.24
 DD_IC = np.array([float(i) for i in DD_IC])
 DD_IC = pd.Series(index=DD_species, data=DD_IC)
 
+#%%
+
 
 
 
@@ -527,13 +529,16 @@ model.setFixedParameterById(kC82_id,kC82)
 ratio_cd_list = []
 kC173_list = []
 
+cd_sp = np.argwhere(ObsMat.loc[:,'Cd'].values>0).flatten()
+p21_sp = np.argwhere(ObsMat.loc[:,'p21'].values>0).flatten()
+
 # for i in range(0,100):
 
 while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p21 > (1+th)):
 
     rdata_loop = amici.runAmiciSimulation(model,solver)
     
-    ratio_cd = totalcyclinDfromdata/sum(rdata_loop['x'][-1][[43,44,45,46,79]])
+    ratio_cd = totalcyclinDfromdata/sum(rdata_loop['x'][-1][cd_sp])
     
     if ratio_cd < (1-th) or ratio_cd > (1+th):        
         f = 1 + (ratio_cd-1)*0.5
@@ -546,7 +551,7 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
     kC173_list.append(kC173)
     ratio_cd_list.append(ratio_cd)
     
-    ratio_p21 = totalp21fromdata/sum(rdata_loop['x'][-1][78:83])
+    ratio_p21 = totalp21fromdata/sum(rdata_loop['x'][-1][p21_sp])
     
     if ratio_p21 < (1-th) or ratio_p21 > (1+th):  
         p = 1 + (ratio_p21-1)*0.5
