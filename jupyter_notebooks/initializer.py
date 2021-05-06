@@ -660,10 +660,17 @@ TAs = np.zeros([numberofgenes,numberofTARs])
 
 
 #%%
+mExp_mpc[5:9] = 17.0
+mExp_mpc[12:25] = 17.0
+
+
+
+
+
 
 kGsRead = pd.read_csv(os.path.join('input_files','OmicsData.txt'),header=0,index_col=0,sep='\t')
 gExp_mpc = np.float64(kGsRead.loc[:,'Exp GCN'].values)
-mExp_mpc = np.float64(kGsRead.loc[:,'Exp RNA'].values)
+# mExp_mpc = np.float64(kGsRead.loc[:,'Exp RNA'].values)
 kGin = np.float64(kGsRead.loc[:,'kGin'].values)
 kGac = np.float64(kGsRead.loc[:,'kGac'].values)
 # kTCleak = np.float64(kGsRead.loc[:,'kTCleak'].values)
