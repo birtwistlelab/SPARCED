@@ -231,7 +231,11 @@ mExp_nM=mExp_mpc*mpc2nmcf_Vc
 x0PARCDL['Ribosome'] = ICf.IC_Xinitialized['Ribosome']
 x0PARCDL['M'] = ICf.IC_Xinitialized['M']
 x0PARCDL['PIP2'] = ICf.IC_Xinitialized['PIP2']
-x0PARCDL['mT'] = ICf.IC_Xinitialized['mT']
+# x0PARCDL['mT'] = ICf.IC_Xinitialized['mT']
+x0PARCDL['mT'] = 126.499
+
+
+
 
 for i in range(len(CC_IC)):
     x0PARCDL[CC_IC.index[i]] = CC_IC[CC_IC.index[i]]
@@ -479,6 +483,7 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
     rdata_new = amici.runAmiciSimulation(model,solver)
     x_new = rdata_new['x']
     x1 = pd.Series(data=rdata_new['x'][-1], index=ObsMat.index)
+    x1[x1.values<1e-6] = 0.0
     flagA = 0
     
     apop_def = x0['PARP']*.5
@@ -498,6 +503,55 @@ kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kT
 kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kTLnew1, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=0)
 
 kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=1)
+
+
+#%% temp - x_compare
+# def return_var_name(variable):
+#     for name in globals():
+#         # if eval(name) == variable:
+#         if eval(name) is variable:
+#             var_name = str(name)
+#             # print(name)
+#     return var_name
+
+
+#bCATENIN_GSK3b
+
+mat_species = np.loadtxt(os.path.join('temp','mat_species.csv'),dtype=str,delimiter=',')
+
+def x_compare(xn,xm):
+    x_m = pd.Series(data=np.loadtxt(os.path.join('temp',str(xm+'.txt')),dtype=float,delimiter='\t'), index=mat_species)
+    x_m = x_m.drop(labels=['bCATENIN_GSK3b'])
+    x_m[x_m.values<1e-6] = 0.0
+    xc = pd.DataFrame({'amici':xn[:len(x_m)], 'matlab':x_m.values})
+    
+    return xc
+    
+#x_compare(x1,'x1')
+
+x_compare(x1,'x1')
+x_compare(x2,'x2')
+
+
+x0_m = pd.Series(data=np.loadtxt(os.path.join('temp','x0.txt'),dtype=float,delimiter='\t'), index=mat_species)
+x0_m = x0_m.drop(labels=['bCATENIN_GSK3b'])
+x0_m[x0_m<1e-6] = 0.0
+
+x0c = pd.DataFrame({'amici':x0[:len(x0_m)], 'matlab':x0_m.values})
+
+
+
+# x1_m = pd.Series(data=np.loadtxt(os.path.join('temp','x1.txt'),dtype=float,delimiter='\t'), index=mat_species)
+# x1_m = x1_m.drop(labels=['bCATENIN_GSK3b'])
+# x1_m[x1_m<1e-6] = 0.0
+
+# x1c = pd.DataFrame({'amici':x1[:len(x1_m)], 'matlab':x1_m.values})
+
+
+x1c = x_compare(x1,'x1')
+x2c = x_compare(x2,'x2')
+x3c = x_compare(x3,'x3')
+
 
 
 #%% adjust Cd, p21
@@ -560,6 +614,9 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
  
     
 x4 = pd.Series(data=rdata_loop['x'][-1], index=ObsMat.index)
+
+
+x4c = x_compare(x4, 'x4')
 #%% adjust c8
 
 kA77 = 3.162075e-9
