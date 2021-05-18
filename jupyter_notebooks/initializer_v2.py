@@ -344,7 +344,7 @@ def obs2gene_i (obs_name):
 
 # kTLest[obs2gene_i('p27')] = kTLest[obs2gene_i('p27')]/1.6
 # kTLest[obs2gene_i('E2Frep')]=kTLest[obs2gene_i('E2Frep')]*1.65
-# kTLest[obs2gene_i('E2Frep')] = kTLest[obs2gene_i('E2Frep')]*1.575
+# kTLest[obs2gene_i('E2Frep')] = kTLest[obs2gene_i('E2Frep')]*1.575model.getFixedParameterById('k12_1')
 # kTLest[obs2gene_i('p53')] = kTLest[obs2gene_i('p53')]/100
 # kTLest[obs2gene_i('p53')] = 0
 
@@ -377,6 +377,8 @@ model.setFixedParameterById(kC82_id, kC82)
 model.setFixedParameterById(kbR0_id, kbR0)
 model.setFixedParameterById(kbRi_id, kbRi)
 model.setFixedParameterById(kdR0_id, kdR0)
+# model.setFixedParameterById('k316_1', 0.0) #kDDbasal
+
 
 [model.setFixedParameterById(k50E_id[k],0) for k in range(len(k50E_id))]
 
@@ -529,8 +531,8 @@ def x_compare(xn,xm):
     
 #x_compare(x1,'x1')
 
-x_compare(x1,'x1')
-x_compare(x2,'x2')
+# x_compare(x1,'x1')
+# x_compare(x2,'x2')
 
 
 x0_m = pd.Series(data=np.loadtxt(os.path.join('temp','x0.txt'),dtype=float,delimiter='\t'), index=mat_species)
@@ -614,12 +616,19 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
  
     
 x4 = pd.Series(data=rdata_loop['x'][-1], index=ObsMat.index)
+x4[x4.values<1e-6] = 0.0
 
 
 x4c = x_compare(x4, 'x4')
+
+kTLnew3[9:12] = kTL10_12
 #%% adjust c8
 
 kA77 = 3.162075e-9
+
+# kA77 = 1.581038e-8
+
+
 model.setFixedParameterById(kA77_id, kA77)
 
 
@@ -641,8 +650,58 @@ for k in range(len(kA87s)):
         break
 
 x5 = x5last
+kTLnew4 = kTLnew4last
+
+
+x5[x5.values<1e-6] = 0.0
 
 model.setInitialStates(x5.values)
+[model.setFixedParameterById(kTL_id[k], kTLnew4[k]) for k in range(len(kTL_id))]
+
+
+x5c = x_compare(x5,'x5')
+
+
+#%% temp - test x levels
+# kA77 = 3.162075e-9
+# kA77 = 1.581038e-8
+# model.setFixedParameterById(kA77_id, kA77)
+# model.setFixedParameterById(kA87_id, kA87)
+# # model.setInitialStates(x5.values)
+# model.setInitialStates(x4.values)
+
+
+
+
+
+
+# model.setInitialStates(x4.values)
+# rdata = amici.runAmiciSimulation(model,solver)
+
+# x6_test = rdata['x'][-1]
+# x6_test[x6_test<1e-6] = 0.0
+# x6_test = pd.Series(data=x6_test, index=ObsMat.index)
+
+# kA77 = 3.162075e-9
+# kA87s = [1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
+
+
+# model.setFixedParameterById(kA77_id, kA77)
+
+# model.setFixedParameterById(kA87_id, kA87s[1])
+
+# kTLnew4, rdata_loop, x5, flagA = kTLadjustwhile(model,solver,x4, obs0, kTL_id, kTLnew3, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=1)
+
+# x5_test = rdata_loop['x'][-1]
+
+# x5_test = pd.Series(data=x5_test, index=ObsMat.index)
+# x5_test[x5_test.values<1e-6] = 0.0
+
+
+# x5c_test = x_compare(x5_test,'x5')
+
+
+
 #%% adjust basal dna damage
 
 BRCA2 = x5['BRCA2']
@@ -694,11 +753,17 @@ model.setFixedParameterById('k316_1', kDDbasal)
 x5['damageDSB'] = damageDSB
 x5['damageSSB'] = damageSSB
 
+
 rdata_new = amici.runAmiciSimulation(model,solver)
 
 x6 = rdata_new['x'][-1]
 x6[x6<1e-6] = 0
 x6 = pd.Series(data=x6, index=ObsMat.index)
+
+
+x6c = x_compare(x6,'x6')
+
+
 
 #%%
 
