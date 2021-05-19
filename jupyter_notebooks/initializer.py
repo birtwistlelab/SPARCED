@@ -11,13 +11,6 @@ import amici.plotting
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import time
-import yaml
-import pypesto
-import pypesto.petab
-import pypesto.optimize as optimize
-import pypesto.visualize as visualize
-import petab
 
 
 mpl.rcParams['figure.dpi'] = 300
@@ -42,10 +35,6 @@ params_model = []
 [params_model.append(p.getId()) for p in sbml_model.getListOfParameters()]
 
 
-# get kTLids
-
-# fileRatelaws = "Ratelaws.txt"
-# Ratelawsf = pd.read_csv(fileRatelaws,header=0,index_col=0,sep='\t')
 ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws.txt')])
 ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
@@ -214,8 +203,6 @@ for i in range(np.shape(S_TL)[1]):
         VxTL[i] = VxPARCDL[obs_ind]
         
 
-# xp_mpc = gene_params['prot_mpc'].copy()
-
 xp_mpc = gene_params['kTL_nat'].values*mExp_mpc.values/gene_params['kTLd'].values
 
 xp_mpc[np.isnan(xp_mpc)] = 0
@@ -231,7 +218,6 @@ mExp_nM=mExp_mpc*mpc2nmcf_Vc
 x0PARCDL['Ribosome'] = ICf.IC_Xinitialized['Ribosome']
 x0PARCDL['M'] = ICf.IC_Xinitialized['M']
 x0PARCDL['PIP2'] = ICf.IC_Xinitialized['PIP2']
-# x0PARCDL['mT'] = ICf.IC_Xinitialized['mT']
 x0PARCDL['mT'] = 126.499
 
 
@@ -315,23 +301,14 @@ def timecourse_obs(obs_name,rdata,obs0_def=obs0):
     plt.ylabel(str(obs_name))
     plt.xlabel('time(h)')
     plt.title('obs timecourse')
-    # plt.savefig(os.getcwd()+'/plots/obs/'+str(obs_name)+'_'+str(time.time())+'.png', dpi = 300)
     plt.show
     
     
 
 #%% obs to exclude
 
-# kTL  modifier
-
-#kTLest[5] = kTLest[5]*5
-
-
 
 kTL_mod = np.ones(numberofgenes)*0.25
-
-
-
 
 def obs2gene (obs_name):
     gene = model_genes[np.nonzero(np.matmul(ObsMat.values[:,list(ObsMat.columns).index(obs_name)],S_TL.values))[0]]
@@ -341,21 +318,6 @@ def obs2gene_i (obs_name):
     gene_i = np.nonzero(np.matmul(ObsMat.values[:,list(ObsMat.columns).index(obs_name)],S_TL.values))[0]
     return gene_i
 
-
-# kTLest[obs2gene_i('p27')] = kTLest[obs2gene_i('p27')]/1.6
-# kTLest[obs2gene_i('E2Frep')]=kTLest[obs2gene_i('E2Frep')]*1.65
-# kTLest[obs2gene_i('E2Frep')] = kTLest[obs2gene_i('E2Frep')]*1.575model.getFixedParameterById('k12_1')
-# kTLest[obs2gene_i('p53')] = kTLest[obs2gene_i('p53')]/100
-# kTLest[obs2gene_i('p53')] = 0
-
-# obs_kTLmod = ['p53', 'Mdm2', 'RB', 'Ca', 'p27', 'Cdk1', 'p21', 'BAD', 'BIM', 'RSK',
-#        'bCATENIN', 'mTOR', 'TSC1', 'FOXO', 'EIF4E', 'p18', 'E2Frep', 'p107',
-#        'p130']
-
-# for m in obs_kTLmod:
-#     kTL_mod[obs2gene_i(m)] = 0.5
-
-# kTL_mod[obs2gene_i('E2Frep')] = 0.1
 
 for m in obs2exclude:
     kTL_mod[obs2gene_i(m)] = 1.0
@@ -377,7 +339,7 @@ model.setFixedParameterById(kC82_id, kC82)
 model.setFixedParameterById(kbR0_id, kbR0)
 model.setFixedParameterById(kbRi_id, kbRi)
 model.setFixedParameterById(kdR0_id, kdR0)
-# model.setFixedParameterById('k316_1', 0.0) #kDDbasal
+model.setFixedParameterById('k316_1', 0.0) #kDDbasal
 
 
 [model.setFixedParameterById(k50E_id[k],0) for k in range(len(k50E_id))]
@@ -385,9 +347,6 @@ model.setFixedParameterById(kdR0_id, kdR0)
 
 x0 = x0PARCDL
 model.setInitialStates(x0.values)
-
-# [model.setParameterById(kTL_id[k],kTL_initial[k]) for k in range (len(kTL_id))]
-# [model.setFixedParameterById(kTL_id[k],kTL_initial[k]) for k in range (len(kTL_id))]
 
 
 solver = model.getSolver()
@@ -476,8 +435,6 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
         
         obs_notmatched = ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
         obs_notmatched = obs_notmatched[~np.isin(obs_notmatched,obs2exclude)]
-
-        # obs_matched = ObsMat.columns[~ObsMat.columns.isin(obs_notmatched)]               
         m = len(obs_notmatched)
         
     kTLnew = kTLest
@@ -505,6 +462,7 @@ kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kT
 kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kTLnew1, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=0)
 
 kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=1)
+
 
 
 
@@ -540,7 +498,6 @@ kC173_list = []
 cd_sp = np.argwhere(ObsMat.loc[:,'Cd'].values>0).flatten()
 p21_sp = np.argwhere(ObsMat.loc[:,'p21'].values>0).flatten()
 
-# for i in range(0,100):
 
 while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p21 > (1+th)):
 
@@ -575,7 +532,6 @@ kTLnew3[9:12] = kTL10_12
 
 kA77 = 3.162075e-9
 
-# kA77 = 1.581038e-8
 
 
 model.setFixedParameterById(kA77_id, kA77)
@@ -642,7 +598,6 @@ if damageSSB_cycling > kDkmSS:
 
 
 #%%
-# vdamage_on = (kDDbasal + kDDE*(Etop/(Etop+kDEtop)))*((Me+Ma)**kDnSP)/(((Me+Ma)**kDnSP)+(kDkmSP**kDnSP))
 
 vdamage_on = (kDDbasal + kDDE*(Etop/(Etop+kDEtop)))*(((Me+Ma)**kDnSP)/(((Me+Ma)**kDnSP)+(kDkmSP**kDnSP)))
 
@@ -698,10 +653,8 @@ mExp_mpc[12:25] = 17.0
 
 kGsRead = pd.read_csv(os.path.join('input_files','OmicsData.txt'),header=0,index_col=0,sep='\t')
 gExp_mpc = np.float64(kGsRead.loc[:,'Exp GCN'].values)
-# mExp_mpc = np.float64(kGsRead.loc[:,'Exp RNA'].values)
 kGin = np.float64(kGsRead.loc[:,'kGin'].values)
 kGac = np.float64(kGsRead.loc[:,'kGac'].values)
-# kTCleak = np.float64(kGsRead.loc[:,'kTCleak'].values)
 kTCmaxs = np.float64(kGsRead.loc[:,'kTCmaxs'].values)
 kTCd = np.float64(kGsRead.loc[:,'kTCd'].values)
 

@@ -377,7 +377,7 @@ model.setFixedParameterById(kC82_id, kC82)
 model.setFixedParameterById(kbR0_id, kbR0)
 model.setFixedParameterById(kbRi_id, kbRi)
 model.setFixedParameterById(kdR0_id, kdR0)
-# model.setFixedParameterById('k316_1', 0.0) #kDDbasal
+model.setFixedParameterById('k316_1', 0.0) #kDDbasal
 
 
 [model.setFixedParameterById(k50E_id[k],0) for k in range(len(k50E_id))]
