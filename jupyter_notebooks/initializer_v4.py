@@ -78,9 +78,8 @@ Step1_mrna = Step1_mrna[Step1_mrna.index.notnull()]
 for gene_symbol in Step1_mrna.index:
     gene_params.loc[gene_symbol,'Exp RNA'] = Step1_mrna[gene_symbol]
 
-#%% test - read reaction id from sbml
 
-# reactions_all = [sbml_model.getListOfReactions().get(r).getId() for r in range(len(sbml_model.getListOfReactions()))]
+
 
 reactions_all = [ratelaw_sheet[i][0] for i in range(len(ratelaw_sheet))]
 
@@ -95,7 +94,6 @@ reactions_vTL = list(filter(vTL_pattern.match, reactions_all))
 
 numberofgenes = len(model_genes)
 S_PARCDL = pd.read_csv(os.path.join('input_files',"StoicMat.txt"), header=0, index_col=0, sep='\t')
-# S_TL = S_PARCDL.iloc[:,2:(2+numberofgenes)]
 S_TL = S_PARCDL.loc[:,S_PARCDL.columns.isin(reactions_vTL)]
 
 ObsMat = pd.read_csv(os.path.join('input_files','Observables.txt'), header=0, index_col=0, sep='\t')
@@ -109,7 +107,7 @@ k50E_values = []
 kTL_genes = []
 
 
-Step1_par = pd.Series()
+Step1_par_id = pd.Series()
 
 for rowNum, ratelaw in enumerate(ratelaw_data):
     
@@ -138,34 +136,33 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
     
     if ratelaw_sheet[rowNum][0] == 'vbR':
         kbR0_id = "k"+str(rowNum)+"_1"
+        Step1_par_id = Step1_par_id.append(pd.Series(kbR0_id,index=['kbR0']))
         kbRi_id = "k"+str(rowNum)+"_2"
-        
+        Step1_par_id = Step1_par_id.append(pd.Series(kbRi_id,index=['kbRi']))
     if ratelaw_sheet[rowNum][0] == 'vdR':
         kdR0_id = "k"+str(rowNum)
-
+        Step1_par_id = Step1_par_id.append(pd.Series(kdR0_id,index=['kdR0']))
     if ratelaw_sheet[rowNum][0] == 'vA77':
         kA77_id = "k"+str(rowNum)
-        Step1_par = Step1_par.append(pd.Series(kA77_id,index=['kA77']))
+        Step1_par_id = Step1_par_id.append(pd.Series(kA77_id,index=['kA77']))
     if ratelaw_sheet[rowNum][0] == 'vA87':
         kA87_id = "k"+str(rowNum)
-        Step1_par = Step1_par.append(pd.Series(kA87_id,index=['kA87']))
+        Step1_par_id = Step1_par_id.append(pd.Series(kA87_id,index=['kA87']))
     if ratelaw_sheet[rowNum][0] == 'vC104':
         kC82_id = "k"+str(rowNum)
-        Step1_par = Step1_par.append(pd.Series(kC82_id,index=['kC82']))
+        Step1_par_id = Step1_par_id.append(pd.Series(kC82_id,index=['kC82']))
     if ratelaw_sheet[rowNum][0] == 'vD66':
         kDDbasal_id = "k"+str(rowNum)+"_1"
-        Step1_par = Step1_par.append(pd.Series(kDDbasal_id,index=['kDDbasal']))
+        Step1_par_id = Step1_par_id.append(pd.Series(kDDbasal_id,index=['kDDbasal']))
         
 
 
 
 #%%
 
+obs2exclude = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'), sep=',', usecols=['Step1_obs_excl'])
+obs2exclude = obs2exclude.values[obs2exclude.notnull()]
 
-
-
-obs2exclude = ObsMat.columns[:26]
-# obs2include = ObsMat.columns[26:]
 
 kTLest = gene_params['kTL_nat'].values
 
@@ -243,12 +240,12 @@ for sp in Step1sp.index:
 
 k50E_default = max(k50E_values)
 
-kA77 = 0 #BIM*Bax
-kA87 = 0 #C8 activation
-kC82 = 0.06/3600 ##p21 degradation
-kbRi = 0
-kdR0 = 0
-kbR0 = 0
+# kA77 = 0 #BIM*Bax
+# kA87 = 0 #C8 activation
+# kC82 = 0.06/3600 ##p21 degradation
+# kbRi = 0
+# kdR0 = 0
+# kbR0 = 0
 
 #%% functions
 
@@ -342,13 +339,23 @@ for m in obs2exclude:
 
 ts = 1000*3600
 model.setTimepoints(np.linspace(0,ts,1000))
-model.setFixedParameterById(kA77_id, kA77)
-model.setFixedParameterById(kA87_id, kA87)
-model.setFixedParameterById(kC82_id, kC82)
-model.setFixedParameterById(kbR0_id, kbR0)
-model.setFixedParameterById(kbRi_id, kbRi)
-model.setFixedParameterById(kdR0_id, kdR0)
-model.setFixedParameterById('k316_1', 0.0) #kDDbasal
+
+# model.setFixedParameterById(kA77_id, kA77)
+# model.setFixedParameterById(kA87_id, kA87)
+# model.setFixedParameterById(kC82_id, kC82)
+# model.setFixedParameterById(kbR0_id, kbR0)
+# model.setFixedParameterById(kbRi_id, kbRi)
+# model.setFixedParameterById(kdR0_id, kdR0)
+# model.setFixedParameterById('k316_1', 0.0) #kDDbasal
+
+
+Step1_par = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_par','Step1_par_val'],index_col='Step1_par')
+Step1_par = Step1_par[Step1_par.index.notnull()]
+
+
+
+
+[model.setFixedParameterById(Step1_par_id[Step1_par.index[i]],Step1_par[i]) for i in range(len(Step1_par))]
 
 
 [model.setFixedParameterById(k50E_id[k],0) for k in range(len(k50E_id))]
@@ -369,7 +376,9 @@ model.setFixedParameterById('k13_1',kTL10_12)
 model.setFixedParameterById('k14_1',kTL10_12)
 
 
-kTLest[9:12] = kTL10_12
+# kTLest[9:12] = kTL10_12
+
+kTLest[np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])] = kTL10_12
 
 kTL_initial = kTLest
 
@@ -477,11 +486,16 @@ kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kT
 
 #%% adjust Cd, p21
 
-totalcyclinDfromdata = sum(pExp_nM[9:12])
-totalp21fromdata = pExp_nM[25]
+totalcyclinDfromdata = sum(pExp_nM[np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])])
 
-kC173 = 1.1111e-4
-kC82 = 1.6667e-5*17
+
+totalp21fromdata = pExp_nM[list(model_genes).index('CDKN1A')]
+
+# kC173 = 1.1111e-4
+# kC82 = 1.6667e-5*17
+
+kC82 = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',usecols=['Step2_par','Step2_par_val'],index_col='Step2_par', squeeze=True)['kC82']
+
 
 x_in = rdata_new['x'][-1]
 
@@ -493,10 +507,10 @@ model.setInitialStates(x_in)
 
 
 
-kTL10_12 = kC173*17/sum(mExp_nM[9:12])
-model.setFixedParameterById('k12_1',kTL10_12)
-model.setFixedParameterById('k13_1',kTL10_12)
-model.setFixedParameterById('k14_1',kTL10_12)
+# kTL10_12 = kC173*17/sum(mExp_nM[9:12])
+# model.setFixedParameterById('k12_1',kTL10_12)
+# model.setFixedParameterById('k13_1',kTL10_12)
+# model.setFixedParameterById('k14_1',kTL10_12)
 
 
 model.setFixedParameterById(kC82_id,kC82)
@@ -725,7 +739,7 @@ hills = np.sum(TFa,axis=1)/(1 + np.sum(TFa,axis=1) + np.sum(TFr,axis=1))
 hills[9:12] = np.multiply((TFa[9:12,0]/(1+TFa[9:12,0])),(TFa[9:12,1]/(1+TFa[9:12,1])))
 
 # vTCd
-vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));
+vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));TFa[9:12,1]
 vTCd = np.squeeze(np.asarray(vTCd))
 
 induced = np.multiply(np.multiply(xgac_mpc_D,kTCmaxs),hills)
@@ -744,5 +758,7 @@ kTCleak_new=leak/xgac_mpc_D
 kTCleak_new[np.isnan(kTCleak_new)] = 0
 kTCleak_new[np.isinf(kTCleak_new)] = 0
 
-#%%
+#%% test ICs
 
+x6c = pd.read_csv('x6c.txt', sep='\t', header=0, index_col=0)
+x6c['amici_test'] = x6
