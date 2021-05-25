@@ -44,7 +44,7 @@ ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 #%% read initial parameters
 
-gene_params = pd.read_csv(os.path.join('input_files','OmicsData_extended.txt'), sep=',', index_col=0, header=0)
+gene_params = pd.read_csv(os.path.join('input_files','OmicsData_extended_u87.txt'), sep=',', index_col=0, header=0)
 model_genes = gene_params.index
 
 
@@ -378,30 +378,22 @@ kC173 = Step1_Cd['kC173']
 
 kTL10_12 = kC173/sum(mExp_nM[Cd_genes])
 
-# kC173 = 1.1111e-4
 
-
-# kTL10_12 = kC173*17/sum(mExp_nM[9:12])
-
-model.setFixedParameterById('k12_1',kTL10_12)
-model.setFixedParameterById('k13_1',kTL10_12)
-model.setFixedParameterById('k14_1',kTL10_12)
+# model.setFixedParameterById('k12_1',kTL10_12)
+# model.setFixedParameterById('k13_1',kTL10_12)
+# model.setFixedParameterById('k14_1',kTL10_12)
 
 [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
 
-
-
-# kTLest[9:12] = kTL10_12
-
-kTLest[np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])] = kTL10_12
+kTLest[Cd_genes] = kTL10_12
 
 kTL_initial = kTLest
 
 
+Step1_kR = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_kR','Step1_kR_val'],index_col='Step1_kR')
 
 
-
-def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE, flagR):
+def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE, flagR,Step1_kR):
     
     if flagE == 0:
         [model.setFixedParameterById(k50E_id[k],0) for k in range(len(k50E_id))]
@@ -413,10 +405,10 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
         model.setFixedParameterById(kbRi_id,0)
         model.setFixedParameterById(kdR0_id,0)
     elif flagR == 1:
-        kbRi = 0.04
-        kdR0 = 2.22e-6
-        nR = 5
-        k50R = 4.86        
+        kbRi = Step1_kR['kbRi']
+        kdR0 = Step1_kR['kdR0']
+        nR = Step1_kR['nR']
+        k50R = Step1_kR['k50R']        
         ps6ki = x0['pS6K']
         f1 = (ps6ki**nR)/(k50R**nR+ps6ki**nR)
         Rt = x0['Ribosome']
@@ -490,11 +482,11 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
 
 #%% adjust kTLs
 
-kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=0, flagR=0)
+kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 0, 0, Step1_kR)
 
-kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kTLnew1, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=0)
+kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kTLnew1, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1, 0, Step1_kR)
 
-kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=1)
+kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1, 1, Step1_kR)
 
 
 
@@ -521,17 +513,10 @@ ratio_p21 = 0.5
 model.setInitialStates(x_in)
 
 
-
-# kTL10_12 = kC173*17/sum(mExp_nM[9:12])
-# model.setFixedParameterById('k12_1',kTL10_12)
-# model.setFixedParameterById('k13_1',kTL10_12)
-# model.setFixedParameterById('k14_1',kTL10_12)
-
-
 model.setFixedParameterById(kC82_id,kC82)
 
-ratio_cd_list = []
-kC173_list = []
+# ratio_cd_list = []
+# kC173_list = []
 
 cd_sp = np.argwhere(ObsMat.loc[:,'Cd'].values>0).flatten()
 p21_sp = np.argwhere(ObsMat.loc[:,'p21'].values>0).flatten()
@@ -546,13 +531,15 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
     if ratio_cd < (1-th) or ratio_cd > (1+th):        
         f = 1 + (ratio_cd-1)*0.5
         kC173 = kC173*f
-        kTL10_12 = kC173*17/sum(mExp_nM[9:12])
-        model.setFixedParameterById('k12_1',kTL10_12)
-        model.setFixedParameterById('k13_1',kTL10_12)
-        model.setFixedParameterById('k14_1',kTL10_12)
+        kTL10_12 = kC173*17/sum(mExp_nM[Cd_genes])
+        [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
 
-    kC173_list.append(kC173)
-    ratio_cd_list.append(ratio_cd)
+        # model.setFixedParameterById('k12_1',kTL10_12)
+        # model.setFixedParameterById('k13_1',kTL10_12)
+        # model.setFixedParameterById('k14_1',kTL10_12)
+
+    # kC173_list.append(kC173)
+    # ratio_cd_list.append(ratio_cd)
     
     ratio_p21 = totalp21fromdata/sum(rdata_loop['x'][-1][p21_sp])
     
@@ -565,23 +552,24 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
 x4 = pd.Series(data=rdata_loop['x'][-1], index=ObsMat.index)
 x4[x4.values<1e-6] = 0.0
 
-kTLnew3[9:12] = kTL10_12
+kTLnew3[Cd_genes] = kTL10_12
 #%% adjust c8
 
-kA77 = 3.162075e-9
+# kA77 = 3.162075e-9
 
-
+kA77 = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',usecols=['Step3_kA77','Step3_kA77_val'],index_col='Step3_kA77', squeeze=True)['kA77']
 
 model.setFixedParameterById(kA77_id, kA77)
 
-
-kA87s = [1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
+kA87s = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',usecols=['Step3_kA87s'], squeeze=True)
+kA87s = kA87s.values[~np.isnan(kA87s.values)]
+# kA87s = [1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
 
 for k in range(len(kA87s)):
     
     model.setFixedParameterById(kA87_id, kA87s[k])
     
-    kTLnew4, rdata_loop, x5, flagA = kTLadjustwhile(model,solver,x4, obs0, kTL_id, kTLnew3, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE=1, flagR=1)
+    kTLnew4, rdata_loop, x5, flagA = kTLadjustwhile(model,solver,x4, obs0, kTL_id, kTLnew3, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1, 1, Step1_kR)
     
     if flagA == 0:
         x5last = x5
@@ -681,10 +669,12 @@ TAs = np.zeros([numberofgenes,numberofTARs])
 
 
 #%%
-mExp_mpc[5:9] = 17.0
-mExp_mpc[12:25] = 17.0
+# mExp_mpc[5:9] = 17.0
+# mExp_mpc[12:25] = 17.0
 
 
+for gene_symbol in Step1_mrna.index:
+    mExp_mpc[gene_symbol] = Step1_mrna[gene_symbol]
 
 
 
@@ -751,10 +741,10 @@ TFr = np.power(bb,tcnrs)
 TFr[np.isnan(TFr)] = 0.0
 hills = np.sum(TFa,axis=1)/(1 + np.sum(TFa,axis=1) + np.sum(TFr,axis=1))
 # With AP1*cMYC exception:
-hills[9:12] = np.multiply((TFa[9:12,0]/(1+TFa[9:12,0])),(TFa[9:12,1]/(1+TFa[9:12,1])))
+hills[Cd_genes] = np.multiply((TFa[Cd_genes,0]/(1+TFa[Cd_genes,0])),(TFa[Cd_genes,1]/(1+TFa[Cd_genes,1])))
 
 # vTCd
-vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));TFa[9:12,1]
+vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));TFa[Cd_genes,1]
 vTCd = np.squeeze(np.asarray(vTCd))
 
 induced = np.multiply(np.multiply(xgac_mpc_D,kTCmaxs),hills)
@@ -777,3 +767,7 @@ kTCleak_new[np.isinf(kTCleak_new)] = 0
 
 x6c = pd.read_csv('x6c.txt', sep='\t', header=0, index_col=0)
 x6c['amici_test'] = x6
+
+kTCleak_c = pd.DataFrame([])
+kTCleak_c['old'] = kGsRead['kTCleak']
+kTCleak_c['new'] = kTCleak_new
