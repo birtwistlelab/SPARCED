@@ -47,12 +47,6 @@ def RunPrep(flagD,Vn,model):
     xgac_mpc = xgac_mpc.ravel()
     xgin_mpc = gExp_mpc-xgac_mpc
     xgin_mpc = xgin_mpc.ravel()
-    
-    # kTCleak (deterministic)
-    aa = np.multiply(kTCd,mExp_mpc)
-    kTCleak2 = np.divide(aa,xgac_mpc_D)
-    kTCleak2[np.isnan(kTCleak2)] = 0.0
-    kTCleak2[np.isinf(kTCleak2)] = 0.0
 
     genedata = []
     if flagD==1:
@@ -86,4 +80,4 @@ def RunPrep(flagD,Vn,model):
     tck50as = tck50as*(1/mpc2nmcf_Vn)
     tck50rs = tck50rs*(1/mpc2nmcf_Vn)
     
-    return genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs 
+    return genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs 
