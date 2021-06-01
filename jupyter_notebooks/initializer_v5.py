@@ -87,8 +87,11 @@ vTL_pattern = re.compile("vTL\d+")
 
 reactions_vTL = list(filter(vTL_pattern.match, reactions_all))
 
+#%% read params_all
 
+params_all = pd.read_csv(os.path.join('input_files','params_all.csv'), header=0, index_col=0, sep=',')
 
+str(params_all.index[np.logical_and(params_all['rxn'].values=='vbR', params_all['idx'].values==int(2))][0])
 
 #%% parameter IDs
 
@@ -193,18 +196,30 @@ for m in mrna_filter:
 
 
 
-VxPARCDL = ICf.loc[:,'compartment'].copy()
+# VxPARCDL = ICf.loc[:,'compartment'].copy()
 
 
-for i in range(len(VxPARCDL)):
-    if VxPARCDL[i] == "Cytoplasm":
-        VxPARCDL[i] = Vc
-    elif VxPARCDL[i] == "Nucleus":
-        VxPARCDL[i] = Vn
-    elif VxPARCDL[i] == "Mitochondrion":
-        VxPARCDL[i] = Vm
-    elif VxPARCDL[i] == "Extracellular":
-        VxPARCDL[i] = Ve
+# for i in range(len(VxPARCDL)):
+#     if VxPARCDL[i] == "Cytoplasm":
+#         VxPARCDL[i] = Vc
+#     elif VxPARCDL[i] == "Nucleus":
+#         VxPARCDL[i] = Vn
+#     elif VxPARCDL[i] == "Mitochondrion":
+#         VxPARCDL[i] = Vm
+#     elif VxPARCDL[i] == "Extracellular":
+#         VxPARCDL[i] = Ve
+
+
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
+compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Compartments.txt')])
+Vc = float(compartment_sheet[compartment_sheet[:,0]=='Cytoplasm',1])
+species_names = np.array([species_sheet[i][0] for i in range(1,len(species_sheet))])
+VxPARCDL = np.array([species_sheet[i][1] for i in range(1,len(species_sheet))])
+VxPARCDL = [float(compartment_sheet[compartment_sheet[:,0]==VxPARCDL[i],1][0]) for i in range(len(VxPARCDL))]
+VxPARCDL = pd.Series(VxPARCDL, index=species_names)
+
+
+
 
 
 VxTL = np.ones(numberofgenes)*Vc

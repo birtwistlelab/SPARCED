@@ -98,6 +98,8 @@ ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 # builds the important ratelaw+stoic lines into the txt file 
 paramnames = []
 paramvals = []
+paramrxns = []
+paramidxs = []
 for rowNum, ratelaw in enumerate(ratelaw_data):
     reactants = []
     products = []
@@ -119,6 +121,9 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
         #the parameter
         paramnames.append("k"+str(rowNum+1))
         paramvals.append(np.double(ratelaw[1]))
+        paramrxns.append(ratelaw_sheet[rowNum+1][0])
+        paramidxs.append(int(0))
+        
     else:
         # specific formula (non-mass-action)
         formula = ratelaw[1]
@@ -128,15 +133,20 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
         if len(params) == 1:
             paramnames.append("k"+str(rowNum+1)+"_"+str(j))
             paramvals.append(float(ratelaw[j+1]))
+            paramrxns.append(ratelaw_sheet[rowNum+1][0])
+            paramidxs.append(int(0))
             pattern = 'k\D*\d*'
             compiled = re.compile(pattern)
             matches = compiled.finditer(formula)
             for ematch in matches:
                 formula = formula.replace(ematch.group(),paramnames[-1])
         else:
-            for p in params:
+            # for p in params:
+            for q,p in enumerate(params):    
                 paramnames.append("k"+str(rowNum+1)+"_"+str(j))
                 paramvals.append(float(ratelaw[j+1]))
+                paramrxns.append(ratelaw_sheet[rowNum+1][0])
+                paramidxs.append(q)
                 pattern1 = 'k(\D*)\d*'+'_'+str(j)
                 compiled1 = re.compile(pattern1)
                 matches1 = compiled1.finditer(formula)
@@ -157,7 +167,10 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
     else:
         fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
         
-        
+params_all = pd.DataFrame({'value':paramvals,'rxn':paramrxns,'idx':paramidxs},index=paramnames)
+params_all.to_csv(os.path.join(input_data_folder,'params_all.csv'),sep=',',header=True, index=True)
+
+
 # Write compartment ICs
 fileModel.write("\n  # Compartment initializations:\n")
 for idx in range(len(compartments)):
