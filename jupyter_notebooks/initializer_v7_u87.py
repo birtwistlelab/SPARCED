@@ -157,10 +157,11 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
 obs2exclude = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'), sep=',', usecols=['Step1_obs_excl'])
 obs2exclude = obs2exclude.values[obs2exclude.notnull()]
 
+np.append(obs2exclude,'PTEN')
 
 kTLest = gene_params['kTL_nat'].values
 
-
+kTLest[101] = 0.0 #PTEN
 
 
 mExp_mpc = gene_params['Exp RNA'].copy()
@@ -215,10 +216,11 @@ x0PARCDL.index = S_TL.index
 mpc2nmcf_Vc=1E9/(Vc*6.023E+23)
 mExp_nM=mExp_mpc*mpc2nmcf_Vc
 
-
+mExp_nM = pd.Series(data=mExp_nM.values, index=mrna_id)
 
 for m in mrna_id:
-    x0PARCDL[m] = ICf.loc[m, 'IC_Xinitialized']
+    # x0PARCDL[m] = ICf.loc[m, 'IC_Xinitialized']
+    x0PARCDL[m] = mExp_nM[m]
 
 
 Step1sp = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_sp','Step1_val'],index_col='Step1_sp')
@@ -238,6 +240,8 @@ xp_mpc_c['matlab'] = pd.read_csv(os.path.join('temp','xp_mpc_u87.txt'),sep=',',s
 pExp_nM_c = pd.DataFrame(pExp_nM)
 pExp_nM_c['matlab'] = pd.read_csv(os.path.join('temp','pExp_nM_u87.txt'),sep='\t',squeeze=True,header=None).values
 
+VxTL_c = pd.DataFrame(VxTL,index=model_genes)
+VxTL_c['matlab'] = pd.read_csv(os.path.join('temp','VxTL_u87.txt'),sep='\t',squeeze=True,header=None).values
 #%% functions
 
 x0 = x0PARCDL
@@ -502,9 +506,15 @@ def x_compare(xn,xm):
 
 x0_c = x_compare(x0,'x0_u87')
 
+x1_c = x_compare(x1,'x1_u87')
 
+x2_c = x_compare(x2,'x2_u87')
 
+x3_c = x_compare(x3,'x3_u87')
 
+obs_c = pd.DataFrame(data=obs0, index=list(model.getObservableIds()))
+obs_c['matlab'] = np.loadtxt(os.path.join('temp',str('obs0_u87'+'.txt')),dtype=float,delimiter='\t')
+obs_c['x3_amici'] = rdata_new['y'][-1]
 #%% adjust Cd, p21
 
 totalcyclinDfromdata = sum(pExp_nM[np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])])
@@ -532,6 +542,9 @@ model.setFixedParameterById(kC82_id,kC82)
 cd_sp = np.argwhere(ObsMat.loc[:,'Cd'].values>0).flatten()
 p21_sp = np.argwhere(ObsMat.loc[:,'p21'].values>0).flatten()
 
+count = 0
+
+#%%
 
 while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p21 > (1+th)):
 
@@ -540,7 +553,7 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
     ratio_cd = totalcyclinDfromdata/sum(rdata_loop['x'][-1][cd_sp])
     
     if ratio_cd < (1-th) or ratio_cd > (1+th):        
-        f = 1 + (ratio_cd-1)*0.5
+        f = 1 + (ratio_cd-1)*0.25
         kC173 = kC173*f
         kTL10_12 = kC173*17/sum(mExp_nM[Cd_genes])
         [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
@@ -553,12 +566,44 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
         p = 1 + (ratio_p21-1)*0.5
         kC82 = kC82/p
         model.setFixedParameterById(kC82_id,kC82)
+    
+    count += 1
  
     
 x4 = pd.Series(data=rdata_loop['x'][-1], index=ObsMat.index)
 x4[x4.values<1e-6] = 0.0
 
 kTLnew3[Cd_genes] = kTL10_12
+#%% temp - adjust kTL10_12 manually
+
+# while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p21 > (1+th)):
+
+# rdata_loop = amici.runAmiciSimulation(model,solver)
+
+# ratio_cd = totalcyclinDfromdata/sum(rdata_loop['x'][-1][cd_sp])
+
+# if ratio_cd < (1-th) or ratio_cd > (1+th):        
+#     f = 1 + (ratio_cd-1)*0.25
+#     kC173 = kC173*f
+#     kTL10_12 = kC173*17/sum(mExp_nM[Cd_genes])
+#     [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
+
+
+    
+    # ratio_p21 = totalp21fromdata/sum(rdata_loop['x'][-1][p21_sp])
+    
+    # if ratio_p21 < (1-th) or ratio_p21 > (1+th):  
+    #     p = 1 + (ratio_p21-1)*0.5
+    #     kC82 = kC82/p
+    #     model.setFixedParameterById(kC82_id,kC82)
+    
+    # count += 1
+
+#%% test - obs
+
+obs4 = pd.Series(data=rdata_loop['y'][-1],index=ObsMat.columns)
+
+
 #%% adjust c8
 
 
@@ -597,6 +642,10 @@ x5[x5.values<1e-6] = 0.0
 model.setInitialStates(x5.values)
 [model.setFixedParameterById(kTL_id[k], kTLnew4[k]) for k in range(len(kTL_id))]
 
+#%% temp/compare x levels
+
+x4_c = x_compare(x4,'x4_u87')
+x5_c = x_compare(x5,'x5_u87')
 
 
 #%% adjust basal dna damage
