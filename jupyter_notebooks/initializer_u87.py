@@ -9,20 +9,16 @@ import importlib
 import amici
 import amici.plotting
 
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-
-
-mpl.rcParams['figure.dpi'] = 300
 
 #%% load model and input files
 
-# load model
+wd = str(os.getcwd()).replace("jupyter_notebooks","")
+
 
 sbml_file = "SPARCED.xml"
 model_name= sbml_file[0:-4]
 model_output_dir = model_name
-sys.path.insert(0, os.path.abspath(model_output_dir))
+sys.path.insert(0, os.path.join(wd,model_output_dir))
 model_module = importlib.import_module(model_name)
 model = model_module.getModel()
 
@@ -35,16 +31,15 @@ params_model = []
 [params_model.append(p.getId()) for p in sbml_model.getListOfParameters()]
 
 
-ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws.txt')])
+ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Ratelaws.txt'))])
 ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 
 
 
 
-#%% read initial parameters
-
-gene_params = pd.read_csv(os.path.join('input_files','OmicsData_extended_u87.txt'), sep=',', index_col=0, header=0)
+#%% pre-process
+gene_params = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'), sep=',', index_col=0, header=0)
 model_genes = gene_params.index
 
 
@@ -69,8 +64,18 @@ gene_params['kTL_nat'][np.where(gene_params['kTL_nat']==0)[0]] = gene_params['kT
 
 gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])] = gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])].values * 5
 
+ratios_kTL=pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep='\t',header=None,squeeze=True).values
 
-Step1_mrna = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_mrna','Step1_mrna_mpc'],index_col='Step1_mrna')
+ratios_kTL[101] = 0.0 #PTEN
+
+mExp_mpc = gene_params['Exp RNA'].copy()
+
+
+xp_mpc = ratios_kTL*mExp_mpc
+
+xp_mpc[np.isnan(xp_mpc)] = 0
+
+Step1_mrna = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_mrna','Step1_mrna_mpc'],index_col='Step1_mrna')
 Step1_mrna = Step1_mrna[Step1_mrna.index.notnull()]
 
 
@@ -89,14 +94,19 @@ reactions_vTL = list(filter(vTL_pattern.match, reactions_all))
 
 
 
+params_all = pd.read_csv(os.path.join(wd,'input_files','params_all.csv'), header=0, index_col=0, sep=',')
 
-#%% parameter IDs
+def params_getid(rxn,idx):
+    param_id = str(params_all.index[np.logical_and(params_all['rxn'].values==rxn, params_all['idx'].values==int(idx))][0])
+    return param_id
+
+
 
 numberofgenes = len(model_genes)
-S_PARCDL = pd.read_csv(os.path.join('input_files',"StoicMat.txt"), header=0, index_col=0, sep='\t')
+S_PARCDL = pd.read_csv(os.path.join(wd,'input_files',"StoicMat.txt"), header=0, index_col=0, sep='\t')
 S_TL = S_PARCDL.loc[:,S_PARCDL.columns.isin(reactions_vTL)]
 
-ObsMat = pd.read_csv(os.path.join('input_files','Observables.txt'), header=0, index_col=0, sep='\t')
+ObsMat = pd.read_csv(os.path.join(wd,'input_files','Observables.txt'), header=0, index_col=0, sep='\t')
 NumObs = len(ObsMat.columns)
 
 
@@ -107,7 +117,6 @@ k50E_values = []
 kTL_genes = []
 
 
-Step1_par_id = pd.Series()
 
 for rowNum, ratelaw in enumerate(ratelaw_data):
     
@@ -134,44 +143,22 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
             k50E_value_i = params_i[-1]
             k50E_values.append(k50E_value_i)   
     
-    if ratelaw_sheet[rowNum][0] == 'vbR':
-        kbR0_id = "k"+str(rowNum)+"_1"
-        Step1_par_id = Step1_par_id.append(pd.Series(kbR0_id,index=['kbR0']))
-        kbRi_id = "k"+str(rowNum)+"_2"
-        Step1_par_id = Step1_par_id.append(pd.Series(kbRi_id,index=['kbRi']))
-    if ratelaw_sheet[rowNum][0] == 'vdR':
-        kdR0_id = "k"+str(rowNum)
-        Step1_par_id = Step1_par_id.append(pd.Series(kdR0_id,index=['kdR0']))
-    if ratelaw_sheet[rowNum][0] == 'vA77':
-        kA77_id = "k"+str(rowNum)
-        Step1_par_id = Step1_par_id.append(pd.Series(kA77_id,index=['kA77']))
-    if ratelaw_sheet[rowNum][0] == 'vA87':
-        kA87_id = "k"+str(rowNum)
-        Step1_par_id = Step1_par_id.append(pd.Series(kA87_id,index=['kA87']))
-    if ratelaw_sheet[rowNum][0] == 'vC104':
-        kC82_id = "k"+str(rowNum)
-        Step1_par_id = Step1_par_id.append(pd.Series(kC82_id,index=['kC82']))
-    if ratelaw_sheet[rowNum][0] == 'vD66':
-        kDDbasal_id = "k"+str(rowNum)+"_1"
-        Step1_par_id = Step1_par_id.append(pd.Series(kDDbasal_id,index=['kDDbasal']))
-        
 
 
 
-#%%
-
-obs2exclude = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'), sep=',', usecols=['Step1_obs_excl'])
+obs2exclude = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'), sep=',', usecols=['Step1_obs_excl'])
 obs2exclude = obs2exclude.values[obs2exclude.notnull()]
 
+np.append(obs2exclude,'PTEN')
 
 kTLest = gene_params['kTL_nat'].values
 
-
+kTLest[101] = 0.0 #PTEN
 
 
 mExp_mpc = gene_params['Exp RNA'].copy()
 
-cell_params = pd.read_csv(os.path.join('input_files',"Compartments.txt"), header=0, index_col=0, sep='\t')
+cell_params = pd.read_csv(os.path.join(wd,'input_files',"Compartments.txt"), header=0, index_col=0, sep='\t')
 Vc = cell_params.loc['Cytoplasm','volume']
 Vn = cell_params.loc['Nucleus','volume']
 Vm = cell_params.loc['Mitochondrion','volume']
@@ -181,7 +168,7 @@ volumeofcell = Vc + Vn
 
 
 fileSpecies = 'Species.txt' # input
-ICf = pd.read_csv(os.path.join('input_files',fileSpecies),header=0,index_col=0,sep='\t')
+ICf = pd.read_csv(os.path.join(wd,'input_files',fileSpecies),header=0,index_col=0,sep='\t')
 
 
 mrna_id = []
@@ -190,21 +177,16 @@ for m in mrna_filter:
     mrna_id.append(m)
 
 
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Species.txt'), encoding='latin-1')])
+compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Compartments.txt'))])
+Vc = float(compartment_sheet[compartment_sheet[:,0]=='Cytoplasm',1])
+species_names = np.array([species_sheet[i][0] for i in range(1,len(species_sheet))])
+VxPARCDL = np.array([species_sheet[i][1] for i in range(1,len(species_sheet))])
+VxPARCDL = [float(compartment_sheet[compartment_sheet[:,0]==VxPARCDL[i],1][0]) for i in range(len(VxPARCDL))]
+VxPARCDL = pd.Series(VxPARCDL, index=species_names)
 
 
 
-VxPARCDL = ICf.loc[:,'compartment'].copy()
-
-
-for i in range(len(VxPARCDL)):
-    if VxPARCDL[i] == "Cytoplasm":
-        VxPARCDL[i] = Vc
-    elif VxPARCDL[i] == "Nucleus":
-        VxPARCDL[i] = Vn
-    elif VxPARCDL[i] == "Mitochondrion":
-        VxPARCDL[i] = Vm
-    elif VxPARCDL[i] == "Extracellular":
-        VxPARCDL[i] = Ve
 
 
 VxTL = np.ones(numberofgenes)*Vc
@@ -214,9 +196,6 @@ for i in range(np.shape(S_TL)[1]):
         VxTL[i] = VxPARCDL[obs_ind]
         
 
-xp_mpc = gene_params['kTL_nat'].values*mExp_mpc.values/gene_params['kTLd'].values
-
-xp_mpc[np.isnan(xp_mpc)] = 0
 
 pExp_nM = xp_mpc*1e9/(VxTL*6.023e23)
 x0PARCDL = np.matmul(S_TL.values,pExp_nM)
@@ -225,13 +204,13 @@ x0PARCDL.index = S_TL.index
 mpc2nmcf_Vc=1E9/(Vc*6.023E+23)
 mExp_nM=mExp_mpc*mpc2nmcf_Vc
 
-
+mExp_nM = pd.Series(data=mExp_nM.values, index=mrna_id)
 
 for m in mrna_id:
-    x0PARCDL[m] = ICf.loc[m, 'IC_Xinitialized']
+    x0PARCDL[m] = mExp_nM[m]
 
 
-Step1sp = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_sp','Step1_val'],index_col='Step1_sp')
+Step1sp = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_sp','Step1_val'],index_col='Step1_sp')
 
 for sp in Step1sp.index:
     x0PARCDL[sp] = Step1sp[sp]
@@ -240,14 +219,6 @@ for sp in Step1sp.index:
 
 k50E_default = max(k50E_values)
 
-# kA77 = 0 #BIM*Bax
-# kA87 = 0 #C8 activation
-# kC82 = 0.06/3600 ##p21 degradation
-# kbRi = 0
-# kdR0 = 0
-# kbR0 = 0
-
-#%% functions
 
 x0 = x0PARCDL
 
@@ -263,55 +234,6 @@ def get_observables(xout, VxPARCDL, Vc):
     return Obs
 
 obs0 = get_observables(x0.values, VxPARCDL.values, Vc)
-def array_editor(array, inds, x0):
-    for k in range(len(inds)):
-        array[inds[k]] = x0[k]
-
-
-def fse(x,y):    
-    fs_error = ((x-y)/x)    
-    for i in range(len(fs_error)):
-        if np.isnan(fs_error[i]):
-            fs_error[i] = 0         
-    return fs_error
-
-def fe(x,y):    
-    f_error = ((x-y)/x)    
-    if np.isnan(f_error):
-        f_error = 0
-    if x == 0 and y == 0:
-        f_error = 0         
-    return f_error
-
-def timecourse(species,rdata):    
-    timeh = rdata['t']/3600
-    species_ind = np.nonzero(S_PARCDL.index==species)[0][0]        
-    x_t = rdata['x'][:,species_ind]
-    plt.scatter(timeh,x_t)
-    plt.ylabel(str(species))
-    plt.xlabel('time(h)')
-    plt.title('species timecourse')
-    plt.show
-
-
-
-def timecourse_obs(obs_name,rdata,obs0_def=obs0):
-    
-    timeh = rdata['t']/3600
-    obs_ind = np.nonzero(ObsMat.columns==str(obs_name))[0][0]
-    obs_t = rdata['y'][:,obs_ind]
-    plt.figure()
-    plt.scatter(timeh,obs_t)
-    plt.axhline(y=obs0_def[obs_ind],color='r')
-    plt.ylim(0,max(max(obs_t),obs0_def[obs_ind])*1.5)
-    plt.ylabel(str(obs_name))
-    plt.xlabel('time(h)')
-    plt.title('obs timecourse')
-    plt.show
-    
-    
-
-#%% obs to exclude
 
 
 kTL_mod = np.ones(numberofgenes)*0.25
@@ -340,22 +262,16 @@ for m in obs2exclude:
 ts = 1000*3600
 model.setTimepoints(np.linspace(0,ts,1000))
 
-# model.setFixedParameterById(kA77_id, kA77)
-# model.setFixedParameterById(kA87_id, kA87)
-# model.setFixedParameterById(kC82_id, kC82)
-# model.setFixedParameterById(kbR0_id, kbR0)
-# model.setFixedParameterById(kbRi_id, kbRi)
-# model.setFixedParameterById(kdR0_id, kdR0)
-# model.setFixedParameterById('k316_1', 0.0) #kDDbasal
 
+Step1_par = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_par_rxn','Step1_par_idx','Step1_par_val'])
+Step1_par = Step1_par[Step1_par.Step1_par_rxn.notnull()]
 
-Step1_par = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_par','Step1_par_val'],index_col='Step1_par')
-Step1_par = Step1_par[Step1_par.index.notnull()]
+Step1_par_ids = [str(params_all.index[np.logical_and(params_all['rxn'].values==Step1_par.Step1_par_rxn[i], params_all['idx'].values==int(Step1_par.Step1_par_idx[i]))][0]) for i in range(len(Step1_par.Step1_par_rxn))]
 
 
 
 
-[model.setFixedParameterById(Step1_par_id[Step1_par.index[i]],Step1_par[i]) for i in range(len(Step1_par))]
+[model.setFixedParameterById(Step1_par_ids[i],Step1_par.Step1_par_val[i]) for i in range(len(Step1_par_ids))]
 
 
 [model.setFixedParameterById(k50E_id[k],0) for k in range(len(k50E_id))]
@@ -371,17 +287,13 @@ solver.setMaxSteps = 1e10
 
 
 Cd_genes = np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])
-Step1_Cd = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_Cd_par','Step1_Cd_val'],index_col='Step1_Cd_par')
+Step1_Cd = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_Cd_par','Step1_Cd_val'],index_col='Step1_Cd_par')
 Step1_Cd = Step1_Cd[Step1_Cd.index.notnull()]
 
 kC173 = Step1_Cd['kC173']
 
 kTL10_12 = kC173/sum(mExp_nM[Cd_genes])
 
-
-# model.setFixedParameterById('k12_1',kTL10_12)
-# model.setFixedParameterById('k13_1',kTL10_12)
-# model.setFixedParameterById('k14_1',kTL10_12)
 
 [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
 
@@ -390,34 +302,14 @@ kTLest[Cd_genes] = kTL10_12
 kTL_initial = kTLest
 
 
-Step1_kR = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_kR','Step1_kR_val'],index_col='Step1_kR')
 
-
-def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE, flagR,Step1_kR):
+def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, flagE):
     
     if flagE == 0:
         [model.setFixedParameterById(k50E_id[k],0) for k in range(len(k50E_id))]
     elif flagE == 1:
         [model.setFixedParameterById(k50E_id[k],k50E_values[k]) for k in range(len(k50E_id))]
-    
-    if flagR == 0:
-        model.setFixedParameterById(kbR0_id,0)
-        model.setFixedParameterById(kbRi_id,0)
-        model.setFixedParameterById(kdR0_id,0)
-    elif flagR == 1:
-        kbRi = Step1_kR['kbRi']
-        kdR0 = Step1_kR['kdR0']
-        nR = Step1_kR['nR']
-        k50R = Step1_kR['k50R']        
-        ps6ki = x0['pS6K']
-        f1 = (ps6ki**nR)/(k50R**nR+ps6ki**nR)
-        Rt = x0['Ribosome']
-        kbR0 = Rt*kdR0 - kbRi*f1
         
-        model.setFixedParameterById(kbR0_id, kbR0)
-        model.setFixedParameterById(kbRi_id, kbRi)
-        model.setFixedParameterById(kdR0_id, kdR0)
-    
     model.setInitialStates(x0.values)
     
     [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
@@ -479,29 +371,68 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
     
     return kTLnew, rdata_new, x1, flagA
 
-
 #%% adjust kTLs
 
-kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 0, 0, Step1_kR)
-
-kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kTLnew1, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1, 0, Step1_kR)
-
-kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1, 1, Step1_kR)
 
 
+# Step 1, fixed EIF4E, no ribosome
 
 
-#%% adjust Cd, p21
+kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 0)
+
+
+# Step2, dynamic EIF4E, no ribosome
+
+kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kTLnew1, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
+
+
+
+# Step3, Add ribosome back
+
+
+Step3_par = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step3_par_rxn','Step3_par_idx','Step3_par_val'])
+Step3_par = Step3_par[Step3_par.Step3_par_rxn.notnull()]
+
+
+
+
+Step3_par_ids = [params_getid(Step3_par.Step3_par_rxn[i],Step3_par.Step3_par_idx[i]) for i in range(len(Step3_par.Step3_par_rxn))]
+
+
+
+kbRi = float(Step3_par.Step3_par_val[np.logical_and(Step3_par.Step3_par_rxn=='vbR',Step3_par.Step3_par_idx==int(1))])
+kdR0 = float(Step3_par.Step3_par_val[np.logical_and(Step3_par.Step3_par_rxn=='vdR',Step3_par.Step3_par_idx==int(0))])
+nR = float(Step3_par.Step3_par_val[np.logical_and(Step3_par.Step3_par_rxn=='vbR',Step3_par.Step3_par_idx==int(2))])
+k50R = float(Step3_par.Step3_par_val[np.logical_and(Step3_par.Step3_par_rxn=='vbR',Step3_par.Step3_par_idx==int(3))])
+
+
+   
+
+     
+ps6ki = x0['pS6K']
+f1 = (ps6ki**nR)/(k50R**nR+ps6ki**nR)
+Rt = x0['Ribosome']
+kbR0 = Rt*kdR0 - kbRi*f1
+
+Step3_par.Step3_par_val[(Step3_par['Step3_par_rxn']=='vbR')&(Step3_par['Step3_par_idx']==0)] = kbR0
+
+
+[model.setFixedParameterById(Step3_par_ids[i],Step3_par.Step3_par_val[i]) for i in range(len(Step3_par_ids))]
+
+
+
+kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
+
+
+#%% Step4, adjust Cd, p21
 
 totalcyclinDfromdata = sum(pExp_nM[np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])])
 
 
 totalp21fromdata = pExp_nM[list(model_genes).index('CDKN1A')]
 
-# kC173 = 1.1111e-4
-# kC82 = 1.6667e-5*17
-
-kC82 = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',usecols=['Step2_par','Step2_par_val'],index_col='Step2_par', squeeze=True)['kC82']
+kC82_id = params_all.index[np.logical_and(params_all.rxn=='vC104',params_all.idx==0)][0]
+kC82 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',usecols=['Step4_par','Step4_par_val'],index_col='Step4_par', squeeze=True)['kC82']
 
 
 x_in = rdata_new['x'][-1]
@@ -515,11 +446,9 @@ model.setInitialStates(x_in)
 
 model.setFixedParameterById(kC82_id,kC82)
 
-# ratio_cd_list = []
-# kC173_list = []
-
 cd_sp = np.argwhere(ObsMat.loc[:,'Cd'].values>0).flatten()
 p21_sp = np.argwhere(ObsMat.loc[:,'p21'].values>0).flatten()
+
 
 
 while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p21 > (1+th)):
@@ -529,17 +458,12 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
     ratio_cd = totalcyclinDfromdata/sum(rdata_loop['x'][-1][cd_sp])
     
     if ratio_cd < (1-th) or ratio_cd > (1+th):        
-        f = 1 + (ratio_cd-1)*0.5
+        f = 1 + (ratio_cd-1)*0.25
         kC173 = kC173*f
         kTL10_12 = kC173*17/sum(mExp_nM[Cd_genes])
         [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
 
-        # model.setFixedParameterById('k12_1',kTL10_12)
-        # model.setFixedParameterById('k13_1',kTL10_12)
-        # model.setFixedParameterById('k14_1',kTL10_12)
 
-    # kC173_list.append(kC173)
-    # ratio_cd_list.append(ratio_cd)
     
     ratio_p21 = totalp21fromdata/sum(rdata_loop['x'][-1][p21_sp])
     
@@ -547,29 +471,34 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
         p = 1 + (ratio_p21-1)*0.5
         kC82 = kC82/p
         model.setFixedParameterById(kC82_id,kC82)
+
  
     
 x4 = pd.Series(data=rdata_loop['x'][-1], index=ObsMat.index)
 x4[x4.values<1e-6] = 0.0
 
 kTLnew3[Cd_genes] = kTL10_12
-#%% adjust c8
 
-# kA77 = 3.162075e-9
 
-kA77 = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',usecols=['Step3_kA77','Step3_kA77_val'],index_col='Step3_kA77', squeeze=True)['kA77']
+#%% Step 5, adjust c8
+
+
+
+kA77_id = params_all.index[np.logical_and(params_all['rxn']=='vA77',params_all['idx']==0)][0]
+kA87_id = params_all.index[np.logical_and(params_all['rxn']=='vA87',params_all['idx']==0)][0]
+
+kA77 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',usecols=['Step5_kA77','Step5_kA77_val'],index_col='Step5_kA77', squeeze=True)['kA77']
 
 model.setFixedParameterById(kA77_id, kA77)
 
-kA87s = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',usecols=['Step3_kA87s'], squeeze=True)
+kA87s = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',usecols=['Step5_kA87s'], squeeze=True)
 kA87s = kA87s.values[~np.isnan(kA87s.values)]
-# kA87s = [1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
 
 for k in range(len(kA87s)):
     
     model.setFixedParameterById(kA87_id, kA87s[k])
     
-    kTLnew4, rdata_loop, x5, flagA = kTLadjustwhile(model,solver,x4, obs0, kTL_id, kTLnew3, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1, 1, Step1_kR)
+    kTLnew4, rdata_loop, x5, flagA = kTLadjustwhile(model,solver,x4, obs0, kTL_id, kTLnew3, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
     
     if flagA == 0:
         x5last = x5
@@ -590,8 +519,7 @@ model.setInitialStates(x5.values)
 [model.setFixedParameterById(kTL_id[k], kTLnew4[k]) for k in range(len(kTL_id))]
 
 
-
-#%% adjust basal dna damage
+#%% Step6, adjust basal dna damage
 
 BRCA2 = x5['BRCA2']
 MSH6 = x5['MSH6']
@@ -599,23 +527,23 @@ MGMT = x5['MGMT']
 Me = x5['Me']
 Ma = x5['Ma']
 
-fixdsb1 = model.getFixedParameterById('k313_1')
-fixmsh = model.getFixedParameterById('k314_1')
-fixmgmt = model.getFixedParameterById('k315_1')
-kDDE = model.getFixedParameterById('k316_2')
-kDEtop = model.getFixedParameterById('k316_4')
-Etop = model.getFixedParameterById('k316_3')
-kDnSP = model.getFixedParameterById('k316_5')
-kDkmSP = model.getFixedParameterById('k316_6')
-kDkmSS = model.getFixedParameterById('k267_3')
-kDkmDS = model.getFixedParameterById('k264_3')
+fixdsb1 = model.getFixedParameterById(params_getid('vD63',0))
+fixmsh = model.getFixedParameterById(params_getid('vD64',0))
+fixmgmt = model.getFixedParameterById(params_getid('vD65',0))
+kDDE = model.getFixedParameterById(params_getid('vD66',1))
+kDEtop = model.getFixedParameterById(params_getid('vD66',3))
+Etop = model.getFixedParameterById(params_getid('vD66',2))
+kDnSP = model.getFixedParameterById(params_getid('vD66',4))
+kDkmSP = model.getFixedParameterById(params_getid('vD66',5))
+kDkmSS = model.getFixedParameterById(params_getid('vD17',2))
+kDkmDS = model.getFixedParameterById(params_getid('vD14',2))
 
 kDDbasal = 1e-6 # set this value manually
 
 damageDSB_cycling = kDDbasal/(fixdsb1*BRCA2)
 damageSSB_cycling = kDDbasal/(fixmsh*MSH6+fixmgmt*MGMT)
 
-#%%
+
 if damageDSB_cycling > kDkmDS:
     np.disp('ERROR --- DSB damage is too high, must reduce kDDbasal or increase strength of repair')
     
@@ -623,18 +551,21 @@ if damageSSB_cycling > kDkmSS:
     np.disp('ERROR --- SSB damage is too high, must reduce kDDbasal or increase strentgh of repair')
 
 
-#%%
+
 
 vdamage_on = (kDDbasal + kDDE*(Etop/(Etop+kDEtop)))*(((Me+Ma)**kDnSP)/(((Me+Ma)**kDnSP)+(kDkmSP**kDnSP)))
 
 damageDSB = vdamage_on/(fixdsb1*BRCA2)
 damageSSB = vdamage_on/(fixmsh*MSH6+fixmgmt*MGMT)
 
-model.setFixedParameterById('k316_1', kDDbasal)
+kDDbasal_id = params_getid('vD66',0)
+
+
+model.setFixedParameterById(kDDbasal_id, kDDbasal)
 
     
 
-#%%
+
 
 # Run simulation and get new steady state
 
@@ -650,7 +581,7 @@ x6 = pd.Series(data=x6, index=ObsMat.index)
 
 
 
-#%%
+#%% Step7, leak terms
 
 pcFos_cJun = x6['pcFos_cJun']
 cMyc = x6['cMyc']
@@ -660,18 +591,12 @@ ppERKnuc = x6['ppERKnuc']
 pRSKnuc = x6['pRSKnuc']
 bCATENINnuc = x6['bCATENINnuc']
 
-genereg = pd.read_csv(os.path.join('input_files','GeneReg.txt'), sep='\t', header=0, index_col=0)
+genereg = pd.read_csv(os.path.join(wd,'input_files','GeneReg.txt'), sep='\t', header=0, index_col=0)
 
 numberofgenes = int(len(genereg.index))
 numberofTARs = int(len(genereg.columns))
 
 TAs = np.zeros([numberofgenes,numberofTARs])
-
-
-#%%
-# mExp_mpc[5:9] = 17.0
-# mExp_mpc[12:25] = 17.0
-
 
 for gene_symbol in Step1_mrna.index:
     mExp_mpc[gene_symbol] = Step1_mrna[gene_symbol]
@@ -679,7 +604,7 @@ for gene_symbol in Step1_mrna.index:
 
 
 
-kGsRead = pd.read_csv(os.path.join('input_files','OmicsData.txt'),header=0,index_col=0,sep='\t')
+kGsRead = pd.read_csv(os.path.join(wd,'input_files','OmicsData.txt'),header=0,index_col=0,sep='\t')
 gExp_mpc = np.float64(kGsRead.loc[:,'Exp GCN'].values)
 kGin = np.float64(kGsRead.loc[:,'kGin'].values)
 kGac = np.float64(kGsRead.loc[:,'kGac'].values)
@@ -763,11 +688,3 @@ kTCleak_new=leak/xgac_mpc_D
 kTCleak_new[np.isnan(kTCleak_new)] = 0
 kTCleak_new[np.isinf(kTCleak_new)] = 0
 
-#%% test ICs
-
-x6c = pd.read_csv('x6c.txt', sep='\t', header=0, index_col=0)
-x6c['amici_test'] = x6
-
-kTCleak_c = pd.DataFrame([])
-kTCleak_c['old'] = kGsRead['kTCleak']
-kTCleak_c['new'] = kTCleak_new

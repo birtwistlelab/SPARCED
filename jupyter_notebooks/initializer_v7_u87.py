@@ -9,20 +9,16 @@ import importlib
 import amici
 import amici.plotting
 
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-
-
-mpl.rcParams['figure.dpi'] = 300
 
 #%% load model and input files
 
-# load model
+wd = str(os.getcwd()).replace("jupyter_notebooks","")
+
 
 sbml_file = "SPARCED.xml"
 model_name= sbml_file[0:-4]
 model_output_dir = model_name
-sys.path.insert(0, os.path.abspath(model_output_dir))
+sys.path.insert(0, os.path.join(wd,model_output_dir))
 model_module = importlib.import_module(model_name)
 model = model_module.getModel()
 
@@ -35,19 +31,15 @@ params_model = []
 [params_model.append(p.getId()) for p in sbml_model.getListOfParameters()]
 
 
-ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws.txt')])
+ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Ratelaws.txt'))])
 ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 
 
 
 
-#%% read initial parameters
-
-# gene_params = pd.read_csv(os.path.join('input_files','OmicsData_extended.txt'), sep=',', index_col=0, header=0)
-
-gene_params = pd.read_csv(os.path.join('input_files','OmicsData_extended_u87.txt'), sep=',', index_col=0, header=0)
-
+#%% pre-process
+gene_params = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'), sep=',', index_col=0, header=0)
 model_genes = gene_params.index
 
 
@@ -72,7 +64,7 @@ gene_params['kTL_nat'][np.where(gene_params['kTL_nat']==0)[0]] = gene_params['kT
 
 gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])] = gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])].values * 5
 
-ratios_kTL=pd.read_csv(os.path.join('input_files','initializer','ratios.txt'),sep='\t',header=None,squeeze=True).values
+ratios_kTL=pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep='\t',header=None,squeeze=True).values
 
 ratios_kTL[101] = 0.0 #PTEN
 
@@ -83,7 +75,7 @@ xp_mpc = ratios_kTL*mExp_mpc
 
 xp_mpc[np.isnan(xp_mpc)] = 0
 
-Step1_mrna = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_mrna','Step1_mrna_mpc'],index_col='Step1_mrna')
+Step1_mrna = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_mrna','Step1_mrna_mpc'],index_col='Step1_mrna')
 Step1_mrna = Step1_mrna[Step1_mrna.index.notnull()]
 
 
@@ -100,21 +92,21 @@ vTL_pattern = re.compile("vTL\d+")
 
 reactions_vTL = list(filter(vTL_pattern.match, reactions_all))
 
-#%% read params_all
 
-params_all = pd.read_csv(os.path.join('input_files','params_all.csv'), header=0, index_col=0, sep=',')
+
+params_all = pd.read_csv(os.path.join(wd,'input_files','params_all.csv'), header=0, index_col=0, sep=',')
 
 def params_getid(rxn,idx):
     param_id = str(params_all.index[np.logical_and(params_all['rxn'].values==rxn, params_all['idx'].values==int(idx))][0])
     return param_id
 
-#%% parameter IDs
+
 
 numberofgenes = len(model_genes)
-S_PARCDL = pd.read_csv(os.path.join('input_files',"StoicMat.txt"), header=0, index_col=0, sep='\t')
+S_PARCDL = pd.read_csv(os.path.join(wd,'input_files',"StoicMat.txt"), header=0, index_col=0, sep='\t')
 S_TL = S_PARCDL.loc[:,S_PARCDL.columns.isin(reactions_vTL)]
 
-ObsMat = pd.read_csv(os.path.join('input_files','Observables.txt'), header=0, index_col=0, sep='\t')
+ObsMat = pd.read_csv(os.path.join(wd,'input_files','Observables.txt'), header=0, index_col=0, sep='\t')
 NumObs = len(ObsMat.columns)
 
 
@@ -152,9 +144,9 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
             k50E_values.append(k50E_value_i)   
     
 
-#%%
 
-obs2exclude = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'), sep=',', usecols=['Step1_obs_excl'])
+
+obs2exclude = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'), sep=',', usecols=['Step1_obs_excl'])
 obs2exclude = obs2exclude.values[obs2exclude.notnull()]
 
 np.append(obs2exclude,'PTEN')
@@ -166,7 +158,7 @@ kTLest[101] = 0.0 #PTEN
 
 mExp_mpc = gene_params['Exp RNA'].copy()
 
-cell_params = pd.read_csv(os.path.join('input_files',"Compartments.txt"), header=0, index_col=0, sep='\t')
+cell_params = pd.read_csv(os.path.join(wd,'input_files',"Compartments.txt"), header=0, index_col=0, sep='\t')
 Vc = cell_params.loc['Cytoplasm','volume']
 Vn = cell_params.loc['Nucleus','volume']
 Vm = cell_params.loc['Mitochondrion','volume']
@@ -176,7 +168,7 @@ volumeofcell = Vc + Vn
 
 
 fileSpecies = 'Species.txt' # input
-ICf = pd.read_csv(os.path.join('input_files',fileSpecies),header=0,index_col=0,sep='\t')
+ICf = pd.read_csv(os.path.join(wd,'input_files',fileSpecies),header=0,index_col=0,sep='\t')
 
 
 mrna_id = []
@@ -185,8 +177,8 @@ for m in mrna_filter:
     mrna_id.append(m)
 
 
-species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
-compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Compartments.txt')])
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Species.txt'), encoding='latin-1')])
+compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Compartments.txt'))])
 Vc = float(compartment_sheet[compartment_sheet[:,0]=='Cytoplasm',1])
 species_names = np.array([species_sheet[i][0] for i in range(1,len(species_sheet))])
 VxPARCDL = np.array([species_sheet[i][1] for i in range(1,len(species_sheet))])
@@ -205,10 +197,6 @@ for i in range(np.shape(S_TL)[1]):
         
 
 
-# xp_mpc = gene_params['kTL_nat'].values*mExp_mpc.values/gene_params['kTLd'].values
-
-
-
 pExp_nM = xp_mpc*1e9/(VxTL*6.023e23)
 x0PARCDL = np.matmul(S_TL.values,pExp_nM)
 x0PARCDL = pd.Series(x0PARCDL)
@@ -219,11 +207,10 @@ mExp_nM=mExp_mpc*mpc2nmcf_Vc
 mExp_nM = pd.Series(data=mExp_nM.values, index=mrna_id)
 
 for m in mrna_id:
-    # x0PARCDL[m] = ICf.loc[m, 'IC_Xinitialized']
     x0PARCDL[m] = mExp_nM[m]
 
 
-Step1sp = pd.read_csv(os.path.join('input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_sp','Step1_val'],index_col='Step1_sp')
+Step1sp = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_sp','Step1_val'],index_col='Step1_sp')
 
 for sp in Step1sp.index:
     x0PARCDL[sp] = Step1sp[sp]
