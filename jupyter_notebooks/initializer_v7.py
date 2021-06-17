@@ -693,3 +693,21 @@ x6c['amici_test'] = x6
 kTCleak_c = pd.DataFrame([])
 kTCleak_c['old'] = kGsRead['kTCleak']
 kTCleak_c['new'] = kTCleak_new
+
+#%%
+
+mat_species = np.loadtxt(os.path.join('temp','mat_species.csv'),dtype=str,delimiter=',')
+
+def x_compare(xn,xm):
+    x_m = pd.Series(data=np.loadtxt(os.path.join('temp',str(xm+'.txt')),dtype=float,delimiter='\t'), index=mat_species)
+    x_m = x_m.drop(labels=['bCATENIN_GSK3b'])
+    x_m[x_m.values<1e-6] = 0.0
+    xc = pd.DataFrame({'amici':xn[:len(x_m)], 'matlab':x_m.values})
+    
+    return xc
+
+x0_c = x_compare(x0,'x0_u87')
+
+x1_c = x_compare(x1,'x1_u87')
+
+x5_c = x_compare(x5,'x5_u87')

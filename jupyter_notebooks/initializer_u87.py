@@ -39,7 +39,7 @@ ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 
 #%% pre-process
-gene_params = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'), sep=',', index_col=0, header=0)
+gene_params = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended_u87.txt'), sep=',', index_col=0, header=0)
 model_genes = gene_params.index
 
 
@@ -52,11 +52,17 @@ gene_params['kTLd'][np.isnan(gene_params['kTLd'].values)] = np.log(2)/gene_param
 
 gene_params['kTLd'][np.isnan(gene_params['kTLd'].values)] = 0
 
-gene_params['kTL_nat_cells'] = gene_params['Exp Protein']*gene_params['kTLd']/gene_params['Exp RNA']
+# gene_params['kTL_nat_cells'] = gene_params['Exp Protein']*gene_params['kTLd']/gene_params['Exp RNA']
+
+ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['Protein_mRNA']).values
+ratios_p2m[101] = 0.0 #PTEN
+gene_params['kTL_nat_cells'] = ratios_p2m*gene_params['kTLd']
 
 gene_params['kTL_nat_cells'][np.isnan(gene_params['kTL_nat_cells']) | np.isinf(gene_params['kTL_nat_cells'])] = 0
 
 gene_params['kTL_nat'] = gene_params['kTL_nat_cells']
+
+#%%
 
 gene_params['kTL_nat'][np.where(gene_params['kTL_nat']==0)[0]] = gene_params['kTLnatLit_s'][np.where(gene_params['kTL_nat']==0)[0]]
 
@@ -64,7 +70,7 @@ gene_params['kTL_nat'][np.where(gene_params['kTL_nat']==0)[0]] = gene_params['kT
 
 gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])] = gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])].values * 5
 
-ratios_kTL=pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep='\t',header=None,squeeze=True).values
+ratios_kTL=pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['kTL_kTLd']).values
 
 ratios_kTL[101] = 0.0 #PTEN
 
@@ -116,7 +122,7 @@ k50E_id = []
 k50E_values = []
 kTL_genes = []
 
-
+#%%
 
 for rowNum, ratelaw in enumerate(ratelaw_data):
     
@@ -151,11 +157,11 @@ obs2exclude = obs2exclude.values[obs2exclude.notnull()]
 
 np.append(obs2exclude,'PTEN')
 
-kTLest = gene_params['kTL_nat'].values
+kTLest = gene_params['kTL_nat'].values.copy()
 
 kTLest[101] = 0.0 #PTEN
 
-
+#%%
 mExp_mpc = gene_params['Exp RNA'].copy()
 
 cell_params = pd.read_csv(os.path.join(wd,'input_files',"Compartments.txt"), header=0, index_col=0, sep='\t')
@@ -187,7 +193,7 @@ VxPARCDL = pd.Series(VxPARCDL, index=species_names)
 
 
 
-
+#%%
 
 VxTL = np.ones(numberofgenes)*Vc
 for i in range(np.shape(S_TL)[1]):
@@ -371,6 +377,81 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
     
     return kTLnew, rdata_new, x1, flagA
 
+#%% temp - kTL1-5
+EIF4Efree = float(x0['EIF4E'])
+
+kTL1_1 = (0.25/mExp_nM[0])*(100+EIF4Efree)/EIF4Efree
+kTL2_1 = 0.2*1000/3600/mExp_nM[1]*(100+EIF4Efree)/EIF4Efree
+kTL2_2 = 2.5e-4/mExp_nM[1]*(100+EIF4Efree)/EIF4Efree
+kTL3_1 = 6.944e-5/mExp_nM[2]*(100+EIF4Efree)/EIF4Efree
+
+# find kTLs for obs2exclude
+
+genes2exclude = [str(obs2gene(i)[0]) for i in obs2exclude]
+
+kTLnat = gene_params['kTL_nat'].values.copy()
+
+rhs = (100+EIF4Efree)/EIF4Efree
+
+kTL4_1 = kTLnat[3]*rhs
+kTL5_1 = kTLnat[4]*rhs
+
+kTL138_1 = kTLnat[137]*rhs
+kTL137_1 = kTLnat[136]*rhs
+kTL139_1 = kTLnat[138]*rhs
+kTL125_1 = kTLnat[124]*rhs #mismatch
+kTL126_1 = kTLnat[125]*rhs #mismatch
+
+
+kTLest[0] = kTL1_1
+kTLest[1] = kTL2_1
+kTLest[2] = kTL3_1
+kTLest[3] = kTL4_1
+kTLest[4] = kTL5_1
+kTLest[137] = kTL138_1
+kTLest[136] = kTL137_1
+kTLest[138] = kTL139_1
+# kTLest[124] = kTL125_1
+kTLest[124] = 0.003395916
+# kTLest[125] = kTL126_1
+kTLest[125] = 0.001250784
+
+
+model.setFixedParameterById(params_getid('vTL2',1),kTL2_2)
+#%%
+# modify Cd, p21 parameters
+
+kTL10_12_2 = 0.005/3600/sum(mExp_nM[Cd_genes])*rhs*17
+
+
+# model.setFixedParameterById(params_getid('vTL10',1), kTL10_12_2)
+# model.setFixedParameterById(params_getid('vTL11',1), kTL10_12_2)
+# model.setFixedParameterById(params_getid('vTL12',1), kTL10_12_2)
+
+model.setFixedParameterById(params_getid('vTL10',1), model.getFixedParameterById(params_getid('vTL10',1))*4.4)
+model.setFixedParameterById(params_getid('vTL11',1), model.getFixedParameterById(params_getid('vTL10',1))*4.4)
+model.setFixedParameterById(params_getid('vTL12',1), model.getFixedParameterById(params_getid('vTL10',1))*4.4)
+
+
+kC104 = model.getFixedParameterById(params_getid('vC104',0))
+kC104 = kC104*17
+
+model.setFixedParameterById(params_getid('vC104',0),kC104)
+
+kTL10_12_1 = model.getFixedParameterById(params_getid('vTL10',0))
+
+# kTL10_12_1 = kTL10_12_1*10000
+
+# model.setFixedParameterById(params_getid('vTL10',0), kTL10_12_1)
+# model.setFixedParameterById(params_getid('vTL11',0), kTL10_12_1)
+# model.setFixedParameterById(params_getid('vTL12',0), kTL10_12_1)
+
+#ARF/CDKN2A
+# kTL_arf = model.getFixedParameterById(params_getid('vTL125',0))
+# model.setFixedParameterById(params_getid('vTL125',0),kTL_arf/1000)
+model.setFixedParameterById(params_getid('vTLCd7',0),1.302712E-05)
+
+
 #%% adjust kTLs
 
 
@@ -423,6 +504,97 @@ Step3_par.Step3_par_val[(Step3_par['Step3_par_rxn']=='vbR')&(Step3_par['Step3_pa
 
 kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
 
+#%% temp - check x values
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.rcParams['figure.dpi'] = 300
+
+mat_species = np.loadtxt(os.path.join('temp','mat_species.csv'),dtype=str,delimiter=',')
+
+def x_compare(xn,xm):
+    x_m = pd.Series(data=np.loadtxt(os.path.join('temp',str(xm+'.txt')),dtype=float,delimiter='\t'), index=mat_species)
+    x_m = x_m.drop(labels=['bCATENIN_GSK3b'])
+    x_m[x_m.values<1e-6] = 0.0
+    xc = pd.DataFrame({'amici':xn[:len(x_m)], 'matlab':x_m.values})
+    
+    return xc
+
+def timecourse(species,rdata):    
+    timeh = rdata['t']/3600
+    species_ind = np.nonzero(S_PARCDL.index==species)[0][0]        
+    x_t = rdata['x'][:,species_ind]
+    plt.scatter(timeh,x_t)
+    plt.ylabel(str(species))
+    plt.xlabel('time(h)')
+    plt.title('species timecourse')
+    plt.show
+
+
+
+def timecourse_obs(obs_name,rdata,obs0_def=obs0):
+    
+    timeh = rdata['t']/3600
+    obs_ind = np.nonzero(ObsMat.columns==str(obs_name))[0][0]
+    obs_t = rdata['y'][:,obs_ind]
+    plt.figure()
+    plt.scatter(timeh,obs_t)
+    plt.axhline(y=obs0_def[obs_ind],color='r')
+    plt.ylim(0,max(max(obs_t),obs0_def[obs_ind])*1.5)
+    plt.ylabel(str(obs_name))
+    plt.xlabel('time(h)')
+    plt.title('obs timecourse')
+    plt.show
+    
+
+
+x0_c = x_compare(x0,'x0_u87')
+
+x1_c = x_compare(x1,'x1_u87')
+
+x3_c = x_compare(x3,'x3_u87')
+
+#%% temp - dissect step4
+# totalcyclinDfromdata = sum(pExp_nM[np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])])
+# totalp21fromdata = pExp_nM[list(model_genes).index('CDKN1A')]
+
+# kC82_id = params_all.index[np.logical_and(params_all.rxn=='vC104',params_all.idx==0)][0]
+# kC82 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',usecols=['Step4_par','Step4_par_val'],index_col='Step4_par', squeeze=True)['kC82']
+
+# x_in = rdata_new['x'][-1]
+
+# th=0.001
+
+# ratio_cd=0.5
+# ratio_p21 = 0.5
+# model.setInitialStates(x_in)
+
+
+# model.setFixedParameterById(kC82_id,kC82)
+
+# cd_sp = np.argwhere(ObsMat.loc[:,'Cd'].values>0).flatten()
+# p21_sp = np.argwhere(ObsMat.loc[:,'p21'].values>0).flatten()
+
+#%% temp - step4 - manual
+
+# rdata_loop = amici.runAmiciSimulation(model,solver)
+
+# ratio_cd = totalcyclinDfromdata/sum(rdata_loop['x'][-1][cd_sp])
+# ratio_cd < (1-th) or ratio_cd > (1+th)
+# f = 1 + (ratio_cd-1)*0.125
+# kC173 = kC173*f
+
+
+# kTL10_12 = kC173*17/sum(mExp_nM[Cd_genes])
+# [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
+
+
+
+# if ratio_cd < (1-th) or ratio_cd > (1+th):        
+#     f = 1 + (ratio_cd-1)*0.125
+#     kC173 = kC173*f
+#     kTL10_12 = kC173*17/sum(mExp_nM[Cd_genes])
+#     [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
+
 
 #%% Step4, adjust Cd, p21
 
@@ -458,7 +630,7 @@ while (ratio_cd < (1-th) or ratio_cd > (1+th)) or (ratio_p21 < (1-th) or ratio_p
     ratio_cd = totalcyclinDfromdata/sum(rdata_loop['x'][-1][cd_sp])
     
     if ratio_cd < (1-th) or ratio_cd > (1+th):        
-        f = 1 + (ratio_cd-1)*0.25
+        f = 1 + (ratio_cd-1)*0.125
         kC173 = kC173*f
         kTL10_12 = kC173*17/sum(mExp_nM[Cd_genes])
         [model.setFixedParameterById(Cd_kTL,kTL10_12) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
@@ -478,6 +650,40 @@ x4 = pd.Series(data=rdata_loop['x'][-1], index=ObsMat.index)
 x4[x4.values<1e-6] = 0.0
 
 kTLnew3[Cd_genes] = kTL10_12
+
+#%%
+
+x4_c = x_compare(x4,'x4_u87')
+
+
+#%% temp - Step 5 manual
+kA77_id = params_all.index[np.logical_and(params_all['rxn']=='vA77',params_all['idx']==0)][0]
+kA87_id = params_all.index[np.logical_and(params_all['rxn']=='vA87',params_all['idx']==0)][0]
+
+kA77 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',usecols=['Step5_kA77','Step5_kA77_val'],index_col='Step5_kA77', squeeze=True)['kA77']
+
+model.setFixedParameterById(kA77_id, kA77)
+
+kA87s = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',usecols=['Step5_kA87s'], squeeze=True)
+kA87s = kA87s.values[~np.isnan(kA87s.values)]
+
+#%% temp
+model.setFixedParameterById(kA87_id, kA87s[0])
+    
+kTLnew4, rdata_loop, x5, flagA = kTLadjustwhile(model,solver,x4, obs0, kTL_id, kTLnew3, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
+
+#%% temp
+x5_c = x_compare(x5,'x5_u87')
+
+
+#%% temp
+if flagA == 0:
+    x5last = x5
+    kTLnew4last = kTLnew4
+
+if flagA == 1:
+    kA87 = kA87s[k-1]
+    model.setFixedParameterById(kA87_id, kA87)
 
 
 #%% Step 5, adjust c8
@@ -517,6 +723,16 @@ x5[x5.values<1e-6] = 0.0
 
 model.setInitialStates(x5.values)
 [model.setFixedParameterById(kTL_id[k], kTLnew4[k]) for k in range(len(kTL_id))]
+
+#%%
+def obs2sp(obs_name):
+    sp = ObsMat.index[np.nonzero(ObsMat.loc[:,obs_name].values)[0]]
+    return sp
+
+x5_c = x_compare(x5,'x5_u87')
+
+obs5_c = pd.DataFrame({'obs5':rdata_loop['y'][-1], 'obs0':obs0}, index=ObsMat.columns)
+
 
 
 #%% Step6, adjust basal dna damage
@@ -688,3 +904,75 @@ kTCleak_new=leak/xgac_mpc_D
 kTCleak_new[np.isnan(kTCleak_new)] = 0
 kTCleak_new[np.isinf(kTCleak_new)] = 0
 
+#%% temp 
+
+
+mat_species = np.loadtxt(os.path.join('temp','mat_species.csv'),dtype=str,delimiter=',')
+
+def x_compare(xn,xm):
+    x_m = pd.Series(data=np.loadtxt(os.path.join('temp',str(xm+'.txt')),dtype=float,delimiter='\t'), index=mat_species)
+    x_m = x_m.drop(labels=['bCATENIN_GSK3b'])
+    x_m[x_m.values<1e-6] = 0.0
+    xc = pd.DataFrame({'amici':xn[:len(x_m)], 'matlab':x_m.values})
+    
+    return xc
+
+x0_c = x_compare(x0,'x0_u87')
+
+x1_c = x_compare(x1,'x1_u87')
+
+x5_c = x_compare(x5,'x5_u87')
+
+x4_c = x_compare(x4,'x4_u87')
+
+x3_c = x_compare(x3,'x3_u87')
+
+#%%
+
+x5_c_scatter = x5_c.iloc[:47,:]
+
+# x5_c_scatter = x5_c_scatter.loc[x5_c_scatter.loc[:,'amici'].values!=0]
+
+# x5_c_scatter = x5_c_scatter.loc[x5_c_scatter.loc[:,'matlab'].values!=0]
+
+#%%
+
+# import matplotlib.pyplot as plt
+# import matplotlib as mpl
+
+
+
+# mpl.rcParams['figure.dpi'] = 300
+
+# # plt.figure
+# # plt.scatter(x5_c_scatter['matlab'].values,x5_c_scatter['amici'])
+# # plt.xlim(0,600)
+# # plt.ylim(0,600)
+# # plt.show
+
+# fig, ax = plt.subplots(figsize=(6, 6))
+
+# x = x5_c_scatter['matlab'].values
+# y = x5_c_scatter['amici'].values
+
+# x_1 = np.linspace(0,500)
+
+
+# plt.scatter(x,y)
+
+# plt.xlim([0,5000])
+# plt.ylim([0,5000])
+# plt.show()
+
+# axScatter = plt.subplot(111)
+
+# axScatter.plot(x_1,x_1,color='black')
+# axScatter.scatter(x,y,color='red')
+# axScatter.set_xlim([0,5])
+# axScatter.set_ylim([0,5])
+# axScatter.figure.savefig('x.png')
+
+
+# plt.plot(x,y)
+# plt.show()
+# plt.ion()
