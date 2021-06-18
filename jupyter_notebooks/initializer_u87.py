@@ -321,7 +321,7 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
     [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
     
     m = len(ObsMat.columns)
-    margin = 0.01
+    margin = 0.001
     
     while m!=0:
         rdata = amici.runAmiciSimulation(model,solver)
@@ -660,7 +660,7 @@ x4_c = x_compare(x4,'x4_u87')
 kA77_id = params_all.index[np.logical_and(params_all['rxn']=='vA77',params_all['idx']==0)][0]
 kA87_id = params_all.index[np.logical_and(params_all['rxn']=='vA87',params_all['idx']==0)][0]
 
-kA77 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',usecols=['Step5_kA77','Step5_kA77_val'],index_col='Step5_kA77', squeeze=True)['kA77']
+kA77 = pd.read_csv(os.path.join(wd,'input_files','initializer' ,'Initializer.csv'),sep=',',usecols=['Step5_kA77','Step5_kA77_val'],index_col='Step5_kA77', squeeze=True)['kA77']
 
 model.setFixedParameterById(kA77_id, kA77)
 
@@ -733,7 +733,7 @@ x5_c = x_compare(x5,'x5_u87')
 
 obs5_c = pd.DataFrame({'obs5':rdata_loop['y'][-1], 'obs0':obs0}, index=ObsMat.columns)
 
-#git test
+
 
 #%% Step6, adjust basal dna damage
 
