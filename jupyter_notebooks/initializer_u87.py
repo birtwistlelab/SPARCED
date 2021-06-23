@@ -193,6 +193,7 @@ VxPARCDL = pd.Series(VxPARCDL, index=species_names)
 
 
 
+
 #%%
 
 VxTL = np.ones(numberofgenes)*Vc
@@ -260,8 +261,28 @@ for m in obs2exclude:
         kTLest[obs2gene_i(m)[k]] = model.getFixedParameterById(np.array(kTL_id)[obs2gene_i(m)][k])
     
 
+#%% temp - kTLCd
+# kTLd = gene_params['kTLd']
+# kTLCd = np.zeros(len(ObsMat.columns))
 
+# for i,obs in enumerate(ObsMat.columns):
+#     kTLCd[i] = sum(kTLd[obs2gene(obs).values]*xp_mpc[obs2gene(obs)].values/sum(xp_mpc[obs2gene(obs)].values))
+    
+# kTLCd[np.isnan(kTLCd)] = 0
 
+# vAd:
+    
+model.setFixedParameterById(params_getid('vAd8',0),0.0001590404)
+model.setFixedParameterById(params_getid('vAd9',0),1.590404E-06)
+model.setFixedParameterById(params_getid('vAd17',0),7.98132E-05)
+model.setFixedParameterById(params_getid('vAd21',0),7.98132E-05)
+model.setFixedParameterById(params_getid('vAd22',0),7.98132E-05)
+model.setFixedParameterById(params_getid('vAd24',0),7.98132E-05)
+model.setFixedParameterById(params_getid('vAd26',0),7.98132E-05)
+model.setFixedParameterById(params_getid('vAd37',0),1.590404E-06)
+model.setFixedParameterById(params_getid('vAd38',0),7.98132E-05)
+model.setFixedParameterById(params_getid('vAd39',0),7.98132E-05)
+model.setFixedParameterById(params_getid('vAd42',0),7.98132E-05)
 
 #%% prep optimizer
 
@@ -652,9 +673,9 @@ x4[x4.values<1e-6] = 0.0
 kTLnew3[Cd_genes] = kTL10_12
 
 #%%
-
+# x4_original = x4.copy()
 x4_c = x_compare(x4,'x4_u87')
-
+# solver.setRelativeTolerance(1e-6)
 
 #%% temp - Step 5 manual
 kA77_id = params_all.index[np.logical_and(params_all['rxn']=='vA77',params_all['idx']==0)][0]
@@ -667,13 +688,32 @@ model.setFixedParameterById(kA77_id, kA77)
 kA87s = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',usecols=['Step5_kA87s'], squeeze=True)
 kA87s = kA87s.values[~np.isnan(kA87s.values)]
 
+#%% modify x4 values
+# for k in range(len(x4_c)):
+#     x4[x4_c.index[k]] = x4_c.loc[x4_c.index[k],'matlab']
+    
+ts = 1000*3600*0.5
+model.setTimepoints(np.linspace(0,ts,1000))
+
 #%% temp
-model.setFixedParameterById(kA87_id, kA87s[0])
+model.setFixedParameterById(kA87_id, kA87s[2])
     
 kTLnew4, rdata_loop, x5, flagA = kTLadjustwhile(model,solver,x4, obs0, kTL_id, kTLnew3, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
 
 #%% temp
 x5_c = x_compare(x5,'x5_u87')
+
+#%% temp - diagnostics
+
+timecourse('tBid',rdata_loop)
+
+#%% run ODEs only
+
+rdata_x5 = amici.runAmiciSimulation(model,solver)
+
+x5_1 = pd.Series(data=rdata_x5['x'][-1], index=ObsMat.index)
+
+x5_1_c = x_compare(x5_1,'x5_1_u87')
 
 
 #%% temp
@@ -723,6 +763,10 @@ x5[x5.values<1e-6] = 0.0
 
 model.setInitialStates(x5.values)
 [model.setFixedParameterById(kTL_id[k], kTLnew4[k]) for k in range(len(kTL_id))]
+
+#%%
+
+x5_c = x_compare(x5,'x5_u87')
 
 #%%
 def obs2sp(obs_name):
@@ -795,7 +839,9 @@ x6 = rdata_new['x'][-1]
 x6[x6<1e-6] = 0
 x6 = pd.Series(data=x6, index=ObsMat.index)
 
+#%%
 
+x6_c = x_compare(x6,'x6_u87')
 
 #%% Step7, leak terms
 
