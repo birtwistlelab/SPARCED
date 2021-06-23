@@ -262,16 +262,23 @@ for m in obs2exclude:
     
 
 #%% temp - kTLCd
-# kTLd = gene_params['kTLd']
-# kTLCd = np.zeros(len(ObsMat.columns))
+kTLd = gene_params['kTLd']
+kTLCd = np.zeros(len(ObsMat.columns))
 
-# for i,obs in enumerate(ObsMat.columns):
-#     kTLCd[i] = sum(kTLd[obs2gene(obs).values]*xp_mpc[obs2gene(obs)].values/sum(xp_mpc[obs2gene(obs)].values))
+for i,obs in enumerate(ObsMat.columns):
+    kTLCd[i] = sum(kTLd[obs2gene(obs).values]*xp_mpc[obs2gene(obs)].values/sum(xp_mpc[obs2gene(obs)].values))
     
-# kTLCd[np.isnan(kTLCd)] = 0
+kTLCd[np.isnan(kTLCd)] = 0
+
+kTLCd_name = [str('kTLCd'+str(i+1)) for i in range(len(kTLCd))]
+
+kTLCd = pd.Series(data=kTLCd,index=kTLCd_name)
 
 
+kTLCd2exclude = ['RB','E2F','Cd','Ce','Skp2','Pai','Pei','Pbi','Ca','p27','Cdh1a','Cb','Cdc20','Wee1','Chk1','p21']
 
+for k in kTLCd2exclude:
+    kTLCd[list(ObsMat.columns).index(k)] = 0
 
 
 #%% vAd:
