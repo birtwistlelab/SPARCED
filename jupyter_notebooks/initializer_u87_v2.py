@@ -1055,7 +1055,7 @@ kTCleak_new=leak/xgac_mpc_D
 kTCleak_new[np.isnan(kTCleak_new)] = 0
 kTCleak_new[np.isinf(kTCleak_new)] = 0
 
-#%% temp 
+#%% temp
 
 
 mat_species = np.loadtxt(os.path.join('temp','mat_species.csv'),dtype=str,delimiter=',')
@@ -1103,4 +1103,72 @@ x5_c_scatter = x5_c.iloc[:47,:]
 # plt.xlim(1e-5,1e5)
 # plt.ylim(1e-5,1e5)
 # plt.show
+
+#%%
+
+sbml_model_u87i = sbml_doc.getModel()
+
+for sp in x6.index:
+    sbml_model_u87i.getSpecies(sp).setInitialConcentration(float(x6[sp]))
+    
+    
+for par in params_all.index:
+    sbml_model_u87i.getParameter(par).setValue(float(model.getFixedParameterById(par)))
+
+sbml_doc_u87i = sbml_model_u87i.getSBMLDocument()
+
+writer = libsbml.SBMLWriter()
+writer.writeSBML(sbml_doc_u87i, os.path.join(wd,'SPARCED_u87i.xml'))
+
+#%% create observables
+
+
+formula_obs = []
+
+for obs in ObsMat.columns:
+    sp_obs = ObsMat.index[np.nonzero(np.array(ObsMat.loc[:,obs]>0))[0]]
+    sp_obs_id = np.nonzero(np.array(ObsMat.loc[:,obs]>0))[0]
+    Vr = VxPARCDL/Vc
+    Vf = Vr*ObsMat.loc[:,obs].values
+    
+    if len(sp_obs) == 1:
+        formula_i = sp_obs[0]+'*'+str(Vf[sp_obs_id][0])
+    elif len(sp_obs) == 2:
+        formula_i = str(sp_obs[0]+'*'+str(Vf[sp_obs_id][0])+'+'+sp_obs[1]+'*'+str(Vf[sp_obs_id][1]))
+    elif len(sp_obs) > 2:
+        formula_i = ''
+        for j in range(len(sp_obs)-1):
+            formula_i = formula_i+sp_obs[j]+'*'+str(Vf[sp_obs_id][j])+'+'
+        formula_i = formula_i+str(sp_obs[-1])+'*'+str(Vf[sp_obs_id][-1])
+    formula_obs.append(formula_i)
+
+observables = {}
+obs_names = list(ObsMat.columns)
+
+for i in range(len(obs_names)):
+    observables[obs_names[i]] = {}
+    observables[obs_names[i]]['formula'] = formula_obs[i]
+    
+#%% compile initialized model
+
+sbml_importer = amici.SbmlImporter(os.path.join(wd,'SPARCED_u87i.xml'))
+
+model_output_dir_u87 = str(model_output_dir+'_u87i')
+
+model_path = os.path.join(wd,model_output_dir_u87)
+
+constantParameters = np.array(params_all.index)
+
+sbml_importer.sbml2amici(model_name,
+                         model_path,
+                         verbose=False,
+                         observables=observables,
+                         constantParameters=constantParameters)
+
+#%% test model
+
+sys.path.insert(0, model_path)
+model_module = importlib.import_module('SPARCED_u87i')
+# model_module = importlib.import_module('SPARCED')
+model = model_module.getModel()
 
