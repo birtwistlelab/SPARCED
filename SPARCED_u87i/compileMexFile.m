@@ -2,7 +2,7 @@
 % If mex compiler is set up within MATLAB, it can be run from MATLAB 
 % in order to compile a mex-file from the Python generated C++ files.
 
-modelName = 'SPARCED';
+modelName = 'SPARCED_u87i';
 amimodel.compileAndLinkModel(modelName, '', [], [], [], []);
 amimodel.generateMatlabWrapper(914, 102, 0, 2715, 0, 0, ...
     [], ['simulate_' modelName '.m'], modelName, ...

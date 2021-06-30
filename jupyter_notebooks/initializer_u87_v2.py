@@ -1159,7 +1159,7 @@ model_path = os.path.join(wd,model_output_dir_u87)
 
 constantParameters = np.array(params_all.index)
 
-sbml_importer.sbml2amici(model_name,
+sbml_importer.sbml2amici('SPARCED_u87i',
                          model_path,
                          verbose=False,
                          observables=observables,
