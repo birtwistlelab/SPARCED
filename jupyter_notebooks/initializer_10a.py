@@ -344,7 +344,7 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
     return kTLnew, rdata_new, x1, flagA
 
 
-#%% kXd - temp
+#%% kXd
 
 
 kTLd = gene_params['kTLd']
