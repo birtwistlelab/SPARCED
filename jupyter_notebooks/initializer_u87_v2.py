@@ -193,10 +193,6 @@ VxPARCDL = [float(compartment_sheet[compartment_sheet[:,0]==VxPARCDL[i],1][0]) f
 VxPARCDL = pd.Series(VxPARCDL, index=species_names)
 
 
-
-
-#%%
-
 VxTL = np.ones(numberofgenes)*Vc
 for i in range(np.shape(S_TL)[1]):
     if len(np.nonzero(S_TL.values[:,i])[0]) != 0:
@@ -379,7 +375,8 @@ def kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E
     return kTLnew, rdata_new, x1, flagA
 
 
-#%%
+#%% CC/DD parameters
+
 EIF4Efree = float(x0['EIF4E'])
 rhs = (100+EIF4Efree)/EIF4Efree
 
@@ -854,7 +851,7 @@ x6_c = x_compare(x6,'x6_u87')
 
 
 
-#%%
+#%% Write results to sbml
 
 sbml_model_u87i = sbml_doc.getModel()
 
@@ -871,7 +868,6 @@ writer = libsbml.SBMLWriter()
 writer.writeSBML(sbml_doc_u87i, os.path.join(wd,'SPARCED_u87i.xml'))
 
 #%% create observables
-
 
 formula_obs = []
 
@@ -900,7 +896,6 @@ for i in range(len(obs_names)):
     observables[obs_names[i]]['formula'] = formula_obs[i]
     
 #%% compile initialized model
-
 
 sbml_importer = amici.SbmlImporter(os.path.join(wd,'SPARCED_u87i.xml'))
 

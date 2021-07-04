@@ -203,8 +203,8 @@ for m in mrna_id:
     x0PARCDL[m] = mExp_nM[m]
 
 
-Step1sp = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.csv'),sep=',',squeeze=True,usecols=['Step1_sp','Step1_val'],index_col='Step1_sp')
-
+Step1sp = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',squeeze=True,usecols=['Step1_sp','Step1_val'],index_col='Step1_sp')
+Step1sp = Step1sp[Step1sp.index.notnull()]
 for sp in Step1sp.index:
     x0PARCDL[sp] = Step1sp[sp]
 
