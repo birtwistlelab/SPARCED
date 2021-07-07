@@ -51,7 +51,7 @@ To use custom data in the SPARCED-jupyter workflow, start a container with the c
 
 ### SPARCED_Brep
 
-Original source for the model.
+Files to exactly replicate Bouhaddou2018 model. In this format, mRNAs and protein species are tracked in separate variables. The number of species and ratelaws are also the same Bouhaddou2018 model. SPARCED is the new, updated, and cleaned up version.
 
 ## Acknowledgements:
 
@@ -63,7 +63,7 @@ The acronym SPARCED is composed of following elements, based on the sub-models i
 ### S: SBML
 ### P: Proliferation
 ### A: Apoptosis
-###  R: Receptor Signaling
-###  C: Cell Cycle
-###  E: Expression
-###  D: DNA Damage
+### R: Receptor Signaling
+### C: Cell Cycle
+### E: Expression
+### D: DNA Damage
