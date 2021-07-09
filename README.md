@@ -1,6 +1,6 @@
 # SPARCED
 
-SPARCED is a simple and efficient pipeline for construction, merging, expansion, and simulation of large-scale, single-cell mechanistic models. With minimal set-up, users can configure the model for parallel runs on a Kubernetes cluster (SPARCED-nf), or small-scale experiments on their local machine (SPARCED-jupyter). More information on the model itself can be found [here](THEPAPERLINKHERE).
+SPARCED is a simple and efficient pipeline for construction, merging, expansion, and simulation of large-scale, single-cell mechanistic models. With minimal set-up, users can configure the model for parallel runs on a Kubernetes cluster (SPARCED-nf), or small-scale experiments on their local machine (SPARCED-jupyter). More information on the model itself can be found [here](https://www.biorxiv.org/content/10.1101/2020.11.09.373407v1.full).
 
 
 ## Dependencies
@@ -51,7 +51,7 @@ To use custom data in the SPARCED-jupyter workflow, start a container with the c
 
 ### SPARCED_Brep
 
-Original source for the model.
+Files to exactly replicate Bouhaddou2018 model. In this format, mRNAs and protein species are tracked in separate variables. The number of species and ratelaws are also the same Bouhaddou2018 model. SPARCED is the new, updated, and cleaned up version.
 
 ## Acknowledgements:
 
@@ -63,7 +63,7 @@ The acronym SPARCED is composed of following elements, based on the sub-models i
 ### S: SBML
 ### P: Proliferation
 ### A: Apoptosis
-###  R: Receptor Signaling
-###  C: Cell Cycle
-###  E: Expression
-###  D: DNA Damage
+### R: Receptor Signaling
+### C: Cell Cycle
+### E: Expression
+### D: DNA Damage

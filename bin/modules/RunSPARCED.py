@@ -2,44 +2,69 @@ import libsbml
 import importlib
 import amici
 import numpy as np
+import pandas as pd
 
 from modules.SGEmodule import SGEmodule
 from modules.RunPrep import RunPrep
 
-def RunSPARCED(flagD,th,spdata,genedata,Vn,Vc,model):
+def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     ts = 30 # time-step to update mRNA numbers
     NSteps = int(th*3600/ts)
-    tout_all = np.arange(0,th*3600+1,30)    
+    tout_all = np.arange(0,th*3600+1,ts) 
+    
+    # Read-in the model SBML to get compartmental volumes (used to convert nM to mpc and vice versa)
+    sbml_reader = libsbml.SBMLReader()
+    sbml_doc = sbml_reader.readSBML(sbml_file)
+    sbml_model = sbml_doc.getModel()
+    Vc = sbml_model.getCompartment(0).getVolume() # Should be the index for Cytoplasm
+    Vn = sbml_model.getCompartment(2).getVolume() # Should be the index for Nuclues
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
-    
-    genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)
-    
-    if len(spdata)==0:
+    splist = list(model.getStateIds())
+    if len(spdata)==0: # if no initial condition values are supplied, use the input file information
         spdata0 = pd.read_csv('Species.txt',header=0,index_col=0,sep="\t")
-        spdata = np.float(spdata0.values[:,1])
-    xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
-    xoutS_all[0,:] = spdata # 24hr time point     
+        spdata = np.float(spdata0.values[:,1])  
     
-    if len(genedata)==0:
-        genedata = genedata0
-    xoutG_all = np.zeros(shape=(NSteps+1,len(genedata)))
-    xoutG_all[0,:] = genedata
+    # calculate 
+    genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)
+    
+    xoutS_all = np.zeros(shape=(1,len(splist)))
+    xoutS_all[0,:] = spdata # 24hr time point
+    xoutG_all = np.zeros(shape=(1,len(genedata)))
+    xoutG_all[0,:] = genedata  
     
     solver = model.getSolver() # Create solver instance
     solver.setMaxSteps = 1e10
     
-    for qq in range(NSteps):
-        genedata,xmN,AllGenesVec = SGEmodule(flagD,ts,xoutG_all[qq,:],xoutS_all[qq,:],Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1,tcnas,tck50as,tcnrs,tck50rs,spIDs)
-        xoutS_all[qq,773:914] = np.dot(xmN,mpc2nM_Vc)
-        model.setInitialStates(xoutS_all[qq,:])
-        rdata = amici.runAmiciSimulation(model, solver)  # Run simulation
-        xoutS_all[qq+1,:] = rdata['x'][-1,:]
-        xoutG_all[qq+1,:] = genedata
-        if rdata['x'][-1,103] < rdata['x'][-1,105]:
+    mRNAIndDs = [ind for ind, ele in enumerate(splist) if 'm_' in ele] # find the indeces for mRNA species
+    mRNAIndDs = mRNAIndDs[1:]
+    PARPind = [ind for ind,ele in enumerate(splist) if ele in {'PARP'}] # find the index for PARP
+    cPARPind = [ind for ind,ele in enumerate(splist) if ele in {'cPARP'}] # find the index for cleaved-PARP (used to decide for apoptosis) 
+    
+    # Run 30sec (ts) simulations until final th is reached:
+    for qq in range(NSteps): 
+        # Call the function (based on the current state of the model species) for gene in/activation and mRNA birth/death events.   
+        # Stochastic sampling if the flagD==0, deterministic calculations if flagD==1:
+        genedata,xmN,AllGenesVec = SGEmodule(flagD,ts,xoutG_all[qq,:],xoutS_all[qq,:],Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1,tcnas,tck50as,tcnrs,tck50rs,spIDs,mRNAIndDs[0])
+        # mRNA species values are updated every 30sec, for the next 30sec simulation:
+        xoutS_all[qq,mRNAIndDs] = np.dot(xmN,mpc2nM_Vc) 
+        # set the new ICs:
+        model.setInitialStates(xoutS_all[qq,:]) 
+        # Run the simulation:
+        rdata = amici.runAmiciSimulation(model, solver)  
+        # Store the end point as next 30sec time-point:
+        xoutS_all = np.vstack([xoutS_all, rdata['x'][-1,:]]) 
+        rdata = None
+        # Store active/inactive gene states:
+        xoutG_all = np.vstack([xoutG_all, genedata]) 
+        # check for cell death:
+        if xoutS_all[-1,PARPind] < xoutS_all[-1,cPARPind]: 
             print('Apoptosis happened')
             break
-    xoutS_all = xoutS_all[~np.all(xoutS_all == 0, axis=1)]
-    xoutG_all = xoutG_all[~np.all(xoutG_all == 0, axis=1)]
+    # Finalize the species concentration trajectories (output at every 30sec):
+    xoutS_all = xoutS_all[~np.all(xoutS_all == 0, axis=1)] 
+    # Finalize the gene state trajectories (output at every 30sec):
+    xoutG_all = xoutG_all[~np.all(xoutG_all == 0, axis=1)] 
+    # The time points (in seconds):
     tout_all = tout_all[0:len(xoutS_all)]
     
     return xoutS_all, xoutG_all, tout_all

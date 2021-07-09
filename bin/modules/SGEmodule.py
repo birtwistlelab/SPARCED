@@ -4,7 +4,7 @@ from random import *
 import pandas as pd
 
 def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1, 
-              tcnas,tck50as,tcnrs,tck50rs,spIDs):
+              tcnas,tck50as,tcnrs,tck50rs,spIDs,mRNAInds0):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
     # ts = time
@@ -23,12 +23,11 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
     numberofgenes = len(tcnas)
     numberofTARs = len(tcnas[0])
     
-    # gm species
     ix = 0
-    xgac = genedata[ix:ix+numberofgenes]
+    xgac = genedata[ix:ix+numberofgenes] # active genes
     ix = ix+numberofgenes
-    xgin = genedata[ix:ix+numberofgenes]
-    xm = np.divide(spdata[773:],mpc2nmcf_Vc)
+    xgin = genedata[ix:ix+numberofgenes] # inactive genes
+    xm = np.divide(spdata[mRNAInds0:],mpc2nmcf_Vc) # mRNAs: nM --> molecules per cell
         
     TARarr = np.array(spdata[spIDs])
     TAs = np.zeros((numberofgenes,numberofTARs))
@@ -73,19 +72,18 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
         xginN = genedata[numberofgenes:numberofgenes*2]
         AllGenesVecN = []
     else:
-        # Poisson Stuff
+        # Poisson processes
         poff = scipy.stats.poisson.pmf(0,kGin_1*ts)
         pon = scipy.stats.poisson.pmf(0,kGac_1*ts)
 
         # Generating random numbers and deciding which genes should turn off and on
         RandomNumbers = np.random.uniform(0,1,len(AllGenesVec))
-        # geneson=logical(AllGenesVec);
         geneson = AllGenesVec.astype(bool).astype(int)
         genesoff = np.logical_not(geneson).astype(int)
         ac2in = np.logical_and(np.transpose(geneson.flatten()),RandomNumbers>=poff)
         in2ac = np.logical_and(np.transpose(genesoff.flatten()),RandomNumbers>=pon)
 
-        # Generating new AllGenesVec and allocating active and inactive genes
+        # Allocate active and inactive genes
         AllGenesVecN = AllGenesVec
         AllGenesVecN[ac2in] = 0.0
         AllGenesVecN[in2ac] = 1.0
@@ -100,7 +98,7 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
         Nb = Nb.ravel()
         Nd = np.random.poisson(np.float64(vTCd*ts))
         Nd = Nd.ravel()
-        # These genes and mRNAs we don't allow to fluctuate
+        # These genes and mRNAs we do not allow to fluctuate
         indsD = np.array([5,6,7,8,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29])
         Nb[indsD] = vTC[indsD]*ts
         Nd[indsD] = vTCd[indsD]*ts
