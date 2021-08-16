@@ -59,7 +59,7 @@ Files to exactly replicate Bouhaddou2018 model. In this format, mRNAs and protei
 
 ### Model testing and performance
 
-The Docker image of the model and simulations are tested with multiple machines (examples properties below). The simulation times are:
+The Docker image of the model and simulations are tested with multiple machines (see below). The simulation times are:
 
     - Model file creation time: ~2min
     - Model compilation time: 15-25min (depends on model size, i.e. numbers of species and observables)
