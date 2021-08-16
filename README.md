@@ -16,6 +16,23 @@ SPARCED is a simple and efficient pipeline for construction, merging, expansion,
 2. Make sure the dependencies listed above are installed
 3. (SPARCED-nf only) Ensure you have a Kubernetes `config` file for your chosen cluster located in your `~/.kube` folder
 
+### SPARCED-jupyter
+
+#### Setup
+Once you have Docker installed, follow the simple steps below.
+
+1. In a terminal window, use the command `docker login` with your account credentials. If you don't have an account yet, head over to hub.docker.com to set one up.
+2. Use `docker pull birtwistlelab/sparced-notebook:latest` to download the latest version of the docker image
+3. Once the download is complete, use `docker run -p 8888:8888 --name testnb1 -i -t birtwistlelab/sparced-notebook:latest`, and in your browser, go to the last URL produced in your terminal from this command
+    - N.B. `testnb1` is just a sample name for the container you're creating with this command. If you try to create another container with this name, delete the old one first with `docker rm testnb1`
+4. Viola! Once this command finishes, you should see a URL in your terminal that looks similar to `http://127.0.0.1:8888/?token=4a7c71c7a3b0080a4f331b256ae435fbc70`--paste this into your browser. You can now begin stepping through the commands in each of the files in the `jupyter_notebooks` folder to learn more about the model and perform small runs.
+
+To use custom data in the SPARCED-jupyter workflow, start a container with the commands above, and look at the `input_files` directory. Delete the current files and run `docker cp <datafile> <container-name(e.g. testnb1)>:/app/input_files/<datafile>` to replace them.
+
+#### Demo
+
+See the `Demo` folder for an example model compilation and simulation results.
+
 ### SPARCED-nf
 
 #### Setting up the model
@@ -36,22 +53,31 @@ SPARCED is a simple and efficient pipeline for construction, merging, expansion,
 - For problems, feel free to consult our [troubleshooting guide](https://github.com/birtwistlelab/SPARCED/blob/master/TROUBLESHOOTING.md) or create issue requests. 
 - For brave souls with a lot of local computer power but no Kubernetes cluster, SPARCED-nf is also built to be able to run locally. Simply launch with `nextflow run` instead of `kuberun` and work from the `configs/local-nextflow.config` template.
 
-### SPARCED-jupyter
-
-#### Setup
-Once you have Docker installed, follow the simple steps below.
-
-1. In a terminal window, use the command `docker login` with your account credentials. If you don't have an account yet, head over to hub.docker.com to set one up.
-2. Use `docker pull birtwistlelab/sparced-notebook:latest` to download the latest version of the docker image
-3. Once the download is complete, use `docker run -p 8888:8888 --name testnb1 -i -t birtwistlelab/sparced-notebook:latest`, and in your browser, go to the last URL produced in your terminal from this command
-    - N.B. `testnb1` is just a sample name for the container you're creating with this command. If you try to create another container with this name, delete the old one first with `docker rm testnb1`
-4. Viola! Once this command finishes, you should see a URL in your terminal that looks similar to `http://127.0.0.1:8888/?token=4a7c71c7a3b0080a4f331b256ae435fbc70`--paste this into your browser. You can now begin stepping through the commands in each of the files in the `jupyter_notebooks` folder to learn more about the model and perform small runs.
-
-To use custom data in the SPARCED-jupyter workflow, start a container with the commands above, and look at the `input_files` directory. Delete the current files and run `docker cp <datafile> <container-name(e.g. testnb1)>:/app/input_files/<datafile>` to replace them.
-
 ### SPARCED_Brep
 
 Files to exactly replicate Bouhaddou2018 model. In this format, mRNAs and protein species are tracked in separate variables. The number of species and ratelaws are also the same Bouhaddou2018 model. SPARCED is the new, updated, and cleaned up version.
+
+### System and properties
+
+The Docker image of the model and simulations are tested with multiple machines (examples properties below). The simulation times are:
+
+- Model file creation time: ~2min
+- Model compilation time: 15-25min (depends on model size, i.e. species and observable numbers)
+- Model simulation time: ~1min for 24-hour simulation
+
+1. Ubuntu-Desktops:
+
+- Ubuntu 18.04, Intel Core i7 3930 CPU @ 3.20 GHz, 32 GB DDR3, Nvidia GTX 690 GPU
+
+2. Windows-Desktops:
+
+- Windows 10 Education, Intel Core i5-3470 CPU @ 3.20 GHz, 8.00 GB RAM, Nvidia GTX 650 GPU, 64-bit operating system
+- Windows 10 Education, Intel Core i7-9700 CPU @ 5.00 GHz, 32.00 GB RAM, Nvidia RTX 2070 GPU, 64-bit operating system
+
+3. Windows-Laptops:
+
+- Windows 10 Pro, Intel Core i7-8550U CPU @ 2.00 GHz, 16.00 GB RAM, Intel UHD 620 GPU, 64-bit operating system
+- Windows 10 Education, Intel Core i7-10705H CPU @ 2.60 GHz, 16.00 GB RAM, Nvidia GTX 1660ti GPU, 64-bit operating system
 
 ## Acknowledgements:
 
