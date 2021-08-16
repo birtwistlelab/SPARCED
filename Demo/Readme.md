@@ -5,7 +5,7 @@ The pre-simulated data are also given (GrowthStim_S_demo.txt and GrowthStim_G_de
 
 ## createModel notebook:
 
-- Here this notebook is already run and the model instance (AMICI required) files are saved in the `SPARCED` subfolder. If desired users can run the notebook again, with a new model file name to compare to our model here.
+- This notebook is already run and the model instance (AMICI required) files are saved in the `SPARCED` subfolder. Users can run the notebook again, with a new model file name to compare to our model provided here.
 
 ## runModel notebook:
 
