@@ -976,17 +976,17 @@ x6_c = x_compare(x6,'x6_u87')
 #%%
 
 
-# import matplotlib as mpl
+import matplotlib as mpl
 
+import matplotlib.pyplot as plt
 
+mpl.rcParams['figure.dpi'] = 300
 
-# mpl.rcParams['figure.dpi'] = 300
+plt.figure
+plt.scatter(x6_c['matlab'].values,x6_c['amici'].values)
 
-# plt.figure
-# plt.scatter(x6_c['matlab'].values,x6_c['amici'].values)
-
-# plt.xscale('log')
-# plt.yscale('log')
-# plt.xlim(1e-5,1e5)
-# plt.ylim(1e-5,1e5)
-# plt.show
+plt.xscale('log')
+plt.yscale('log')
+plt.xlim(1e-5,1e5)
+plt.ylim(1e-5,1e5)
+plt.show
