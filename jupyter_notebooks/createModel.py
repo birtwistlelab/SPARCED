@@ -10,6 +10,10 @@ import os
 import pandas as pd
 sys.path.append(os.getcwd()[0:os.getcwd().rfind('/')]+'/sparced'+'/bin')
 
+wd = str(os.getcwd()).replace("jupyter_notebooks","")
+
+sys.path.append(os.path.join(wd,'bin'))
+
 import libsbml
 import importlib
 import amici
