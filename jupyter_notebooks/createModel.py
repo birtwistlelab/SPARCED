@@ -233,7 +233,7 @@ else:
     
 #%%
 # create observables
-ObsMat = pd.read_csv(os.path.join(wd,input_data_folder,"Observables.txt"), sep='\t',header=0, index_col=0)
+ObsMat = pd.read_csv(os.path.join(wd,'input_files',"Observables.txt"), sep='\t',header=0, index_col=0)
 Vc = float(compartment_sheet[compartment_sheet[:,0]=='Cytoplasm',1])
 
 species_names = np.array([species_sheet[i][0] for i in range(1,len(species_sheet))])
