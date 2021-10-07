@@ -54,7 +54,7 @@ compartments = []
 volumes = []
 
 # Create/write compartments
-compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open(fileComps)])
+compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files',fileComps))])
 
 #read in each line minus the header row of compartments file
 for row in compartment_sheet[1:]:
@@ -69,7 +69,7 @@ for idx in range(len(compartments)):
 fileModel.write("\n")
 
 # Write species and assign compartments
-species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
+species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Species.txt'), encoding='latin-1')])
 
 #read in each line minus the header row of species file
 species_compartments = []
@@ -88,7 +88,7 @@ for idx,val in enumerate(species_sheet[1:]):
 fileModel.write("\n\n  # Reactions:\n")
 
 #reads in file from excel and gets rid of first row and column (they're data labels)
-stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open('StoicMat.txt')])
+stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','StoicMat.txt'))])
 
 #gets first column minus blank space at the beginning, adds to stoic data list
 stoic_columnnames = stoic_sheet[0]
@@ -96,7 +96,7 @@ stoic_rownames = [line[0] for line in stoic_sheet[1:]]
 stoic_data = np.array([line[1:] for line in stoic_sheet[1:]])
 
 #creates associated ratelaw data list
-ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Ratelaws.txt')])
+ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Ratelaws.txt'))])
 ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 # builds the important ratelaw+stoic lines into the txt file 
@@ -233,7 +233,7 @@ else:
     
 #%%
 # create observables
-ObsMat = pd.read_csv(os.path.join(input_data_folder,"Observables.txt"), sep='\t',header=0, index_col=0)
+ObsMat = pd.read_csv(os.path.join(wd,input_data_folder,"Observables.txt"), sep='\t',header=0, index_col=0)
 Vc = float(compartment_sheet[compartment_sheet[:,0]=='Cytoplasm',1])
 
 species_names = np.array([species_sheet[i][0] for i in range(1,len(species_sheet))])
