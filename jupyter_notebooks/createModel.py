@@ -172,7 +172,7 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
         fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
         
 params_all = pd.DataFrame({'value':paramvals,'rxn':paramrxns,'idx':paramidxs},index=paramnames)
-params_all.to_csv(os.path.join(input_data_folder,'params_all.csv'),sep=',',header=True, index=True)
+params_all.to_csv(os.path.join(wd,'input_files','params_all.csv'),sep=',',header=True, index=True)
 
 
 # Write compartment ICs
