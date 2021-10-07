@@ -2,20 +2,22 @@ import libsbml
 import importlib
 import amici
 import numpy as np
+import pandas as pd
+import os
 
 from modules.SGEmodule import SGEmodule
 from modules.RunPrep import RunPrep
 
-def RunSPARCED(flagD,th,spdata,genedata,Vn,Vc,model):
+def RunSPARCED(flagD,th,spdata,genedata,Vn,Vc,model,wd,omics_input='OmicsData.txt',genereg_input='GeneReg.txt'):
     ts = 30 # time-step to update mRNA numbers
     NSteps = int(th*3600/ts)
     tout_all = np.arange(0,th*3600+1,30)    
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
     
-    genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)
+    genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model,wd,omics_input,genereg_input)
     
     if len(spdata)==0:
-        spdata0 = pd.read_csv('Species.txt',header=0,index_col=0,sep="\t")
+        spdata0 = pd.read_csv(os.path.join(wd,'input_files','Species.txt'),header=0,index_col=0,sep="\t")
         spdata = np.float(spdata0.values[:,1])
     xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
     xoutS_all[0,:] = spdata # 24hr time point     

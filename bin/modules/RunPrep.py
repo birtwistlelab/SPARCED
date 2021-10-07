@@ -1,18 +1,33 @@
 import numpy as np
 import pandas as pd
+import os
 
-def RunPrep(flagD,Vn,model):
-    kGsRead = pd.read_csv('OmicsData.txt',header=0,index_col=0,sep="\t")
-    gExp_mpc = np.float64(kGsRead.values[:,0])
-    mExp_mpc = np.float64(kGsRead.values[:,1])
-    kGin = np.float64(kGsRead.values[:,2])
-    kGac = np.float64(kGsRead.values[:,3])
-    kTCleak = np.float64(kGsRead.values[:,4])
+def RunPrep(flagD,Vn,model,wd,omics_input,genereg_input):
+    kGsRead = pd.read_csv(os.path.join(wd,'input_files','OmicsData.txt'),header=0,index_col=0,sep="\t")
+    
+    # temp
+    # kGsRead['Exp GCN'] = au565['gcn']
+    # kGsRead['Exp RNA'] = au565['mrna_mpc']
+    
+    
+    
+    # temp
+    gExp_mpc = np.float64(kGsRead['Exp GCN'].values)
+    mExp_mpc = np.float64(kGsRead['Exp RNA'].values)
+    kGin = np.float64(kGsRead['kGin'].values)
+    kGac = np.float64(kGsRead['kGac'].values)
+    kTCleak = np.float64(kGsRead['kTCleak'].values)
+    
+    # temp
+    
+    # kTCleak = au565['leak'].values
+    # temp
+    
     kTCmaxs = np.float64(kGsRead.values[:,5])
     kTCd = np.float64(kGsRead.values[:,6])
 
     # Read-in the activators matrix and assign concentrations of activators
-    TARsRead = pd.read_csv('GeneReg.txt',header=0,index_col=0,sep="\t")
+    TARsRead = pd.read_csv(wd,'input_files',genereg_input,header=0,index_col=0,sep="\t")
     TARs0 = (TARsRead.values)
     numberofTARs = len(TARsRead.columns)
     spnames = [ele for ele in model.getStateIds()]

@@ -25,7 +25,7 @@ p21	E1HE4int	Pei	16.02	WEE1	17				Pai
 	FFrFFrint	Cdh1a	108.79						Wee1										
 	FFrFrint	E2Fp	11.634						Chk1										
 	IIrIr_int	p27p	4.2027						p21										
-	INS_Isr_Isr_int	Pa	42.06																
+	INS_Isr_Isr_int	Pa	42.06						L										
 	IIrIrI_int	Cb	3.4408																
 	INS_Isr_Isr_INS_int	Mbi	3.8992																
 	pEE1E2int	Mb	0.68625																

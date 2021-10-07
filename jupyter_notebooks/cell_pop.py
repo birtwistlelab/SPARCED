@@ -169,3 +169,16 @@ for nbr in range(0,numofCells):
     condsGDF = None
     print(datetime.now())
 print(datetime.now())
+
+#%%
+
+# cell pop test
+
+# Deterministic Run
+
+flagD = 1
+solver = model.getSolver()  # Create solver instance
+solver.setMaxSteps = 1e10
+model.setTimepoints(np.linspace(0, ts))  # np.linspace(0, 30) # set timepoints
+
+#%%
