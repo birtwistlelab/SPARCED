@@ -23,13 +23,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import re
 from antimony import *
-from modules.paramSweep import paramSweep
-from modules.copyDir import copyDirectory
+# from modules.paramSweep import paramSweep
+# from modules.copyDir import copyDirectory
 #%%
 #copy input files over to current directory
 current_dir = os.getcwd()
 input_data_folder = current_dir[0:current_dir.rfind('/')+1]+'/sparced/'+'input_files'
-copyDirectory(input_data_folder, os.getcwd()+"/")
+# copyDirectory(input_data_folder, os.getcwd()+"/")
 
 # Input and output file name definitions
 fileComps = 'Compartments.txt' # input
