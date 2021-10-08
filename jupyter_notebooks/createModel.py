@@ -297,7 +297,8 @@ writer.writeSBML(sbml_doc, sbml_file)
 
 # prepares to use interaction components to synthesize model
 model_name = sbml_file[0:-4]
-model_output_dir = model_name
+# model_output_dir = model_name
+model_output_dir = os.path.join(wd,model_name)
 
 sbml_reader = libsbml.SBMLReader()
 sbml_doc = sbml_reader.readSBML(sbml_file)
@@ -320,7 +321,7 @@ sbml_importer.sbml2amici(model_name,
 #%%
 
 # sets environment for model creation
-sys.path.insert(0, os.path.abspath(model_output_dir))
+sys.path.insert(0, model_output_dir)
 model_module = importlib.import_module(model_name)
 model = model_module.getModel()
 
