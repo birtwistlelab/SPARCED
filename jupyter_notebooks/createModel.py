@@ -36,9 +36,9 @@ fileComps = 'Compartments.txt' # input
 fileSpecies = 'Species.txt' # input
 fileStoic = 'StoicMat.txt' # input
 fileRatelaws = 'Ratelaws.txt' # input
-
+fileAntimony = 'SPARCED.txt'
 # Antimony model name and text
-fileModel = open('SPARCED.txt','w') # file name
+fileModel = open(os.path.join(wd,fileAntimony),'w') # file name
 fileModel.write("# PanCancer Model by Birtwistle Lab \n") # some explanation
 fileModel.write("model SPARCED()\n") # model name
 
@@ -219,13 +219,13 @@ fileModel.write("\nend")
 fileModel.close()
 
 # load model and convert to SBML
-if loadFile("SPARCED.txt") == 1:
+if loadFile(os.path.join(wd,fileAntimony)) == 1:
     print("Success loading antimony file")
 else:
     print("Failed to load antimony file")
     exit(1)
 
-if writeSBMLFile("SPARCED.xml","SPARCED") == 1:
+if writeSBMLFile(os.path.join(wd,fileAntimony),"SPARCED") == 1:
     print("Success converting antimony to SBML")
 else:
     print("Failure converting antimony to SBML")
@@ -273,7 +273,7 @@ for i in range(len(obs_names)):
 #%%
 # create interaction components
 sbml_reader = libsbml.SBMLReader()
-sbml_doc = sbml_reader.readSBML(sbml_file)
+sbml_doc = sbml_reader.readSBML(os.path.join(wd,sbml_file))
 sbml_model = sbml_doc.getModel()
 
 # Set species annotations

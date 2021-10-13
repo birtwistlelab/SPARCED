@@ -2175,6 +2175,10 @@ void dydx_SPARCED(realtype *dydx, const realtype t, const realtype *x, const rea
     dydx[78412] = 1.0;
     dydx[78625] = 1.0;
     dydx[78845] = 1.0;
+    dydx[79001] = 1.0;
+    dydx[79104] = 1.0;
+    dydx[79207] = 1.0;
+    dydx[79310] = 1.0;
 }
 
 } // namespace model_SPARCED

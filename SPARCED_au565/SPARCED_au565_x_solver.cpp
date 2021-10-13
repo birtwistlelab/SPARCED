@@ -784,6 +784,11 @@ void x_solver_SPARCED_au565(realtype *x_solver, const realtype *x_rdata){
     x_solver[770] = AKTi_AKT;
     x_solver[771] = mT;
     x_solver[772] = EIF4E_mT;
+    x_solver[773] = lapatinib;
+    x_solver[774] = lapatinib_E1;
+    x_solver[775] = lapatinib_E2;
+    x_solver[776] = lapatinib_E3;
+    x_solver[777] = lapatinib_E4;
 }
 
 } // namespace model_SPARCED_au565

@@ -771,3 +771,8 @@
 #define AKTi_AKT x[770]
 #define mT x[771]
 #define EIF4E_mT x[772]
+#define lapatinib x[773]
+#define lapatinib_E1 x[774]
+#define lapatinib_E2 x[775]
+#define lapatinib_E3 x[776]
+#define lapatinib_E4 x[777]

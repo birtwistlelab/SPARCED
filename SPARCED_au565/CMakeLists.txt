@@ -32,7 +32,8 @@ message(STATUS "Found AMICI ${Amici_DIR}")
 
 set(MODEL_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-set(SRC_LIST_LIB SPARCED_au565.cpp 
+set(SRC_LIST_LIB SPARCED_au565_dydx.cpp 
+SPARCED_au565.cpp 
 SPARCED_au565_dJydsigma.cpp 
 SPARCED_au565_dJydy.cpp 
 SPARCED_au565_dJydy_colptrs.cpp 
@@ -46,7 +47,6 @@ SPARCED_au565_dwdx_rowvals.cpp
 SPARCED_au565_dxdotdw.cpp 
 SPARCED_au565_dxdotdw_colptrs.cpp 
 SPARCED_au565_dxdotdw_rowvals.cpp 
-SPARCED_au565_dydx.cpp 
 SPARCED_au565_Jy.cpp 
 SPARCED_au565_sigmay.cpp 
 SPARCED_au565_total_cl.cpp 

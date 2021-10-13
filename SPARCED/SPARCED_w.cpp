@@ -2589,6 +2589,14 @@ void w_SPARCED(realtype *w, const realtype t, const realtype *x, const realtype 
     flux_r2431 = 1.75e-12*FOXOnuc*k2436;  // w[2572]
     flux_r2432 = 5.2499999999999996e-12*MEKi_ppMEK*k2437;  // w[2573]
     flux_r2433 = 5.2499999999999996e-12*AKTi_AKT*k2438;  // w[2574]
+    flux_r2434 = 5.2499999999999996e-12*E1*k2439*lapatinib;  // w[2575]
+    flux_r2435 = 5.2499999999999996e-12*k2440*lapatinib_E1;  // w[2576]
+    flux_r2436 = 5.2499999999999996e-12*E2*k2441*lapatinib;  // w[2577]
+    flux_r2437 = 5.2499999999999996e-12*k2442*lapatinib_E2;  // w[2578]
+    flux_r2438 = 5.2499999999999996e-12*E3*k2443*lapatinib;  // w[2579]
+    flux_r2439 = 5.2499999999999996e-12*k2444*lapatinib_E3;  // w[2580]
+    flux_r2440 = 5.2499999999999996e-12*E4*k2445*lapatinib;  // w[2581]
+    flux_r2441 = 5.2499999999999996e-12*k2446*lapatinib_E4;  // w[2582]
 }
 
 } // namespace model_SPARCED
