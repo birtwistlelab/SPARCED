@@ -24,8 +24,8 @@ sbml_file = "SPARCED_au565.xml"
 model_name= sbml_file[0:-4]
 model_output_dir = model_name
 sys.path.insert(0, os.path.join(wd,model_output_dir))
-model_module = importlib.import_module(model_name)
-model = model_module.getModel()
+# model_module = importlib.import_module(model_name)
+# model = model_module.getModel()
 
 
 
