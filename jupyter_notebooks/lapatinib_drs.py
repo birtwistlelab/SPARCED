@@ -21,7 +21,7 @@ import multiprocessing as mpr
 
 parser = argparse.ArgumentParser(description='Input doses in uM')
 parser.add_argument('--dose', metavar='dose', help='input dose in uM', default = 0.0025)
-args = parser.parse_arge()
+args = parser.parse_args()
 
 wd = str(os.getcwd()).replace("jupyter_notebooks","")
 
@@ -30,7 +30,7 @@ sim_name = 'lapatinib_dose_response'
 
 output_path = os.path.join(wd,sim_name)
 
-if ~os.path.exists(output_path):
+if not os.path.exists(output_path):
     os.mkdir(output_path)
 
 
@@ -71,7 +71,7 @@ sp_input['lapatinib'] = dose
 
 output_dose = os.path.join(output_path,'lapatinib_'+str(float(args.dose)))
 
-if ~os.path.exists(output_dose):
+if not os.path.exists(output_dose):
     os.mkdir(output_dose)
 
 
@@ -104,9 +104,9 @@ cell_pop = 100
 
 def single_cell(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutS_all.txt',xoutS_all,delimiter='\t'))
-    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutG_all.txt',xoutG_all,delimiter='\t'))
-    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_tout_all.txt',tout_all,delimiter='\t'))
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutS_all.txt'),xoutS_all,delimiter='\t')
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutG_all.txt'),xoutG_all,delimiter='\t')
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_tout_all.txt'),tout_all,delimiter='\t')
     
 # p1 = mpr.Process(target=single_cell)
 
