@@ -229,6 +229,7 @@ mrna_filter = filter(lambda a: a.startswith('m_'), list(ICf.index))
 for m in mrna_filter:
     mrna_id.append(m)
 
+mrna_idx = np.where(np.isin(model.getStateIds(),mrna_id))[0].flatten()
 
 species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Species.txt'), encoding='latin-1')])
 compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Compartments.txt'))])
@@ -1181,6 +1182,34 @@ species_initializations = x6.values.copy()
 species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 species_initializations[155:162] = STIMligs
 
+#%% debug - RunSPARCED
+
+# solver = model.getSolver()          # Create solver instance
+# solver.setMaxSteps = 1e10
+# model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
+
+# mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
+# mpc2nmcf_Vc = 1.0E9/(Vc*6.023E+23)
+# numberofgenes = len(tcnas)
+# numberofTARs = len(tcnas[0])
+# ix = 0
+
+# from modules.RunPrep import RunPrep
+# genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model,wd,omics_input,genereg_input)
+
+# NSteps = int(th*3600/ts)
+
+# spdata = species_initializations
+
+# xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
+# xoutS_all[0,:] = spdata 
+# xgac = genedata[ix:ix+numberofgenes]
+# ix = ix+numberofgenes
+# xgin = genedata[ix:ix+numberofgenes]
+# xm = np.divide(spdata[773:],mpc2nmcf_Vc)
+        
+ 
+
 
 
 #%%
@@ -1190,7 +1219,10 @@ solver = model.getSolver()          # Create solver instance
 solver.setMaxSteps = 1e10
 model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model,omics_input,genereg_input)
+xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+
+
 
 #%%
 

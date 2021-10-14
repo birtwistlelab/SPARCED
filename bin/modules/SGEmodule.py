@@ -4,7 +4,7 @@ from random import *
 import pandas as pd
 
 def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1, 
-              tcnas,tck50as,tcnrs,tck50rs,spIDs):
+              tcnas,tck50as,tcnrs,tck50rs,spIDs,mrna_idx):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
     # ts = time
@@ -28,7 +28,7 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
     xgac = genedata[ix:ix+numberofgenes]
     ix = ix+numberofgenes
     xgin = genedata[ix:ix+numberofgenes]
-    xm = np.divide(spdata[773:],mpc2nmcf_Vc)
+    xm = np.divide(spdata[mrna_idx],mpc2nmcf_Vc)
         
     TARarr = np.array(spdata[spIDs])
     TAs = np.zeros((numberofgenes,numberofTARs))

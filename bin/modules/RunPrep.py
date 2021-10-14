@@ -3,12 +3,18 @@ import pandas as pd
 import os
 
 def RunPrep(flagD,Vn,model,wd,omics_input,genereg_input):
-    kGsRead = pd.read_csv(os.path.join(wd,'input_files','OmicsData.txt'),header=0,index_col=0,sep="\t")
+    kGsRead = pd.read_csv(os.path.join(wd,'input_files',omics_input),header=0,index_col=0,sep="\t")
     
     # temp
     # kGsRead['Exp GCN'] = au565['gcn']
     # kGsRead['Exp RNA'] = au565['mrna_mpc']
     
+    mrna_id = []
+    mrna_filter = filter(lambda a: a.startswith('m_'), list(model.getStateIds()))
+    for m in mrna_filter:
+        mrna_id.append(m)
+
+    mrna_idx = np.where(np.isin(model.getStateIds(),mrna_id))[0].flatten()
     
     
     # temp
@@ -27,7 +33,7 @@ def RunPrep(flagD,Vn,model,wd,omics_input,genereg_input):
     kTCd = np.float64(kGsRead.values[:,6])
 
     # Read-in the activators matrix and assign concentrations of activators
-    TARsRead = pd.read_csv(wd,'input_files',genereg_input,header=0,index_col=0,sep="\t")
+    TARsRead = pd.read_csv(os.path.join(wd,'input_files',genereg_input),header=0,index_col=0,sep="\t")
     TARs0 = (TARsRead.values)
     numberofTARs = len(TARsRead.columns)
     spnames = [ele for ele in model.getStateIds()]
@@ -101,4 +107,4 @@ def RunPrep(flagD,Vn,model,wd,omics_input,genereg_input):
     tck50as = tck50as*(1/mpc2nmcf_Vn)
     tck50rs = tck50rs*(1/mpc2nmcf_Vn)
     
-    return genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs 
+    return genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs, mrna_idx 
