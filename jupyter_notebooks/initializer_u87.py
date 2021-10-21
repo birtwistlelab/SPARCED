@@ -731,7 +731,7 @@ kTCd = np.float64(gene_params.loc[:,'kTCd'].values)
 
 xgac_mpc_D = (kGac*gExp_mpc)/(kGin+kGac)
 
-TARsRead = pd.read_csv('GeneReg.txt',header=0,index_col=0,sep="\t")
+TARsRead = pd.read_csv(os.path.join(wd,'input_files','GeneReg.txt'),header=0,index_col=0,sep="\t")
 TARs0 = (TARsRead.values)
 
 tcnas = np.ones((numberofgenes, numberofTARs))
@@ -812,6 +812,12 @@ kTCleak_new[np.isnan(kTCleak_new)] = 0
 kTCleak_new[np.isinf(kTCleak_new)] = 0
 
 #%% save results
+
+u87_omics = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended_u87.txt'), sep='\t', index_col=0, header=0)
+
+u87_omics['kTCleak'] = kTCleak_new
+
+u87_omics.to_csv(os.path.join(wd,'input_files','OmicsData_extended_u87.txt'), sep='\t', index=True, header=True)
 
 for i in range(np.shape(params_all)[0]):
     params_all.loc[params_all.index[i],'value'] = model.getFixedParameterById(str(params_all.index[i]))
