@@ -825,6 +825,7 @@ for i in range(np.shape(params_all)[0]):
 params_all.to_csv(os.path.join(wd,'initializer','params_u87i.txt'),sep='\t')
 x6.to_csv(os.path.join(wd,'initializer','species_u87i.txt'),sep='\t',index=True, header=False)
 
+
 #%% Write results to sbml
 
 sbml_model_u87i = sbml_doc.getModel()

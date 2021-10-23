@@ -11,7 +11,7 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif(POLICY CMP0074)
 
-project(SPARCED_au565)
+project(SPARCED_u87i)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -32,30 +32,30 @@ message(STATUS "Found AMICI ${Amici_DIR}")
 
 set(MODEL_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-set(SRC_LIST_LIB SPARCED_au565_dydx.cpp 
-SPARCED_au565.cpp 
-SPARCED_au565_dJydsigma.cpp 
-SPARCED_au565_dJydy.cpp 
-SPARCED_au565_dJydy_colptrs.cpp 
-SPARCED_au565_dJydy_rowvals.cpp 
-SPARCED_au565_dwdw.cpp 
-SPARCED_au565_dwdw_colptrs.cpp 
-SPARCED_au565_dwdw_rowvals.cpp 
-SPARCED_au565_dwdx.cpp 
-SPARCED_au565_dwdx_colptrs.cpp 
-SPARCED_au565_dwdx_rowvals.cpp 
-SPARCED_au565_dxdotdw.cpp 
-SPARCED_au565_dxdotdw_colptrs.cpp 
-SPARCED_au565_dxdotdw_rowvals.cpp 
-SPARCED_au565_Jy.cpp 
-SPARCED_au565_sigmay.cpp 
-SPARCED_au565_total_cl.cpp 
-SPARCED_au565_w.cpp 
-SPARCED_au565_x0.cpp 
-SPARCED_au565_xdot.cpp 
-SPARCED_au565_x_rdata.cpp 
-SPARCED_au565_x_solver.cpp 
-SPARCED_au565_y.cpp 
+set(SRC_LIST_LIB SPARCED_u87i.cpp 
+SPARCED_u87i_dJydsigma.cpp 
+SPARCED_u87i_dJydy.cpp 
+SPARCED_u87i_dJydy_colptrs.cpp 
+SPARCED_u87i_dJydy_rowvals.cpp 
+SPARCED_u87i_dwdw.cpp 
+SPARCED_u87i_dwdw_colptrs.cpp 
+SPARCED_u87i_dwdw_rowvals.cpp 
+SPARCED_u87i_dwdx.cpp 
+SPARCED_u87i_dwdx_colptrs.cpp 
+SPARCED_u87i_dwdx_rowvals.cpp 
+SPARCED_u87i_dxdotdw.cpp 
+SPARCED_u87i_dxdotdw_colptrs.cpp 
+SPARCED_u87i_dxdotdw_rowvals.cpp 
+SPARCED_u87i_dydx.cpp 
+SPARCED_u87i_Jy.cpp 
+SPARCED_u87i_sigmay.cpp 
+SPARCED_u87i_total_cl.cpp 
+SPARCED_u87i_w.cpp 
+SPARCED_u87i_x0.cpp 
+SPARCED_u87i_xdot.cpp 
+SPARCED_u87i_x_rdata.cpp 
+SPARCED_u87i_x_solver.cpp 
+SPARCED_u87i_y.cpp 
 wrapfunctions.cpp 
 ${MODEL_DIR}/wrapfunctions.cpp
 )
