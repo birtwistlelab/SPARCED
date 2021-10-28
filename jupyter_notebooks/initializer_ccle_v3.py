@@ -47,6 +47,9 @@ au565 = pd.read_excel(os.path.join('input_files','ccle','ccle_cell_definitions',
 
 au565['prot_mpc'] = np.zeros(np.shape(au565)[0])
 
+ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['Protein_mRNA']).values
+
+
 for gene in au565.index:
     if str(gene) in ccle_mpc.index:
         au565.loc[str(gene),'prot_mpc'] = float(ccle_mpc.loc[str(gene),'AU565_BREAST_TenPx01'])
@@ -56,7 +59,8 @@ ccle_missing_genes = np.loadtxt(os.path.join('input_files','ccle','genes_missing
 omics_mcf10a = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'),sep=',',index_col=0, header=0)
 
 for gene in ccle_missing_genes:
-    au565.loc[gene,'prot_mpc'] = float(omics_mcf10a.loc[gene,'Exp Protein'])
+    # au565.loc[gene,'prot_mpc'] = float(omics_mcf10a.loc[gene,'Exp Protein'])
+    au565.loc[gene,'prot_mpc'] = float(ratios_p2m[list(au565.index).index(gene)])*float(au565.loc[gene,'mrna_mpc'])
     
 au565_omics = omics_mcf10a.copy()
 au565_omics['Exp GCN'] = au565['gcn'].copy()
@@ -85,9 +89,9 @@ gene_params['kTLd'][np.isnan(gene_params['kTLd'].values)] = np.log(2)/gene_param
 gene_params['kTLd'][np.isnan(gene_params['kTLd'].values)] = 0
 
 
-ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['Protein_mRNA']).values
+# ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['Protein_mRNA']).values
 
-ratios_p2m[101] = 0.0 #PTEN
+# ratios_p2m[101] = 0.0 #PTEN
 # gene_params['kTL_nat_cells'] = ratios_p2m*gene_params['kTLd']
 
 
@@ -1006,6 +1010,15 @@ for qq in range(numberofTARs):
     sps = spnames.index(TARsRead.columns[qq]) 
     spIDs.append(sps)
 
+
+
+
+
+
+
+#%%
+
+
     
 TARarr = np.array(x6[spIDs])
 TAs = np.zeros((numberofgenes,numberofTARs))
@@ -1048,12 +1061,87 @@ i2c = np.nonzero(negativecheck<0)[0]
 if len(i2c)!=0:
     np.disp('WARNING -- Some induction term exceed degradation terms')
     
+#%% fix negative check
+if len(i2c)!=0:
+    
+    i2c_i = i2c
+    
+    while len(i2c_i)!=0:
+        
+        tck50as[i2c_i,:] = tck50as[i2c_i,:]*2
+            
+        TARarr = np.array(x6[spIDs])
+        TAs = np.zeros((numberofgenes,numberofTARs))
+        TRs = np.zeros((numberofgenes,numberofTARs))
+        for qq in range(numberofTARs):
+            TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
+            TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
+        TAs = TAs*(1.0/mpc2nmcf_Vn) # convert to mpc from nM
+        TAs.flatten()
+        TRs = TRs*(1.0/mpc2nmcf_Vn)
+        TRs.flatten() 
+        
+        # make hills
+        aa = np.divide(TAs,tck50as)
+        TFa = np.power(aa,tcnas)
+        TFa[np.isnan(TFa)] = 0.0
+        bb = np.divide(TRs,tck50rs)
+        TFr = np.power(bb,tcnrs)
+        TFr[np.isnan(TFr)] = 0.0
+        hills = np.sum(TFa,axis=1)/(1 + np.sum(TFa,axis=1) + np.sum(TFr,axis=1))
+        # With AP1*cMYC exception:
+        hills[Cd_genes] = np.multiply((TFa[Cd_genes,0]/(1+TFa[Cd_genes,0])),(TFa[Cd_genes,1]/(1+TFa[Cd_genes,1])))
+        
+        # vTCd
+        vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));TFa[Cd_genes,1]
+        vTCd = np.squeeze(np.asarray(vTCd))
+        
+        kTCmax = 0.1
+        
+        kTCmaxs = np.ones(len(model_genes))*kTCmax
+        kTCmaxs = kTCmaxs*mExp_mpc.values.astype('bool').astype('int')
+        
+        induced = np.multiply(np.multiply(xgac_mpc_D,kTCmaxs),hills)
+        induced = induced.flatten()
+        
+        negativecheck = np.array(mExp_mpc,dtype=bool).astype(int)*(vTCd - induced)
+        
+        i2c_i = np.nonzero(negativecheck<0)[0]
+
+
+
+
+#%%
+
+
+    
 leak = vTCd-induced
 kTCleak_new=leak/xgac_mpc_D
 
 kTCleak_new[np.isnan(kTCleak_new)] = 0
 kTCleak_new[np.isinf(kTCleak_new)] = 0
 
+#%% update genereg with new tck50as
+
+tck50as1 = tck50as
+
+TARs1 = TARs0
+
+for qq in range(numberofgenes):
+    for ww in range(numberofTARs):
+        pars = TARs1[qq,ww].find(';')
+        if pars>0:
+            nH = np.float(TARs0[qq,ww][0:pars])
+            kH = np.float(TARs0[qq,ww][pars+2::])
+            if nH>0:
+                TARs1[qq,ww] = str(tcnas[qq,ww])+'; '+str(tck50as1[qq,ww]*mpc2nmcf_Vn)
+                
+TARs_New = pd.DataFrame(data = TARs1, index = TARsRead.index, columns = TARsRead.columns)
+
+TARs_New.to_csv(os.path.join(wd,'input_files','GeneReg_au565.txt'), sep='\t')           
+                # tcnas[qq,ww] = nH
+                # tck50as[qq,ww] = kH
+# 
 # au565['leak'] = kTCleak_new
 
 # au565_omics = omics_mcf10a.copy()

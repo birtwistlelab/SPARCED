@@ -42,16 +42,16 @@
       <species id="Ribosome" compartment="Cytoplasm" initialConcentration="1897.392" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> GO:0005840</annotation>
       </species>
-      <species id="p53inac" compartment="Nucleus" initialConcentration="250.523632748606" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="p53inac" compartment="Nucleus" initialConcentration="257.977459037976" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000141510</annotation>
       </species>
-      <species id="p53ac" compartment="Nucleus" initialConcentration="7.89295333090991" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="p53ac" compartment="Nucleus" initialConcentration="7.58790572713326" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000141510</annotation>
       </species>
-      <species id="MDM2" compartment="Nucleus" initialConcentration="162.626075871608" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MDM2" compartment="Nucleus" initialConcentration="169.172532940362" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000135679</annotation>
       </species>
-      <species id="Wip1" compartment="Nucleus" initialConcentration="2.21338754058137" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Wip1" compartment="Nucleus" initialConcentration="2.21643815362117" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000170836</annotation>
       </species>
       <species id="ATMP" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -60,194 +60,194 @@
       <species id="ATRac" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000175054</annotation>
       </species>
-      <species id="MDM2product1" compartment="Nucleus" initialConcentration="7.89295333090981" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2product2" compartment="Nucleus" initialConcentration="7.89295333090964" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2product3" compartment="Nucleus" initialConcentration="7.89295333090963" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2product4" compartment="Nucleus" initialConcentration="7.89295333090864" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2product5" compartment="Nucleus" initialConcentration="7.8929533309086" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2product6" compartment="Nucleus" initialConcentration="7.89295333090851" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2product7" compartment="Nucleus" initialConcentration="7.8929533309085" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2product8" compartment="Nucleus" initialConcentration="7.89295333090826" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2product9" compartment="Nucleus" initialConcentration="7.89295333090797" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="MDM2pro" compartment="Nucleus" initialConcentration="7.89295333090758" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product1" compartment="Nucleus" initialConcentration="7.89295333090967" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product2" compartment="Nucleus" initialConcentration="7.89295333090932" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product3" compartment="Nucleus" initialConcentration="7.89295333090883" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product4" compartment="Nucleus" initialConcentration="7.89295333090855" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product5" compartment="Nucleus" initialConcentration="7.89295333090815" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product6" compartment="Nucleus" initialConcentration="7.89295333090732" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product7" compartment="Nucleus" initialConcentration="7.89295333090701" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product8" compartment="Nucleus" initialConcentration="7.89295333090681" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1product9" compartment="Nucleus" initialConcentration="7.89295333090649" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Wip1pro" compartment="Nucleus" initialConcentration="7.89295333090636" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="BRCA2" compartment="Nucleus" initialConcentration="0.476985590005363" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MDM2product1" compartment="Nucleus" initialConcentration="7.58790572714495" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2product2" compartment="Nucleus" initialConcentration="7.58790572716515" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2product3" compartment="Nucleus" initialConcentration="7.58790572716638" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2product4" compartment="Nucleus" initialConcentration="7.58790572728262" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2product5" compartment="Nucleus" initialConcentration="7.58790572728728" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2product6" compartment="Nucleus" initialConcentration="7.58790572729795" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2product7" compartment="Nucleus" initialConcentration="7.58790572729942" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2product8" compartment="Nucleus" initialConcentration="7.5879057273274" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2product9" compartment="Nucleus" initialConcentration="7.58790572736223" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="MDM2pro" compartment="Nucleus" initialConcentration="7.58790572740813" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product1" compartment="Nucleus" initialConcentration="7.58790572716095" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product2" compartment="Nucleus" initialConcentration="7.58790572720316" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product3" compartment="Nucleus" initialConcentration="7.58790572726013" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product4" compartment="Nucleus" initialConcentration="7.58790572729436" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product5" compartment="Nucleus" initialConcentration="7.58790572734139" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product6" compartment="Nucleus" initialConcentration="7.58790572743982" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product7" compartment="Nucleus" initialConcentration="7.58790572747634" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product8" compartment="Nucleus" initialConcentration="7.58790572749925" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1product9" compartment="Nucleus" initialConcentration="7.58790572753758" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Wip1pro" compartment="Nucleus" initialConcentration="7.58790572755225" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="BRCA2" compartment="Nucleus" initialConcentration="0.496845114587473" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000139618</annotation>
       </species>
-      <species id="MSH6" compartment="Nucleus" initialConcentration="63.9131490557147" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MSH6" compartment="Nucleus" initialConcentration="66.5742036048463" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000116062</annotation>
       </species>
-      <species id="MGMT" compartment="Nucleus" initialConcentration="13.4973125421417" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MGMT" compartment="Nucleus" initialConcentration="14.0592796099824" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000170430</annotation>
       </species>
-      <species id="damageDSB" compartment="Nucleus" initialConcentration="0.00041336456604193" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="damageSSB" compartment="Nucleus" initialConcentration="1.27352903827134e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="damageDSB" compartment="Nucleus" initialConcentration="0.000397400072460868" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="damageSSB" compartment="Nucleus" initialConcentration="1.22434425848785e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="ppAKT_MDM2" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221 ENSG00000135679</annotation>
       </species>
       <species id="pMDM2" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000135679</annotation>
       </species>
-      <species id="ARF" compartment="Nucleus" initialConcentration="50.613309952377" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ARF" compartment="Nucleus" initialConcentration="52.7206194223889" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000147889</annotation>
       </species>
-      <species id="MDM4" compartment="Nucleus" initialConcentration="147.715561178504" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MDM4" compartment="Nucleus" initialConcentration="151.826894322385" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000198625</annotation>
       </species>
       <species id="p53ac_MDM4" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000141510 ENSG00000198625</annotation>
       </species>
-      <species id="ATMinac" compartment="Nucleus" initialConcentration="7.18817837709437" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ATMinac" compartment="Nucleus" initialConcentration="7.4874616258726" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000149311</annotation>
       </species>
-      <species id="ATRinac" compartment="Nucleus" initialConcentration="1.62726266460261" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ATRinac" compartment="Nucleus" initialConcentration="1.69501452708726" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000175054</annotation>
       </species>
-      <species id="pRB" compartment="Nucleus" initialConcentration="7972.07720401937" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pRB" compartment="Nucleus" initialConcentration="7970.20846612612" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000139687</annotation>
       </species>
-      <species id="pRBp" compartment="Nucleus" initialConcentration="2.98794317530946" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pRBp" compartment="Nucleus" initialConcentration="3.29760149850859" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000139687</annotation>
       </species>
-      <species id="pRBpp" compartment="Nucleus" initialConcentration="0.0316383474215406" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pRBpp" compartment="Nucleus" initialConcentration="0.0341160128634291" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000139687</annotation>
       </species>
-      <species id="E2F" compartment="Nucleus" initialConcentration="1129.61559796487" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E2F" compartment="Nucleus" initialConcentration="1128.72922195657" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000101412 ENSG00000007968 ENSG00000112242</annotation>
       </species>
-      <species id="Cd" compartment="Nucleus" initialConcentration="0.66372731579247" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Cd" compartment="Nucleus" initialConcentration="0.684293845558053" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000110092 ENSG00000118971 ENSG00000112576</annotation>
       </species>
-      <species id="Mdi" compartment="Nucleus" initialConcentration="1.45686576314233" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mdi" compartment="Nucleus" initialConcentration="1.5022539550982" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000110092 ENSG00000118971 ENSG00000112576 ENSG00000135446 ENSG00000105810</annotation>
       </species>
-      <species id="Md" compartment="Nucleus" initialConcentration="17.4577934419457" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Md" compartment="Nucleus" initialConcentration="18.8205952147691" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000110092 ENSG00000118971 ENSG00000112576 ENSG00000135446 ENSG00000105810</annotation>
       </species>
-      <species id="Mdp27" compartment="Nucleus" initialConcentration="3.56470923241222" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mdp27" compartment="Nucleus" initialConcentration="3.84241723222155" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000110092 ENSG00000118971 ENSG00000112576 ENSG00000135446 ENSG00000105810 ENSG00000111276</annotation>
       </species>
-      <species id="Ce" compartment="Nucleus" initialConcentration="0.255417707824287" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Ce" compartment="Nucleus" initialConcentration="0.254874265639279" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000105173 ENSG00000175305</annotation>
       </species>
-      <species id="Mei" compartment="Nucleus" initialConcentration="0.889744956798307" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mei" compartment="Nucleus" initialConcentration="0.889816674181991" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000105173 ENSG00000175305 ENSG00000123374</annotation>
       </species>
-      <species id="Me" compartment="Nucleus" initialConcentration="2.74732747986884" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Me" compartment="Nucleus" initialConcentration="2.74760924340448" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000105173 ENSG00000175305 ENSG00000123374</annotation>
       </species>
-      <species id="Skp2" compartment="Nucleus" initialConcentration="11.40867872633" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Skp2" compartment="Nucleus" initialConcentration="11.4087020666635" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000145604</annotation>
       </species>
-      <species id="Mep27" compartment="Nucleus" initialConcentration="1.12195434829868" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mep27" compartment="Nucleus" initialConcentration="1.1219051240578" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000105173 ENSG00000175305 ENSG00000123374 ENSG00000111276</annotation>
       </species>
-      <species id="Pe" compartment="Nucleus" initialConcentration="141.289848369546" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Pe" compartment="Nucleus" initialConcentration="141.29061296089" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164045</annotation>
       </species>
-      <species id="Pai" compartment="Nucleus" initialConcentration="49.2516744023467" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Pai" compartment="Nucleus" initialConcentration="49.2461609621958" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000101224</annotation>
       </species>
-      <species id="Pei" compartment="Nucleus" initialConcentration="16.0216519073509" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Pei" compartment="Nucleus" initialConcentration="16.0212696111391" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164045</annotation>
       </species>
-      <species id="Pbi" compartment="Nucleus" initialConcentration="55.2983938804913" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Pbi" compartment="Nucleus" initialConcentration="55.2982943135777" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000158402</annotation>
       </species>
-      <species id="Ca" compartment="Nucleus" initialConcentration="4.0318118356512" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Ca" compartment="Nucleus" initialConcentration="4.02274354722086" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000145386</annotation>
       </species>
-      <species id="Mai" compartment="Nucleus" initialConcentration="14.044775039631" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mai" compartment="Nucleus" initialConcentration="14.0441965582449" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000145386 ENSG00000123374</annotation>
       </species>
-      <species id="Ma" compartment="Nucleus" initialConcentration="5.20789335639292" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Ma" compartment="Nucleus" initialConcentration="5.20987062855275" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000145386 ENSG00000123374</annotation>
       </species>
-      <species id="Map27" compartment="Nucleus" initialConcentration="1.27607946779927" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Map27" compartment="Nucleus" initialConcentration="1.2763770430989" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000145386 ENSG00000123374 ENSG00000111276 ENSG00000111276</annotation>
       </species>
-      <species id="p27" compartment="Nucleus" initialConcentration="20.4286175454314" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="p27" compartment="Nucleus" initialConcentration="20.4256264326388" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000111276</annotation>
       </species>
-      <species id="Cdh1i" compartment="Nucleus" initialConcentration="0.594134724145522" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Cdh1i" compartment="Nucleus" initialConcentration="0.594473461527579" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000039068</annotation>
       </species>
-      <species id="Cdh1a" compartment="Nucleus" initialConcentration="108.811829753667" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Cdh1a" compartment="Nucleus" initialConcentration="108.811152278902" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000039068</annotation>
       </species>
-      <species id="E2Fp" compartment="Nucleus" initialConcentration="11.5834851192314" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E2Fp" compartment="Nucleus" initialConcentration="11.5850959529162" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000101412 ENSG00000007968 ENSG00000112242</annotation>
       </species>
-      <species id="p27p" compartment="Nucleus" initialConcentration="4.20473059783058" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="p27p" compartment="Nucleus" initialConcentration="4.20471661099337" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000111276</annotation>
       </species>
-      <species id="Pa" compartment="Nucleus" initialConcentration="41.496373871183" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Pa" compartment="Nucleus" initialConcentration="41.5074007359245" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000101224</annotation>
       </species>
-      <species id="Cb" compartment="Nucleus" initialConcentration="3.44384873425548" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Cb" compartment="Nucleus" initialConcentration="3.44366519349342" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000134057</annotation>
       </species>
-      <species id="Mbi" compartment="Nucleus" initialConcentration="3.89974039604949" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mbi" compartment="Nucleus" initialConcentration="3.90060674216903" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000134057 ENSG00000170312</annotation>
       </species>
-      <species id="Mb" compartment="Nucleus" initialConcentration="0.684059354469805" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mb" compartment="Nucleus" initialConcentration="0.684192387491689" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000134057 ENSG00000170312</annotation>
       </species>
-      <species id="Cdc20i" compartment="Nucleus" initialConcentration="71.1675649662663" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Cdc20i" compartment="Nucleus" initialConcentration="71.1675106257859" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000117399</annotation>
       </species>
-      <species id="Cdc20a" compartment="Nucleus" initialConcentration="0.729903184457131" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Cdc20a" compartment="Nucleus" initialConcentration="0.73005533784832" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000117399</annotation>
       </species>
-      <species id="Pb" compartment="Nucleus" initialConcentration="9.40269946290442" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Pb" compartment="Nucleus" initialConcentration="9.40289859673154" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000158402</annotation>
       </species>
-      <species id="Wee1" compartment="Nucleus" initialConcentration="26.5190281122534" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Wee1" compartment="Nucleus" initialConcentration="26.5189497977753" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000166483</annotation>
       </species>
-      <species id="Wee1p" compartment="Nucleus" initialConcentration="16.7403577498451" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Wee1p" compartment="Nucleus" initialConcentration="16.7403969070841" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000166483</annotation>
       </species>
-      <species id="Mbp27" compartment="Nucleus" initialConcentration="0.0838956824309893" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mbp27" compartment="Nucleus" initialConcentration="0.0838997119065068" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000134057 ENSG00000170312 ENSG00000111276</annotation>
       </species>
       <species id="Chk1" compartment="Nucleus" initialConcentration="0.149772031803288" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000149554</annotation>
       </species>
-      <species id="pRBc1" compartment="Nucleus" initialConcentration="9001.14535424361" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pRBc1" compartment="Nucleus" initialConcentration="8991.97411468149" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000139687 ENSG00000101412 ENSG00000007968 ENSG00000112242</annotation>
       </species>
-      <species id="pRBc2" compartment="Nucleus" initialConcentration="1.68681951660124" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pRBc2" compartment="Nucleus" initialConcentration="1.86017388633794" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000139687 ENSG00000101412 ENSG00000007968 ENSG00000112242</annotation>
       </species>
-      <species id="p21" compartment="Nucleus" initialConcentration="19.3766515722327" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="p21" compartment="Nucleus" initialConcentration="2.8981458594064" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000124762</annotation>
       </species>
-      <species id="Mdp21" compartment="Nucleus" initialConcentration="2.03441806886471" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mdp21" compartment="Nucleus" initialConcentration="0.328039179556868" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000110092 ENSG00000118971 ENSG00000112576 ENSG00000135446 ENSG00000124762</annotation>
       </species>
-      <species id="Mep21" compartment="Nucleus" initialConcentration="0.213061386080977" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mep21" compartment="Nucleus" initialConcentration="0.0318706408116383" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000105173 ENSG00000175305 ENSG00000123374 ENSG00000124762</annotation>
       </species>
-      <species id="Map21" compartment="Nucleus" initialConcentration="0.242757445964245" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Map21" compartment="Nucleus" initialConcentration="0.0363227670454703" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000145386 ENSG00000123374 ENSG00000124762</annotation>
       </species>
-      <species id="Mbp21" compartment="Nucleus" initialConcentration="0.0158589616069405" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mbp21" compartment="Nucleus" initialConcentration="0.00237246988532558" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000134057 ENSG00000170312 ENSG00000124762</annotation>
       </species>
       <species id="L" compartment="Extracellular" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000121858</annotation>
       </species>
-      <species id="R" compartment="Cytoplasm" initialConcentration="5.03594054388572" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="R" compartment="Cytoplasm" initialConcentration="5.04037420994502" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000104689 ENSG00000120889</annotation>
       </species>
       <species id="L_R" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -256,145 +256,145 @@
       <species id="Ractive" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000104689 ENSG00000120889</annotation>
       </species>
-      <species id="flip" compartment="Cytoplasm" initialConcentration="0.525636648904584" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="flip" compartment="Cytoplasm" initialConcentration="0.770744984905761" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000003402</annotation>
       </species>
       <species id="Ractive_flip" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000104689 ENSG00000120889 ENSG00000003402</annotation>
       </species>
-      <species id="pC8" compartment="Cytoplasm" initialConcentration="15.7574133875021" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pC8" compartment="Cytoplasm" initialConcentration="15.7556232368406" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000064012 ENSG00000003400</annotation>
       </species>
       <species id="Ractive_pC8" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000104689 ENSG00000120889 ENSG00000064012 ENSG00000003400</annotation>
       </species>
-      <species id="C8" compartment="Cytoplasm" initialConcentration="0.000606887377060506" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="C8" compartment="Cytoplasm" initialConcentration="0.000606789659073724" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000064012 ENSG00000003400</annotation>
       </species>
-      <species id="Bar" compartment="Cytoplasm" initialConcentration="0.00286250170570445" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bar" compartment="Cytoplasm" initialConcentration="0.00286290396762848" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000103429</annotation>
       </species>
-      <species id="C8_Bar" compartment="Cytoplasm" initialConcentration="5.48040920786863e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="C8_Bar" compartment="Cytoplasm" initialConcentration="5.48029679928926e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000103429 ENSG00000064012 ENSG00000003400</annotation>
       </species>
-      <species id="pC3" compartment="Cytoplasm" initialConcentration="86.4166977266672" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pC3" compartment="Cytoplasm" initialConcentration="86.4270048638849" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164305 ENSG00000165806</annotation>
       </species>
-      <species id="C8_pC3" compartment="Cytoplasm" initialConcentration="0.00828210973034862" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="C8_pC3" compartment="Cytoplasm" initialConcentration="0.00828176385125296" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000064012 ENSG00000003400 ENSG00000164305 ENSG00000165806</annotation>
       </species>
-      <species id="C3" compartment="Cytoplasm" initialConcentration="9.60661438127685e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="C3" compartment="Cytoplasm" initialConcentration="9.5934475964226e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164305 ENSG00000165806</annotation>
       </species>
-      <species id="pC6" compartment="Cytoplasm" initialConcentration="4.84380683679762" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pC6" compartment="Cytoplasm" initialConcentration="4.84452585138714" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000138794</annotation>
       </species>
       <species id="C3_pC6" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164305 ENSG00000165806 ENSG00000138794</annotation>
       </species>
-      <species id="C6" compartment="Cytoplasm" initialConcentration="2.7606137806259e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="C6" compartment="Cytoplasm" initialConcentration="2.75723804205394e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000138794</annotation>
       </species>
       <species id="C6_C8" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000138794 ENSG00000064012 ENSG00000003400</annotation>
       </species>
-      <species id="XIAP" compartment="Cytoplasm" initialConcentration="13.7470122675864" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="XIAP" compartment="Cytoplasm" initialConcentration="13.7653335028179" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000101966</annotation>
       </species>
-      <species id="C3_XIAP" compartment="Cytoplasm" initialConcentration="8.26678514958715e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="C3_XIAP" compartment="Cytoplasm" initialConcentration="8.26645712892457e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164305 ENSG00000165806 ENSG00000101966</annotation>
       </species>
-      <species id="PARP" compartment="Cytoplasm" initialConcentration="322.017294308053" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PARP" compartment="Cytoplasm" initialConcentration="322.321717901189" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000143799</annotation>
       </species>
       <species id="C3_PARP" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164305 ENSG00000165806 ENSG00000143799</annotation>
       </species>
-      <species id="cPARP" compartment="Cytoplasm" initialConcentration="0.386617400364214" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="cPARP" compartment="Cytoplasm" initialConcentration="0.386452630472677" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000143799</annotation>
       </species>
-      <species id="Bid" compartment="Cytoplasm" initialConcentration="63.6381314219563" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bid" compartment="Cytoplasm" initialConcentration="63.6996816153411" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000015475</annotation>
       </species>
-      <species id="C8_Bid" compartment="Cytoplasm" initialConcentration="0.000110663130850298" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="C8_Bid" compartment="Cytoplasm" initialConcentration="0.000110752327496312" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000064012 ENSG00000003400 ENSG00000015475</annotation>
       </species>
-      <species id="tBid" compartment="Cytoplasm" initialConcentration="2.89010033911939e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="tBid" compartment="Cytoplasm" initialConcentration="2.88899777798263e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000015475</annotation>
       </species>
-      <species id="Bcl2c" compartment="Cytoplasm" initialConcentration="36.7992187595444" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bcl2c" compartment="Cytoplasm" initialConcentration="36.8464281848679" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000171791 ENSG00000171552 ENSG00000143384</annotation>
       </species>
-      <species id="tBid_Bcl2c" compartment="Cytoplasm" initialConcentration="0.000326050215805704" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="tBid_Bcl2c" compartment="Cytoplasm" initialConcentration="0.000326343956627967" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000015475 ENSG00000171791 ENSG00000171552 ENSG00000143384</annotation>
       </species>
-      <species id="Bax" compartment="Cytoplasm" initialConcentration="117.445187627588" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bax" compartment="Cytoplasm" initialConcentration="117.514183158755" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088</annotation>
       </species>
       <species id="tBid_Bax" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000015475 ENSG00000087088</annotation>
       </species>
-      <species id="Baxactive" compartment="Cytoplasm" initialConcentration="0.00013655899020548" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Baxactive" compartment="Cytoplasm" initialConcentration="0.000136480184794505" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088</annotation>
       </species>
-      <species id="Baxm" compartment="Mitochondrion" initialConcentration="0.00184587945476585" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Baxm" compartment="Mitochondrion" initialConcentration="0.00184469432545693" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088</annotation>
       </species>
-      <species id="Bcl2" compartment="Mitochondrion" initialConcentration="5.2553696656648" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bcl2" compartment="Mitochondrion" initialConcentration="5.26211174435927" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000171791 ENSG00000171552 ENSG00000143384</annotation>
       </species>
-      <species id="Baxm_Bcl2" compartment="Mitochondrion" initialConcentration="0.0297399051069464" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Baxm_Bcl2" compartment="Mitochondrion" initialConcentration="0.0297589395139012" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088 ENSG00000171791 ENSG00000171552 ENSG00000143384</annotation>
       </species>
-      <species id="Bax2" compartment="Mitochondrion" initialConcentration="0.000107734943980624" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bax2" compartment="Mitochondrion" initialConcentration="0.000107596641014086" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088</annotation>
       </species>
-      <species id="Bax2_Bcl2" compartment="Mitochondrion" initialConcentration="0.0017357725936168" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bax2_Bcl2" compartment="Mitochondrion" initialConcentration="0.00173576827644512" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088 ENSG00000171791 ENSG00000171552 ENSG00000143384</annotation>
       </species>
       <species id="Bax4" compartment="Mitochondrion" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088</annotation>
       </species>
-      <species id="Bax4_Bcl2" compartment="Mitochondrion" initialConcentration="5.91288557130256e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bax4_Bcl2" compartment="Mitochondrion" initialConcentration="5.90527993031814e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088 ENSG00000171791 ENSG00000171552 ENSG00000143384</annotation>
       </species>
-      <species id="M" compartment="Mitochondrion" initialConcentration="2259.96978690878" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="M" compartment="Mitochondrion" initialConcentration="2259.96985882092" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> GO:0005739</annotation>
       </species>
-      <species id="Bax4_M" compartment="Mitochondrion" initialConcentration="2.62001616777631e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Bax4_M" compartment="Mitochondrion" initialConcentration="2.61329359336202e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000087088</annotation>
       </species>
-      <species id="Mactive" compartment="Mitochondrion" initialConcentration="0.000262001461003335" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mactive" compartment="Mitochondrion" initialConcentration="0.000261329203913621" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> GO:0005739</annotation>
       </species>
-      <species id="CytoCm" compartment="Mitochondrion" initialConcentration="17390.5352061105" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="CytoCm" compartment="Mitochondrion" initialConcentration="17392.5104132945" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000179091</annotation>
       </species>
-      <species id="Mactive_CytoCm" compartment="Mitochondrion" initialConcentration="0.0261954665680381" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mactive_CytoCm" compartment="Mitochondrion" initialConcentration="0.0261312204982857" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> GO:0005739 ENSG00000179091</annotation>
       </species>
-      <species id="CytoCr" compartment="Mitochondrion" initialConcentration="0.261885487923292" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="CytoCr" compartment="Mitochondrion" initialConcentration="0.261243196818205" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000179091</annotation>
       </species>
-      <species id="Smacm" compartment="Mitochondrion" initialConcentration="1827.65207527282" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Smacm" compartment="Mitochondrion" initialConcentration="1827.70312826572" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000184047</annotation>
       </species>
-      <species id="Mactive_Smacm" compartment="Mitochondrion" initialConcentration="0.00275300318645109" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Mactive_Smacm" compartment="Mitochondrion" initialConcentration="0.0027460160905985" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000184047</annotation>
       </species>
-      <species id="Smacr" compartment="Mitochondrion" initialConcentration="0.0188782121896631" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Smacr" compartment="Mitochondrion" initialConcentration="0.0188260320597441" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000184047</annotation>
       </species>
-      <species id="CytoC" compartment="Cytoplasm" initialConcentration="0.0183295623693355" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="CytoC" compartment="Cytoplasm" initialConcentration="0.0182846079266288" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000179091</annotation>
       </species>
-      <species id="Apaf" compartment="Cytoplasm" initialConcentration="0.0824924544245238" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Apaf" compartment="Cytoplasm" initialConcentration="0.0827746253105001" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000120868</annotation>
       </species>
-      <species id="CytoC_Apaf" compartment="Cytoplasm" initialConcentration="2.38820675772888e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="CytoC_Apaf" compartment="Cytoplasm" initialConcentration="2.39049850929638e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000179091 ENSG00000120868</annotation>
       </species>
-      <species id="Apafactive" compartment="Cytoplasm" initialConcentration="0.394062826078949" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Apafactive" compartment="Cytoplasm" initialConcentration="0.394440972600025" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000120868</annotation>
       </species>
       <species id="pC9" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -406,16 +406,16 @@
       <species id="Apop_C3" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169174 ENSG00000120868 ENSG00000164305 ENSG00000165806</annotation>
       </species>
-      <species id="Smac" compartment="Cytoplasm" initialConcentration="0.000716124979237454" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Smac" compartment="Cytoplasm" initialConcentration="0.000713709961126758" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000184047</annotation>
       </species>
       <species id="Apop_XIAP" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169174 ENSG00000120868 ENSG00000101966</annotation>
       </species>
-      <species id="Smac_XIAP" compartment="Cytoplasm" initialConcentration="0.211853131526927" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Smac_XIAP" compartment="Cytoplasm" initialConcentration="0.211420084005265" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000184047 ENSG00000101966</annotation>
       </species>
-      <species id="C3_Ub" compartment="Cytoplasm" initialConcentration="6.08758352928362" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="C3_Ub" compartment="Cytoplasm" initialConcentration="6.08738562919648" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164305 ENSG00000165806</annotation>
       </species>
       <species id="BAD" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -481,19 +481,19 @@
       <species id="INS" compartment="Extracellular" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000254647</annotation>
       </species>
-      <species id="E1" compartment="Cytoplasm" initialConcentration="53.6689657254396" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E1" compartment="Cytoplasm" initialConcentration="28.8097072567096" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000146648</annotation>
       </species>
-      <species id="pE1" compartment="Cytoplasm" initialConcentration="26.6792407400628" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pE1" compartment="Cytoplasm" initialConcentration="53.1079541757226" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000146648</annotation>
       </species>
-      <species id="E2" compartment="Cytoplasm" initialConcentration="7.12715640732464e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E2" compartment="Cytoplasm" initialConcentration="0.000223155885736858" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000141736</annotation>
       </species>
-      <species id="pE2" compartment="Cytoplasm" initialConcentration="3.54356005893893e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pE2" compartment="Cytoplasm" initialConcentration="0.000411434925877584" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000141736</annotation>
       </species>
-      <species id="E3" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E3" compartment="Cytoplasm" initialConcentration="5.12480915125579e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000065361</annotation>
       </species>
       <species id="E4" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -503,28 +503,28 @@
         <annotation> ENSG00000178568</annotation>
       </species>
       <species id="Ev3" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="Met" compartment="Cytoplasm" initialConcentration="14.138236563215" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Met" compartment="Cytoplasm" initialConcentration="14.1575100646776" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000105976</annotation>
       </species>
-      <species id="Pr" compartment="Cytoplasm" initialConcentration="0.000216024205653642" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Pr" compartment="Cytoplasm" initialConcentration="0.000216054239374696" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000134853 ENSG00000113721</annotation>
       </species>
-      <species id="Fr" compartment="Cytoplasm" initialConcentration="2.03487185613753" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Fr" compartment="Cytoplasm" initialConcentration="2.03770359134801" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000077782 ENSG00000066468</annotation>
       </species>
-      <species id="Ir" compartment="Cytoplasm" initialConcentration="0.0292980205556763" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Ir" compartment="Cytoplasm" initialConcentration="0.0293186470514159" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000140443</annotation>
       </species>
-      <species id="Isr" compartment="Cytoplasm" initialConcentration="0.0297872638318003" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Isr" compartment="Cytoplasm" initialConcentration="0.0121525427824524" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000171105</annotation>
       </species>
-      <species id="E1E1" compartment="Cytoplasm" initialConcentration="2.88031424881651" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E1E1" compartment="Cytoplasm" initialConcentration="0.829986658939187" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000146648</annotation>
       </species>
-      <species id="E1E2" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E1E2" compartment="Cytoplasm" initialConcentration="6.42896053582217e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000146648 ENSG00000141736</annotation>
       </species>
-      <species id="E1E3" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E1E3" compartment="Cytoplasm" initialConcentration="1.47642077181152e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000146648 ENSG00000065361</annotation>
       </species>
       <species id="E1E4" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -545,16 +545,16 @@
       <species id="E4E4" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000178568</annotation>
       </species>
-      <species id="Met_Met" compartment="Cytoplasm" initialConcentration="0.199888424491322" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Met_Met" compartment="Cytoplasm" initialConcentration="0.200433779035015" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000105976</annotation>
       </species>
-      <species id="FrFr" compartment="Cytoplasm" initialConcentration="0.00414067636279163" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="FrFr" compartment="Cytoplasm" initialConcentration="0.0041522087425835" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000113578 ENSG00000138685</annotation>
       </species>
-      <species id="IrIr" compartment="Cytoplasm" initialConcentration="1.31113865961624" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="IrIr" compartment="Cytoplasm" initialConcentration="1.31298545144619" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000140443</annotation>
       </species>
-      <species id="Isr_Isr" compartment="Cytoplasm" initialConcentration="0.308754336867251" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Isr_Isr" compartment="Cytoplasm" initialConcentration="0.0513908924339013" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000171105</annotation>
       </species>
       <species id="EE1" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -668,10 +668,10 @@
       <species id="INS_Isr_Isr_INS" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000254647 ENSG00000171105</annotation>
       </species>
-      <species id="E1_ppERK" compartment="Cytoplasm" initialConcentration="2.66832823172334" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E1_ppERK" compartment="Cytoplasm" initialConcentration="5.31159993782862" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000146648 ENSG00000100030 ENSG00000102882</annotation>
       </species>
-      <species id="E2_ppERK" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="E2_ppERK" compartment="Cytoplasm" initialConcentration="4.11433526910679e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000141736 ENSG00000100030 ENSG00000102882</annotation>
       </species>
       <species id="E4_ppERK" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -1919,40 +1919,40 @@
       <species id="pINS_Isr_Isr_INS_IRS_PI3K2_PIP" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000254647 ENSG00000171105 ENSG00000011405</annotation>
       </species>
-      <species id="IRS" compartment="Cytoplasm" initialConcentration="1.59634589761629" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="IRS" compartment="Cytoplasm" initialConcentration="1.5473681324796" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169047 ENSG00000185950</annotation>
       </species>
-      <species id="Sp" compartment="Cytoplasm" initialConcentration="7.18228810209237e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Sp" compartment="Cytoplasm" initialConcentration="7.18329600153965e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000136158</annotation>
       </species>
-      <species id="Cbl" compartment="Cytoplasm" initialConcentration="5.29514598412842" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Cbl" compartment="Cytoplasm" initialConcentration="6.12269911048172" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000110395</annotation>
       </species>
-      <species id="G2" compartment="Cytoplasm" initialConcentration="80.4050014600854" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="G2" compartment="Cytoplasm" initialConcentration="78.9725348821818" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000177885</annotation>
       </species>
-      <species id="G2_SOS" compartment="Cytoplasm" initialConcentration="0.0933105163622559" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="G2_SOS" compartment="Cytoplasm" initialConcentration="0.106881755854983" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000177885 ENSG00000115904</annotation>
       </species>
-      <species id="G2_pSOS" compartment="Cytoplasm" initialConcentration="0.463406412761042" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="G2_pSOS" compartment="Cytoplasm" initialConcentration="1.968364450952" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000177885 ENSG00000115904</annotation>
       </species>
-      <species id="PLCg" compartment="Cytoplasm" initialConcentration="21.324433951513" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PLCg" compartment="Cytoplasm" initialConcentration="21.3540161313369" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000124181 ENSG00000197943</annotation>
       </species>
-      <species id="PI3KC1" compartment="Cytoplasm" initialConcentration="0.0324393721425237" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PI3KC1" compartment="Cytoplasm" initialConcentration="0.0293727834312054" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000121879 ENSG00000051382 ENSG00000105851 ENSG00000171608</annotation>
       </species>
-      <species id="PI3KR1" compartment="Cytoplasm" initialConcentration="13.4329380497547" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PI3KR1" compartment="Cytoplasm" initialConcentration="14.8696593562571" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000145675 ENSG00000105647 ENSG00000117461 ENSG00000196455</annotation>
       </species>
-      <species id="PI3K1" compartment="Cytoplasm" initialConcentration="4.15758111214354" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PI3K1" compartment="Cytoplasm" initialConcentration="4.16719095413114" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000121879 ENSG00000051382 ENSG00000105851 ENSG00000171608 ENSG00000145675 ENSG00000105647 ENSG00000117461 ENSG00000196455</annotation>
       </species>
       <species id="pPI3K1" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000121879 ENSG00000051382 ENSG00000105851 ENSG00000171608 ENSG00000145675 ENSG00000105647 ENSG00000117461 ENSG00000196455</annotation>
       </species>
-      <species id="PI3K2" compartment="Cytoplasm" initialConcentration="3.53568809076918" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PI3K2" compartment="Cytoplasm" initialConcentration="3.54006341390614" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000011405</annotation>
       </species>
       <species id="mTORC1" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -1966,64 +1966,64 @@
       <species id="DAG" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000173402</annotation>
       </species>
-      <species id="GRP" compartment="Cytoplasm" initialConcentration="0.00419985494998761" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="GRP" compartment="Cytoplasm" initialConcentration="0.00420043865676221" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000172575 ENSG00000152689</annotation>
       </species>
       <species id="DAG_GRP" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000173402 ENSG00000172575 ENSG00000152689</annotation>
       </species>
-      <species id="RasT" compartment="Cytoplasm" initialConcentration="2.47550080722565" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RasT" compartment="Cytoplasm" initialConcentration="15.8546205217425" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775</annotation>
       </species>
-      <species id="RasD" compartment="Cytoplasm" initialConcentration="262.435261703204" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RasD" compartment="Cytoplasm" initialConcentration="1653.88520978588" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775</annotation>
       </species>
-      <species id="NF1" compartment="Cytoplasm" initialConcentration="1.94264034632485" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="NF1" compartment="Cytoplasm" initialConcentration="1.90224763153794" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000196712</annotation>
       </species>
       <species id="pNF1" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000196712</annotation>
       </species>
-      <species id="pCRaf" compartment="Cytoplasm" initialConcentration="35.1693736228047" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pCRaf" compartment="Cytoplasm" initialConcentration="21.8626835240389" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000132155</annotation>
       </species>
-      <species id="CRaf" compartment="Cytoplasm" initialConcentration="7.08050144641347" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="CRaf" compartment="Cytoplasm" initialConcentration="1.18694983379373" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000132155</annotation>
       </species>
-      <species id="RasT_CRaf" compartment="Cytoplasm" initialConcentration="1.74804323579247" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RasT_CRaf" compartment="Cytoplasm" initialConcentration="1.85847306712872" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000132155</annotation>
       </species>
-      <species id="BRaf" compartment="Cytoplasm" initialConcentration="0.400934483550569" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="BRaf" compartment="Cytoplasm" initialConcentration="0.0254506480211438" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000157764</annotation>
       </species>
-      <species id="RasT_CRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.172651372707601" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RasT_CRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.0733806694106954" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000132155 ENSG00000157764</annotation>
       </species>
-      <species id="MEK" compartment="Cytoplasm" initialConcentration="55.1124967633107" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MEK" compartment="Cytoplasm" initialConcentration="491.72819885208" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934</annotation>
       </species>
-      <species id="pMEK" compartment="Cytoplasm" initialConcentration="16.3963778521222" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pMEK" compartment="Cytoplasm" initialConcentration="115.023713085164" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934</annotation>
       </species>
-      <species id="ppMEK" compartment="Cytoplasm" initialConcentration="48.7723818761373" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ppMEK" compartment="Cytoplasm" initialConcentration="269.01838710161" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934</annotation>
       </species>
       <species id="MKP3" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000139318</annotation>
       </species>
-      <species id="ERKnuc" compartment="Nucleus" initialConcentration="2.00518605218331" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ERKnuc" compartment="Nucleus" initialConcentration="7.43575653734975" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000100030 ENSG00000102882</annotation>
       </species>
-      <species id="ppERKnuc" compartment="Nucleus" initialConcentration="36.0934864950512" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ppERKnuc" compartment="Nucleus" initialConcentration="133.844127765171" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000100030 ENSG00000102882</annotation>
       </species>
-      <species id="RSK" compartment="Cytoplasm" initialConcentration="158.348934130745" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RSK" compartment="Cytoplasm" initialConcentration="118.54960199062" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000117676 ENSG00000071242 ENSG00000177189 ENSG00000162302</annotation>
       </species>
-      <species id="pRSK" compartment="Cytoplasm" initialConcentration="7.87287229693955" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pRSK" compartment="Cytoplasm" initialConcentration="21.8569042302098" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000117676 ENSG00000071242 ENSG00000177189 ENSG00000162302</annotation>
       </species>
-      <species id="pRSKnuc" compartment="Nucleus" initialConcentration="19.9800192566767" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pRSKnuc" compartment="Nucleus" initialConcentration="55.4691287929939" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000117676 ENSG00000071242 ENSG00000177189 ENSG00000162302</annotation>
       </species>
       <species id="MKP1" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -2038,84 +2038,84 @@
       <species id="pcFos" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000170345</annotation>
       </species>
-      <species id="cJun" compartment="Nucleus" initialConcentration="19.8769148388773" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="cJun" compartment="Nucleus" initialConcentration="19.9028973584343" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000177606</annotation>
       </species>
       <species id="pcFos_cJun" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000170345 ENSG00000177606</annotation>
       </species>
-      <species id="cMyc" compartment="Nucleus" initialConcentration="0.646631177676098" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="cMyc" compartment="Nucleus" initialConcentration="0.646721078436705" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000136997</annotation>
       </species>
-      <species id="bCATENINnuc" compartment="Nucleus" initialConcentration="33.8561431880734" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="bCATENINnuc" compartment="Nucleus" initialConcentration="0.171526037878763" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000168036</annotation>
       </species>
-      <species id="bCATENIN" compartment="Cytoplasm" initialConcentration="16.9406736028906" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="bCATENIN" compartment="Cytoplasm" initialConcentration="0.0858268647422176" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000168036</annotation>
       </species>
-      <species id="pbCATENIN" compartment="Cytoplasm" initialConcentration="181.69379667777" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pbCATENIN" compartment="Cytoplasm" initialConcentration="210.135591414076" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000168036</annotation>
       </species>
       <species id="IP3" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000137825 ENSG00000143772 ENSG00000086544</annotation>
       </species>
-      <species id="PIP2" compartment="Cytoplasm" initialConcentration="9998.31556438127" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="PIP3" compartment="Cytoplasm" initialConcentration="1.60834621171064" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="PTEN" compartment="Cytoplasm" initialConcentration="2.3135216687726" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PIP2" compartment="Cytoplasm" initialConcentration="9996.28840315627" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="PIP3" compartment="Cytoplasm" initialConcentration="3.54927379314158" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="PTEN" compartment="Cytoplasm" initialConcentration="0.443481690778447" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000171862</annotation>
       </species>
-      <species id="PIP3_AKT" compartment="Cytoplasm" initialConcentration="0.397967616084706" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PIP3_AKT" compartment="Cytoplasm" initialConcentration="0.786880012589875" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221</annotation>
       </species>
-      <species id="AKT" compartment="Cytoplasm" initialConcentration="26.0523549648901" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="AKT" compartment="Cytoplasm" initialConcentration="24.7111591560178" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221</annotation>
       </species>
-      <species id="pAKT" compartment="Cytoplasm" initialConcentration="0.0210062706495473" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pAKT" compartment="Cytoplasm" initialConcentration="0.0900691450196494" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221</annotation>
       </species>
-      <species id="ppAKT" compartment="Cytoplasm" initialConcentration="0.210074785101097" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ppAKT" compartment="Cytoplasm" initialConcentration="0.900743239955016" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221</annotation>
       </species>
-      <species id="PDK1" compartment="Cytoplasm" initialConcentration="10.932332068854" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PDK1" compartment="Cytoplasm" initialConcentration="10.7423337835877" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000140992</annotation>
       </species>
-      <species id="PIP3_PDK1" compartment="Cytoplasm" initialConcentration="0.175817407531209" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PIP3_PDK1" compartment="Cytoplasm" initialConcentration="0.38124804216575" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000140992</annotation>
       </species>
-      <species id="PIP3_pAKT" compartment="Cytoplasm" initialConcentration="0.0230165204706383" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PIP3_pAKT" compartment="Cytoplasm" initialConcentration="0.0985740705740337" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221</annotation>
       </species>
-      <species id="Rictor" compartment="Cytoplasm" initialConcentration="0.0790734306964104" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="Rictor" compartment="Cytoplasm" initialConcentration="0.0790687442250704" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000164327</annotation>
       </species>
-      <species id="mTOR" compartment="Cytoplasm" initialConcentration="3.7195325583329" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="mTOR" compartment="Cytoplasm" initialConcentration="3.72448606375833" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000198793</annotation>
       </species>
-      <species id="mTORC2" compartment="Cytoplasm" initialConcentration="2.74258370538236" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="mTORC2" compartment="Cytoplasm" initialConcentration="2.74602670018082" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000198793</annotation>
       </species>
-      <species id="PIP3_ppAKT" compartment="Cytoplasm" initialConcentration="0.0021357960059524" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PIP3_ppAKT" compartment="Cytoplasm" initialConcentration="0.00933320819978715" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221</annotation>
       </species>
-      <species id="GSK3b" compartment="Cytoplasm" initialConcentration="41.3884150388495" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="GSK3b" compartment="Cytoplasm" initialConcentration="183.858763358545" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000082701</annotation>
       </species>
-      <species id="pGSK3b" compartment="Cytoplasm" initialConcentration="0.789957525339653" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pGSK3b" compartment="Cytoplasm" initialConcentration="15.0465302765398" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000082701</annotation>
       </species>
-      <species id="TSC1" compartment="Cytoplasm" initialConcentration="0.0252037882066896" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="TSC1" compartment="Cytoplasm" initialConcentration="0.0387975923942462" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000165699</annotation>
       </species>
-      <species id="TSC2" compartment="Cytoplasm" initialConcentration="0.903418958573638" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="TSC2" compartment="Cytoplasm" initialConcentration="0.507369913017656" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000103197</annotation>
       </species>
-      <species id="pTSC2" compartment="Cytoplasm" initialConcentration="0.341746820255654" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pTSC2" compartment="Cytoplasm" initialConcentration="0.742586806307151" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000103197</annotation>
       </species>
-      <species id="TSC" compartment="Cytoplasm" initialConcentration="0.227574048821864" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="TSC" compartment="Cytoplasm" initialConcentration="0.196742053784578" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000165699 ENSG00000103197</annotation>
       </species>
-      <species id="PKC" compartment="Cytoplasm" initialConcentration="21.0761937104461" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PKC" compartment="Cytoplasm" initialConcentration="21.1004953012565" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000154229 ENSG00000166501 ENSG00000126583 ENSG00000163932</annotation>
       </species>
       <species id="DAG_PKC" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -2124,28 +2124,28 @@
       <species id="pRKIP" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000089220</annotation>
       </species>
-      <species id="RKIP" compartment="Cytoplasm" initialConcentration="342.438772917586" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RKIP" compartment="Cytoplasm" initialConcentration="342.397872174716" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000089220</annotation>
       </species>
       <species id="RKIP_CRaf" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000089220 ENSG00000132155</annotation>
       </species>
-      <species id="ERK" compartment="Cytoplasm" initialConcentration="227.05655299877" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ERK" compartment="Cytoplasm" initialConcentration="41.258151573624" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000100030 ENSG00000102882</annotation>
       </species>
-      <species id="pERK" compartment="Cytoplasm" initialConcentration="49.3500359922824" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pERK" compartment="Cytoplasm" initialConcentration="33.1771991545864" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000100030 ENSG00000102882</annotation>
       </species>
-      <species id="ppERK" compartment="Cytoplasm" initialConcentration="54.6908522852072" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ppERK" compartment="Cytoplasm" initialConcentration="202.808044655291" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000100030 ENSG00000102882</annotation>
       </species>
-      <species id="FOXO" compartment="Cytoplasm" initialConcentration="0.224126317148633" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="FOXO" compartment="Cytoplasm" initialConcentration="0.178958476355144" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000118689</annotation>
       </species>
-      <species id="pFOXO" compartment="Cytoplasm" initialConcentration="0.205486151069705" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pFOXO" compartment="Cytoplasm" initialConcentration="0.703508031239207" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000118689</annotation>
       </species>
-      <species id="RhebD" compartment="Cytoplasm" initialConcentration="66.1228739470411" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RhebD" compartment="Cytoplasm" initialConcentration="66.2044359000833" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000106615</annotation>
       </species>
       <species id="RhebT" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -2154,49 +2154,49 @@
       <species id="Raptor" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000141564</annotation>
       </species>
-      <species id="S6K" compartment="Cytoplasm" initialConcentration="26.0594127145366" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="S6K" compartment="Cytoplasm" initialConcentration="26.0958111973762" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000108443</annotation>
       </species>
       <species id="pS6K" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000108443</annotation>
       </species>
-      <species id="EIF4EBP1" compartment="Cytoplasm" initialConcentration="1.51314715644738" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="EIF4EBP1" compartment="Cytoplasm" initialConcentration="0.360297217374673" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000187840</annotation>
       </species>
       <species id="pEIF4EBP1" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000187840</annotation>
       </species>
-      <species id="SOS" compartment="Cytoplasm" initialConcentration="0.000194244644072618" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="SOS" compartment="Cytoplasm" initialConcentration="0.000432449546057213" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000115904</annotation>
       </species>
-      <species id="G2_SOS_ppERK" compartment="Cytoplasm" initialConcentration="0.00463925427943329" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="G2_SOS_ppERK" compartment="Cytoplasm" initialConcentration="0.0197056901914025" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000177885 ENSG00000115904 ENSG00000100030 ENSG00000102882</annotation>
       </species>
-      <species id="CRaf_ppERK" compartment="Cytoplasm" initialConcentration="0.352032065602295" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="CRaf_ppERK" compartment="Cytoplasm" initialConcentration="0.218837154256543" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000132155 ENSG00000100030 ENSG00000102882</annotation>
       </species>
       <species id="RasD_DAG_GRP" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000172575 ENSG00000152689</annotation>
       </species>
-      <species id="RasT_NF1" compartment="Cytoplasm" initialConcentration="0.00801500832721404" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RasT_NF1" compartment="Cytoplasm" initialConcentration="0.0502656618254923" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000196712</annotation>
       </species>
       <species id="NF1_ppERK" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000196712 ENSG00000102882 ENSG00000100030 ENSG00000069956 ENSG00000141639 ENSG00000166484 ENSG00000188130 ENSG00000181085</annotation>
       </species>
-      <species id="MEK_RasT_CRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.158587216057311" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MEK_RasT_CRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.60138810910575" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934 ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000196712 ENSG00000132155 ENSG00000157764</annotation>
       </species>
-      <species id="pMEK_RasT_CRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.0471808767466844" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pMEK_RasT_CRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.140675058855874" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934 ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000196712 ENSG00000132155 ENSG00000157764</annotation>
       </species>
-      <species id="ERK_ppMEK" compartment="Cytoplasm" initialConcentration="5.53703495915274" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="ERK_ppMEK" compartment="Cytoplasm" initialConcentration="5.54959117801601" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000100030 ENSG00000102882 ENSG00000169032 ENSG00000126934</annotation>
       </species>
-      <species id="pERK_ppMEK" compartment="Cytoplasm" initialConcentration="1.20345733657903" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pERK_ppMEK" compartment="Cytoplasm" initialConcentration="4.4626306491462" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000100030 ENSG00000102882 ENSG00000169032 ENSG00000126934</annotation>
       </species>
-      <species id="RSK_ppERK" compartment="Cytoplasm" initialConcentration="7.8729192381378" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RSK_ppERK" compartment="Cytoplasm" initialConcentration="21.8570345497739" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000117676 ENSG00000071242 ENSG00000177189 ENSG00000162302 ENSG00000100030 ENSG00000102882</annotation>
       </species>
       <species id="pRSKnuc_MKP1" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -2214,22 +2214,22 @@
       <species id="RKIP_DAG_PKC" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000089220 ENSG00000173402 ENSG00000154229 ENSG00000166501 ENSG00000126583 ENSG00000163932</annotation>
       </species>
-      <species id="PIP3_PTEN" compartment="Cytoplasm" initialConcentration="0.003382675746539" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PIP3_PTEN" compartment="Cytoplasm" initialConcentration="0.0014309433957557" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000171862</annotation>
       </species>
-      <species id="PIP3_AKT_PIP3_PDK1" compartment="Cytoplasm" initialConcentration="0.000233232006140871" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PIP3_AKT_PIP3_PDK1" compartment="Cytoplasm" initialConcentration="0.000999987746736561" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221 ENSG00000140992</annotation>
       </species>
-      <species id="PIP3_pAKT_mTORC2" compartment="Cytoplasm" initialConcentration="0.000210415678430606" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="PIP3_pAKT_mTORC2" compartment="Cytoplasm" initialConcentration="0.000902289663634205" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000142208 ENSG00000105221 ENSG00000198793</annotation>
       </species>
-      <species id="GSK3b_ppAKT" compartment="Cytoplasm" initialConcentration="0.00790419650491977" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="GSK3b_ppAKT" compartment="Cytoplasm" initialConcentration="0.150553324967948" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000082701 ENSG00000142208 ENSG00000105221</annotation>
       </species>
-      <species id="TSC2_ppAKT" compartment="Cytoplasm" initialConcentration="0.000948924989733722" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="TSC2_ppAKT" compartment="Cytoplasm" initialConcentration="0.00228504352703594" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000103197 ENSG00000142208 ENSG00000105221</annotation>
       </species>
-      <species id="TSC2_ppERK" compartment="Cytoplasm" initialConcentration="0.0247037155831115" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="TSC2_ppERK" compartment="Cytoplasm" initialConcentration="0.0514479737547099" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000103197 ENSG00000100030 ENSG00000102882</annotation>
       </species>
       <species id="RhebT_TSC" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -2241,7 +2241,7 @@
       <species id="S6K_mTORC1active" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000108443 ENSG00000198793</annotation>
       </species>
-      <species id="FOXO_ppAKT" compartment="Cytoplasm" initialConcentration="0.000214013826339086" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="FOXO_ppAKT" compartment="Cytoplasm" initialConcentration="0.000732703614547211" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000118689 ENSG00000142208 ENSG00000105221</annotation>
       </species>
       <species id="PI3K1_mTORC1active" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
@@ -2256,42 +2256,42 @@
       <species id="ppERKnuc_pMKP1" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000100030 ENSG00000102882 ENSG00000120129</annotation>
       </species>
-      <species id="RasT_BRaf" compartment="Cytoplasm" initialConcentration="0.0987891907501335" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RasT_BRaf" compartment="Cytoplasm" initialConcentration="0.0395265965416792" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000157764</annotation>
       </species>
-      <species id="RasT_BRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.000975914929456857" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RasT_BRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.0001562253907147" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000157764</annotation>
       </species>
-      <species id="MEK_RasT_BRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.000488955103213425" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MEK_RasT_BRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.000698366934620024" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934 ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000157764</annotation>
       </species>
-      <species id="pMEK_RasT_BRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.00014546778128092" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pMEK_RasT_BRaf_BRaf" compartment="Cytoplasm" initialConcentration="0.000163360080026778" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934 ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000157764</annotation>
       </species>
-      <species id="EIF4E" compartment="Cytoplasm" initialConcentration="103.054179434157" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="EIF4E" compartment="Cytoplasm" initialConcentration="112.157231783874" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000151247</annotation>
       </species>
-      <species id="EIF4EBP1_EIF4E" compartment="Cytoplasm" initialConcentration="15.5465079380291" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="EIF4EBP1_EIF4E" compartment="Cytoplasm" initialConcentration="4.02878662852696" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000187840 ENSG00000151247</annotation>
       </species>
-      <species id="RasT_CRaf_CRaf" compartment="Cytoplasm" initialConcentration="0.305552066361456" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="RasT_CRaf_CRaf" compartment="Cytoplasm" initialConcentration="0.345288121403656" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000132155</annotation>
       </species>
-      <species id="MEK_RasT_CRaf_CRaf" compartment="Cytoplasm" initialConcentration="0.841982813481099" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="MEK_RasT_CRaf_CRaf" compartment="Cytoplasm" initialConcentration="8.48935446734689" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934 ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000132155</annotation>
       </species>
-      <species id="pMEK_RasT_CRaf_CRaf" compartment="Cytoplasm" initialConcentration="0.250496151791467" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="pMEK_RasT_CRaf_CRaf" compartment="Cytoplasm" initialConcentration="1.98580653867303" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000169032 ENSG00000126934 ENSG00000213281 ENSG00000133703 ENSG00000174775 ENSG00000132155</annotation>
       </species>
-      <species id="FOXOnuc" compartment="Nucleus" initialConcentration="6.7210002993349" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="FOXOnuc" compartment="Nucleus" initialConcentration="5.36652718187312" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000118689</annotation>
       </species>
       <species id="MEKi" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="MEKi_ppMEK" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="AKTi" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="AKTi_AKT" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="mT" compartment="Cytoplasm" initialConcentration="62.1231163256708" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="EIF4E_mT" compartment="Cytoplasm" initialConcentration="64.0193986443892" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
+      <species id="mT" compartment="Cytoplasm" initialConcentration="59.457614311452" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="EIF4E_mT" compartment="Cytoplasm" initialConcentration="66.6849006586077" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">
         <annotation> ENSG00000151247</annotation>
       </species>
       <species id="lapatinib" compartment="Cytoplasm" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
@@ -2744,17 +2744,17 @@
       <parameter id="k9_1" value="4.391771" constant="true"/>
       <parameter id="k10_1" value="4.391771" constant="true"/>
       <parameter id="k11_1" value="4.391771" constant="true"/>
-      <parameter id="k12_1" value="8.42282490451117" constant="true"/>
+      <parameter id="k12_1" value="8.31994105399936" constant="true"/>
       <parameter id="k12_2" value="0.05192" constant="true"/>
       <parameter id="k12_3" value="10" constant="true"/>
       <parameter id="k12_4" value="200" constant="true"/>
       <parameter id="k12_5" value="100" constant="true"/>
-      <parameter id="k13_1" value="8.42282490451117" constant="true"/>
+      <parameter id="k13_1" value="8.31994105399936" constant="true"/>
       <parameter id="k13_2" value="0.05192" constant="true"/>
       <parameter id="k13_3" value="10" constant="true"/>
       <parameter id="k13_4" value="200" constant="true"/>
       <parameter id="k13_5" value="100" constant="true"/>
-      <parameter id="k14_1" value="8.42282490451117" constant="true"/>
+      <parameter id="k14_1" value="8.31994105399936" constant="true"/>
       <parameter id="k14_2" value="0.05192" constant="true"/>
       <parameter id="k14_3" value="10" constant="true"/>
       <parameter id="k14_4" value="200" constant="true"/>
@@ -2784,215 +2784,215 @@
       <parameter id="k28_1" value="0.5312" constant="true"/>
       <parameter id="k33_1" value="0" constant="true"/>
       <parameter id="k33_2" value="100" constant="true"/>
-      <parameter id="k34_1" value="0.0174203716590082" constant="true"/>
+      <parameter id="k34_1" value="0.0167387815272161" constant="true"/>
       <parameter id="k34_2" value="100" constant="true"/>
-      <parameter id="k35_1" value="0.00196748547807782" constant="true"/>
+      <parameter id="k35_1" value="0.00189050556556207" constant="true"/>
       <parameter id="k35_2" value="100" constant="true"/>
-      <parameter id="k36_1" value="0.0430592723033012" constant="true"/>
+      <parameter id="k36_1" value="0.0606144251495736" constant="true"/>
       <parameter id="k36_2" value="100" constant="true"/>
-      <parameter id="k37_1" value="0.0234550235476433" constant="true"/>
+      <parameter id="k37_1" value="0.0225149315743761" constant="true"/>
       <parameter id="k37_2" value="100" constant="true"/>
-      <parameter id="k38_1" value="0.00371750294690112" constant="true"/>
+      <parameter id="k38_1" value="0.00356850311009089" constant="true"/>
       <parameter id="k38_2" value="100" constant="true"/>
-      <parameter id="k39_1" value="1.60160119287079e-12" constant="true"/>
+      <parameter id="k39_1" value="2.13546825716105e-12" constant="true"/>
       <parameter id="k39_2" value="100" constant="true"/>
-      <parameter id="k40_1" value="0.0759282386371995" constant="true"/>
+      <parameter id="k40_1" value="0.0729012460940512" constant="true"/>
       <parameter id="k40_2" value="100" constant="true"/>
-      <parameter id="k41_1" value="0.010397436292684" constant="true"/>
+      <parameter id="k41_1" value="0.00998292697848542" constant="true"/>
       <parameter id="k41_2" value="100" constant="true"/>
-      <parameter id="k42_1" value="0.00469802067993105" constant="true"/>
+      <parameter id="k42_1" value="0.00451109979039642" constant="true"/>
       <parameter id="k42_2" value="100" constant="true"/>
-      <parameter id="k43_1" value="0.414354384931204" constant="true"/>
+      <parameter id="k43_1" value="0.398301883445698" constant="true"/>
       <parameter id="k43_2" value="100" constant="true"/>
-      <parameter id="k44_1" value="0.0649624436516162" constant="true"/>
+      <parameter id="k44_1" value="0.0624246692937668" constant="true"/>
       <parameter id="k44_2" value="100" constant="true"/>
-      <parameter id="k45_1" value="0.0753238371425757" constant="true"/>
+      <parameter id="k45_1" value="0.0723829887631306" constant="true"/>
       <parameter id="k45_2" value="100" constant="true"/>
-      <parameter id="k46_1" value="0.039942535384328" constant="true"/>
+      <parameter id="k46_1" value="0.0383951740671589" constant="true"/>
       <parameter id="k46_2" value="100" constant="true"/>
-      <parameter id="k47_1" value="0.108448616882695" constant="true"/>
+      <parameter id="k47_1" value="0.104247351413437" constant="true"/>
       <parameter id="k47_2" value="100" constant="true"/>
-      <parameter id="k48_1" value="0.115994482079932" constant="true"/>
+      <parameter id="k48_1" value="0.111500892155092" constant="true"/>
       <parameter id="k48_2" value="100" constant="true"/>
-      <parameter id="k49_1" value="0.0696741351419406" constant="true"/>
+      <parameter id="k49_1" value="0.0669284558358194" constant="true"/>
       <parameter id="k49_2" value="100" constant="true"/>
-      <parameter id="k50_1" value="0.0771328264584734" constant="true"/>
+      <parameter id="k50_1" value="0.0740581367919862" constant="true"/>
       <parameter id="k50_2" value="100" constant="true"/>
-      <parameter id="k51_1" value="0.107970389053724" constant="true"/>
+      <parameter id="k51_1" value="0.103652842658892" constant="true"/>
       <parameter id="k51_2" value="100" constant="true"/>
-      <parameter id="k52_1" value="0.0151980305861732" constant="true"/>
+      <parameter id="k52_1" value="0.0146107629179116" constant="true"/>
       <parameter id="k52_2" value="100" constant="true"/>
-      <parameter id="k53_1" value="1.30232696208725e-11" constant="true"/>
+      <parameter id="k53_1" value="1.73643594944967e-11" constant="true"/>
       <parameter id="k53_2" value="100" constant="true"/>
-      <parameter id="k54_1" value="1.53698994895331e-11" constant="true"/>
+      <parameter id="k54_1" value="2.04931993193775e-11" constant="true"/>
       <parameter id="k54_2" value="100" constant="true"/>
-      <parameter id="k55_1" value="1.53698994895331e-11" constant="true"/>
+      <parameter id="k55_1" value="2.04931993193775e-11" constant="true"/>
       <parameter id="k55_2" value="100" constant="true"/>
-      <parameter id="k56_1" value="1.53698994895331e-11" constant="true"/>
+      <parameter id="k56_1" value="2.04931993193775e-11" constant="true"/>
       <parameter id="k56_2" value="100" constant="true"/>
-      <parameter id="k57_1" value="1.53698994895331e-11" constant="true"/>
+      <parameter id="k57_1" value="2.04931993193775e-11" constant="true"/>
       <parameter id="k57_2" value="100" constant="true"/>
-      <parameter id="k58_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k58_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k58_2" value="100" constant="true"/>
-      <parameter id="k59_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k59_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k59_2" value="100" constant="true"/>
-      <parameter id="k60_1" value="0.657492374574854" constant="true"/>
+      <parameter id="k60_1" value="0.632008466429163" constant="true"/>
       <parameter id="k60_2" value="100" constant="true"/>
-      <parameter id="k61_1" value="1.10702000978966e-12" constant="true"/>
+      <parameter id="k61_1" value="1.47602667971954e-12" constant="true"/>
       <parameter id="k61_2" value="100" constant="true"/>
-      <parameter id="k62_1" value="9.38231027308465e-12" constant="true"/>
+      <parameter id="k62_1" value="1.25097470307795e-11" constant="true"/>
       <parameter id="k62_2" value="100" constant="true"/>
-      <parameter id="k63_1" value="9.38231027308465e-12" constant="true"/>
+      <parameter id="k63_1" value="1.25097470307795e-11" constant="true"/>
       <parameter id="k63_2" value="100" constant="true"/>
-      <parameter id="k64_1" value="1.76576005363804e-11" constant="true"/>
+      <parameter id="k64_1" value="2.35434673818405e-11" constant="true"/>
       <parameter id="k64_2" value="100" constant="true"/>
-      <parameter id="k65_1" value="0.0490240324260312" constant="true"/>
+      <parameter id="k65_1" value="0.0471304060999301" constant="true"/>
       <parameter id="k65_2" value="100" constant="true"/>
-      <parameter id="k66_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k66_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k66_2" value="100" constant="true"/>
-      <parameter id="k67_1" value="1.76576005363804e-11" constant="true"/>
+      <parameter id="k67_1" value="2.35434673818405e-11" constant="true"/>
       <parameter id="k67_2" value="100" constant="true"/>
-      <parameter id="k68_1" value="1.76576005363804e-11" constant="true"/>
+      <parameter id="k68_1" value="2.35434673818405e-11" constant="true"/>
       <parameter id="k68_2" value="100" constant="true"/>
-      <parameter id="k69_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k69_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k69_2" value="100" constant="true"/>
-      <parameter id="k70_1" value="2.0856593720565e-12" constant="true"/>
+      <parameter id="k70_1" value="2.780879162742e-12" constant="true"/>
       <parameter id="k70_2" value="100" constant="true"/>
-      <parameter id="k71_1" value="0.0619720493012825" constant="true"/>
+      <parameter id="k71_1" value="0.0687931305479598" constant="true"/>
       <parameter id="k71_2" value="100" constant="true"/>
-      <parameter id="k72_1" value="0.328317564377799" constant="true"/>
+      <parameter id="k72_1" value="0.315597998721561" constant="true"/>
       <parameter id="k72_2" value="100" constant="true"/>
-      <parameter id="k73_1" value="0.0765695608096966" constant="true"/>
+      <parameter id="k73_1" value="0.0736109540970945" constant="true"/>
       <parameter id="k73_2" value="100" constant="true"/>
-      <parameter id="k74_1" value="0.00892819306523433" constant="true"/>
+      <parameter id="k74_1" value="0.00858321247954362" constant="true"/>
       <parameter id="k74_2" value="100" constant="true"/>
-      <parameter id="k75_1" value="0.00528603778447532" constant="true"/>
+      <parameter id="k75_1" value="0.00508267315229908" constant="true"/>
       <parameter id="k75_2" value="100" constant="true"/>
-      <parameter id="k76_1" value="0.00919964443676273" constant="true"/>
+      <parameter id="k76_1" value="0.00884571539135765" constant="true"/>
       <parameter id="k76_2" value="100" constant="true"/>
-      <parameter id="k77_1" value="0.00351337915488801" constant="true"/>
+      <parameter id="k77_1" value="0.00337821230806223" constant="true"/>
       <parameter id="k77_2" value="100" constant="true"/>
-      <parameter id="k78_1" value="0.0599673583562224" constant="true"/>
+      <parameter id="k78_1" value="0.057660292029434" constant="true"/>
       <parameter id="k78_2" value="100" constant="true"/>
-      <parameter id="k79_1" value="0.0408345391396348" constant="true"/>
+      <parameter id="k79_1" value="0.0399043931836747" constant="true"/>
       <parameter id="k79_2" value="100" constant="true"/>
-      <parameter id="k80_1" value="0.000846445273462543" constant="true"/>
+      <parameter id="k80_1" value="0.00549238152916643" constant="true"/>
       <parameter id="k80_2" value="100" constant="true"/>
-      <parameter id="k81_1" value="0.00800019945718392" constant="true"/>
+      <parameter id="k81_1" value="0.00781796761794294" constant="true"/>
       <parameter id="k81_2" value="100" constant="true"/>
-      <parameter id="k82_1" value="0.0203978505364906" constant="true"/>
+      <parameter id="k82_1" value="0.0199332198932522" constant="true"/>
       <parameter id="k82_2" value="100" constant="true"/>
-      <parameter id="k83_1" value="0.0283819757165803" constant="true"/>
+      <parameter id="k83_1" value="0.0272812305589545" constant="true"/>
       <parameter id="k83_2" value="100" constant="true"/>
-      <parameter id="k84_1" value="1.57100029754306e-10" constant="true"/>
+      <parameter id="k84_1" value="2.09466706339074e-10" constant="true"/>
       <parameter id="k84_2" value="100" constant="true"/>
-      <parameter id="k85_1" value="1.57100029754306e-10" constant="true"/>
+      <parameter id="k85_1" value="2.09466706339074e-10" constant="true"/>
       <parameter id="k85_2" value="100" constant="true"/>
-      <parameter id="k86_1" value="0.0833584007722028" constant="true"/>
+      <parameter id="k86_1" value="0.0479603245673106" constant="true"/>
       <parameter id="k86_2" value="100" constant="true"/>
-      <parameter id="k87_1" value="1.43832792728497" constant="true"/>
+      <parameter id="k87_1" value="1.38649951433965" constant="true"/>
       <parameter id="k87_2" value="100" constant="true"/>
-      <parameter id="k88_1" value="0.0959435395286713" constant="true"/>
+      <parameter id="k88_1" value="1.3461057811752" constant="true"/>
       <parameter id="k88_2" value="100" constant="true"/>
-      <parameter id="k89_1" value="0.0059793454334668" constant="true"/>
+      <parameter id="k89_1" value="0.00596252497064122" constant="true"/>
       <parameter id="k89_2" value="100" constant="true"/>
-      <parameter id="k90_1" value="0.142971113762059" constant="true"/>
+      <parameter id="k90_1" value="0.1374223986349" constant="true"/>
       <parameter id="k90_2" value="100" constant="true"/>
-      <parameter id="k91_1" value="0.00984195661660925" constant="true"/>
+      <parameter id="k91_1" value="0.00945934492945778" constant="true"/>
       <parameter id="k91_2" value="100" constant="true"/>
-      <parameter id="k92_1" value="0.0150660046389652" constant="true"/>
+      <parameter id="k92_1" value="0.014274495067937" constant="true"/>
       <parameter id="k92_2" value="100" constant="true"/>
-      <parameter id="k93_1" value="0.0785148718471494" constant="true"/>
+      <parameter id="k93_1" value="0.553364780333807" constant="true"/>
       <parameter id="k93_2" value="100" constant="true"/>
-      <parameter id="k94_1" value="1.24487136081903e-12" constant="true"/>
+      <parameter id="k94_1" value="1.65982848109204e-12" constant="true"/>
       <parameter id="k94_2" value="100" constant="true"/>
-      <parameter id="k95_1" value="0.0108424598736321" constant="true"/>
+      <parameter id="k95_1" value="0.0137475014513334" constant="true"/>
       <parameter id="k95_2" value="100" constant="true"/>
-      <parameter id="k96_1" value="0.00338828400548337" constant="true"/>
+      <parameter id="k96_1" value="0.00429611359652727" constant="true"/>
       <parameter id="k96_2" value="100" constant="true"/>
-      <parameter id="k97_1" value="0.313344349682958" constant="true"/>
+      <parameter id="k97_1" value="0.397299316966763" constant="true"/>
       <parameter id="k97_2" value="100" constant="true"/>
-      <parameter id="k98_1" value="0.00676316541939946" constant="true"/>
+      <parameter id="k98_1" value="0.00857523361879461" constant="true"/>
       <parameter id="k98_2" value="100" constant="true"/>
-      <parameter id="k99_1" value="1.24487136081903e-12" constant="true"/>
+      <parameter id="k99_1" value="1.65982848109204e-12" constant="true"/>
       <parameter id="k99_2" value="100" constant="true"/>
-      <parameter id="k100_1" value="2.27296884139338e-10" constant="true"/>
+      <parameter id="k100_1" value="3.03062512185784e-10" constant="true"/>
       <parameter id="k100_2" value="100" constant="true"/>
-      <parameter id="k101_1" value="2.12616367670511" constant="true"/>
+      <parameter id="k101_1" value="2.04384640650559" constant="true"/>
       <parameter id="k101_2" value="100" constant="true"/>
-      <parameter id="k102_1" value="4.9443386102643e-11" constant="true"/>
+      <parameter id="k102_1" value="6.5924514803524e-11" constant="true"/>
       <parameter id="k102_2" value="100" constant="true"/>
-      <parameter id="k103_1" value="9.43816322777168" constant="true"/>
+      <parameter id="k103_1" value="9.06076949870325" constant="true"/>
       <parameter id="k103_2" value="100" constant="true"/>
-      <parameter id="k104_1" value="0.00473439909174537" constant="true"/>
+      <parameter id="k104_1" value="0.000872803787648362" constant="true"/>
       <parameter id="k104_2" value="100" constant="true"/>
-      <parameter id="k105_1" value="0.00390135816751793" constant="true"/>
+      <parameter id="k105_1" value="0.00376648778103486" constant="true"/>
       <parameter id="k105_2" value="100" constant="true"/>
-      <parameter id="k106_1" value="0.0251152270408927" constant="true"/>
+      <parameter id="k106_1" value="0.0242469908441196" constant="true"/>
       <parameter id="k106_2" value="100" constant="true"/>
-      <parameter id="k107_1" value="0.0342657633426628" constant="true"/>
+      <parameter id="k107_1" value="0.0329443868617176" constant="true"/>
       <parameter id="k107_2" value="100" constant="true"/>
-      <parameter id="k108_1" value="0.0510795206624934" constant="true"/>
+      <parameter id="k108_1" value="0.049109581122863" constant="true"/>
       <parameter id="k108_2" value="100" constant="true"/>
-      <parameter id="k109_1" value="0.0221805145299235" constant="true"/>
+      <parameter id="k109_1" value="0.0213241941323092" constant="true"/>
       <parameter id="k109_2" value="100" constant="true"/>
-      <parameter id="k110_1" value="0.108846839443023" constant="true"/>
+      <parameter id="k110_1" value="0.493044809574664" constant="true"/>
       <parameter id="k110_2" value="100" constant="true"/>
-      <parameter id="k111_1" value="0.00219220709460242" constant="true"/>
+      <parameter id="k111_1" value="0.00192002290273756" constant="true"/>
       <parameter id="k111_2" value="100" constant="true"/>
-      <parameter id="k112_1" value="0.00254294698593815" constant="true"/>
+      <parameter id="k112_1" value="0.00244444648923704" constant="true"/>
       <parameter id="k112_2" value="100" constant="true"/>
-      <parameter id="k113_1" value="0.0207071857328235" constant="true"/>
+      <parameter id="k113_1" value="0.0199024153126602" constant="true"/>
       <parameter id="k113_2" value="100" constant="true"/>
-      <parameter id="k114_1" value="3.89971016625887" constant="true"/>
+      <parameter id="k114_1" value="3.7481506337609" constant="true"/>
       <parameter id="k114_2" value="100" constant="true"/>
-      <parameter id="k115_1" value="0.00950898168579549" constant="true"/>
+      <parameter id="k115_1" value="0.00913942170379983" constant="true"/>
       <parameter id="k115_2" value="100" constant="true"/>
-      <parameter id="k116_1" value="0.00546476245220693" constant="true"/>
+      <parameter id="k116_1" value="0.00525237824744346" constant="true"/>
       <parameter id="k116_2" value="100" constant="true"/>
-      <parameter id="k117_1" value="0.0232730471932554" constant="true"/>
+      <parameter id="k117_1" value="0.0223401299515813" constant="true"/>
       <parameter id="k117_2" value="100" constant="true"/>
-      <parameter id="k118_1" value="0.373787100026129" constant="true"/>
+      <parameter id="k118_1" value="0.37615318428789" constant="true"/>
       <parameter id="k118_2" value="100" constant="true"/>
-      <parameter id="k119_1" value="0.024645282176969" constant="true"/>
+      <parameter id="k119_1" value="0.0248012875989899" constant="true"/>
       <parameter id="k119_2" value="100" constant="true"/>
-      <parameter id="k120_1" value="0.0495983248541633" constant="true"/>
+      <parameter id="k120_1" value="0.0948626372678611" constant="true"/>
       <parameter id="k120_2" value="100" constant="true"/>
-      <parameter id="k121_1" value="0.0587095567583306" constant="true"/>
+      <parameter id="k121_1" value="0.0564323850348044" constant="true"/>
       <parameter id="k121_2" value="100" constant="true"/>
-      <parameter id="k122_1" value="9.03715574531792e-12" constant="true"/>
+      <parameter id="k122_1" value="1.20495409937572e-11" constant="true"/>
       <parameter id="k122_2" value="100" constant="true"/>
-      <parameter id="k123_1" value="0.153360436754763" constant="true"/>
+      <parameter id="k123_1" value="0.14743607147355" constant="true"/>
       <parameter id="k123_2" value="100" constant="true"/>
-      <parameter id="k124_1" value="0.00981743546930921" constant="true"/>
+      <parameter id="k124_1" value="0.00943818463333296" constant="true"/>
       <parameter id="k124_2" value="100" constant="true"/>
-      <parameter id="k125_1" value="0.329814318287181" constant="true"/>
+      <parameter id="k125_1" value="0.0814628989411888" constant="true"/>
       <parameter id="k125_2" value="100" constant="true"/>
-      <parameter id="k126_1" value="0.00350428659999357" constant="true"/>
+      <parameter id="k126_1" value="0.0125542952002359" constant="true"/>
       <parameter id="k126_2" value="100" constant="true"/>
       <parameter id="k127_1" value="0.123675519189102" constant="true"/>
       <parameter id="k127_2" value="100" constant="true"/>
       <parameter id="k128_1" value="0.00164892404820808" constant="true"/>
       <parameter id="k128_2" value="100" constant="true"/>
-      <parameter id="k129_1" value="0.743863190209148" constant="true"/>
+      <parameter id="k129_1" value="0.715127863368233" constant="true"/>
       <parameter id="k129_2" value="100" constant="true"/>
-      <parameter id="k130_1" value="0.00208379168263842" constant="true"/>
+      <parameter id="k130_1" value="0.00200329511303109" constant="true"/>
       <parameter id="k130_2" value="100" constant="true"/>
-      <parameter id="k131_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k131_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k131_2" value="100" constant="true"/>
-      <parameter id="k132_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k132_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k132_2" value="100" constant="true"/>
-      <parameter id="k133_1" value="0.0741120564851244" constant="true"/>
+      <parameter id="k133_1" value="0.0398857716653565" constant="true"/>
       <parameter id="k133_2" value="100" constant="true"/>
-      <parameter id="k134_1" value="0.0345627288582855" constant="true"/>
+      <parameter id="k134_1" value="0.00770800731480098" constant="true"/>
       <parameter id="k134_2" value="100" constant="true"/>
-      <parameter id="k135_1" value="27.7246422469604" constant="true"/>
+      <parameter id="k135_1" value="26.6508692020844" constant="true"/>
       <parameter id="k135_2" value="100" constant="true"/>
-      <parameter id="k136_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k136_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k136_2" value="100" constant="true"/>
-      <parameter id="k137_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k137_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k137_2" value="100" constant="true"/>
-      <parameter id="k138_1" value="0.0535424630612793" constant="true"/>
+      <parameter id="k138_1" value="0.0514743056149321" constant="true"/>
       <parameter id="k138_2" value="100" constant="true"/>
       <parameter id="k139_1" value="0.0502236227799724" constant="true"/>
       <parameter id="k139_2" value="100" constant="true"/>
@@ -3000,9 +3000,9 @@
       <parameter id="k140_2" value="100" constant="true"/>
       <parameter id="k141_1" value="0.0618414902077538" constant="true"/>
       <parameter id="k141_2" value="100" constant="true"/>
-      <parameter id="k142_1" value="0.108924912337904" constant="true"/>
+      <parameter id="k142_1" value="0.0185677094918459" constant="true"/>
       <parameter id="k142_2" value="100" constant="true"/>
-      <parameter id="k143_1" value="3.7882814023223e-11" constant="true"/>
+      <parameter id="k143_1" value="5.05104186976306e-11" constant="true"/>
       <parameter id="k143_2" value="100" constant="true"/>
       <parameter id="k144" value="0" constant="true"/>
       <parameter id="k145" value="0" constant="true"/>
@@ -3073,10 +3073,10 @@
       <parameter id="k210" value="1.11812359749636e-05" constant="true"/>
       <parameter id="k211" value="6.2170127054851e-06" constant="true"/>
       <parameter id="k212" value="4.80991465123342e-06" constant="true"/>
-      <parameter id="k213" value="3.2870261764443e-06" constant="true"/>
+      <parameter id="k213" value="3.39187218980632e-06" constant="true"/>
       <parameter id="k214" value="8.99303519331498e-06" constant="true"/>
       <parameter id="k215" value="0" constant="true"/>
-      <parameter id="k216" value="7.50349114215262e-06" constant="true"/>
+      <parameter id="k216" value="6.5309435135898e-06" constant="true"/>
       <parameter id="k217" value="2.48921633469779e-06" constant="true"/>
       <parameter id="k218" value="9.62223305791473e-06" constant="true"/>
       <parameter id="k219" value="9.62223305791473e-06" constant="true"/>
@@ -3354,7 +3354,7 @@
       <parameter id="k417" value="0.000590278" constant="true"/>
       <parameter id="k418" value="1.13e-06" constant="true"/>
       <parameter id="k419" value="0.000944444" constant="true"/>
-      <parameter id="k420" value="4.70248623062769e-05" constant="true"/>
+      <parameter id="k420" value="0.00031440252366011" constant="true"/>
       <parameter id="k421" value="0.00126483" constant="true"/>
       <parameter id="k422" value="0.001" constant="true"/>
       <parameter id="k423" value="1e-06" constant="true"/>
@@ -5234,7 +5234,7 @@
       <parameter id="k2235" value="5.15504373464186e-06" constant="true"/>
       <parameter id="k2236" value="5.15504373464186e-06" constant="true"/>
       <parameter id="k2237" value="0" constant="true"/>
-      <parameter id="k2238" value="7.50349114215262e-06" constant="true"/>
+      <parameter id="k2238" value="6.5309435135898e-06" constant="true"/>
       <parameter id="k2239" value="2.48921633469779e-06" constant="true"/>
       <parameter id="k2240" value="9.62223305791473e-06" constant="true"/>
       <parameter id="k2241" value="9.62223305791473e-06" constant="true"/>
@@ -5268,8 +5268,8 @@
       <parameter id="k2269" value="3.02737238190053e-05" constant="true"/>
       <parameter id="k2270" value="1.11812359749636e-05" constant="true"/>
       <parameter id="k2271" value="9.62223305791473e-06" constant="true"/>
-      <parameter id="k2272" value="7.50349114215262e-06" constant="true"/>
-      <parameter id="k2273" value="7.50349114215262e-06" constant="true"/>
+      <parameter id="k2272" value="6.5309435135898e-06" constant="true"/>
+      <parameter id="k2273" value="6.5309435135898e-06" constant="true"/>
       <parameter id="k2274" value="3.27802790544221e-06" constant="true"/>
       <parameter id="k2275" value="9.62223305791473e-06" constant="true"/>
       <parameter id="k2276" value="9.62223305791473e-06" constant="true"/>
@@ -5444,9 +5444,9 @@
       <parameter id="k2445" value="1" constant="true"/>
       <parameter id="k2446" value="54" constant="true"/>
       <parameter id="k29_1" value="0.295272177456551" constant="true"/>
-      <parameter id="k30_1" value="0.0241001183684839" constant="true"/>
+      <parameter id="k30_1" value="0.179208761545801" constant="true"/>
       <parameter id="k31_1" value="0.0107643939225287" constant="true"/>
-      <parameter id="k32_1" value="2.36680682056237" constant="true"/>
+      <parameter id="k32_1" value="0.296189033923341" constant="true"/>
     </listOfParameters>
     <listOfReactions>
       <reaction id="vbR" reversible="false" fast="false">

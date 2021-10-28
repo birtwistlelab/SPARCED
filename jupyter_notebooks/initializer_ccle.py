@@ -47,6 +47,9 @@ au565 = pd.read_excel(os.path.join('input_files','ccle','ccle_cell_definitions',
 
 au565['prot_mpc'] = np.zeros(np.shape(au565)[0])
 
+ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['Protein_mRNA']).values
+
+
 for gene in au565.index:
     if str(gene) in ccle_mpc.index:
         au565.loc[str(gene),'prot_mpc'] = float(ccle_mpc.loc[str(gene),'AU565_BREAST_TenPx01'])
@@ -56,10 +59,23 @@ ccle_missing_genes = np.loadtxt(os.path.join('input_files','ccle','genes_missing
 omics_mcf10a = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'),sep=',',index_col=0, header=0)
 
 for gene in ccle_missing_genes:
-    au565.loc[gene,'prot_mpc'] = float(omics_mcf10a.loc[gene,'Exp Protein'])
+    # au565.loc[gene,'prot_mpc'] = float(omics_mcf10a.loc[gene,'Exp Protein'])
+    au565.loc[gene,'prot_mpc'] = float(ratios_p2m[list(au565.index).index(gene)])*float(au565.loc[gene,'mrna_mpc'])
+    
+au565_omics = omics_mcf10a.copy()
+au565_omics['Exp GCN'] = au565['gcn'].copy()
+au565_omics['Exp RNA'] = au565['mrna_mpc'].copy()
+au565_omics['Exp Protein'] = au565['prot_mpc'].copy()
+# au565_omics['kTCleak'] = au565['leak'].copy()
+
+
+au565_omics.to_csv(os.path.join(wd,'input_files','OmicsData_extended_au565.txt'),sep='\t')
 
 #%% pre-process
-gene_params = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended_u87.txt'), sep='\t', index_col=0, header=0)
+
+omics_input = 'OmicsData_extended_au565.txt'
+
+gene_params = pd.read_csv(os.path.join(wd,'input_files',omics_input), sep='\t', index_col=0, header=0)
 model_genes = gene_params.index
 
 
@@ -73,15 +89,18 @@ gene_params['kTLd'][np.isnan(gene_params['kTLd'].values)] = np.log(2)/gene_param
 gene_params['kTLd'][np.isnan(gene_params['kTLd'].values)] = 0
 
 
-ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['Protein_mRNA']).values
+# ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['Protein_mRNA']).values
 
-ratios_p2m[101] = 0.0 #PTEN
+# ratios_p2m[101] = 0.0 #PTEN
 # gene_params['kTL_nat_cells'] = ratios_p2m*gene_params['kTLd']
 
 
 gene_params['kTL_nat_cells'] = np.zeros(np.shape(gene_params)[0])
 
-gene_params['kTL_nat_cells'] = au565['prot_mpc'].values/au565['mrna_mpc'].values*gene_params['kTLd'].values
+# gene_params['kTL_nat_cells'] = au565['prot_mpc'].values/au565['mrna_mpc'].values*gene_params['kTLd'].values
+gene_params['kTL_nat_cells'] = gene_params['Exp Protein'].values/gene_params['Exp RNA'].values*gene_params['kTLd'].values
+
+
 
 gene_params['kTL_nat_cells'][np.isnan(gene_params['kTL_nat_cells']) | np.isinf(gene_params['kTL_nat_cells'])] = 0
 
@@ -100,12 +119,16 @@ ratios_kTL=pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt')
 
 ratios_kTL[list(model_genes).index('PTEN')] = 0.0 #PTEN
 
-mExp_mpc = au565['mrna_mpc'].copy()
+# mExp_mpc = au565['mrna_mpc'].copy()
+mExp_mpc = gene_params['Exp RNA'].copy()
+
 
 
 # xp_mpc = ratios_kTL*mExp_mpc
 
-xp_mpc = au565['prot_mpc']
+# xp_mpc = au565['prot_mpc']
+
+xp_mpc = gene_params['Exp Protein']
 
 xp_mpc[np.isnan(xp_mpc)] = 0
 
@@ -210,6 +233,7 @@ mrna_filter = filter(lambda a: a.startswith('m_'), list(ICf.index))
 for m in mrna_filter:
     mrna_id.append(m)
 
+mrna_idx = np.where(np.isin(model.getStateIds(),mrna_id))[0].flatten()
 
 species_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Species.txt'), encoding='latin-1')])
 compartment_sheet = np.array([np.array(line.strip().split("\t")) for line in open(os.path.join(wd,'input_files','Compartments.txt'))])
@@ -940,9 +964,10 @@ for gene_symbol in Step1_mrna.index:
     mExp_mpc[gene_symbol] = Step1_mrna[gene_symbol]
 
 
-# gExp_mpc = np.float64(gene_params.loc[:,'Exp GCN'].values)
+gExp_mpc = np.float64(gene_params.loc[:,'Exp GCN'].values)
 
-gExp_mpc = np.float64(au565['gcn'].values)
+# gExp_mpc = np.float64(au565['gcn'].values)
+
 
 
 
@@ -984,6 +1009,15 @@ spIDs = []
 for qq in range(numberofTARs):
     sps = spnames.index(TARsRead.columns[qq]) 
     spIDs.append(sps)
+
+
+
+
+
+
+
+#%%
+
 
     
 TARarr = np.array(x6[spIDs])
@@ -1027,23 +1061,101 @@ i2c = np.nonzero(negativecheck<0)[0]
 if len(i2c)!=0:
     np.disp('WARNING -- Some induction term exceed degradation terms')
     
+#%% fix negative check
+if len(i2c)!=0:
+    
+    i2c_i = i2c
+    
+    while len(i2c_i)!=0:
+        
+        tck50as[i2c_i,:] = tck50as[i2c_i,:]*2
+            
+        TARarr = np.array(x6[spIDs])
+        TAs = np.zeros((numberofgenes,numberofTARs))
+        TRs = np.zeros((numberofgenes,numberofTARs))
+        for qq in range(numberofTARs):
+            TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
+            TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
+        TAs = TAs*(1.0/mpc2nmcf_Vn) # convert to mpc from nM
+        TAs.flatten()
+        TRs = TRs*(1.0/mpc2nmcf_Vn)
+        TRs.flatten() 
+        
+        # make hills
+        aa = np.divide(TAs,tck50as)
+        TFa = np.power(aa,tcnas)
+        TFa[np.isnan(TFa)] = 0.0
+        bb = np.divide(TRs,tck50rs)
+        TFr = np.power(bb,tcnrs)
+        TFr[np.isnan(TFr)] = 0.0
+        hills = np.sum(TFa,axis=1)/(1 + np.sum(TFa,axis=1) + np.sum(TFr,axis=1))
+        # With AP1*cMYC exception:
+        hills[Cd_genes] = np.multiply((TFa[Cd_genes,0]/(1+TFa[Cd_genes,0])),(TFa[Cd_genes,1]/(1+TFa[Cd_genes,1])))
+        
+        # vTCd
+        vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));TFa[Cd_genes,1]
+        vTCd = np.squeeze(np.asarray(vTCd))
+        
+        kTCmax = 0.1
+        
+        kTCmaxs = np.ones(len(model_genes))*kTCmax
+        kTCmaxs = kTCmaxs*mExp_mpc.values.astype('bool').astype('int')
+        
+        induced = np.multiply(np.multiply(xgac_mpc_D,kTCmaxs),hills)
+        induced = induced.flatten()
+        
+        negativecheck = np.array(mExp_mpc,dtype=bool).astype(int)*(vTCd - induced)
+        
+        i2c_i = np.nonzero(negativecheck<0)[0]
+
+
+
+
+#%%
+
+
+    
 leak = vTCd-induced
 kTCleak_new=leak/xgac_mpc_D
 
 kTCleak_new[np.isnan(kTCleak_new)] = 0
 kTCleak_new[np.isinf(kTCleak_new)] = 0
 
-au565['leak'] = kTCleak_new
+#%% update genereg with new tck50as
 
-au565_omics = omics_mcf10a.copy()
+tck50as1 = tck50as
 
+TARs1 = TARs0
 
-au565_omics['Exp GCN'] = au565['gcn'].copy()
-au565_omics['Exp RNA'] = au565['mrna_mpc'].copy()
-au565_omics['Exp Protein'] = au565['prot_mpc'].copy()
-au565_omics['kTCleak'] = au565['leak'].copy()
+for qq in range(numberofgenes):
+    for ww in range(numberofTARs):
+        pars = TARs1[qq,ww].find(';')
+        if pars>0:
+            nH = np.float(TARs0[qq,ww][0:pars])
+            kH = np.float(TARs0[qq,ww][pars+2::])
+            if nH>0:
+                TARs1[qq,ww] = str(tcnas[qq,ww])+'; '+str(tck50as1[qq,ww]*mpc2nmcf_Vn)
+                
+TARs_New = pd.DataFrame(data = TARs1, index = TARsRead.index, columns = TARsRead.columns)
 
-au565_omics.to_csv(os.path.join(wd,'input_files','OmicsData_extended_au565.txt'),sep='\t')
+TARs_New.to_csv(os.path.join(wd,'input_files','GeneReg_au565.txt'), sep='\t')           
+                # tcnas[qq,ww] = nH
+                # tck50as[qq,ww] = kH
+# 
+# au565['leak'] = kTCleak_new
+
+# au565_omics = omics_mcf10a.copy()
+
+#%%
+# au565_omics['Exp GCN'] = au565['gcn'].copy()
+# au565_omics['Exp RNA'] = au565['mrna_mpc'].copy()
+# au565_omics['Exp Protein'] = au565['prot_mpc'].copy()
+gene_params['kTCleak'] = kTCleak_new
+
+#%%
+# au565_omics.to_csv(os.path.join(wd,'input_files',omics_input),sep='\t')
+
+gene_params.to_csv(os.path.join(wd,'input_files',omics_input),sep='\t')
 
 # au565_read = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended_au565.txt'),sep='\t',index_col=0,header=0)
 
@@ -1057,19 +1169,19 @@ x6.to_csv(os.path.join(wd,'initializer','species_au565.txt'),sep='\t',index=True
 
 #%% Write results to sbml
 
-sbml_model_u87i = sbml_doc.getModel()
+sbml_model_au565 = sbml_doc.getModel()
 
 for sp in x6.index:
-    sbml_model_u87i.getSpecies(sp).setInitialConcentration(float(x6[sp]))
+    sbml_model_au565.getSpecies(sp).setInitialConcentration(float(x6[sp]))
     
     
 for par in params_all.index:
-    sbml_model_u87i.getParameter(par).setValue(float(model.getFixedParameterById(par)))
+    sbml_model_au565.getParameter(par).setValue(float(model.getFixedParameterById(par)))
 
-sbml_doc_u87i = sbml_model_u87i.getSBMLDocument()
+sbml_doc_au565 = sbml_model_au565.getSBMLDocument()
 
 writer = libsbml.SBMLWriter()
-writer.writeSBML(sbml_doc_u87i, os.path.join(wd,'SPARCED_au565.xml'))
+writer.writeSBML(sbml_doc_au565, os.path.join(wd,'SPARCED_au565.xml'))
 
 #%% create observables
 
@@ -1115,82 +1227,113 @@ sbml_importer.sbml2amici('SPARCED_au565',
                          observables=observables,
                          constantParameters=constantParameters)
 
-#%% test model
+# #%% test model
 
-sys.path.insert(0, model_path)
-model_module = importlib.import_module('SPARCED_au565')
-model = model_module.getModel()
+# sys.path.insert(0, model_path)
+# model_module = importlib.import_module('SPARCED_au565')
+# model = model_module.getModel()
 
-#%% test - simulation - ligand response
-sys.path.append(wd+'/bin')
-from modules.RunSPARCED import RunSPARCED
-sbml_au565 = 'SPARCED_au565.xml'
-model_name_au565 = sbml_au565[0:-4]
+# #%% test - simulation - ligand response
+# sys.path.append(wd+'/bin')
+# from modules.RunSPARCED import RunSPARCED
+# sbml_au565 = 'SPARCED_au565.xml'
+# model_name_au565 = sbml_au565[0:-4]
 
-cellNumber = 0
+# cellNumber = 0
 
-omics_input = 'OmicsData_extended_au565.txt'
-genereg_input = 'GeneReg.txt'
+# omics_input = 'OmicsData_extended_au565.txt'
+# genereg_input = 'GeneReg.txt'
+
+# #%%
+# # deterministic=1, stochastic=0
+# flagD = 1
+
+# # deterministic='GrowthStim_det_', stochastic='GrowthStim_stoc_'
+# # nmxlsfile = 'U87SPARCED_1nmGMDet_'
+
+# ts = 30
+# th = 72
+# Vn = 1.75E-12
+# Vc = 5.25E-12
+# STIMligs = [1.0,0,0,0,0,0,0] # EGF, Her, HGF, PDGF, FGF, IGF, INS
+
+# #%%
+# # sys.path.insert(0, os.path.abspath(model_output_dir))
+# # species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
+
+# # species_initializations = []
+# # for row in species_sheet[1:]:
+# #     species_initializations.append(float(row[2]))
+
+
+# species_initializations = x6.values.copy()
+# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+# species_initializations[155:162] = STIMligs
+
+#%% debug - RunSPARCED
+
+# solver = model.getSolver()          # Create solver instance
+# solver.setMaxSteps = 1e10
+# model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
+
+# mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
+# mpc2nmcf_Vc = 1.0E9/(Vc*6.023E+23)
+# numberofgenes = len(tcnas)
+# numberofTARs = len(tcnas[0])
+# ix = 0
+
+# from modules.RunPrep import RunPrep
+# genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model,wd,omics_input,genereg_input)
+
+# NSteps = int(th*3600/ts)
+
+# spdata = species_initializations
+
+# xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
+# xoutS_all[0,:] = spdata 
+# xgac = genedata[ix:ix+numberofgenes]
+# ix = ix+numberofgenes
+# xgin = genedata[ix:ix+numberofgenes]
+# xm = np.divide(spdata[773:],mpc2nmcf_Vc)
+        
+ 
+
+
 
 #%%
-# deterministic=1, stochastic=0
-flagD = 1
-
-# deterministic='GrowthStim_det_', stochastic='GrowthStim_stoc_'
-# nmxlsfile = 'U87SPARCED_1nmGMDet_'
-
-ts = 30
-th = 72
-Vn = 1.75E-12
-Vc = 5.25E-12
-STIMligs = [1.0,0,0,0,0,0,0] # EGF, Her, HGF, PDGF, FGF, IGF, INS
-
-#%%
-# sys.path.insert(0, os.path.abspath(model_output_dir))
-# species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
-
-# species_initializations = []
-# for row in species_sheet[1:]:
-#     species_initializations.append(float(row[2]))
 
 
-species_initializations = x6.values.copy()
-species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-species_initializations[155:162] = STIMligs
+# solver = model.getSolver()          # Create solver instance
+# solver.setMaxSteps = 1e10
+# model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
+
+# xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
 
 
 
 #%%
 
+# import matplotlib.pyplot as plt
+# # species_input = pd.read_csv('input_files/Species.txt', sep='\t', header=0, index_col=0)
 
-solver = model.getSolver()          # Create solver instance
-solver.setMaxSteps = 1e10
-model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
+# species_all = model.getStateIds()
 
-xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model,omics_input,genereg_input)
+# import matplotlib as mpl
+# mpl.rcParams['figure.dpi']=300
 
-#%%
-
-import matplotlib.pyplot as plt
-# species_input = pd.read_csv('input_files/Species.txt', sep='\t', header=0, index_col=0)
-
-species_all = model.getStateIds()
-
-import matplotlib as mpl
-mpl.rcParams['figure.dpi']=300
-
-#%%
-def timecourse(species,x_s = xoutS_all, tout_all = tout_all):    
+# #%%
+# def timecourse(species,x_s = xoutS_all, tout_all = tout_all):    
     
-    x_t = x_s[:,list(species_all).index(species)]
-    plt.scatter(tout_all/3600,x_t)
-    plt.ylabel(str(species))
-    plt.xlabel('time(h)')
+#     x_t = x_s[:,list(species_all).index(species)]
+#     plt.scatter(tout_all/3600,x_t)
+#     plt.ylabel(str(species))
+#     plt.xlabel('time(h)')
     
-    plt.show
+#     plt.show
     
 #%%
 
-timecourse('ppERK')
-timecourse('ppAKT')
+# timecourse('ppERK')
+# timecourse('ppAKT')
  
