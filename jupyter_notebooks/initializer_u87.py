@@ -757,6 +757,9 @@ mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
 tck50as = tck50as*(1/mpc2nmcf_Vn)
 tck50rs = tck50rs*(1/mpc2nmcf_Vn)
 
+tck50as[97,4] = tck50as[97,4]*2
+tck50as[97,5] = tck50as[97,5]*2
+
 spnames = [ele for ele in model.getStateIds()]
 spIDs = []
 for qq in range(numberofTARs):

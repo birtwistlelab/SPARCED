@@ -3,7 +3,7 @@ import scipy.stats
 from random import *
 import pandas as pd
 
-def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1, 
+def SGEmodule_test(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1, 
               tcnas,tck50as,tcnrs,tck50rs,spIDs,mrna_idx):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
@@ -115,5 +115,11 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
 
     genedataNew = []
     genedataNew = np.concatenate((xgacN, xginN), axis=None)
+    
+    sum_Nb = sum(Nb)
+    sum_Nd = sum(Nd)
+    
+    sum_ac2in = sum(ac2in)
+    sum_in2ac = sum(in2ac)
 
-    return genedataNew, xmN, AllGenesVecN
+    return genedataNew, xmN, AllGenesVecN, sum_Nb, sum_Nd, sum_ac2in, sum_in2ac

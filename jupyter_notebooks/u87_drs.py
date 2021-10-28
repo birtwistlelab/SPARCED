@@ -105,6 +105,7 @@ cell_pop = 100
 
 import time
 
+flagD = 0
 
 th = 24
 
@@ -127,7 +128,7 @@ print(f'Finished in {round(finish-start,2)} seconds(s)')
 import time
 import multiprocessing
 
-th = 24
+th = 6
 
 def pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
@@ -284,6 +285,173 @@ finish = time.perf_counter()
 
 print(f'Finished in {round(finish-start,2)} seconds(s)')
 
+#%% test - queue
+
+STIMligs = [0.0,0,0,0,0,0,0.0]
+
+
+dose = 0.0
+
+sp_input = pd.read_csv(os.path.join(wd,'initializer','species_u87i.txt'),sep='\t',header=None,index_col=0,squeeze=True)
+sp_input['lapatinib'] = dose
+
+output_dose = os.path.join(output_path,'lapatinib_'+str(float(args.dose)))
+
+if not os.path.exists(output_dose):
+    os.mkdir(output_dose)
+
+
+
+
+
+species_initializations = np.array(sp_input)
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+species_initializations[155:162] = STIMligs
+
+
+solver = model.getSolver()          # Create solver instance
+solver.setMaxSteps = 1e10
+model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
+
+cell_pop = 5
+
+
+import time
+import multiprocessing
+
+th = 24
+
+
+
+def pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_q,g_q):
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+    s_q.put(xoutS_all[-1])
+    g_q.put(xoutG_all[-1])
+    # return (xoutS_all, xoutG_all, tout_all)
+
+flagD=0
+# args_pool = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input]
+start = time.perf_counter()
+
+# k, l, m = pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+# p1 = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
+# p2 = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
+
+# p1.start()
+# p2.start()
+
+# p1.join()
+# p2.join()
+if __name__ == "__main__":
+
+    s_q = multiprocessing.Queue()
+    g_q = multiprocessing.Queue()
+    
+    s_all = []
+    g_all = []
+    
+    processes = []
+    
+    for _ in range(cell_pop):
+        p = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_q,g_q])
+        p.start()
+        processes.append(p)
+        
+    for process in processes:
+        process.join()
+    
+    while not s_q.empty():
+        s_all.append(s_q.get())
+        
+    while not g_q.empty():
+        g_all.append(g_q.get())
+
+finish = time.perf_counter()
+
+print(f'Finished in {round(finish-start,2)} seconds(s)')
+
+#%%
+# save s_all, g_all
+
+#%% u87 dose 72 hrs
+
+
+
+
+
+#%% test - preincubate, lock
+import time
+import multiprocessing
+
+th = 24
+
+
+
+def pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_shared,g_shared,lock):
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+    
+    with lock:
+        
+        s_shared.append(xoutS_all[-1])
+        g_shared.append(xoutG_all[-1])
+    # return (xoutS_all, xoutG_all, tout_all)
+
+flagD=0
+# args_pool = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input]
+start = time.perf_counter()
+
+# k, l, m = pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+# p1 = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
+# p2 = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
+
+# p1.start()
+# p2.start()
+
+# p1.join()
+# p2.join()
+if __name__ == "__main__":
+
+    # s_q = multiprocessing.Queue()
+    # g_q = multiprocessing.Queue()
+    lock = multiprocessing.Lock()
+    
+    s_all = multiprocessing.Array('d',[])
+    g_all = multiprocessing.Array('d',[])
+    
+    processes = []
+    
+    for _ in range(5):
+        p = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_all,g_all,lock])
+        p.start()
+        processes.append(p)
+        
+    for process in processes:
+        process.join()
+    
+    # while not s_q.empty():
+    #     s_all.append(s_q.get())
+        
+    # while not g_q.empty():
+    #     g_all.append(g_q.get())
+
+finish = time.perf_counter()
+
+print(f'Finished in {round(finish-start,2)} seconds(s)')
+
+#%% test - preincubate, stochastic, sequential
+
+def pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+    return (xoutS_all, xoutG_all, tout_all)
+
+flagD = 0
+
+k, l, m = pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+k2, l2, m2 = pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
 
 
 #%%
@@ -313,3 +481,172 @@ for c in range(cell_pop):
     
 for process in processes:
     process.join()
+    
+#%% test - multiprocessing with stochastic outputs
+
+from modules.RunSPARCED_test import RunSPARCED_test
+
+
+import time
+import multiprocessing
+import itertools
+
+th = 6
+
+flagD=0
+
+def pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_q,Nbq):
+    xoutS_all, xoutG_all, tout_all, Nb_all, Nd_all, ac2in_all, in2ac_all = RunSPARCED_test(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+    
+    # ac2in_lite = list(itertools.islice(ac2in_all,0,(len(ac2in_all)-1),100))
+    # in2ac_lite = itertools.islice(in2ac_all,0,(len(in2ac_all)-1),100)
+    
+    Nb_lite = list(itertools.islice(Nb_all,0,(len(Nb_all)-1),100))
+    # Nd_lite = itertools.islice(Nd_all,0,(len(Nd_all)-1),100)
+    
+    
+    
+    s_q.put(xoutS_all[-1])
+    # g_q.put(xoutG_all[-1])
+    
+    Nbq.put(Nb_lite)
+    # Ndq.put(Nd_lite)
+    # acq.put(ac2in_lite)
+    # inq.put(in2ac_lite)
+    # return (xoutS_all, xoutG_all, tout_all)
+
+
+# args_pool = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input]
+start = time.perf_counter()
+
+# k, l, m = pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+# p1 = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
+# p2 = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
+
+# p1.start()
+# p2.start()
+
+# p1.join()
+# p2.join()
+# if __name__ == "__main__":
+
+s_q = multiprocessing.Queue()
+# g_q = multiprocessing.Queue()
+Nbq = multiprocessing.Queue()
+# Ndq = multiprocessing.Queue()
+# acq = multiprocessing.Queue()
+# inq = multiprocessing.Queue()
+
+s_all = []
+g_all = []
+
+processes = []
+
+for _ in range(5):
+    p = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_q,Nbq])
+    p.start()
+    processes.append(p)
+    
+for process in processes:
+    process.join()
+
+while not s_q.empty():
+    s_all.append(s_q.get())
+    
+Nb_stack = []
+
+while not Nbq.empty():
+    Nb_stack.append(Nbq.get())
+        
+    # while not g_q.empty():
+    #     g_all.append(g_q.get())
+
+finish = time.perf_counter()
+
+print(f'Finished in {round(finish-start,2)} seconds(s)')
+
+#%%
+# mutiprocessing - sgemodule
+from modules.RunPrep import RunPrep
+ts = 30 # time-step to update mRNA numbers
+NSteps = int(th*3600/ts)
+tout_all = np.arange(0,th*3600+1,30)    
+mpc2nM_Vc = (1E9/(Vc*6.023E+23))
+spdata = species_initializations
+
+genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs, mrna_idx = RunPrep(flagD,Vn,model,wd,omics_input,genereg_input)
+
+if len(spdata)==0:
+    spdata0 = pd.read_csv(os.path.join(wd,'input_files','Species.txt'),header=0,index_col=0,sep="\t")
+    spdata = np.float(spdata0.values[:,1])
+xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
+xoutS_all[0,:] = spdata # 24hr time point     
+
+# if len(genedata)==0:
+#     genedata = genedata0
+xoutG_all = np.zeros(shape=(NSteps+1,len(genedata)))
+xoutG_all[0,:] = genedata
+
+solver = model.getSolver() # Create solver instance
+solver.setMaxSteps = 1e10
+
+Nb_all = []
+Nd_all = []
+ac2in_all = []
+in2ac_all = []
+#%%
+from modules.SGEmodule_test import SGEmodule_test
+qq = 0
+
+#%%
+
+# genedata,xmN,AllGenesVec, sum_Nb, sum_Nd, sum_ac2in, sum_in2ac = SGEmodule_test(flagD,ts,xoutG_all[qq,:],xoutS_all[qq,:],Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1,tcnas,tck50as,tcnrs,tck50rs,spIDs,mrna_idx)
+
+# print(sum_Nd)
+
+
+def test_sge(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1, 
+              tcnas,tck50as,tcnrs,tck50rs,spIDs,mrna_idx,ndq):
+    # Nb_all = []
+    q_out = []
+    for i in range(15):
+    
+        genedata,xmN,AllGenesVec, sum_Nb, sum_Nd, sum_ac2in, sum_in2ac = SGEmodule_test(flagD,ts,xoutG_all[qq,:],xoutS_all[qq,:],Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1,tcnas,tck50as,tcnrs,tck50rs,spIDs,mrna_idx)
+        # Nb_all.append(sum_Nb)
+        q_out.append(sum_in2ac)
+    # ac2in_lite = list(itertools.islice(ac2in_all,0,(len(ac2in_all)-1),100))
+    # in2ac_lite = itertools.islice(in2ac_all,0,(len(in2ac_all)-1),100)
+    
+    # Nb_lite = list(itertools.islice(Nb_all,0,(len(Nb_all)-1),100))
+    # Nd_lite = itertools.islice(Nd_all,0,(len(Nd_all)-1),100)
+    
+    # nbq.put(Nb_all)
+    ndq.put(q_out)
+
+    
+    # s_q.put(xoutS_all[-1])
+    # g_q.put(xoutG_all[-1])
+    
+    # Nbq.put(Nb_lite)
+    
+    
+q = multiprocessing.Queue()
+
+
+processes = []
+
+for _ in range(5):
+    p = multiprocessing.Process(target=test_sge, args = [flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,GenePositionMatrix,kGin_1,kGac_1,tcnas,tck50as,tcnrs,tck50rs,spIDs,mrna_idx,q])
+    p.start()
+    processes.append(p)
+    
+for process in processes:
+    process.join()
+
+q_stack = []
+
+while not q.empty():
+    q_stack.append(q.get())
+    
+#%%
