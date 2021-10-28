@@ -2445,3 +2445,7 @@ vG5	Cytoplasm	1.00E+00
 vG6	Cytoplasm	5.50E+03						
 vG7	Cytoplasm	1.00E+00						
 vG8	Cytoplasm	5.40E+01						
+vGd1	Cytoplasm	1.51E-05						
+vGd2	Cytoplasm	1.04E-05						
+vGd3	Cytoplasm	1.23E-05						
+vGd4	Cytoplasm	0						

@@ -179,7 +179,7 @@ print(f'Finished in {round(finish-start,2)} seconds(s)')
 s_preinc = s_all
 np.savetxt(os.path.join(output_dose,'pre_inc_'+str(cell_pop)+'.txt'), s_preinc, delimiter = '\t')
 
-#%% drs queue - 72 hr
+#%% drs no queue - 72 hr
 
 import itertools
 
@@ -200,7 +200,7 @@ th = 72
 
 
 
-def single_cell(dose,s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,sq,gq,tq):
+def single_cell(dose,s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,q_flagA):
     
     sp_input = s_preinc_i
     
@@ -212,78 +212,79 @@ def single_cell(dose,s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations
     
     
     
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+    xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
     
-    xoutS_lite = itertools.islice(xoutS_all,0,(len(xoutS_all)-1),100)
-    xoutG_lite = itertools.islice(xoutG_all,0,(len(xoutG_all)-1),100)
-    tout_lite = itertools.islice(tout_all,0,(len(tout_all)-1),100)
+    xoutS_lite = np.array(list(itertools.islice(xoutS_all,0,(len(xoutS_all)-1),20)))
+    xoutG_lite = np.array(list(itertools.islice(xoutG_all,0,(len(xoutG_all)-1),20)))
+    tout_lite = np.array(list(itertools.islice(tout_all,0,(len(tout_all)-1),20)))
     
-    sq.put(xoutS_lite)
-    gq.put(xoutG_lite)
-    tq.put(tout_lite)
+    q_flagA.put(flagA)
+    # gq.put(xoutG_lite)
+    # tq.put(tout_lite)
     
     
-    # np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutS.txt'),xoutS_lite,delimiter='\t')
-    # np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutG.txt'),xoutG_lite,delimiter='\t')
-    # np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_tout.txt'),tout_lite,delimiter='\t')
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutS.txt'),xoutS_lite,delimiter='\t')
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutG.txt'),xoutG_lite,delimiter='\t')
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_tout.txt'),tout_lite,delimiter='\t')
 
 
 #%% u87 dose 72 hrs - q
 
-sq = multiprocessing.Queue()
-gq = multiprocessing.Queue()
-tq = multiprocessing.Queue()
+# sq = multiprocessing.Queue()
+# gq = multiprocessing.Queue()
+# tq = multiprocessing.Queue()
 
 
-s_all = []
-g_all = []
+q_flagA = multiprocessing.Queue()
+
+flagA_all = []
 
 processes = []
 
 for c in range(cell_pop):
-    p = multiprocessing.Process(target=single_cell, args = [dose,s_preinc[c],STIMligs,c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,sq,gq,tq])
+    p = multiprocessing.Process(target=single_cell, args = [dose,s_preinc[c],STIMligs,c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,q_flagA])
     p.start()
     processes.append(p)
     
 for process in processes:
     process.join()
 
-while not s_q.empty():
-    s_all.append(s_q.get())
+while not q_flagA.empty():
+    flagA_all.append(q_flagA.get())
     
-while not g_q.empty():
-    g_all.append(g_q.get())
+flagA_all = np.array(flagA_all)
+
+np.savetxt(os.path.join(output_dose,'flagA_all.txt'), delimiter='\t')
 
 
 
 
 
-#%%
 
 #%%
 # np.savetxt('xoutS_text.txt',xoutS_all,delimiter='\t')
 # xoutS_read = np.loadtxt('xoutS_text.txt',delimiter='\t')
 
-def single_cell(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutS_all.txt'),xoutS_all,delimiter='\t')
-    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutG_all.txt'),xoutG_all,delimiter='\t')
-    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_tout_all.txt'),tout_all,delimiter='\t')
+# def single_cell(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
+#     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+#     np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutS_all.txt'),xoutS_all,delimiter='\t')
+#     np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutG_all.txt'),xoutG_all,delimiter='\t')
+#     np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_tout_all.txt'),tout_all,delimiter='\t')
     
-# p1 = mpr.Process(target=single_cell)
+# # p1 = mpr.Process(target=single_cell)
 
-# p1.start()
+# # p1.start()
 
-# p1.join()
+# # p1.join()
 
-processes = []
+# processes = []
 
-for c in range(cell_pop):
-    cell_n = c
-    p = mpr.Process(target=single_cell,args=[cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
-    p.start()
-    processes.append(p)
+# for c in range(cell_pop):
+#     cell_n = c
+#     p = mpr.Process(target=single_cell,args=[cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
+#     p.start()
+#     processes.append(p)
     
     
-for process in processes:
-    process.join()
+# for process in processes:
+#     process.join()

@@ -237,7 +237,7 @@ model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
 
 
-def single_cell(s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,sq,gq,tq):
+def single_cell(s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,sq):
     
     sp_input = s_preinc_i
     
@@ -250,13 +250,13 @@ def single_cell(s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations,Vn,V
     
     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
     
-    xoutS_lite = itertools.islice(xoutS_all,0,(len(xoutS_all)-1),100)
-    xoutG_lite = itertools.islice(xoutG_all,0,(len(xoutG_all)-1),100)
-    tout_lite = itertools.islice(tout_all,0,(len(tout_all)-1),100)
+    xoutS_lite = list(itertools.islice(xoutS_all,0,(len(xoutS_all)-1),100))
+    # xoutG_lite = itertools.islice(xoutG_all,0,(len(xoutG_all)-1),100)
+    # tout_lite = itertools.islice(tout_all,0,(len(tout_all)-1),100)
     
     sq.put(xoutS_lite)
-    gq.put(xoutG_lite)
-    tq.put(tout_lite)
+    # gq.put(xoutG_lite)
+    # tq.put(tout_lite)
     
     
     # np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutS.txt'),xoutS_lite,delimiter='\t')
@@ -268,17 +268,17 @@ def single_cell(s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations,Vn,V
 cell_pop = 4
 
 sq = multiprocessing.Queue()
-gq = multiprocessing.Queue()
-tq = multiprocessing.Queue()
+# gq = multiprocessing.Queue()
+# tq = multiprocessing.Queue()
 
 
 s_all = []
-g_all = []
+# g_all = []
 
 processes = []
 
 for c in range(cell_pop):
-    p = multiprocessing.Process(target=single_cell, args = [s_preinc[c],STIMligs,c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,sq,gq,tq])
+    p = multiprocessing.Process(target=single_cell, args = [s_preinc[c],STIMligs,c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,sq])
     p.start()
     processes.append(p)
     
@@ -288,8 +288,8 @@ for process in processes:
 while not s_q.empty():
     s_all.append(s_q.get())
     
-while not g_q.empty():
-    g_all.append(g_q.get())
+# while not g_q.empty():
+#     g_all.append(g_q.get())
 
 
 #%%

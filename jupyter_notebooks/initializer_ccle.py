@@ -41,9 +41,9 @@ ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 # bt474_cd = pd.read_excel(os.path.join('input_files','ccle','ccle_cell_definitions','bt474.xlsx'),index_col=0)
 
 # ccle_mpc=pd.read_csv(os.path.join('input_files','ccle','ccle_mpc.txt'),sep='\t',index_col=0,header=0)
-ccle_mpc=pd.read_csv(os.path.join('input_files','ccle','ccle_mpc_new.txt'),sep='\t',index_col=0,header=0)
+ccle_mpc=pd.read_csv(os.path.join(wd,'input_files','ccle','ccle_mpc_new.txt'),sep='\t',index_col=0,header=0)
 
-au565 = pd.read_excel(os.path.join('input_files','ccle','ccle_cell_definitions','au565.xlsx'),index_col=0)
+au565 = pd.read_excel(os.path.join(wd,'input_files','ccle','ccle_cell_definitions','au565.xlsx'),index_col=0)
 
 au565['prot_mpc'] = np.zeros(np.shape(au565)[0])
 
@@ -54,7 +54,7 @@ for gene in au565.index:
     if str(gene) in ccle_mpc.index:
         au565.loc[str(gene),'prot_mpc'] = float(ccle_mpc.loc[str(gene),'AU565_BREAST_TenPx01'])
 
-ccle_missing_genes = np.loadtxt(os.path.join('input_files','ccle','genes_missing.txt'),dtype=str)
+ccle_missing_genes = np.loadtxt(os.path.join(wd,'input_files','ccle','genes_missing.txt'),dtype=str)
 
 omics_mcf10a = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'),sep=',',index_col=0, header=0)
 

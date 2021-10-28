@@ -225,7 +225,7 @@ else:
     print("Failed to load antimony file")
     exit(1)
 
-if writeSBMLFile(os.path.join(wd,fileAntimony),"SPARCED") == 1:
+if writeSBMLFile(os.path.join(wd,sbml_file),"SPARCED") == 1:
     print("Success converting antimony to SBML")
 else:
     print("Failure converting antimony to SBML")
