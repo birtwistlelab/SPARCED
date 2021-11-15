@@ -145,9 +145,9 @@ vTL141	Cytoplasm	kTL141_1*m_INS*(EIF4E/(kTL141_2+EIF4E))	0.07122388	100
 vTLCd1	Nucleus	0						
 vTLCd2	Nucleus	0						
 vTLCd3	Nucleus	0						
-vTLCd4	Nucleus	7.70E-05						
+vTLCd4	Nucleus	7.7E-05						
 vTLCd5	Nucleus	5.54E-06						
-vTLCd6	Nucleus	5.60E-06						
+vTLCd6	Nucleus	5.6E-06						
 vTLCd7	Nucleus	0						
 vTLCd8	Nucleus	0.00026019						
 vTLCd9	Nucleus	6.03E-06						
@@ -176,12 +176,12 @@ vTLCd31	Cytoplasm	2.86E-05
 vTLCd32	Cytoplasm	2.33E-06						
 vTLCd33	Cytoplasm	5.32E-07						
 vTLCd34	Cytoplasm	2.86E-05						
-vTLCd35	Cytoplasm	2.50E-06						
+vTLCd35	Cytoplasm	2.5E-06						
 vTLCd36	Cytoplasm	2.83E-06						
 vTLCd37	Cytoplasm	0.000121963						
 vTLCd38	Cytoplasm	2.47E-06						
 vTLCd39	Mitochondrion	1.32E-06						
-vTLCd40	Mitochondrion	2.10E-06						
+vTLCd40	Mitochondrion	2.1E-06						
 vTLCd41	Cytoplasm	6.06E-06						
 vTLCd42	Cytoplasm	2.34E-06						
 vTLCd43	Cytoplasm	9.25E-06						
@@ -198,7 +198,7 @@ vTLCd53	Cytoplasm	0
 vTLCd54	Cytoplasm	1.51E-05						
 vTLCd55	Cytoplasm	1.04E-05						
 vTLCd56	Cytoplasm	1.23E-05						
-vTLCd57	Cytoplasm	0						
+vTLCd57	Cytoplasm	1.23E-05						
 vTLCd58	Cytoplasm	0						
 vTLCd59	Cytoplasm	6.55E-06						
 vTLCd60	Cytoplasm	6.42E-05						
@@ -238,11 +238,11 @@ vTLCd93	Cytoplasm	3.18E-06
 vTLCd94	Cytoplasm	5.93E-07						
 vTLCd95	Cytoplasm	3.43E-06						
 vTLCd96	Cytoplasm	4.15E-06						
-vTLCd97	Cytoplasm	8.40E-06						
+vTLCd97	Cytoplasm	8.4E-06						
 vTLCd98	Cytoplasm	2.55E-05						
 vTLCd99	Cytoplasm	6.41E-06						
 vTLCd100	Cytoplasm	3.03E-05						
-vTLCd101	Cytoplasm	5.00E-06						
+vTLCd101	Cytoplasm	5E-06						
 vTLCd102	Cytoplasm	1.67E-06						
 vE1	Cytoplasm	0.001						
 vE2	Cytoplasm	0.1						
@@ -311,10 +311,10 @@ vD59	Nucleus	kD59*ARF*MDM2	0
 vD60	Nucleus	kD60*ARF*pMDM2	0					
 vD61	Nucleus	kD61*MDM4*p53ac	0					
 vD62	Nucleus	kD62*p53ac_MDM4	0					
-vD63	Nucleus	kD63*BRCA2*damageDSB	5.00E-05					
-vD64	Nucleus	kD64*MSH6*damageSSB	1.00E-05					
-vD65	Nucleus	kD65*MGMT*damageSSB	1.00E-05					
-vD66	Nucleus	(kD66_1+kD66_2*(kD66_3/(kD66_3+kD66_4)))*(((Ma+Me)^kD66_5)/(((Ma+Me)^kD66_5)+(kD66_6^kD66_5)))	1.00E-06	0.005	0	5000	5	20
+vD63	Nucleus	kD63*BRCA2*damageDSB	5E-05					
+vD64	Nucleus	kD64*MSH6*damageSSB	1E-05					
+vD65	Nucleus	kD65*MGMT*damageSSB	1E-05					
+vD66	Nucleus	(kD66_1+kD66_2*(kD66_3/(kD66_3+kD66_4)))*(((Ma+Me)^kD66_5)/(((Ma+Me)^kD66_5)+(kD66_6^kD66_5)))	1E-06	0.005	0	5000	5	20
 vC1	Nucleus	kC1	0					
 vC2	Nucleus	2.36E-06						
 vC3	Nucleus	0.002361111						
@@ -421,7 +421,7 @@ vC103	Nucleus	0.000944444
 vC104	Nucleus	0.000289731						
 vA1	Cytoplasm	0.00126483						
 vA2	Cytoplasm	0.001						
-vA3	Cytoplasm	1.00E-06						
+vA3	Cytoplasm	1E-06						
 vA4	Cytoplasm	0.003162075						
 vA5	Cytoplasm	0.001						
 vA6	Cytoplasm	0.003162075						
@@ -505,7 +505,7 @@ vA83	Mitochondrion	0.01
 vA84	Mitochondrion	0.01						
 vA85	Cytoplasm	0.001						
 vA86	Mitochondrion	0.1						
-vA87	Cytoplasm	1.00E-09						
+vA87	Cytoplasm	1E-09						
 vR1	Cytoplasm	0.001						
 vR2	Cytoplasm	0.001						
 vR3	Cytoplasm	0.01						
@@ -593,7 +593,7 @@ vR84	Cytoplasm	0.0001
 vR85	Cytoplasm	2						
 vR86	Cytoplasm	0.001						
 vR87	Cytoplasm	0.001						
-vR88	Cytoplasm	2.00E-05						
+vR88	Cytoplasm	2E-05						
 vR89	Cytoplasm	0.01						
 vR90	Cytoplasm	0.001						
 vR91	Cytoplasm	0.004						
@@ -655,12 +655,12 @@ vR146	Cytoplasm	0.0016
 vR147	Cytoplasm	0.001						
 vR148	Cytoplasm	1						
 vR149	Cytoplasm	0.002						
-vR150	Cytoplasm	2.00E-05						
+vR150	Cytoplasm	2E-05						
 vR151	Cytoplasm	0.000347						
 vR152	Cytoplasm	3.12E-05						
 vR153	Cytoplasm	0.000347						
 vR154	Cytoplasm	0.0031						
-vR155	Cytoplasm	9.80E-05						
+vR155	Cytoplasm	9.8E-05						
 vR156	Cytoplasm	0.0031						
 vR157	Cytoplasm	5.58E-06						
 vR158	Cytoplasm	0.01						
@@ -892,10 +892,10 @@ vRP8_22	Cytoplasm	0.0014
 vRP8_23	Cytoplasm	0.0014						
 vRP8_24	Cytoplasm	0.0014						
 vRP8_25	Cytoplasm	0.0014						
-vRP8_26	Cytoplasm	7.70E-07						
-vRP8_27	Cytoplasm	3.20E-05						
-vRP8_28	Cytoplasm	7.70E-07						
-vRP8_29	Cytoplasm	3.20E-05						
+vRP8_26	Cytoplasm	7.7E-07						
+vRP8_27	Cytoplasm	3.2E-05						
+vRP8_28	Cytoplasm	7.7E-07						
+vRP8_29	Cytoplasm	3.2E-05						
 vRP9_1	Cytoplasm	0.009						
 vRP9_2	Cytoplasm	0.01						
 vRP9_3	Cytoplasm	0.01						
@@ -1806,10 +1806,10 @@ vP176	Cytoplasm	0.01
 vP177	Nucleus	0.05						
 vP178	Cytoplasm	0.01						
 vP179	Cytoplasm	0.1						
-vP180	Cytoplasm	1.00E-05						
+vP180	Cytoplasm	1E-05						
 vP181	Cytoplasm	0.1						
 vP182	Nucleus	0.01						
-vP183	Cytoplasm	5.00E-06						
+vP183	Cytoplasm	5E-06						
 vP184	Cytoplasm	0.01						
 vP185	Cytoplasm	0.0004						
 vP186	Cytoplasm	0.01						
@@ -1844,8 +1844,8 @@ vAd9	Cytoplasm	2.33E-06
 vAd10	Cytoplasm	5.32E-05						
 vAd11	Cytoplasm	2.34E-06						
 vAd12	Cytoplasm	2.86E-05						
-vAd13	Cytoplasm	2.50E-06						
-vAd14	Cytoplasm	2.50E-06						
+vAd13	Cytoplasm	2.5E-06						
+vAd14	Cytoplasm	2.5E-06						
 vAd15	Cytoplasm	2.83E-06						
 vAd16	Cytoplasm	0.000283273						
 vAd17	Cytoplasm	0.000121963						
@@ -1859,13 +1859,13 @@ vAd24	Mitochondrion	0.000121963
 vAd25	Mitochondrion	2.47E-06						
 vAd26	Mitochondrion	0.000121963						
 vAd27	Mitochondrion	1.32E-06						
-vAd28	Mitochondrion	2.10E-06						
+vAd28	Mitochondrion	2.1E-06						
 vAd29	Cytoplasm	1.32E-06						
 vAd30	Cytoplasm	6.06E-06						
 vAd31	Cytoplasm	6.06E-06						
 vAd32	Cytoplasm	6.06E-06						
 vAd33	Cytoplasm	6.06E-06						
-vAd34	Cytoplasm	2.10E-06						
+vAd34	Cytoplasm	2.1E-06						
 vAd35	Cytoplasm	2.86E-05						
 vAd36	Cytoplasm	2.86E-05						
 vAd37	Cytoplasm	2.33E-06						
@@ -2355,8 +2355,8 @@ vPd3	Cytoplasm	4.81E-06
 vPd4	Cytoplasm	4.81E-06						
 vPd5	Cytoplasm	2.55E-05						
 vPd6	Cytoplasm	2.55E-05						
-vPd7	Cytoplasm	1.00E-05						
-vPd8	Cytoplasm	1.00E-05						
+vPd7	Cytoplasm	1E-05						
+vPd8	Cytoplasm	1E-05						
 vPd9	Cytoplasm	0.0108						
 vPd10	Cytoplasm	6.78E-06						
 vPd11	Cytoplasm	6.86E-06						
@@ -2394,7 +2394,7 @@ vPd42	Cytoplasm	9.62E-06
 vPd43	Cytoplasm	3.43E-06						
 vPd44	Cytoplasm	3.43E-06						
 vPd45	Cytoplasm	4.15E-05						
-vPd46	Cytoplasm	8.40E-06						
+vPd46	Cytoplasm	8.4E-06						
 vPd47	Cytoplasm	6.41E-06						
 vPd48	Cytoplasm	3.03E-05						
 vPd49	Cytoplasm	1.12E-05						
@@ -2418,7 +2418,7 @@ vPd66	Cytoplasm	7.24E-06
 vPd67	Cytoplasm	5.85E-06						
 vPd69	Cytoplasm	5.75E-06						
 vPd70	Cytoplasm	5.35E-06						
-vPd71	Cytoplasm	8.40E-06						
+vPd71	Cytoplasm	8.4E-06						
 vPd72	Cytoplasm	3.03E-05						
 vPd73	Cytoplasm	2.55E-05						
 vPd74	Cytoplasm	5.75E-06						
@@ -2437,14 +2437,14 @@ vPd86	Cytoplasm	9.62E-06
 vPd87	Nucleus	4.15E-06						
 vPd88	Cytoplasm	2.22E-06						
 vPd89	Cytoplasm	5.75E-06						
-vG1	Cytoplasm	1.00E+00						
-vG2	Cytoplasm	2.40E+00						
-vG3	Cytoplasm	1.00E+00						
-vG4	Cytoplasm	7.00E+00						
-vG5	Cytoplasm	1.00E+00						
-vG6	Cytoplasm	5.50E+03						
-vG7	Cytoplasm	1.00E+00						
-vG8	Cytoplasm	5.40E+01						
+vG1	Cytoplasm	1						
+vG2	Cytoplasm	2.4						
+vG3	Cytoplasm	1						
+vG4	Cytoplasm	7						
+vG5	Cytoplasm	1						
+vG6	Cytoplasm	5500						
+vG7	Cytoplasm	1						
+vG8	Cytoplasm	54						
 vGd1	Cytoplasm	1.51E-05						
 vGd2	Cytoplasm	1.04E-05						
 vGd3	Cytoplasm	1.23E-05						

@@ -95,7 +95,7 @@ cell_pop = 100
 #     np.savetxt(os.path.join(output_dose,'c'+str(c)+'_tout_all.txt',tout_all,delimiter='\t'))
 
 
-#%% queue - preincubate
+#%% preincubate
 
 STIMligs = [0.0,0,0,0,0,0,0.0]
 
@@ -111,7 +111,7 @@ species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 species_initializations[155:162] = STIMligs
 
 
-output_dose = os.path.join(output_path,'lapatinib_'+str(float(dose)))
+output_dose = os.path.join(output_path,'lapatinib_'+str(float(args.dose)))
 
 if not os.path.exists(output_dose):
     os.mkdir(output_dose)
@@ -126,10 +126,13 @@ th = 24
 
 
 
-def pre_incubate(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_q,g_q):
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-    s_q.put(xoutS_all[-1])
-    g_q.put(xoutG_all[-1])
+def pre_incubate(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_q,g_q):
+    xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+    
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_preinc.txt'),xoutS_all[-1],delimiter='\t')
+    
+    # s_q.put(xoutS_all[-1])
+    # g_q.put(xoutG_all[-1])
     # return (xoutS_all, xoutG_all, tout_all)
 
 
@@ -148,27 +151,27 @@ start = time.perf_counter()
 # p2.join()
 if __name__ == "__main__":
 
-    s_q = multiprocessing.Queue()
-    g_q = multiprocessing.Queue()
+    # s_q = multiprocessing.Queue()
+    # g_q = multiprocessing.Queue()
     
-    s_all = []
-    g_all = []
+    # s_all = []
+    # g_all = []
     
     processes = []
     
-    for _ in range(cell_pop):
-        p = multiprocessing.Process(target=pre_incubate, args = [flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,s_q,g_q])
+    for c in range(cell_pop):
+        p = multiprocessing.Process(target=pre_incubate, args = [c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
         p.start()
         processes.append(p)
         
     for process in processes:
         process.join()
     
-    while not s_q.empty():
-        s_all.append(s_q.get())
+    # while not s_q.empty():
+    #     s_all.append(s_q.get())
         
-    while not g_q.empty():
-        g_all.append(g_q.get())
+    # while not g_q.empty():
+    #     g_all.append(g_q.get())
 
 finish = time.perf_counter()
 
@@ -176,8 +179,8 @@ print(f'Finished in {round(finish-start,2)} seconds(s)')
 
 
 #%% save preincubation result
-s_preinc = s_all
-np.savetxt(os.path.join(output_dose,'pre_inc_'+str(cell_pop)+'.txt'), s_preinc, delimiter = '\t')
+# s_preinc = s_all
+# np.savetxt(os.path.join(output_dose,'pre_inc_'+str(cell_pop)+'.txt'), s_preinc, delimiter = '\t')
 
 #%% drs no queue - 72 hr
 
@@ -200,7 +203,9 @@ th = 72
 
 
 
-def single_cell(dose,s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,q_flagA):
+def single_cell(dose,STIMligs,cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
+    
+    s_preinc_i = np.loadtxt(os.path.join(output_dose,'c'+str(cell_n)+'_preinc.txt'),delimiter='\t')
     
     sp_input = s_preinc_i
     
@@ -218,7 +223,7 @@ def single_cell(dose,s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations
     xoutG_lite = np.array(list(itertools.islice(xoutG_all,0,(len(xoutG_all)-1),20)))
     tout_lite = np.array(list(itertools.islice(tout_all,0,(len(tout_all)-1),20)))
     
-    q_flagA.put(flagA)
+    # q_flagA.put(flagA)
     # gq.put(xoutG_lite)
     # tq.put(tout_lite)
     
@@ -226,6 +231,10 @@ def single_cell(dose,s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations
     np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutS.txt'),xoutS_lite,delimiter='\t')
     np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_xoutG.txt'),xoutG_lite,delimiter='\t')
     np.savetxt(os.path.join(output_dose,'c'+str(cell_n)+'_tout.txt'),tout_lite,delimiter='\t')
+    
+    file_flagA = open(os.path.join(output_dose,'c'+str(cell_n)+'_flagA.txt'),'w')
+    file_flagA.write(str(flagA))
+    file_flagA.close()
 
 
 #%% u87 dose 72 hrs - q
@@ -235,26 +244,25 @@ def single_cell(dose,s_preinc_i,STIMligs,cell_n,flagD,th,species_initializations
 # tq = multiprocessing.Queue()
 
 
-q_flagA = multiprocessing.Queue()
+# q_flagA = multiprocessing.Queue()
 
-flagA_all = []
+# flagA_all = []
 
 processes = []
 
 for c in range(cell_pop):
-    p = multiprocessing.Process(target=single_cell, args = [dose,s_preinc[c],STIMligs,c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input,q_flagA])
+    p = multiprocessing.Process(target=single_cell, args = [dose,STIMligs,c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
     p.start()
     processes.append(p)
     
 for process in processes:
     process.join()
 
-while not q_flagA.empty():
-    flagA_all.append(q_flagA.get())
-    
-flagA_all = np.array(flagA_all)
 
-np.savetxt(os.path.join(output_dose,'flagA_all.txt'), delimiter='\t')
+    
+# flagA_all = np.array(flagA_all)
+
+# np.savetxt(os.path.join(output_dose,'flagA_all.txt'), delimiter='\t')
 
 
 

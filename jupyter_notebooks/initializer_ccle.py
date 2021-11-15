@@ -47,7 +47,7 @@ au565 = pd.read_excel(os.path.join(wd,'input_files','ccle','ccle_cell_definition
 
 au565['prot_mpc'] = np.zeros(np.shape(au565)[0])
 
-ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['Protein_mRNA']).values
+ratios_p2m = pd.read_csv(os.path.join(wd,'input_files','initializer','p2m_10a.txt'),sep='\t',header=None,index_col=0,squeeze=True)
 
 
 for gene in au565.index:
@@ -56,17 +56,34 @@ for gene in au565.index:
 
 ccle_missing_genes = np.loadtxt(os.path.join(wd,'input_files','ccle','genes_missing.txt'),dtype=str)
 
-omics_mcf10a = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'),sep=',',index_col=0, header=0)
+omics_mcf10a = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'),sep='\t',index_col=0, header=0)
 
 for gene in ccle_missing_genes:
     # au565.loc[gene,'prot_mpc'] = float(omics_mcf10a.loc[gene,'Exp Protein'])
     au565.loc[gene,'prot_mpc'] = float(ratios_p2m[list(au565.index).index(gene)])*float(au565.loc[gene,'mrna_mpc'])
-    
+#%% temp - fill missing protein levels
+ligand_genes = ['EGF','NRG1','HGF','PDGFB','FGF1','FGF2','IGF1','IGF2','INS','TNFSF10']
+
+prot_missing = [g for g in list(au565.index[au565['prot_mpc'].values==0]) if g not in ligand_genes]
+
+for gene in prot_missing:
+    au565.loc[gene,'prot_mpc']=float(ratios_p2m[list(au565.index).index(gene)])*float(au565.loc[gene,'mrna_mpc'])
+
+au565.loc[ligand_genes,'prot_mpc'] = 0 # explicitly sets ligand concentrations to zero
+# r_missing = np.zeros(len(prot_missing))
+# for g in range(len(prot_missing)):
+#     r_missing[g]=float(ratios_p2m[list(au565.index).index(prot_missing[g])])
+
+
+
+#%%
 au565_omics = omics_mcf10a.copy()
 au565_omics['Exp GCN'] = au565['gcn'].copy()
 au565_omics['Exp RNA'] = au565['mrna_mpc'].copy()
 au565_omics['Exp Protein'] = au565['prot_mpc'].copy()
 # au565_omics['kTCleak'] = au565['leak'].copy()
+
+
 
 
 au565_omics.to_csv(os.path.join(wd,'input_files','OmicsData_extended_au565.txt'),sep='\t')
@@ -117,7 +134,7 @@ gene_params['kTL_nat'][np.array([list(model_genes).index(x) for x in ['CCND1', '
 
 ratios_kTL=pd.read_csv(os.path.join(wd,'input_files','initializer','ratios.txt'),sep=',',header=0,squeeze=True,usecols=['kTL_kTLd']).values
 
-ratios_kTL[list(model_genes).index('PTEN')] = 0.0 #PTEN
+# ratios_kTL[list(model_genes).index('PTEN')] = 0.0 #PTEN
 
 # mExp_mpc = au565['mrna_mpc'].copy()
 mExp_mpc = gene_params['Exp RNA'].copy()
@@ -206,7 +223,7 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
 obs2exclude = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'), sep='\t', usecols=['Step1_obs_excl'])
 obs2exclude = obs2exclude.values[obs2exclude.notnull()]
 
-np.append(obs2exclude,'PTEN')
+# np.append(obs2exclude,'PTEN')
 
 kTLest = gene_params['kTL_nat'].values.copy()
 
@@ -538,7 +555,10 @@ for i in range(len(kXd)):
 
 for i in range(len(kTLCd)):
     model.setFixedParameterById(params_getid(reactions_vTLCd[i],0), kTLCd[i])
-    
+
+#%% test - manually lower basal RasD activation x 10
+
+model.setFixedParameterById('k1813',model.getFixedParameterById('k1813')/33)
     
 #%% temp - debug
 
@@ -980,11 +1000,47 @@ xgac_mpc_D = (kGac*gExp_mpc)/(kGin+kGac)
 
 TARsRead = pd.read_csv('GeneReg.txt',header=0,index_col=0,sep="\t")
 TARs0 = (TARsRead.values)
+#%% tck50as - default
+
+# tcnas = np.ones((numberofgenes, numberofTARs))
+# tck50as = np.zeros((numberofgenes, numberofTARs))
+# tcnrs = np.ones((numberofgenes, numberofTARs))
+# tck50rs = np.zeros((numberofgenes, numberofTARs))
+
+# for qq in range(numberofgenes):
+#     for ww in range(numberofTARs):
+#         pars = TARs0[qq,ww].find(';')
+#         if pars>0:
+#             nH = np.float(TARs0[qq,ww][0:pars])
+#             kH = np.float(TARs0[qq,ww][pars+2::])
+#             if nH>0:
+#                 tcnas[qq,ww] = nH
+#                 tck50as[qq,ww] = kH
+#             else:
+#                 tcnrs[qq,ww] = abs(nH)
+#                 tck50rs[qq,ww] = kH
+
+# mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
+# # Convert to molecules per cell
+# tck50as = tck50as*(1/mpc2nmcf_Vn)
+# tck50rs = tck50rs*(1/mpc2nmcf_Vn)
+
+# spnames = [ele for ele in model.getStateIds()]
+# spIDs = []
+# for qq in range(numberofTARs):
+#     sps = spnames.index(TARsRead.columns[qq]) 
+#     spIDs.append(sps)
+
+#%% test - tck50as alternative
+
+x6_10a = pd.read_csv(os.path.join('input_files','x6_10a.txt'),sep='\t',squeeze=True,header=None,index_col=0)
 
 tcnas = np.ones((numberofgenes, numberofTARs))
 tck50as = np.zeros((numberofgenes, numberofTARs))
 tcnrs = np.ones((numberofgenes, numberofTARs))
 tck50rs = np.zeros((numberofgenes, numberofTARs))
+
+
 
 for qq in range(numberofgenes):
     for ww in range(numberofTARs):
@@ -994,10 +1050,10 @@ for qq in range(numberofgenes):
             kH = np.float(TARs0[qq,ww][pars+2::])
             if nH>0:
                 tcnas[qq,ww] = nH
-                tck50as[qq,ww] = kH
+                tck50as[qq,ww] = kH/float(x6_10a[str(TARsRead.columns[ww])])*x6[str(TARsRead.columns[ww])]
             else:
                 tcnrs[qq,ww] = abs(nH)
-                tck50rs[qq,ww] = kH
+                tck50rs[qq,ww] = kH/float(x6_10a[str(TARsRead.columns[ww])])*x6[str(TARsRead.columns[ww])]
 
 mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
 # Convert to molecules per cell
@@ -1009,8 +1065,6 @@ spIDs = []
 for qq in range(numberofTARs):
     sps = spnames.index(TARsRead.columns[qq]) 
     spIDs.append(sps)
-
-
 
 
 
@@ -1062,39 +1116,91 @@ if len(i2c)!=0:
     np.disp('WARNING -- Some induction term exceed degradation terms')
     
 #%% fix negative check
+# if len(i2c)!=0:
+    
+#     i2c_i = i2c
+    
+#     while len(i2c_i)!=0:
+        
+#         tck50as[i2c_i,:] = tck50as[i2c_i,:]*1.15
+            
+#         TARarr = np.array(x6[spIDs])
+#         TAs = np.zeros((numberofgenes,numberofTARs))
+#         TRs = np.zeros((numberofgenes,numberofTARs))
+#         for qq in range(numberofTARs):
+#             TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
+#             TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
+#         TAs = TAs*(1.0/mpc2nmcf_Vn) # convert to mpc from nM
+#         TAs.flatten()
+#         TRs = TRs*(1.0/mpc2nmcf_Vn)
+#         TRs.flatten() 
+        
+#         # make hills
+#         aa = np.divide(TAs,tck50as)
+#         TFa = np.power(aa,tcnas)
+#         TFa[np.isnan(TFa)] = 0.0
+#         bb = np.divide(TRs,tck50rs)
+#         TFr = np.power(bb,tcnrs)
+#         TFr[np.isnan(TFr)] = 0.0
+#         hills = np.sum(TFa,axis=1)/(1 + np.sum(TFa,axis=1) + np.sum(TFr,axis=1))
+#         # With AP1*cMYC exception:
+#         hills[Cd_genes] = np.multiply((TFa[Cd_genes,0]/(1+TFa[Cd_genes,0])),(TFa[Cd_genes,1]/(1+TFa[Cd_genes,1])))
+        
+#         # vTCd
+#         vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));TFa[Cd_genes,1]
+#         vTCd = np.squeeze(np.asarray(vTCd))
+        
+#         kTCmax = 0.1
+        
+#         kTCmaxs = np.ones(len(model_genes))*kTCmax
+#         kTCmaxs = kTCmaxs*mExp_mpc.values.astype('bool').astype('int')
+        
+#         induced = np.multiply(np.multiply(xgac_mpc_D,kTCmaxs),hills)
+#         induced = induced.flatten()
+        
+#         negativecheck = np.array(mExp_mpc,dtype=bool).astype(int)*(vTCd - induced)
+        
+#         i2c_i = np.nonzero(negativecheck<0)[0]
+
+#%% fix negative check - alternative
+
 if len(i2c)!=0:
     
     i2c_i = i2c
     
     while len(i2c_i)!=0:
         
-        tck50as[i2c_i,:] = tck50as[i2c_i,:]*2
+        # tck50as[i2c_i,:] = tck50as[i2c_i,:]*1.15
             
-        TARarr = np.array(x6[spIDs])
-        TAs = np.zeros((numberofgenes,numberofTARs))
-        TRs = np.zeros((numberofgenes,numberofTARs))
-        for qq in range(numberofTARs):
-            TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
-            TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
-        TAs = TAs*(1.0/mpc2nmcf_Vn) # convert to mpc from nM
-        TAs.flatten()
-        TRs = TRs*(1.0/mpc2nmcf_Vn)
-        TRs.flatten() 
+        # TARarr = np.array(x6[spIDs])
+        # TAs = np.zeros((numberofgenes,numberofTARs))
+        # TRs = np.zeros((numberofgenes,numberofTARs))
+        # for qq in range(numberofTARs):
+        #     TAs[tck50as[:,qq] > 0, qq] = TARarr[qq]
+        #     TRs[tck50rs[:,qq] > 0, qq] = TARarr[qq]
+        # TAs = TAs*(1.0/mpc2nmcf_Vn) # convert to mpc from nM
+        # TAs.flatten()
+        # TRs = TRs*(1.0/mpc2nmcf_Vn)
+        # TRs.flatten() 
         
-        # make hills
-        aa = np.divide(TAs,tck50as)
-        TFa = np.power(aa,tcnas)
-        TFa[np.isnan(TFa)] = 0.0
-        bb = np.divide(TRs,tck50rs)
-        TFr = np.power(bb,tcnrs)
-        TFr[np.isnan(TFr)] = 0.0
-        hills = np.sum(TFa,axis=1)/(1 + np.sum(TFa,axis=1) + np.sum(TFr,axis=1))
-        # With AP1*cMYC exception:
-        hills[Cd_genes] = np.multiply((TFa[Cd_genes,0]/(1+TFa[Cd_genes,0])),(TFa[Cd_genes,1]/(1+TFa[Cd_genes,1])))
+        # # make hills
+        # aa = np.divide(TAs,tck50as)
+        # TFa = np.power(aa,tcnas)
+        # TFa[np.isnan(TFa)] = 0.0
+        # bb = np.divide(TRs,tck50rs)
+        # TFr = np.power(bb,tcnrs)
+        # TFr[np.isnan(TFr)] = 0.0
+        # hills = np.sum(TFa,axis=1)/(1 + np.sum(TFa,axis=1) + np.sum(TFr,axis=1))
+        # # With AP1*cMYC exception:
+        # hills[Cd_genes] = np.multiply((TFa[Cd_genes,0]/(1+TFa[Cd_genes,0])),(TFa[Cd_genes,1]/(1+TFa[Cd_genes,1])))
         
         # vTCd
+        kTCd[i2c_i] = kTCd[i2c_i]*1.05
         vTCd= np.transpose(np.multiply(kTCd,mExp_mpc));TFa[Cd_genes,1]
         vTCd = np.squeeze(np.asarray(vTCd))
+        
+        
+        # vTCd[i2c_i] = vTCd[i2c_i]*1.05
         
         kTCmax = 0.1
         
@@ -1110,10 +1216,9 @@ if len(i2c)!=0:
 
 
 
-
 #%%
 
-
+kTCd_new = kTCd
     
 leak = vTCd-induced
 kTCleak_new=leak/xgac_mpc_D
@@ -1123,9 +1228,9 @@ kTCleak_new[np.isinf(kTCleak_new)] = 0
 
 #%% update genereg with new tck50as
 
-tck50as1 = tck50as
+tck50as1 = tck50as.copy()
 
-TARs1 = TARs0
+TARs1 = TARs0.copy()
 
 for qq in range(numberofgenes):
     for ww in range(numberofTARs):
@@ -1134,7 +1239,7 @@ for qq in range(numberofgenes):
             nH = np.float(TARs0[qq,ww][0:pars])
             kH = np.float(TARs0[qq,ww][pars+2::])
             if nH>0:
-                TARs1[qq,ww] = str(tcnas[qq,ww])+'; '+str(tck50as1[qq,ww]*mpc2nmcf_Vn)
+                TARs1[qq,ww] = str(tcnas[qq,ww])+'; '+str(round(float(tck50as1[qq,ww]*mpc2nmcf_Vn),2))
                 
 TARs_New = pd.DataFrame(data = TARs1, index = TARsRead.index, columns = TARsRead.columns)
 
@@ -1151,6 +1256,7 @@ TARs_New.to_csv(os.path.join(wd,'input_files','GeneReg_au565.txt'), sep='\t')
 # au565_omics['Exp RNA'] = au565['mrna_mpc'].copy()
 # au565_omics['Exp Protein'] = au565['prot_mpc'].copy()
 gene_params['kTCleak'] = kTCleak_new
+gene_params['kTCd'] = kTCd_new
 
 #%%
 # au565_omics.to_csv(os.path.join(wd,'input_files',omics_input),sep='\t')
@@ -1166,6 +1272,145 @@ for i in range(np.shape(params_all)[0]):
 
 params_all.to_csv(os.path.join(wd,'initializer','params_au565.txt'),sep='\t')
 x6.to_csv(os.path.join(wd,'initializer','species_au565.txt'),sep='\t',index=True, header=False)
+
+
+#%% diagnostics
+
+import matplotlib.pyplot as plt
+# species_input = pd.read_csv('input_files/Species.txt', sep='\t', header=0, index_col=0)
+
+species_all = model.getStateIds()
+
+import matplotlib as mpl
+mpl.rcParams['figure.dpi']=300
+
+
+#%% test GF response - ODEs
+
+STIMligs = [100.0,0,0,0,0,0,100.0]
+# STIMligs = [0.0,0,0,0,0,0,0.0]
+
+species_initializations = x6.values
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+species_initializations[155:162] = STIMligs
+
+model.setInitialStates(species_initializations)
+
+rdata_test = amici.runAmiciSimulation(model,solver)
+
+#%%
+
+def timecourse(species,x_s, tout_all):    
+    
+    x_t = x_s[:,list(species_all).index(species)]
+    plt.plot(tout_all/3600,x_t)
+    plt.ylabel(str(species))
+    plt.xlabel('time(h)')
+    plt.ylim(0,1.25*max(x_t))
+    plt.show
+    
+#%%
+
+timecourse('ppERK',rdata_test['x'],rdata_test['t'])
+timecourse('ppAKT',rdata_test['x'],rdata_test['t'])
+ 
+#%% test GF response - flagD
+# th = 48
+th = 96
+
+sys.path.append(wd+'/bin')
+from modules.RunSPARCED import RunSPARCED
+
+omics_input = 'OmicsData_extended_au565.txt'
+genereg_input = 'GeneReg_au565.txt'
+
+STIMligs = [100.0,0,0,0,0,0,100.0]
+# STIMligs = [0.0,0,0,0,0,0,0.0]
+
+species_initializations = x6.values
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+species_initializations[155:162] = STIMligs
+
+# model.setInitialStates(species_initializations)
+
+flagD = 1
+
+xoutS_all, xoutG_all, tout_all,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+
+#%%
+
+timecourse('ppERK',xoutS_all,tout_all)
+timecourse('ppAKT',xoutS_all,tout_all)
+timecourse('cPARP',xoutS_all,tout_all)
+timecourse('cMyc',xoutS_all,tout_all)
+timecourse('pcFos_cJun',xoutS_all,tout_all)
+timecourse('Mb',xoutS_all,tout_all)
+timecourse('bCATENINnuc',xoutS_all,tout_all)
+timecourse('bCATENIN',xoutS_all,tout_all)
+timecourse('Md',xoutS_all,tout_all)
+
+#%%
+
+STIMligs2 = [1000.0,0,0,0,0,0,1000.0]
+
+species_initializations2 = x6.values
+species_initializations2[np.argwhere(species_initializations2 <= 1e-6)] = 0.0
+species_initializations2[155:162] = STIMligs2
+
+model.setInitialStates(species_initializations2)
+
+
+xoutS_all2, xoutG_all2, tout_all2,flagA = RunSPARCED(flagD,th,species_initializations2,Vn,Vc,model,wd,omics_input,genereg_input)
+
+
+#%%
+
+
+timecourse('ppERK',xoutS_all2,tout_all2)
+timecourse('ppAKT',xoutS_all2,tout_all2)
+
+
+#%%
+STIMligs0 = [0.0,0,0,0,0,0,0.0]
+
+species_initializations0 = x6.values
+species_initializations0[np.argwhere(species_initializations0 <= 1e-6)] = 0.0
+species_initializations0[155:162] = STIMligs0
+
+model.setInitialStates(species_initializations0)
+
+
+xoutS_all0, xoutG_all0, tout_all0,flagA = RunSPARCED(flagD,th,species_initializations0,Vn,Vc,model,wd,omics_input,genereg_input)
+
+#%%
+
+
+timecourse('ppERK',xoutS_all0,tout_all0)
+timecourse('ppAKT',xoutS_all0,tout_all0)
+
+
+#%% test
+
+# species_all = list(model.getStateIds())
+
+
+
+def timecourse_ap(sp1,sp2,x_s, tout_all):
+    x_t1 = x_s[:,list(species_all).index(sp1)]
+    x_t2 = x_s[:,list(species_all).index(sp2)]
+    
+    x_t = x_t2/x_t1
+    
+    plt.plot(tout_all/3600,x_t)
+    plt.ylabel(str(sp2)+'/'+str(sp1))
+    plt.xlabel('time(h)')
+    plt.ylim(0,1.25*max(x_t))
+    plt.show
+    
+timecourse_ap('ERK','ppERK',rdata_new['x'],rdata_new['t'])
+
+
 
 #%% Write results to sbml
 
@@ -1314,26 +1559,26 @@ sbml_importer.sbml2amici('SPARCED_au565',
 
 #%%
 
-# import matplotlib.pyplot as plt
-# # species_input = pd.read_csv('input_files/Species.txt', sep='\t', header=0, index_col=0)
+import matplotlib.pyplot as plt
+# species_input = pd.read_csv('input_files/Species.txt', sep='\t', header=0, index_col=0)
 
-# species_all = model.getStateIds()
+species_all = model.getStateIds()
 
-# import matplotlib as mpl
-# mpl.rcParams['figure.dpi']=300
+import matplotlib as mpl
+mpl.rcParams['figure.dpi']=300
 
-# #%%
-# def timecourse(species,x_s = xoutS_all, tout_all = tout_all):    
+#%%
+def timecourse(species,x_s, tout_all):    
     
-#     x_t = x_s[:,list(species_all).index(species)]
-#     plt.scatter(tout_all/3600,x_t)
-#     plt.ylabel(str(species))
-#     plt.xlabel('time(h)')
-    
-#     plt.show
+    x_t = x_s[:,list(species_all).index(species)]
+    plt.plot(tout_all/3600,x_t)
+    plt.ylabel(str(species))
+    plt.xlabel('time(h)')
+    plt.ylim(0,1.25*max(x_t))
+    plt.show
     
 #%%
 
-# timecourse('ppERK')
-# timecourse('ppAKT')
+timecourse('ppERK',rdata_test['x'],rdata_test['t'])
+timecourse('ppAKT',rdata_test['x'],rdata_test['t'])
  
