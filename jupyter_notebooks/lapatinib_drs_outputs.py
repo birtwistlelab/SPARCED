@@ -70,7 +70,7 @@ xoutS_lite = np.loadtxt(os.path.join(wd_output,sim_name,dose,'c'+str(c)+'_xoutS.
 
 
 #%%
-def timecourse(species,tout,dose): 
+def timecourse(species,tout,dose,y_ax_lim='default'): 
     
     x_t_pop = []
     
@@ -108,7 +108,10 @@ def timecourse(species,tout,dose):
     # x_t = xoutS[:,species_ind]
     # plt.plot(timeh,x_t)
     plt.ylabel(str(species))
-    plt.ylim(0,1.2*max(x_t_pop.max(axis=1)))
+    if type(y_ax_lim) == 'str': 
+        plt.ylim(0,1.2*max(x_t_pop.max(axis=1)))
+    elif type(y_ax_lim) == int or type(y_ax_lim) == float:
+        plt.ylim(0,y_ax_lim)
     plt.xlabel('time(h)')
     plt.title(str(dose)+str('_um'))
     plt.show

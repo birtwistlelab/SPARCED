@@ -1230,6 +1230,13 @@ kTCleak_new[np.isinf(kTCleak_new)] = 0
 
 tck50as1 = tck50as.copy()
 
+for i in range(len(Cd_genes)):
+    tck50as1[Cd_genes[i],1] = float(450/mpc2nmcf_Vn)
+
+
+
+
+
 TARs1 = TARs0.copy()
 
 for qq in range(numberofgenes):
@@ -1316,7 +1323,7 @@ timecourse('ppAKT',rdata_test['x'],rdata_test['t'])
  
 #%% test GF response - flagD
 # th = 48
-th = 96
+th = 72
 
 sys.path.append(wd+'/bin')
 from modules.RunSPARCED import RunSPARCED
@@ -1349,6 +1356,81 @@ timecourse('Mb',xoutS_all,tout_all)
 timecourse('bCATENINnuc',xoutS_all,tout_all)
 timecourse('bCATENIN',xoutS_all,tout_all)
 timecourse('Md',xoutS_all,tout_all)
+
+#%% play around with basal Cd
+
+kTL_cd_i = 12.584682555
+
+[model.setFixedParameterById(Cd_kTL,kTL_cd_i*.1) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
+
+th = 72
+
+omics_input = 'OmicsData_extended_au565.txt'
+genereg_input = 'GeneReg_au565.txt'
+
+STIMligs = [100.0,0,0,0,0,0,100.0]
+# STIMligs = [0.0,0,0,0,0,0,0.0]
+
+species_initializations = x6.values
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+species_initializations[155:162] = STIMligs
+
+# model.setInitialStates(species_initializations)
+
+flagD = 1
+
+xoutS_all_cd1, xoutG_all_cd_1, tout_all_cd_1,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+#%%
+
+timecourse('ppERK',xoutS_all_cd1,tout_all)
+timecourse('ppAKT',xoutS_all_cd1,tout_all)
+timecourse('cPARP',xoutS_all_cd1,tout_all)
+timecourse('cMyc',xoutS_all_cd1,tout_all)
+timecourse('pcFos_cJun',xoutS_all_cd1,tout_all)
+timecourse('Mb',xoutS_all_cd1,tout_all)
+timecourse('bCATENINnuc',xoutS_all_cd1,tout_all)
+timecourse('bCATENIN',xoutS_all_cd1,tout_all)
+timecourse('Md',xoutS_all_cd1,tout_all)
+timecourse('m_CCND1',xoutS_all_cd1,tout_all)
+timecourse('m_CCND2',xoutS_all_cd1,tout_all)
+timecourse('m_CCND3',xoutS_all_cd1,tout_all)
+
+#%%
+
+kTL_cd_i = 12.584682555
+
+[model.setFixedParameterById(Cd_kTL,kTL_cd_i*3) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
+
+th = 72
+
+omics_input = 'OmicsData_extended_au565.txt'
+genereg_input = 'GeneReg_au565.txt'
+
+STIMligs = [100.0,0,0,0,0,0,100.0]
+# STIMligs = [0.0,0,0,0,0,0,0.0]
+
+species_initializations = x6.values
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+species_initializations[155:162] = STIMligs
+
+# model.setInitialStates(species_initializations)
+
+flagD = 1
+
+xoutS_all_cd2, xoutG_all_cd2, tout_all_cd2,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+#%%
+timecourse('ppERK',xoutS_all_cd2,tout_all)
+timecourse('ppAKT',xoutS_all_cd2,tout_all)
+timecourse('cPARP',xoutS_all_cd2,tout_all)
+timecourse('cMyc',xoutS_all_cd2,tout_all)
+timecourse('pcFos_cJun',xoutS_all_cd2,tout_all)
+timecourse('Mb',xoutS_all_cd2,tout_all)
+timecourse('bCATENINnuc',xoutS_all_cd2,tout_all)
+timecourse('bCATENIN',xoutS_all_cd2,tout_all)
+timecourse('Md',xoutS_all_cd2,tout_all)
+timecourse('m_CCND1',xoutS_all_cd1,tout_all)
 
 #%%
 
@@ -1410,7 +1492,73 @@ def timecourse_ap(sp1,sp2,x_s, tout_all):
     
 timecourse_ap('ERK','ppERK',rdata_new['x'],rdata_new['t'])
 
+#%% DNA damage unit test - TP53
 
+# set dna repair to 0, watch p53
+
+model.setFixedParameterById(params_getid('vD63',0),0)
+model.setFixedParameterById(params_getid('vD64',0),0)
+model.setFixedParameterById(params_getid('vD65',0),0)
+
+
+th = 72
+
+sys.path.append(wd+'/bin')
+from modules.RunSPARCED import RunSPARCED
+
+omics_input = 'OmicsData_extended_au565.txt'
+genereg_input = 'GeneReg_au565.txt'
+
+# STIMligs = [100.0,0,0,0,0,0,100.0]
+STIMligs = [0.0,0,0,0,0,0,0.0]
+
+species_initializations = x6.values
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+species_initializations[155:162] = STIMligs
+
+species_initializations[list(model.getStateIds()).index('damageSSB')] = 25.0
+
+# model.setInitialStates(species_initializations)
+
+flagD = 1
+
+xoutS_all_DD, xoutG_all_DD, tout_all_DD,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+#%%
+timecourse('p53inac',xoutS_all_DD,tout_all_DD)
+timecourse('p53ac_MDM4',xoutS_all_DD,tout_all_DD)
+
+#%% DSB
+model.setFixedParameterById(params_getid('vD63',0),0)
+model.setFixedParameterById(params_getid('vD64',0),0)
+model.setFixedParameterById(params_getid('vD65',0),0)
+
+
+th = 72
+
+sys.path.append(wd+'/bin')
+from modules.RunSPARCED import RunSPARCED
+
+omics_input = 'OmicsData_extended_au565.txt'
+genereg_input = 'GeneReg_au565.txt'
+
+# STIMligs = [100.0,0,0,0,0,0,100.0]
+STIMligs = [0.0,0,0,0,0,0,0.0]
+
+species_initializations = x6.values
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+species_initializations[155:162] = STIMligs
+
+species_initializations[list(model.getStateIds()).index('damageDSB')] = 25.0
+
+# model.setInitialStates(species_initializations)
+
+flagD = 1
+
+xoutS_all_DD, xoutG_all_DD, tout_all_DD,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+timecourse('p53inac',xoutS_all_DD,tout_all_DD)
+timecourse('p53ac_MDM4',xoutS_all_DD,tout_all_DD)
 
 #%% Write results to sbml
 

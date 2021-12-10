@@ -698,7 +698,7 @@ timecourse('Md',xoutS_all,tout_all)
 timecourse('Me',xoutS_all,tout_all)
 timecourse('Ma',xoutS_all,tout_all)
 timecourse('Mb',xoutS_all,tout_all)
-
+timecourse('m_CCND1',xoutS_all,tout_all)
 #%% Step7, Leak terms
 
 pcFos_cJun = x6['pcFos_cJun']

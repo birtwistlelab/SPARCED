@@ -14,7 +14,7 @@ def RunSPARCED(flagD,th,spdata,Vn,Vc,model,wd,omics_input='OmicsData.txt',genere
     tout_all = np.arange(0,th*3600+1,30)    
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
     
-    model.setTimepoints(np.linspace(0,ts))
+    # model.setTimepoints(np.linspace(0,ts))
     
     genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs, mrna_idx = RunPrep(flagD,Vn,model,wd,omics_input,genereg_input)
     
