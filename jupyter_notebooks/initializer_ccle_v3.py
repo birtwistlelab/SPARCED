@@ -58,6 +58,10 @@ ccle_missing_genes = np.loadtxt(os.path.join('input_files','ccle','genes_missing
 
 omics_mcf10a = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'),sep=',',index_col=0, header=0)
 
+omics_mcf10a = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended.txt'),sep='\t',index_col=0, header=0)
+
+
+
 for gene in ccle_missing_genes:
     # au565.loc[gene,'prot_mpc'] = float(omics_mcf10a.loc[gene,'Exp Protein'])
     au565.loc[gene,'prot_mpc'] = float(ratios_p2m[list(au565.index).index(gene)])*float(au565.loc[gene,'mrna_mpc'])
@@ -597,144 +601,6 @@ for i in range(len(kTLCd)):
 
 kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 0)
 
-#%%
-# debug - kTLadjustwhile 2
-# kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kTLnew1, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
-
-# flagE = 1
-# if flagE == 1:
-#      [model.setFixedParameterById(k50E_id[k],k50E_values[k]) for k in range(len(k50E_id))]
-
-# x0 = x1
-
-# kTLest = kTLnew1
-
-# model.setInitialStates(x0.values)
-
-# m = len(ObsMat.columns)
-# margin = 0.001
-
-
-#%%
-
-# debug - while loop
-
-# model.setInitialStates(x0.values)
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-
-
-# rdata = amici.runAmiciSimulation(model,solver)
-# obs1 = rdata['y'][-1]
-# error_fe = (obs0 - obs1)/obs0
-# kTLf_obs = np.ones(len(obs0))
-# for i in range(len(error_fe)):
-#     if ObsMat.columns[i] in obs2exclude:
-#         kTLf_obs[i] = 1
-#     elif obs0[i] == 0:
-#         kTLf_obs[i] = 0        
-#     elif error_fe[i] > margin and ~np.isinf(error_fe[i]):
-#         kTLf_obs[i] = 1/(1-error_fe[i])
-#     elif error_fe[i] < -1 * margin and ~np.isinf(error_fe[i]):
-#         kTLf_obs[i] = 1/(1-error_fe[i])
-#     elif error_fe[i] > -1 * margin and error_fe[i] < margin:
-#         kTLf_obs[i] = 1
-
-#%%
-
-# debug - while loop 2
-
-# kTLf = []
-# for i in range(len(S_TL.columns)):
-#     a = np.nonzero(np.array(S_TL.iloc[:,i]))[0]
-#     if len(a) != 0:
-#         sp_ind = a[0]
-#         obs_ind = np.nonzero(np.array(ObsMat.iloc[sp_ind,:]))[0][0]
-#         kTLf.append(kTLf_obs[obs_ind])
-#     else:
-#         kTLf.append(1)
-# kTLf = pd.Series(kTLf)
-# kTLf = kTLf.transform(lambda x: 1 if np.isinf(x) or np.isnan(x) else x)
-# kTLf = np.array(kTLf)
-
-# kTLest = kTLest*(1+(kTLf-1)*kTL_mod)
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-
-# obs_notmatched = ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-# obs_notmatched = obs_notmatched[~np.isin(obs_notmatched,obs2exclude)]
-# m = len(obs_notmatched)
-
-#%%
-
-# debug - check obs output
-
-
-# obs_nm = pd.DataFrame(index=ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))])
-# obs_nm['obs0'] = obs0[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-# obs_nm['obs1'] = obs1[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-# obs_nm['obs_error'] = error_fe[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-
-# obs_out = obs1[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-
-# obs0_nm = obs0[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-
-
-#%% 
-
-# debug - manual for loop
-    
-    
-# for l in range(200):
-    
-#     model.setInitialStates(x0.values)
-#     [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-    
-    
-#     rdata = amici.runAmiciSimulation(model,solver)
-#     obs1 = rdata['y'][-1]
-#     error_fe = (obs0 - obs1)/obs0
-#     kTLf_obs = np.ones(len(obs0))
-#     for i in range(len(error_fe)):
-#         if ObsMat.columns[i] in obs2exclude:
-#             kTLf_obs[i] = 1
-#         elif obs0[i] == 0:
-#             kTLf_obs[i] = 0        
-#         elif error_fe[i] > margin and ~np.isinf(error_fe[i]):
-#             kTLf_obs[i] = 1/(1-error_fe[i])
-#         elif error_fe[i] < -1 * margin and ~np.isinf(error_fe[i]):
-#             kTLf_obs[i] = 1/(1-error_fe[i])
-#         elif error_fe[i] > -1 * margin and error_fe[i] < margin:
-#             kTLf_obs[i] = 1
-    
-
-#     kTLf = []
-#     for i in range(len(S_TL.columns)):
-#         a = np.nonzero(np.array(S_TL.iloc[:,i]))[0]
-#         if len(a) != 0:
-#             sp_ind = a[0]
-#             obs_ind = np.nonzero(np.array(ObsMat.iloc[sp_ind,:]))[0][0]
-#             kTLf.append(kTLf_obs[obs_ind])
-#         else:
-#             kTLf.append(1)
-#     kTLf = pd.Series(kTLf)
-#     kTLf = kTLf.transform(lambda x: 1 if np.isinf(x) or np.isnan(x) else x)
-#     kTLf = np.array(kTLf)
-    
-#     kTLest = kTLest*(1+(kTLf-1)*kTL_mod)
-#     [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-    
-#     obs_notmatched = ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-#     obs_notmatched = obs_notmatched[~np.isin(obs_notmatched,obs2exclude)]
-#     m = len(obs_notmatched)       
-
-#     obs_nm = pd.DataFrame(index=ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))])
-#     obs_nm['obs0'] = obs0[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-#     obs_nm['obs1'] = obs1[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-#     obs_nm['obs_error'] = error_fe[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-#     obs_nm['kTLf_obs'] = kTLf_obs[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-    
-    # obs_out = obs1[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-    
-    # obs0_nm = obs0[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
 
 
 
@@ -1227,48 +1093,48 @@ sbml_importer.sbml2amici('SPARCED_au565',
                          observables=observables,
                          constantParameters=constantParameters)
 
-# #%% test model
+#%% test model
 
-# sys.path.insert(0, model_path)
-# model_module = importlib.import_module('SPARCED_au565')
-# model = model_module.getModel()
+sys.path.insert(0, model_path)
+model_module = importlib.import_module('SPARCED_au565')
+model = model_module.getModel()
 
-# #%% test - simulation - ligand response
-# sys.path.append(wd+'/bin')
-# from modules.RunSPARCED import RunSPARCED
-# sbml_au565 = 'SPARCED_au565.xml'
-# model_name_au565 = sbml_au565[0:-4]
+#%% test - simulation - ligand response
+sys.path.append(wd+'/bin')
+from modules.RunSPARCED import RunSPARCED
+sbml_au565 = 'SPARCED_au565.xml'
+model_name_au565 = sbml_au565[0:-4]
 
-# cellNumber = 0
+cellNumber = 0
 
-# omics_input = 'OmicsData_extended_au565.txt'
-# genereg_input = 'GeneReg.txt'
+omics_input = 'OmicsData_extended_au565.txt'
+genereg_input = 'GeneReg.txt'
 
-# #%%
-# # deterministic=1, stochastic=0
-# flagD = 1
+#%%
+# deterministic=1, stochastic=0
+flagD = 1
 
-# # deterministic='GrowthStim_det_', stochastic='GrowthStim_stoc_'
-# # nmxlsfile = 'U87SPARCED_1nmGMDet_'
+# deterministic='GrowthStim_det_', stochastic='GrowthStim_stoc_'
+# nmxlsfile = 'U87SPARCED_1nmGMDet_'
 
-# ts = 30
-# th = 72
-# Vn = 1.75E-12
-# Vc = 5.25E-12
-# STIMligs = [1.0,0,0,0,0,0,0] # EGF, Her, HGF, PDGF, FGF, IGF, INS
+ts = 30
+th = 72
+Vn = 1.75E-12
+Vc = 5.25E-12
+STIMligs = [1.0,0,0,0,0,0,0] # EGF, Her, HGF, PDGF, FGF, IGF, INS
 
-# #%%
-# # sys.path.insert(0, os.path.abspath(model_output_dir))
-# # species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
+#%%
+# sys.path.insert(0, os.path.abspath(model_output_dir))
+# species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
 
-# # species_initializations = []
-# # for row in species_sheet[1:]:
-# #     species_initializations.append(float(row[2]))
+# species_initializations = []
+# for row in species_sheet[1:]:
+#     species_initializations.append(float(row[2]))
 
 
-# species_initializations = x6.values.copy()
-# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-# species_initializations[155:162] = STIMligs
+species_initializations = x6.values.copy()
+species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+species_initializations[155:162] = STIMligs
 
 #%% debug - RunSPARCED
 
@@ -1307,7 +1173,7 @@ sbml_importer.sbml2amici('SPARCED_au565',
 # solver.setMaxSteps = 1e10
 # model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-# xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
 
 
 

@@ -558,7 +558,7 @@ for i in range(len(kTLCd)):
 
 #%% test - manually lower basal RasD activation x 10
 
-model.setFixedParameterById('k1813',model.getFixedParameterById('k1813')/33)
+# model.setFixedParameterById('k1813',model.getFixedParameterById('k1813')/33)
     
 #%% temp - debug
 
@@ -802,6 +802,44 @@ Step3_par.Step3_par_val[(Step3_par['Step3_par_rxn']=='vbR')&(Step3_par['Step3_pa
 
 kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
 
+#%%
+
+#model.setFixedParameterById('k1813',model.getFixedParameterById('k1813')/33)
+
+# k_rasD_i = float(model.getFixedParameterById('k1813'))
+
+# kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
+
+# ras_T_ratio = float(rdata_new['x'][-1][list(model.getStateIds()).index('ppERK')])/float(rdata_new['x'][-1][list(model.getStateIds()).index('ERK')])
+
+# k_new = float(model.getFixedParameterById('k1813'))/ras_T_ratio
+
+# model.setFixedParameterById('k1813',k_new)
+
+# kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
+
+# startover
+# model.setFixedParameterById('k1813',0.0004)
+
+# 1.2235585413465592e-05
+
+fe = 1.0
+
+while fe > 0.05 or fe < -0.05:
+    
+    k1 = float(model.getFixedParameterById('k1813'))
+    
+    kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
+    
+    ras_T_ratio = float(rdata_new['x'][-1][list(model.getStateIds()).index('ppERK')])/float(rdata_new['x'][-1][list(model.getStateIds()).index('ERK')])
+    
+    fe = (0.05 - ras_T_ratio)/0.05
+    
+    f = 1/(1-fe)
+    
+    k_new = k1*(1+(f-1)*0.75)
+    
+    model.setFixedParameterById('k1813',float(k_new))
 
 
 #%% Step4, adjust Cd, p21
@@ -1323,7 +1361,7 @@ timecourse('ppAKT',rdata_test['x'],rdata_test['t'])
  
 #%% test GF response - flagD
 # th = 48
-th = 72
+th = 48
 
 sys.path.append(wd+'/bin')
 from modules.RunSPARCED import RunSPARCED
@@ -1341,6 +1379,10 @@ species_initializations[155:162] = STIMligs
 # model.setInitialStates(species_initializations)
 
 flagD = 1
+
+ts = 30
+
+model.setTimepoints(np.linspace(0,ts))
 
 xoutS_all, xoutG_all, tout_all,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
 
@@ -1359,206 +1401,206 @@ timecourse('Md',xoutS_all,tout_all)
 
 #%% play around with basal Cd
 
-kTL_cd_i = 12.584682555
+# kTL_cd_i = 12.584682555
 
-[model.setFixedParameterById(Cd_kTL,kTL_cd_i*.1) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
+# [model.setFixedParameterById(Cd_kTL,kTL_cd_i*.1) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
 
-th = 72
+# th = 72
 
-omics_input = 'OmicsData_extended_au565.txt'
-genereg_input = 'GeneReg_au565.txt'
+# omics_input = 'OmicsData_extended_au565.txt'
+# genereg_input = 'GeneReg_au565.txt'
 
-STIMligs = [100.0,0,0,0,0,0,100.0]
-# STIMligs = [0.0,0,0,0,0,0,0.0]
+# STIMligs = [100.0,0,0,0,0,0,100.0]
+# # STIMligs = [0.0,0,0,0,0,0,0.0]
 
-species_initializations = x6.values
-species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-species_initializations[155:162] = STIMligs
+# species_initializations = x6.values
+# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+# species_initializations[155:162] = STIMligs
 
-# model.setInitialStates(species_initializations)
+# # model.setInitialStates(species_initializations)
 
-flagD = 1
+# flagD = 1
 
-xoutS_all_cd1, xoutG_all_cd_1, tout_all_cd_1,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-
-#%%
-
-timecourse('ppERK',xoutS_all_cd1,tout_all)
-timecourse('ppAKT',xoutS_all_cd1,tout_all)
-timecourse('cPARP',xoutS_all_cd1,tout_all)
-timecourse('cMyc',xoutS_all_cd1,tout_all)
-timecourse('pcFos_cJun',xoutS_all_cd1,tout_all)
-timecourse('Mb',xoutS_all_cd1,tout_all)
-timecourse('bCATENINnuc',xoutS_all_cd1,tout_all)
-timecourse('bCATENIN',xoutS_all_cd1,tout_all)
-timecourse('Md',xoutS_all_cd1,tout_all)
-timecourse('m_CCND1',xoutS_all_cd1,tout_all)
-timecourse('m_CCND2',xoutS_all_cd1,tout_all)
-timecourse('m_CCND3',xoutS_all_cd1,tout_all)
+# xoutS_all_cd1, xoutG_all_cd_1, tout_all_cd_1,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
 
 #%%
 
-kTL_cd_i = 12.584682555
+# timecourse('ppERK',xoutS_all_cd1,tout_all)
+# timecourse('ppAKT',xoutS_all_cd1,tout_all)
+# timecourse('cPARP',xoutS_all_cd1,tout_all)
+# timecourse('cMyc',xoutS_all_cd1,tout_all)
+# timecourse('pcFos_cJun',xoutS_all_cd1,tout_all)
+# timecourse('Mb',xoutS_all_cd1,tout_all)
+# timecourse('bCATENINnuc',xoutS_all_cd1,tout_all)
+# timecourse('bCATENIN',xoutS_all_cd1,tout_all)
+# timecourse('Md',xoutS_all_cd1,tout_all)
+# timecourse('m_CCND1',xoutS_all_cd1,tout_all)
+# timecourse('m_CCND2',xoutS_all_cd1,tout_all)
+# timecourse('m_CCND3',xoutS_all_cd1,tout_all)
 
-[model.setFixedParameterById(Cd_kTL,kTL_cd_i*3) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
+# #%%
 
-th = 72
+# kTL_cd_i = 12.584682555
 
-omics_input = 'OmicsData_extended_au565.txt'
-genereg_input = 'GeneReg_au565.txt'
+# [model.setFixedParameterById(Cd_kTL,kTL_cd_i*3) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
 
-STIMligs = [100.0,0,0,0,0,0,100.0]
-# STIMligs = [0.0,0,0,0,0,0,0.0]
+# th = 72
 
-species_initializations = x6.values
-species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-species_initializations[155:162] = STIMligs
+# omics_input = 'OmicsData_extended_au565.txt'
+# genereg_input = 'GeneReg_au565.txt'
 
-# model.setInitialStates(species_initializations)
+# STIMligs = [100.0,0,0,0,0,0,100.0]
+# # STIMligs = [0.0,0,0,0,0,0,0.0]
 
-flagD = 1
+# species_initializations = x6.values
+# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+# species_initializations[155:162] = STIMligs
 
-xoutS_all_cd2, xoutG_all_cd2, tout_all_cd2,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+# # model.setInitialStates(species_initializations)
 
-#%%
-timecourse('ppERK',xoutS_all_cd2,tout_all)
-timecourse('ppAKT',xoutS_all_cd2,tout_all)
-timecourse('cPARP',xoutS_all_cd2,tout_all)
-timecourse('cMyc',xoutS_all_cd2,tout_all)
-timecourse('pcFos_cJun',xoutS_all_cd2,tout_all)
-timecourse('Mb',xoutS_all_cd2,tout_all)
-timecourse('bCATENINnuc',xoutS_all_cd2,tout_all)
-timecourse('bCATENIN',xoutS_all_cd2,tout_all)
-timecourse('Md',xoutS_all_cd2,tout_all)
-timecourse('m_CCND1',xoutS_all_cd1,tout_all)
+# flagD = 1
 
-#%%
+# xoutS_all_cd2, xoutG_all_cd2, tout_all_cd2,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
 
-STIMligs2 = [1000.0,0,0,0,0,0,1000.0]
+# #%%
+# timecourse('ppERK',xoutS_all_cd2,tout_all)
+# timecourse('ppAKT',xoutS_all_cd2,tout_all)
+# timecourse('cPARP',xoutS_all_cd2,tout_all)
+# timecourse('cMyc',xoutS_all_cd2,tout_all)
+# timecourse('pcFos_cJun',xoutS_all_cd2,tout_all)
+# timecourse('Mb',xoutS_all_cd2,tout_all)
+# timecourse('bCATENINnuc',xoutS_all_cd2,tout_all)
+# timecourse('bCATENIN',xoutS_all_cd2,tout_all)
+# timecourse('Md',xoutS_all_cd2,tout_all)
+# timecourse('m_CCND1',xoutS_all_cd1,tout_all)
 
-species_initializations2 = x6.values
-species_initializations2[np.argwhere(species_initializations2 <= 1e-6)] = 0.0
-species_initializations2[155:162] = STIMligs2
+# #%%
 
-model.setInitialStates(species_initializations2)
+# STIMligs2 = [1000.0,0,0,0,0,0,1000.0]
 
+# species_initializations2 = x6.values
+# species_initializations2[np.argwhere(species_initializations2 <= 1e-6)] = 0.0
+# species_initializations2[155:162] = STIMligs2
 
-xoutS_all2, xoutG_all2, tout_all2,flagA = RunSPARCED(flagD,th,species_initializations2,Vn,Vc,model,wd,omics_input,genereg_input)
-
-
-#%%
-
-
-timecourse('ppERK',xoutS_all2,tout_all2)
-timecourse('ppAKT',xoutS_all2,tout_all2)
-
-
-#%%
-STIMligs0 = [0.0,0,0,0,0,0,0.0]
-
-species_initializations0 = x6.values
-species_initializations0[np.argwhere(species_initializations0 <= 1e-6)] = 0.0
-species_initializations0[155:162] = STIMligs0
-
-model.setInitialStates(species_initializations0)
+# model.setInitialStates(species_initializations2)
 
 
-xoutS_all0, xoutG_all0, tout_all0,flagA = RunSPARCED(flagD,th,species_initializations0,Vn,Vc,model,wd,omics_input,genereg_input)
-
-#%%
+# xoutS_all2, xoutG_all2, tout_all2,flagA = RunSPARCED(flagD,th,species_initializations2,Vn,Vc,model,wd,omics_input,genereg_input)
 
 
-timecourse('ppERK',xoutS_all0,tout_all0)
-timecourse('ppAKT',xoutS_all0,tout_all0)
+# #%%
 
 
-#%% test
-
-# species_all = list(model.getStateIds())
-
+# timecourse('ppERK',xoutS_all2,tout_all2)
+# timecourse('ppAKT',xoutS_all2,tout_all2)
 
 
-def timecourse_ap(sp1,sp2,x_s, tout_all):
-    x_t1 = x_s[:,list(species_all).index(sp1)]
-    x_t2 = x_s[:,list(species_all).index(sp2)]
+# #%%
+# STIMligs0 = [0.0,0,0,0,0,0,0.0]
+
+# species_initializations0 = x6.values
+# species_initializations0[np.argwhere(species_initializations0 <= 1e-6)] = 0.0
+# species_initializations0[155:162] = STIMligs0
+
+# model.setInitialStates(species_initializations0)
+
+
+# xoutS_all0, xoutG_all0, tout_all0,flagA = RunSPARCED(flagD,th,species_initializations0,Vn,Vc,model,wd,omics_input,genereg_input)
+
+# #%%
+
+
+# timecourse('ppERK',xoutS_all0,tout_all0)
+# timecourse('ppAKT',xoutS_all0,tout_all0)
+
+
+# #%% test
+
+# # species_all = list(model.getStateIds())
+
+
+
+# def timecourse_ap(sp1,sp2,x_s, tout_all):
+#     x_t1 = x_s[:,list(species_all).index(sp1)]
+#     x_t2 = x_s[:,list(species_all).index(sp2)]
     
-    x_t = x_t2/x_t1
+#     x_t = x_t2/x_t1
     
-    plt.plot(tout_all/3600,x_t)
-    plt.ylabel(str(sp2)+'/'+str(sp1))
-    plt.xlabel('time(h)')
-    plt.ylim(0,1.25*max(x_t))
-    plt.show
+#     plt.plot(tout_all/3600,x_t)
+#     plt.ylabel(str(sp2)+'/'+str(sp1))
+#     plt.xlabel('time(h)')
+#     plt.ylim(0,1.25*max(x_t))
+#     plt.show
     
-timecourse_ap('ERK','ppERK',rdata_new['x'],rdata_new['t'])
+# timecourse_ap('ERK','ppERK',rdata_new['x'],rdata_new['t'])
 
 #%% DNA damage unit test - TP53
 
-# set dna repair to 0, watch p53
+# # set dna repair to 0, watch p53
 
-model.setFixedParameterById(params_getid('vD63',0),0)
-model.setFixedParameterById(params_getid('vD64',0),0)
-model.setFixedParameterById(params_getid('vD65',0),0)
-
-
-th = 72
-
-sys.path.append(wd+'/bin')
-from modules.RunSPARCED import RunSPARCED
-
-omics_input = 'OmicsData_extended_au565.txt'
-genereg_input = 'GeneReg_au565.txt'
-
-# STIMligs = [100.0,0,0,0,0,0,100.0]
-STIMligs = [0.0,0,0,0,0,0,0.0]
-
-species_initializations = x6.values
-species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-species_initializations[155:162] = STIMligs
-
-species_initializations[list(model.getStateIds()).index('damageSSB')] = 25.0
-
-# model.setInitialStates(species_initializations)
-
-flagD = 1
-
-xoutS_all_DD, xoutG_all_DD, tout_all_DD,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-
-#%%
-timecourse('p53inac',xoutS_all_DD,tout_all_DD)
-timecourse('p53ac_MDM4',xoutS_all_DD,tout_all_DD)
-
-#%% DSB
-model.setFixedParameterById(params_getid('vD63',0),0)
-model.setFixedParameterById(params_getid('vD64',0),0)
-model.setFixedParameterById(params_getid('vD65',0),0)
+# model.setFixedParameterById(params_getid('vD63',0),0)
+# model.setFixedParameterById(params_getid('vD64',0),0)
+# model.setFixedParameterById(params_getid('vD65',0),0)
 
 
-th = 72
+# th = 72
 
-sys.path.append(wd+'/bin')
-from modules.RunSPARCED import RunSPARCED
+# sys.path.append(wd+'/bin')
+# from modules.RunSPARCED import RunSPARCED
 
-omics_input = 'OmicsData_extended_au565.txt'
-genereg_input = 'GeneReg_au565.txt'
+# omics_input = 'OmicsData_extended_au565.txt'
+# genereg_input = 'GeneReg_au565.txt'
 
-# STIMligs = [100.0,0,0,0,0,0,100.0]
-STIMligs = [0.0,0,0,0,0,0,0.0]
+# # STIMligs = [100.0,0,0,0,0,0,100.0]
+# STIMligs = [0.0,0,0,0,0,0,0.0]
 
-species_initializations = x6.values
-species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-species_initializations[155:162] = STIMligs
+# species_initializations = x6.values
+# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+# species_initializations[155:162] = STIMligs
 
-species_initializations[list(model.getStateIds()).index('damageDSB')] = 25.0
+# species_initializations[list(model.getStateIds()).index('damageSSB')] = 25.0
 
-# model.setInitialStates(species_initializations)
+# # model.setInitialStates(species_initializations)
 
-flagD = 1
+# flagD = 1
 
-xoutS_all_DD, xoutG_all_DD, tout_all_DD,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+# xoutS_all_DD, xoutG_all_DD, tout_all_DD,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
 
-timecourse('p53inac',xoutS_all_DD,tout_all_DD)
-timecourse('p53ac_MDM4',xoutS_all_DD,tout_all_DD)
+# #%%
+# timecourse('p53inac',xoutS_all_DD,tout_all_DD)
+# timecourse('p53ac_MDM4',xoutS_all_DD,tout_all_DD)
+
+# #%% DSB
+# model.setFixedParameterById(params_getid('vD63',0),0)
+# model.setFixedParameterById(params_getid('vD64',0),0)
+# model.setFixedParameterById(params_getid('vD65',0),0)
+
+
+# th = 72
+
+# sys.path.append(wd+'/bin')
+# from modules.RunSPARCED import RunSPARCED
+
+# omics_input = 'OmicsData_extended_au565.txt'
+# genereg_input = 'GeneReg_au565.txt'
+
+# # STIMligs = [100.0,0,0,0,0,0,100.0]
+# STIMligs = [0.0,0,0,0,0,0,0.0]
+
+# species_initializations = x6.values
+# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+# species_initializations[155:162] = STIMligs
+
+# species_initializations[list(model.getStateIds()).index('damageDSB')] = 25.0
+
+# # model.setInitialStates(species_initializations)
+
+# flagD = 1
+
+# xoutS_all_DD, xoutG_all_DD, tout_all_DD,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
+# timecourse('p53inac',xoutS_all_DD,tout_all_DD)
+# timecourse('p53ac_MDM4',xoutS_all_DD,tout_all_DD)
 
 #%% Write results to sbml
 

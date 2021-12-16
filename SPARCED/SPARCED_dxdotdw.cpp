@@ -5141,6 +5141,10 @@ void dxdotdw_SPARCED(realtype *dxdotdw, const realtype t, const realtype *x, con
     dxdot167_dflux_r2441 = 190476190476.19049;  // dxdotdw[5124]
     dxdot773_dflux_r2441 = 190476190476.19049;  // dxdotdw[5125]
     dxdot777_dflux_r2441 = -190476190476.19049;  // dxdotdw[5126]
+    dxdot774_dflux_r2442 = -190476190476.19049;  // dxdotdw[5127]
+    dxdot775_dflux_r2443 = -190476190476.19049;  // dxdotdw[5128]
+    dxdot776_dflux_r2444 = -190476190476.19049;  // dxdotdw[5129]
+    dxdot777_dflux_r2445 = -190476190476.19049;  // dxdotdw[5130]
 }
 
 } // namespace model_SPARCED

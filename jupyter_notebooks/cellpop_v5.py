@@ -404,7 +404,7 @@ def timecourse_dp(outout_dir,species,gx_cx,species_all=species_all):
     
     
     x_s = np.loadtxt(os.path.join(wd,'output',output_dir,xoutS_file),delimiter='\t')
-    th = int(max(np.loadtxt(os.path.join(wd,'output',output_dir,'g1_c1_tout.txt'),delimiter='\t')/3600))
+    # th = int(max(np.loadtxt(os.path.join(wd,'output',output_dir,'g1_c1_tout.txt'),delimiter='\t')/3600))
     
 
     
@@ -601,7 +601,7 @@ import multiprocessing
 omics_input = 'OmicsData.txt'
 genereg_input = 'GeneReg.txt'
 
-cellpop_g1 = 5
+cellpop_g1 = 10
 
 th = 84
 
@@ -678,13 +678,33 @@ def read_cell_g1(output_dir,g,cell_n):
 
     
         if ~np.isnan(dp):
-            tdp_g2_cell = tout_all[dp]/3600
             
-            sp_g2_cell = xoutS_all[dp]
-            results['cell'] = int(cell_n+1)
-            results['dp'] = dp
-            results['th_g2'] = th- tdp_g2_cell    
-            results['sp_g2'] = sp_g2_cell
+            parp_dp = float(xoutS_all[dp,list(species_all).index('PARP')])
+            cparp_dp = float(xoutS_all[dp,list(species_all).index('cPARP')])
+            
+            if parp_dp > cparp_dp:
+            
+                
+                tdp_g2_cell = tout_all[dp]/3600
+                
+                sp_g2_cell = xoutS_all[dp]
+                
+                lin_g2_cell = 'c'+str(int(cell_n+1))
+                
+                results['cell'] = int(cell_n+1)
+                results['dp'] = dp
+                results['th_g2'] = th- tdp_g2_cell    
+                results['sp_g2'] = sp_g2_cell
+                results['lin'] = lin_g2_cell
+
+    xoutS_lite = np.array(list(itertools.islice(xoutS_all,0,(len(xoutS_all)-1),20)))
+    xoutG_lite = np.array(list(itertools.islice(xoutG_all,0,(len(xoutG_all)-1),20)))
+    tout_lite = np.array(list(itertools.islice(tout_all,0,(len(tout_all)-1),20)))
+    
+    np.savetxt(os.path.join(output_dir,xoutS_file),xoutS_lite,delimiter='\t')
+    np.savetxt(os.path.join(output_dir,xoutG_file),xoutG_lite,delimiter='\t')
+    np.savetxt(os.path.join(output_dir,tout_file),tout_lite,delimiter='\t')
+        
             
             
     return results
@@ -712,7 +732,7 @@ th_g2 = [r['th_g2'] for r in results_actual]
 
 th_g2 = th_g2 + th_g2
 
-lin_g2 = [r['cell'] for r in results_actual]
+lin_g2 = [r['lin'] for r in results_actual]
 lin_g2 = lin_g2 + lin_g2
 
 sp_g2 = [r['sp_g2'] for r in results_actual]
@@ -775,17 +795,32 @@ def read_cell_gn(output_dir,g,cell_n):
 
     
         if ~np.isnan(dp):
-            tdp_gn_cell = tout_all[dp]/3600
             
-            sp_gn_cell = xoutS_all[dp]
+            parp_dp = float(xoutS_all[dp,list(species_all).index('PARP')])
+            cparp_dp = float(xoutS_all[dp,list(species_all).index('cPARP')])
             
-            lin_gn_cell = str(lin_gn0[cell_n])+'c'+str(cell_n+1)
+            if parp_dp > cparp_dp:
+                
             
-            results['cell'] = int(cell_n+1)
-            results['dp'] = dp
-            results['th_gn'] = th- tdp_gn_cell    
-            results['sp_gn'] = sp_gn_cell
-            results['lin'] = lin_gn_cell
+                tdp_gn_cell = tout_all[dp]/3600
+                
+                sp_gn_cell = xoutS_all[dp]
+                
+                lin_gn_cell = str(lin_gn0[cell_n])+'c'+str(cell_n+1)
+                
+                results['cell'] = int(cell_n+1)
+                results['dp'] = dp
+                results['th_gn'] = th- tdp_gn_cell    
+                results['sp_gn'] = sp_gn_cell
+                results['lin'] = lin_gn_cell
+                
+    xoutS_lite = np.array(list(itertools.islice(xoutS_all,0,(len(xoutS_all)-1),20)))
+    xoutG_lite = np.array(list(itertools.islice(xoutG_all,0,(len(xoutG_all)-1),20)))
+    tout_lite = np.array(list(itertools.islice(tout_all,0,(len(tout_all)-1),20)))
+    
+    np.savetxt(os.path.join(output_dir,xoutS_file),xoutS_lite,delimiter='\t')
+    np.savetxt(os.path.join(output_dir,xoutG_file),xoutG_lite,delimiter='\t')
+    np.savetxt(os.path.join(output_dir,tout_file),tout_lite,delimiter='\t')
             
             
     return results

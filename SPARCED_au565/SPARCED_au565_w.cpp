@@ -2597,6 +2597,10 @@ void w_SPARCED_au565(realtype *w, const realtype t, const realtype *x, const rea
     flux_r2439 = 5.2499999999999996e-12*k2444*lapatinib_E3;  // w[2580]
     flux_r2440 = 5.2499999999999996e-12*E4*k2445*lapatinib;  // w[2581]
     flux_r2441 = 5.2499999999999996e-12*k2446*lapatinib_E4;  // w[2582]
+    flux_r2442 = 5.2499999999999996e-12*k2447*lapatinib_E1;  // w[2583]
+    flux_r2443 = 5.2499999999999996e-12*k2448*lapatinib_E2;  // w[2584]
+    flux_r2444 = 5.2499999999999996e-12*k2449*lapatinib_E3;  // w[2585]
+    flux_r2445 = 5.2499999999999996e-12*k2450*lapatinib_E4;  // w[2586]
 }
 
 } // namespace model_SPARCED_au565

@@ -5125,3 +5125,7 @@
 #define dxdot167_dflux_r2441 dxdotdw[5124]
 #define dxdot773_dflux_r2441 dxdotdw[5125]
 #define dxdot777_dflux_r2441 dxdotdw[5126]
+#define dxdot774_dflux_r2442 dxdotdw[5127]
+#define dxdot775_dflux_r2443 dxdotdw[5128]
+#define dxdot776_dflux_r2444 dxdotdw[5129]
+#define dxdot777_dflux_r2445 dxdotdw[5130]

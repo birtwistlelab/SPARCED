@@ -3022,9 +3022,13 @@ void dwdx_SPARCED(realtype *dwdx, const realtype t, const realtype *x, const rea
     dflux_r2438_dlapatinib = 5.2499999999999996e-12*E3*k2443;  // dwdx[3004]
     dflux_r2440_dlapatinib = 5.2499999999999996e-12*E4*k2445;  // dwdx[3005]
     dflux_r2435_dlapatinib_E1 = 5.2499999999999996e-12*k2440;  // dwdx[3006]
-    dflux_r2437_dlapatinib_E2 = 5.2499999999999996e-12*k2442;  // dwdx[3007]
-    dflux_r2439_dlapatinib_E3 = 5.2499999999999996e-12*k2444;  // dwdx[3008]
-    dflux_r2441_dlapatinib_E4 = 5.2499999999999996e-12*k2446;  // dwdx[3009]
+    dflux_r2442_dlapatinib_E1 = 5.2499999999999996e-12*k2447;  // dwdx[3007]
+    dflux_r2437_dlapatinib_E2 = 5.2499999999999996e-12*k2442;  // dwdx[3008]
+    dflux_r2443_dlapatinib_E2 = 5.2499999999999996e-12*k2448;  // dwdx[3009]
+    dflux_r2439_dlapatinib_E3 = 5.2499999999999996e-12*k2444;  // dwdx[3010]
+    dflux_r2444_dlapatinib_E3 = 5.2499999999999996e-12*k2449;  // dwdx[3011]
+    dflux_r2441_dlapatinib_E4 = 5.2499999999999996e-12*k2446;  // dwdx[3012]
+    dflux_r2445_dlapatinib_E4 = 5.2499999999999996e-12*k2450;  // dwdx[3013]
 }
 
 } // namespace model_SPARCED
