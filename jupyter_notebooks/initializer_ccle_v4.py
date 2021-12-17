@@ -843,7 +843,7 @@ kTCd = np.float64(gene_params.loc[:,'kTCd'].values)
 
 xgac_mpc_D = (kGac*gExp_mpc)/(kGin+kGac)
 
-TARsRead = pd.read_csv('GeneReg.txt',header=0,index_col=0,sep="\t")
+TARsRead = pd.read_csv(os.path.join(wd,'input_files','GeneReg.txt'),header=0,index_col=0,sep="\t")
 TARs0 = (TARsRead.values)
 #%% tck50as - default
 

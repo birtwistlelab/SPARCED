@@ -25,12 +25,13 @@ parser = argparse.ArgumentParser(description='Input doses in uM')
 parser.add_argument('--dose', metavar='dose', help='input dose in nM', default = 100.0)
 parser.add_argument('--cellpop', metavar='cellpop', help='starting cell population', default = 5)
 parser.add_argument('--td',metavar='td', help='cell line doubling time (hrs) ', default = 48)
+parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'egf_dose_response')
 args = parser.parse_args()
 
 wd = str(os.getcwd()).replace("jupyter_notebooks","")
 
 
-sim_name = 'egf_dose_response'
+sim_name = str(args.sim_name)
 
 output_path = os.path.join(wd,'output',sim_name)
 
@@ -107,7 +108,9 @@ import multiprocessing
 
 th = 48
 
+output_dir = output_dose
 
+#%%
 
 def pre_incubate(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
     xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
@@ -443,6 +446,14 @@ while cellpop_gn0 > 0:
         lin_gn0 = lin_gn
         sp_gn0 = sp_gn
         th_gn0 = th_gn
+#%%
+# results_tmax = []
+# with concurrent.futures.ThreadPoolExecutor() as executor:
+#     results_tout = [executor.submit(read_tout, output_dir, tout_file) for tout_file in tout_files]
+
+# for f in concurrent.futures.as_completed(results_tout):
+#     results_tmax.append(f.result())
+
 
 #%% debug
 import matplotlib.pyplot as plt
@@ -450,17 +461,55 @@ import matplotlib as mpl
 
 mpl.rcParams['figure.dpi'] = 300
 
-def timecourse_gc(output_dir,species, gx_cx,tx='default'):
+def read_tout(output_dir,tout_file):
+    tout = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
+    tmax = max(tout)
+    return (tmax)
+
+
+
+def get_tmax(output_dir,read_tout=read_tout):
     
-    output_ls = os.listdir(os.path.join(wd,output_dir))
+    outputs_ls = os.listdir(output_dir)
+    tout_files = list(filter(lambda x:x.endswith('tout.txt'),outputs_ls))
+                      
+    results_tmax = []                 
+                  
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results_tout = [executor.submit(read_tout, output_dir, tout_file) for tout_file in tout_files]
+
+    for f in concurrent.futures.as_completed(results_tout):
+        results_tmax.append(f.result())
+        
+    results_tmax = np.array(results_tmax)
     
-    outputs_gc = list(filter(lambda x:x.startswith(gx_cx),output_ls))
+    tmax = max(results_tmax)
+    
+    return(tmax)
+
+timecourse_tmax = get_tmax(output_dir)    
+
+def timecourse_gc(output_dir,species, gx_cx,get_tmax=get_tmax,read_tout=read_tout,tx='default'):
+    
+    outputs_ls = os.listdir(os.path.join(wd,output_dir))
+    
+    outputs_gc = list(filter(lambda x:x.startswith(gx_cx),outputs_ls))
+    
+    xoutS_file = list(filter(lambda x:x.endswith('xoutS.txt'),outputs_gc))[0]
+    tout_file = list(filter(lambda x:x.endswith('tout.txt'),outputs_gc))[0]
+    
+    if 'timecourse_tmax' not in globals():
+        tmax = get_tmax(output_dir)
+    else:
+        tmax = timecourse_tmax
+
+
 
     # x_s = np.loadtxt(os.path.join(wd,'output','cellpop_test',str(gx_cx+'_xoutS.txt')),delimiter='\t')
     # tout_all = np.loadtxt(os.path.join(wd,'output','cellpop_test',str(gx_cx+'_tout.txt')),delimiter='\t')
     
-    x_s = np.loadtxt(os.path.join(wd,'output',output_dir,str(outputs_gc[2])),delimiter='\t')
-    tout_all = np.loadtxt(os.path.join(wd,'output',output_dir,str(outputs_gc[0])),delimiter='\t')
+    x_s = np.loadtxt(os.path.join(output_dir,xoutS_file),delimiter='\t')
+    tout_all = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
     
     x_t = x_s[:, list(species_all).index(species)]
     plt.plot(tout_all/3600, x_t)
@@ -468,7 +517,9 @@ def timecourse_gc(output_dir,species, gx_cx,tx='default'):
     plt.xlabel('time(h)')
     plt.ylim(0, max(x_t)*1.25)
     if type(tx)==str:
-        plt.xlim(0, round(max(tout_all)/3600))
+        # plt.xlim(0, round(max(tout_all)/3600))
+        plt.xlim(0, round(tmax/3600))
+        
     elif type(tx)==int or type(tx)==float:
         plt.xlim(0,tx)
         
@@ -535,7 +586,40 @@ def timecourse_dp(outout_dir,species,gx_cx,species_all=species_all):
 
     plt.show
     
-#%% find number of cells at doubling time
+#%% find number of alive cells at given time
 
 
 
+output_ls = os.listdir(output_dir)
+
+xoutS_files = list(filter(lambda x:x.endswith('xoutS.txt'),output_ls))
+
+tout_files = list(filter(lambda x:x.endswith('tout.txt'),output_ls))
+
+tout_test = np.loadtxt(os.path.join(wd,'output',output_dir,tout_files[0]),delimiter='\t')
+
+ti = 45.0
+
+cells_all = np.zeros(len(tout_files))
+
+for c in range(len(cells_all)):
+    tout_c = np.loadtxt(os.path.join(output_dir,tout_files[c]),delimiter='\t')/3600
+    tc_max = max(tout_c)
+    tc_min = min(tout_c)
+    if tc_max > ti and tc_min < ti:
+        idx_ti = np.abs(tout_c - ti).argmin()
+        
+        gx_cx = str(tout_files[c].split('_')[:2][0]) + '_' +  str(tout_files[c].split('_')[:2][1])
+        
+        xoutS_file = list(filter(lambda x:x.startswith(gx_cx),xoutS_files))[0]
+        
+        xout_c = np.loadtxt(os.path.join(output_dir,xoutS_file),delimiter='\t')[idx_ti,:]
+        
+        cPARP_ti = xout_c[species_all.index('cPARP')]
+        PARP_ti = xout_c[species_all.index('PARP')]
+        
+        if PARP_ti > cPARP_ti:
+        
+            cells_all[c] = 1.0
+
+cells_alive_ti = int(sum(cells_all))

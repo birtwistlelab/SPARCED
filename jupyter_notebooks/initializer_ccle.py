@@ -36,11 +36,7 @@ ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]])
 
 
 #%% pre-process/ccle
-# bt474_cd = pd.read_csv('sparced','input_files','ccle','ccle_cell_definitions','bt474.csv',index_col=0)
 
-# bt474_cd = pd.read_excel(os.path.join('input_files','ccle','ccle_cell_definitions','bt474.xlsx'),index_col=0)
-
-# ccle_mpc=pd.read_csv(os.path.join('input_files','ccle','ccle_mpc.txt'),sep='\t',index_col=0,header=0)
 ccle_mpc=pd.read_csv(os.path.join(wd,'input_files','ccle','ccle_mpc_new.txt'),sep='\t',index_col=0,header=0)
 
 au565 = pd.read_excel(os.path.join(wd,'input_files','ccle','ccle_cell_definitions','au565.xlsx'),index_col=0)
@@ -81,7 +77,7 @@ au565_omics = omics_mcf10a.copy()
 au565_omics['Exp GCN'] = au565['gcn'].copy()
 au565_omics['Exp RNA'] = au565['mrna_mpc'].copy()
 au565_omics['Exp Protein'] = au565['prot_mpc'].copy()
-# au565_omics['kTCleak'] = au565['leak'].copy()
+
 
 
 
@@ -244,6 +240,7 @@ volumeofcell = Vc + Vn
 fileSpecies = 'Species.txt' # input
 ICf = pd.read_csv(os.path.join(wd,'input_files',fileSpecies),header=0,index_col=0,sep='\t')
 
+species_all = list(model.getStateIds())
 
 mrna_id = []
 mrna_filter = filter(lambda a: a.startswith('m_'), list(ICf.index))
@@ -556,56 +553,6 @@ for i in range(len(kXd)):
 for i in range(len(kTLCd)):
     model.setFixedParameterById(params_getid(reactions_vTLCd[i],0), kTLCd[i])
 
-#%% test - manually lower basal RasD activation x 10
-
-# model.setFixedParameterById('k1813',model.getFixedParameterById('k1813')/33)
-    
-#%% temp - debug
-
-# runAmiciSimulation shows error in the first run
-
-# restart, breakdown kLTadjustwhile loop
-
-# kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 0)
-# flagE = 0
-
-
-
-# if flagE == 0:
-#     [model.setFixedParameterById(k50E_id[k],0) for k in range(len(k50E_id))]
-
-# model.setInitialStates(x0.values)
-
-#%%
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-# amici error after this line
-# restart, next time, set only part of it
-
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))[:10]]
-# no error after the first 10!
-
-
-# try more next
-
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))[:30]]
-# no error! 
-# try more? set higher maximum number of steps
-
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))[:40]]
-# no error!
-
-# kTLest[kTLest>1e3] = 1e-3
-
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-
-# error at k51_1
-
-# no error!
-
-#% test line
-# rdata = amici.runAmiciSimulation(model,solver)
-
-# fixed too high kTLest, now try running kTLadjust again
 
 
 #%% adjust kTLs
@@ -616,146 +563,6 @@ for i in range(len(kTLCd)):
 
 
 kTLnew1, rdata_new, x1, flagA = kTLadjustwhile(model,solver,x0, obs0, kTL_id, kTLest, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 0)
-
-#%%
-# debug - kTLadjustwhile 2
-# kTLnew2, rdata_new, x2, flagA = kTLadjustwhile(model,solver,x1, obs0, kTL_id, kTLnew1, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
-
-# flagE = 1
-# if flagE == 1:
-#      [model.setFixedParameterById(k50E_id[k],k50E_values[k]) for k in range(len(k50E_id))]
-
-# x0 = x1
-
-# kTLest = kTLnew1
-
-# model.setInitialStates(x0.values)
-
-# m = len(ObsMat.columns)
-# margin = 0.001
-
-
-#%%
-
-# debug - while loop
-
-# model.setInitialStates(x0.values)
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-
-
-# rdata = amici.runAmiciSimulation(model,solver)
-# obs1 = rdata['y'][-1]
-# error_fe = (obs0 - obs1)/obs0
-# kTLf_obs = np.ones(len(obs0))
-# for i in range(len(error_fe)):
-#     if ObsMat.columns[i] in obs2exclude:
-#         kTLf_obs[i] = 1
-#     elif obs0[i] == 0:
-#         kTLf_obs[i] = 0        
-#     elif error_fe[i] > margin and ~np.isinf(error_fe[i]):
-#         kTLf_obs[i] = 1/(1-error_fe[i])
-#     elif error_fe[i] < -1 * margin and ~np.isinf(error_fe[i]):
-#         kTLf_obs[i] = 1/(1-error_fe[i])
-#     elif error_fe[i] > -1 * margin and error_fe[i] < margin:
-#         kTLf_obs[i] = 1
-
-#%%
-
-# debug - while loop 2
-
-# kTLf = []
-# for i in range(len(S_TL.columns)):
-#     a = np.nonzero(np.array(S_TL.iloc[:,i]))[0]
-#     if len(a) != 0:
-#         sp_ind = a[0]
-#         obs_ind = np.nonzero(np.array(ObsMat.iloc[sp_ind,:]))[0][0]
-#         kTLf.append(kTLf_obs[obs_ind])
-#     else:
-#         kTLf.append(1)
-# kTLf = pd.Series(kTLf)
-# kTLf = kTLf.transform(lambda x: 1 if np.isinf(x) or np.isnan(x) else x)
-# kTLf = np.array(kTLf)
-
-# kTLest = kTLest*(1+(kTLf-1)*kTL_mod)
-# [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-
-# obs_notmatched = ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-# obs_notmatched = obs_notmatched[~np.isin(obs_notmatched,obs2exclude)]
-# m = len(obs_notmatched)
-
-#%%
-
-# debug - check obs output
-
-
-# obs_nm = pd.DataFrame(index=ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))])
-# obs_nm['obs0'] = obs0[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-# obs_nm['obs1'] = obs1[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-# obs_nm['obs_error'] = error_fe[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-
-# obs_out = obs1[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-
-# obs0_nm = obs0[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-
-
-#%% 
-
-# debug - manual for loop
-    
-    
-# for l in range(200):
-    
-#     model.setInitialStates(x0.values)
-#     [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-    
-    
-#     rdata = amici.runAmiciSimulation(model,solver)
-#     obs1 = rdata['y'][-1]
-#     error_fe = (obs0 - obs1)/obs0
-#     kTLf_obs = np.ones(len(obs0))
-#     for i in range(len(error_fe)):
-#         if ObsMat.columns[i] in obs2exclude:
-#             kTLf_obs[i] = 1
-#         elif obs0[i] == 0:
-#             kTLf_obs[i] = 0        
-#         elif error_fe[i] > margin and ~np.isinf(error_fe[i]):
-#             kTLf_obs[i] = 1/(1-error_fe[i])
-#         elif error_fe[i] < -1 * margin and ~np.isinf(error_fe[i]):
-#             kTLf_obs[i] = 1/(1-error_fe[i])
-#         elif error_fe[i] > -1 * margin and error_fe[i] < margin:
-#             kTLf_obs[i] = 1
-    
-
-#     kTLf = []
-#     for i in range(len(S_TL.columns)):
-#         a = np.nonzero(np.array(S_TL.iloc[:,i]))[0]
-#         if len(a) != 0:
-#             sp_ind = a[0]
-#             obs_ind = np.nonzero(np.array(ObsMat.iloc[sp_ind,:]))[0][0]
-#             kTLf.append(kTLf_obs[obs_ind])
-#         else:
-#             kTLf.append(1)
-#     kTLf = pd.Series(kTLf)
-#     kTLf = kTLf.transform(lambda x: 1 if np.isinf(x) or np.isnan(x) else x)
-#     kTLf = np.array(kTLf)
-    
-#     kTLest = kTLest*(1+(kTLf-1)*kTL_mod)
-#     [model.setFixedParameterById(kTL_id[k],kTLest[k]) for k in range(len(kTL_id))]
-    
-#     obs_notmatched = ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-#     obs_notmatched = obs_notmatched[~np.isin(obs_notmatched,obs2exclude)]
-#     m = len(obs_notmatched)       
-
-#     obs_nm = pd.DataFrame(index=ObsMat.columns[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))])
-#     obs_nm['obs0'] = obs0[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-#     obs_nm['obs1'] = obs1[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-#     obs_nm['obs_error'] = error_fe[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-#     obs_nm['kTLf_obs'] = kTLf_obs[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-    
-    # obs_out = obs1[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-    
-    # obs0_nm = obs0[~((error_fe > -1*margin) & (error_fe < margin) | (obs0==0))]
-
 
 
 #%%
@@ -802,47 +609,43 @@ Step3_par.Step3_par_val[(Step3_par['Step3_par_rxn']=='vbR')&(Step3_par['Step3_pa
 
 kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
 
-#%%
-
-#model.setFixedParameterById('k1813',model.getFixedParameterById('k1813')/33)
-
-# k_rasD_i = float(model.getFixedParameterById('k1813'))
-
-# kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
-
-# ras_T_ratio = float(rdata_new['x'][-1][list(model.getStateIds()).index('ppERK')])/float(rdata_new['x'][-1][list(model.getStateIds()).index('ERK')])
-
-# k_new = float(model.getFixedParameterById('k1813'))/ras_T_ratio
-
-# model.setFixedParameterById('k1813',k_new)
-
-# kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
-
-# startover
-# model.setFixedParameterById('k1813',0.0004)
-
-# 1.2235585413465592e-05
+#%% Step 4, adjust basal RasD activation rate
 
 fe = 1.0
 
+# kA77 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',usecols=['Step6_kA77','Step6_kA77_val'],index_col='Step6_kA77', squeeze=True)['kA77']
+
+Step4 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',usecols=['Step4_RasTreaction','Step4_RasTratio_target'])
+
+Step4 = Step4.dropna()
+
+rasT_ratio_target = float(Step4['Step4_RasTratio_target'])
+
+rasT_rxn = str(Step4['Step4_RasTreaction'].values[0])
+
 while fe > 0.05 or fe < -0.05:
     
-    k1 = float(model.getFixedParameterById('k1813'))
+    k1 = float(model.getFixedParameterById(params_getid(rasT_rxn,0)))
     
     kTLnew3, rdata_new, x3, flagA = kTLadjustwhile(model,solver,x2, obs0, kTL_id, kTLnew2, kTL_mod, k50E_id, k50E_values, ObsMat, S_TL, 1)
     
-    ras_T_ratio = float(rdata_new['x'][-1][list(model.getStateIds()).index('ppERK')])/float(rdata_new['x'][-1][list(model.getStateIds()).index('ERK')])
+    ppERK = float(rdata_new['x'][-1][species_all.index('ppERK')])
     
-    fe = (0.05 - ras_T_ratio)/0.05
+    ERK = float(rdata_new['x'][-1][species_all.index('ERK')])
+    
+    
+    ras_T_ratio = ppERK/ERK
+    
+    fe = (rasT_ratio_target - ras_T_ratio)/rasT_ratio_target
     
     f = 1/(1-fe)
     
     k_new = k1*(1+(f-1)*0.75)
     
-    model.setFixedParameterById('k1813',float(k_new))
+    model.setFixedParameterById(params_getid(rasT_rxn,0),float(k_new))
 
 
-#%% Step4, adjust Cd, p21
+#%% Step5, adjust Cd, p21
 
 totalcyclinDfromdata = sum(pExp_nM[np.array([list(model_genes).index(x) for x in ['CCND1', 'CCND2', 'CCND3']])])
 
@@ -850,7 +653,7 @@ totalcyclinDfromdata = sum(pExp_nM[np.array([list(model_genes).index(x) for x in
 totalp21fromdata = pExp_nM[list(model_genes).index('CDKN1A')]
 
 kC82_id = params_all.index[np.logical_and(params_all.rxn=='vC104',params_all.idx==0)][0]
-kC82 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',usecols=['Step4_par','Step4_par_val'],index_col='Step4_par', squeeze=True)['kC82']
+kC82 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',usecols=['Step5_par','Step5_par_val'],index_col='Step5_par', squeeze=True)['kC82']
 
 
 x_in = rdata_new['x'][-1]
@@ -897,7 +700,7 @@ x4[x4.values<1e-6] = 0.0
 
 kTLnew3[Cd_genes] = kTL10_12
 
-#%% Step 5, adjust c8
+#%% Step 6, adjust c8
 
     
 ts = 1000*3600*0.5
@@ -907,11 +710,11 @@ model.setTimepoints(np.linspace(0,ts,1000))
 kA77_id = params_all.index[np.logical_and(params_all['rxn']=='vA77',params_all['idx']==0)][0]
 kA87_id = params_all.index[np.logical_and(params_all['rxn']=='vA87',params_all['idx']==0)][0]
 
-kA77 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',usecols=['Step5_kA77','Step5_kA77_val'],index_col='Step5_kA77', squeeze=True)['kA77']
+kA77 = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',usecols=['Step6_kA77','Step6_kA77_val'],index_col='Step6_kA77', squeeze=True)['kA77']
 
 model.setFixedParameterById(kA77_id, kA77)
 
-kA87s = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',usecols=['Step5_kA87s'], squeeze=True)
+kA87s = pd.read_csv(os.path.join(wd,'input_files','initializer','Initializer.txt'),sep='\t',usecols=['Step6_kA87s'], squeeze=True)
 kA87s = kA87s.values[~np.isnan(kA87s.values)]
 
 for k in range(len(kA87s)):
@@ -939,7 +742,7 @@ model.setInitialStates(x5.values)
 [model.setFixedParameterById(kTL_id[k], kTLnew4[k]) for k in range(len(kTL_id))]
 
 
-#%% Step6, adjust basal dna damage
+#%% Step7, adjust basal dna damage
 
 BRCA2 = x5['BRCA2']
 MSH6 = x5['MSH6']
@@ -1001,7 +804,7 @@ x6 = pd.Series(data=x6, index=ObsMat.index)
 
 
 
-#%% Step7, leak terms
+#%% Step8, leak terms
 
 pcFos_cJun = x6['pcFos_cJun']
 cMyc = x6['cMyc']
@@ -1036,7 +839,7 @@ kTCd = np.float64(gene_params.loc[:,'kTCd'].values)
 
 xgac_mpc_D = (kGac*gExp_mpc)/(kGin+kGac)
 
-TARsRead = pd.read_csv('GeneReg.txt',header=0,index_col=0,sep="\t")
+TARsRead = pd.read_csv(os.path.join(wd,'input_files','GeneReg.txt'),header=0,index_col=0,sep="\t")
 TARs0 = (TARsRead.values)
 #%% tck50as - default
 
@@ -1071,7 +874,7 @@ TARs0 = (TARsRead.values)
 
 #%% test - tck50as alternative
 
-x6_10a = pd.read_csv(os.path.join('input_files','x6_10a.txt'),sep='\t',squeeze=True,header=None,index_col=0)
+x6_10a = pd.read_csv(os.path.join(wd,'input_files','x6_10a.txt'),sep='\t',squeeze=True,header=None,index_col=0)
 
 tcnas = np.ones((numberofgenes, numberofTARs))
 tck50as = np.zeros((numberofgenes, numberofTARs))
@@ -1297,18 +1100,16 @@ TARs_New.to_csv(os.path.join(wd,'input_files','GeneReg_au565.txt'), sep='\t')
 # au565_omics = omics_mcf10a.copy()
 
 #%%
-# au565_omics['Exp GCN'] = au565['gcn'].copy()
-# au565_omics['Exp RNA'] = au565['mrna_mpc'].copy()
-# au565_omics['Exp Protein'] = au565['prot_mpc'].copy()
+
 gene_params['kTCleak'] = kTCleak_new
 gene_params['kTCd'] = kTCd_new
 
 #%%
-# au565_omics.to_csv(os.path.join(wd,'input_files',omics_input),sep='\t')
+
 
 gene_params.to_csv(os.path.join(wd,'input_files',omics_input),sep='\t')
 
-# au565_read = pd.read_csv(os.path.join(wd,'input_files','OmicsData_extended_au565.txt'),sep='\t',index_col=0,header=0)
+
 
 #%% save results
 
@@ -1321,229 +1122,46 @@ x6.to_csv(os.path.join(wd,'initializer','species_au565.txt'),sep='\t',index=True
 
 #%% diagnostics
 
-import matplotlib.pyplot as plt
-# species_input = pd.read_csv('input_files/Species.txt', sep='\t', header=0, index_col=0)
+# import matplotlib.pyplot as plt
 
-species_all = model.getStateIds()
+# species_all = model.getStateIds()
 
-import matplotlib as mpl
-mpl.rcParams['figure.dpi']=300
+# import matplotlib as mpl
+# mpl.rcParams['figure.dpi']=300
 
 
 #%% test GF response - ODEs
 
-STIMligs = [100.0,0,0,0,0,0,100.0]
-# STIMligs = [0.0,0,0,0,0,0,0.0]
+# STIMligs = [100.0,0,0,0,0,0,100.0]
+# # STIMligs = [0.0,0,0,0,0,0,0.0]
 
-species_initializations = x6.values
-species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-species_initializations[155:162] = STIMligs
-
-model.setInitialStates(species_initializations)
-
-rdata_test = amici.runAmiciSimulation(model,solver)
-
-#%%
-
-def timecourse(species,x_s, tout_all):    
-    
-    x_t = x_s[:,list(species_all).index(species)]
-    plt.plot(tout_all/3600,x_t)
-    plt.ylabel(str(species))
-    plt.xlabel('time(h)')
-    plt.ylim(0,1.25*max(x_t))
-    plt.show
-    
-#%%
-
-timecourse('ppERK',rdata_test['x'],rdata_test['t'])
-timecourse('ppAKT',rdata_test['x'],rdata_test['t'])
- 
-#%% test GF response - flagD
-# th = 48
-th = 48
-
-sys.path.append(wd+'/bin')
-from modules.RunSPARCED import RunSPARCED
-
-omics_input = 'OmicsData_extended_au565.txt'
-genereg_input = 'GeneReg_au565.txt'
-
-STIMligs = [100.0,0,0,0,0,0,100.0]
-# STIMligs = [0.0,0,0,0,0,0,0.0]
-
-species_initializations = x6.values
-species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-species_initializations[155:162] = STIMligs
+# species_initializations = x6.values
+# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+# species_initializations[155:162] = STIMligs
 
 # model.setInitialStates(species_initializations)
 
-flagD = 1
-
-ts = 30
-
-model.setTimepoints(np.linspace(0,ts))
-
-xoutS_all, xoutG_all, tout_all,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-
+# rdata_test = amici.runAmiciSimulation(model,solver)
 
 #%%
 
-timecourse('ppERK',xoutS_all,tout_all)
-timecourse('ppAKT',xoutS_all,tout_all)
-timecourse('cPARP',xoutS_all,tout_all)
-timecourse('cMyc',xoutS_all,tout_all)
-timecourse('pcFos_cJun',xoutS_all,tout_all)
-timecourse('Mb',xoutS_all,tout_all)
-timecourse('bCATENINnuc',xoutS_all,tout_all)
-timecourse('bCATENIN',xoutS_all,tout_all)
-timecourse('Md',xoutS_all,tout_all)
-
-#%% play around with basal Cd
-
-# kTL_cd_i = 12.584682555
-
-# [model.setFixedParameterById(Cd_kTL,kTL_cd_i*.1) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
-
-# th = 72
-
-# omics_input = 'OmicsData_extended_au565.txt'
-# genereg_input = 'GeneReg_au565.txt'
-
-# STIMligs = [100.0,0,0,0,0,0,100.0]
-# # STIMligs = [0.0,0,0,0,0,0,0.0]
-
-# species_initializations = x6.values
-# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-# species_initializations[155:162] = STIMligs
-
-# # model.setInitialStates(species_initializations)
-
-# flagD = 1
-
-# xoutS_all_cd1, xoutG_all_cd_1, tout_all_cd_1,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-
-#%%
-
-# timecourse('ppERK',xoutS_all_cd1,tout_all)
-# timecourse('ppAKT',xoutS_all_cd1,tout_all)
-# timecourse('cPARP',xoutS_all_cd1,tout_all)
-# timecourse('cMyc',xoutS_all_cd1,tout_all)
-# timecourse('pcFos_cJun',xoutS_all_cd1,tout_all)
-# timecourse('Mb',xoutS_all_cd1,tout_all)
-# timecourse('bCATENINnuc',xoutS_all_cd1,tout_all)
-# timecourse('bCATENIN',xoutS_all_cd1,tout_all)
-# timecourse('Md',xoutS_all_cd1,tout_all)
-# timecourse('m_CCND1',xoutS_all_cd1,tout_all)
-# timecourse('m_CCND2',xoutS_all_cd1,tout_all)
-# timecourse('m_CCND3',xoutS_all_cd1,tout_all)
-
-# #%%
-
-# kTL_cd_i = 12.584682555
-
-# [model.setFixedParameterById(Cd_kTL,kTL_cd_i*3) for Cd_kTL in np.array(kTL_id)[Cd_genes]]
-
-# th = 72
-
-# omics_input = 'OmicsData_extended_au565.txt'
-# genereg_input = 'GeneReg_au565.txt'
-
-# STIMligs = [100.0,0,0,0,0,0,100.0]
-# # STIMligs = [0.0,0,0,0,0,0,0.0]
-
-# species_initializations = x6.values
-# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-# species_initializations[155:162] = STIMligs
-
-# # model.setInitialStates(species_initializations)
-
-# flagD = 1
-
-# xoutS_all_cd2, xoutG_all_cd2, tout_all_cd2,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-
-# #%%
-# timecourse('ppERK',xoutS_all_cd2,tout_all)
-# timecourse('ppAKT',xoutS_all_cd2,tout_all)
-# timecourse('cPARP',xoutS_all_cd2,tout_all)
-# timecourse('cMyc',xoutS_all_cd2,tout_all)
-# timecourse('pcFos_cJun',xoutS_all_cd2,tout_all)
-# timecourse('Mb',xoutS_all_cd2,tout_all)
-# timecourse('bCATENINnuc',xoutS_all_cd2,tout_all)
-# timecourse('bCATENIN',xoutS_all_cd2,tout_all)
-# timecourse('Md',xoutS_all_cd2,tout_all)
-# timecourse('m_CCND1',xoutS_all_cd1,tout_all)
-
-# #%%
-
-# STIMligs2 = [1000.0,0,0,0,0,0,1000.0]
-
-# species_initializations2 = x6.values
-# species_initializations2[np.argwhere(species_initializations2 <= 1e-6)] = 0.0
-# species_initializations2[155:162] = STIMligs2
-
-# model.setInitialStates(species_initializations2)
-
-
-# xoutS_all2, xoutG_all2, tout_all2,flagA = RunSPARCED(flagD,th,species_initializations2,Vn,Vc,model,wd,omics_input,genereg_input)
-
-
-# #%%
-
-
-# timecourse('ppERK',xoutS_all2,tout_all2)
-# timecourse('ppAKT',xoutS_all2,tout_all2)
-
-
-# #%%
-# STIMligs0 = [0.0,0,0,0,0,0,0.0]
-
-# species_initializations0 = x6.values
-# species_initializations0[np.argwhere(species_initializations0 <= 1e-6)] = 0.0
-# species_initializations0[155:162] = STIMligs0
-
-# model.setInitialStates(species_initializations0)
-
-
-# xoutS_all0, xoutG_all0, tout_all0,flagA = RunSPARCED(flagD,th,species_initializations0,Vn,Vc,model,wd,omics_input,genereg_input)
-
-# #%%
-
-
-# timecourse('ppERK',xoutS_all0,tout_all0)
-# timecourse('ppAKT',xoutS_all0,tout_all0)
-
-
-# #%% test
-
-# # species_all = list(model.getStateIds())
-
-
-
-# def timecourse_ap(sp1,sp2,x_s, tout_all):
-#     x_t1 = x_s[:,list(species_all).index(sp1)]
-#     x_t2 = x_s[:,list(species_all).index(sp2)]
+# def timecourse(species,x_s, tout_all):    
     
-#     x_t = x_t2/x_t1
-    
+#     x_t = x_s[:,list(species_all).index(species)]
 #     plt.plot(tout_all/3600,x_t)
-#     plt.ylabel(str(sp2)+'/'+str(sp1))
+#     plt.ylabel(str(species))
 #     plt.xlabel('time(h)')
 #     plt.ylim(0,1.25*max(x_t))
 #     plt.show
     
-# timecourse_ap('ERK','ppERK',rdata_new['x'],rdata_new['t'])
+#%%
 
-#%% DNA damage unit test - TP53
-
-# # set dna repair to 0, watch p53
-
-# model.setFixedParameterById(params_getid('vD63',0),0)
-# model.setFixedParameterById(params_getid('vD64',0),0)
-# model.setFixedParameterById(params_getid('vD65',0),0)
-
-
-# th = 72
+# timecourse('ppERK',rdata_test['x'],rdata_test['t'])
+# timecourse('ppAKT',rdata_test['x'],rdata_test['t'])
+ 
+#%% test GF response - flagD
+# th = 48
+# th = 48
 
 # sys.path.append(wd+'/bin')
 # from modules.RunSPARCED import RunSPARCED
@@ -1551,56 +1169,37 @@ timecourse('Md',xoutS_all,tout_all)
 # omics_input = 'OmicsData_extended_au565.txt'
 # genereg_input = 'GeneReg_au565.txt'
 
-# # STIMligs = [100.0,0,0,0,0,0,100.0]
-# STIMligs = [0.0,0,0,0,0,0,0.0]
+# STIMligs = [100.0,0,0,0,0,0,100.0]
+# # STIMligs = [0.0,0,0,0,0,0,0.0]
 
 # species_initializations = x6.values
 # species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 # species_initializations[155:162] = STIMligs
 
-# species_initializations[list(model.getStateIds()).index('damageSSB')] = 25.0
-
 # # model.setInitialStates(species_initializations)
 
 # flagD = 1
 
-# xoutS_all_DD, xoutG_all_DD, tout_all_DD,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+# ts = 30
+
+# model.setTimepoints(np.linspace(0,ts))
+
+# xoutS_all, xoutG_all, tout_all,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+
 
 # #%%
-# timecourse('p53inac',xoutS_all_DD,tout_all_DD)
-# timecourse('p53ac_MDM4',xoutS_all_DD,tout_all_DD)
 
-# #%% DSB
-# model.setFixedParameterById(params_getid('vD63',0),0)
-# model.setFixedParameterById(params_getid('vD64',0),0)
-# model.setFixedParameterById(params_getid('vD65',0),0)
+# timecourse('ppERK',xoutS_all,tout_all)
+# timecourse('ppAKT',xoutS_all,tout_all)
+# timecourse('cPARP',xoutS_all,tout_all)
+# timecourse('cMyc',xoutS_all,tout_all)
+# timecourse('pcFos_cJun',xoutS_all,tout_all)
+# timecourse('Mb',xoutS_all,tout_all)
+# timecourse('bCATENINnuc',xoutS_all,tout_all)
+# timecourse('bCATENIN',xoutS_all,tout_all)
+# timecourse('Md',xoutS_all,tout_all)
 
 
-# th = 72
-
-# sys.path.append(wd+'/bin')
-# from modules.RunSPARCED import RunSPARCED
-
-# omics_input = 'OmicsData_extended_au565.txt'
-# genereg_input = 'GeneReg_au565.txt'
-
-# # STIMligs = [100.0,0,0,0,0,0,100.0]
-# STIMligs = [0.0,0,0,0,0,0,0.0]
-
-# species_initializations = x6.values
-# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-# species_initializations[155:162] = STIMligs
-
-# species_initializations[list(model.getStateIds()).index('damageDSB')] = 25.0
-
-# # model.setInitialStates(species_initializations)
-
-# flagD = 1
-
-# xoutS_all_DD, xoutG_all_DD, tout_all_DD,flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-
-# timecourse('p53inac',xoutS_all_DD,tout_all_DD)
-# timecourse('p53ac_MDM4',xoutS_all_DD,tout_all_DD)
 
 #%% Write results to sbml
 
@@ -1662,113 +1261,6 @@ sbml_importer.sbml2amici('SPARCED_au565',
                          observables=observables,
                          constantParameters=constantParameters)
 
-# #%% test model
 
-# sys.path.insert(0, model_path)
-# model_module = importlib.import_module('SPARCED_au565')
-# model = model_module.getModel()
-
-# #%% test - simulation - ligand response
-# sys.path.append(wd+'/bin')
-# from modules.RunSPARCED import RunSPARCED
-# sbml_au565 = 'SPARCED_au565.xml'
-# model_name_au565 = sbml_au565[0:-4]
-
-# cellNumber = 0
-
-# omics_input = 'OmicsData_extended_au565.txt'
-# genereg_input = 'GeneReg.txt'
-
-# #%%
-# # deterministic=1, stochastic=0
-# flagD = 1
-
-# # deterministic='GrowthStim_det_', stochastic='GrowthStim_stoc_'
-# # nmxlsfile = 'U87SPARCED_1nmGMDet_'
-
-# ts = 30
-# th = 72
-# Vn = 1.75E-12
-# Vc = 5.25E-12
-# STIMligs = [1.0,0,0,0,0,0,0] # EGF, Her, HGF, PDGF, FGF, IGF, INS
-
-# #%%
-# # sys.path.insert(0, os.path.abspath(model_output_dir))
-# # species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
-
-# # species_initializations = []
-# # for row in species_sheet[1:]:
-# #     species_initializations.append(float(row[2]))
-
-
-# species_initializations = x6.values.copy()
-# species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-# species_initializations[155:162] = STIMligs
-
-#%% debug - RunSPARCED
-
-# solver = model.getSolver()          # Create solver instance
-# solver.setMaxSteps = 1e10
-# model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
-
-# mpc2nmcf_Vn = 1.0E9/(Vn*6.023E+23)
-# mpc2nmcf_Vc = 1.0E9/(Vc*6.023E+23)
-# numberofgenes = len(tcnas)
-# numberofTARs = len(tcnas[0])
-# ix = 0
-
-# from modules.RunPrep import RunPrep
-# genedata, mExp_mpc, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kTCleak2, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model,wd,omics_input,genereg_input)
-
-# NSteps = int(th*3600/ts)
-
-# spdata = species_initializations
-
-# xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
-# xoutS_all[0,:] = spdata 
-# xgac = genedata[ix:ix+numberofgenes]
-# ix = ix+numberofgenes
-# xgin = genedata[ix:ix+numberofgenes]
-# xm = np.divide(spdata[773:],mpc2nmcf_Vc)
-        
  
-
-
-
-#%%
-
-
-# solver = model.getSolver()          # Create solver instance
-# solver.setMaxSteps = 1e10
-# model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
-
-# xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
-
-
-
-
-#%%
-
-import matplotlib.pyplot as plt
-# species_input = pd.read_csv('input_files/Species.txt', sep='\t', header=0, index_col=0)
-
-species_all = model.getStateIds()
-
-import matplotlib as mpl
-mpl.rcParams['figure.dpi']=300
-
-#%%
-def timecourse(species,x_s, tout_all):    
-    
-    x_t = x_s[:,list(species_all).index(species)]
-    plt.plot(tout_all/3600,x_t)
-    plt.ylabel(str(species))
-    plt.xlabel('time(h)')
-    plt.ylim(0,1.25*max(x_t))
-    plt.show
-    
-#%%
-
-timecourse('ppERK',rdata_test['x'],rdata_test['t'])
-timecourse('ppAKT',rdata_test['x'],rdata_test['t'])
  
