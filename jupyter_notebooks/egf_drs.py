@@ -9,17 +9,22 @@ Created on Wed Oct 13 22:18:22 2021
 
 import pandas as pd
 import numpy as np
-import re
+# import re
 import libsbml
 import os
 import sys
 import importlib
 import amici
-import amici.plotting
 import argparse
-import multiprocessing as mpr
 from scipy.signal import find_peaks
 import itertools
+import time
+import multiprocessing
+import concurrent.futures
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+mpl.rcParams['figure.dpi'] = 300
 
 parser = argparse.ArgumentParser(description='Input doses in uM')
 parser.add_argument('--dose', metavar='dose', help='input dose in nM', default = 100.0)
@@ -103,8 +108,7 @@ if not os.path.exists(output_dose):
 # np.linspace(0, 30) # set timepoint
 
 
-import time
-import multiprocessing
+
 
 th = 48
 
@@ -161,7 +165,7 @@ def find_dp(xoutS,tout,species_all=species_all):
 
 #%% drs no queue - 72 hr
 
-import itertools
+
 
 STIMligs = [0.0,0,0,0,0,0,0.0]
 
@@ -271,7 +275,7 @@ def read_cell_g1(output_dir,g,cell_n):
     return results
 
 
-import concurrent.futures
+
 
 results_all = []
 
@@ -456,10 +460,7 @@ while cellpop_gn0 > 0:
 
 
 #%% debug
-import matplotlib.pyplot as plt
-import matplotlib as mpl
 
-mpl.rcParams['figure.dpi'] = 300
 
 def read_tout(output_dir,tout_file):
     tout = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
