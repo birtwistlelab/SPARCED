@@ -27,10 +27,11 @@ import matplotlib as mpl
 mpl.rcParams['figure.dpi'] = 300
 
 parser = argparse.ArgumentParser(description='Input doses in uM')
-parser.add_argument('--dose', metavar='dose', help='input dose in nM', default = 100.0)
+parser.add_argument('--dose', metavar='dose', help='input laptinib dose in uM', default = 25.0)
+parser.add_argument('--egf', metavar='egf', help='input EGF conc in nM', default = 10.0)
 parser.add_argument('--cellpop', metavar='cellpop', help='starting cell population', default = 5)
 parser.add_argument('--td',metavar='td', help='cell line doubling time (hrs) ', default = 48)
-parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'egf_drs_test')
+parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'lapatinib_drs')
 args = parser.parse_args()
 
 wd = str(os.getcwd()).replace("jupyter_notebooks","")
@@ -89,7 +90,7 @@ cell_pop = int(args.cellpop)
 STIMligs = [0.0,0,0,0,0,0,0.0]
 
 
-dose = float(args.dose)
+dose = float(args.dose)*10e2
 
 sp_input = pd.read_csv(os.path.join(wd,'initializer','species_au565.txt'),sep='\t',header=None,index_col=0,squeeze=True)
 # sp_input['lapatinib'] = dose
@@ -100,7 +101,7 @@ species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 species_initializations[155:162] = STIMligs
 
 
-output_dose = os.path.join(output_path,'egf_'+str(float(args.dose)))
+output_dose = os.path.join(output_path,'lapatinib_'+str(float(args.dose)))
 
 if not os.path.exists(output_dose):
     os.mkdir(output_dose)
@@ -110,7 +111,7 @@ if not os.path.exists(output_dose):
 
 
 
-th = 24
+th = 48
 
 output_dir = output_dose
 
@@ -163,15 +164,16 @@ def find_dp(xoutS,tout,species_all=species_all):
     
     return(dp)
 
+
 #%% drs no queue - 72 hr
 
-
+dose_egf = float(args.dose)
 
 STIMligs = [0.0,0,0,0,0,0,0.0]
 
 doubling_time = float(args.td)
 
-STIMligs[0] = dose
+STIMligs[0] = dose_egf
 
 th = doubling_time + 10.0
 
@@ -189,6 +191,8 @@ def cell_g1(cell_n,flagD,th,Vn,Vc,model,wd,omics_input,genereg_input):
     species_initializations = np.array(sp_input)
     species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
     species_initializations[155:162] = STIMligs
+    
+    species_initializations[list(model.getStateIds()).index('lapatinib')] = dose
     
     xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
 
@@ -494,7 +498,7 @@ def timecourse_gc(output_dir,species, gx_cx,get_tmax=get_tmax,read_tout=read_tou
     
     outputs_ls = os.listdir(os.path.join(wd,output_dir))
     
-    outputs_gc = list(filter(lambda x:x.startswith(gx_cx),outputs_ls))
+    outputs_gc = list(filter(lambda x:x.startswith(gx_cx+'_'),outputs_ls))
     
     xoutS_file = list(filter(lambda x:x.endswith('xoutS.txt'),outputs_gc))[0]
     tout_file = list(filter(lambda x:x.endswith('tout.txt'),outputs_gc))[0]
@@ -587,6 +591,60 @@ def timecourse_dp(outout_dir,species,gx_cx,species_all=species_all):
 
     plt.show
     
+    
+#%% #%% test - find dp for randomly sampled cycling cells
+
+# g1_c4, cellpop_test_0
+def xs_cut(x_s,tout,th):
+    i = np.where(tout/3600> th)[0][0]
+    xs_new = x_s[i:,:]
+    tout_new = tout[i:]
+    return(xs_new,tout_new)
+
+def find_dp(xoutS,tout,species_all=species_all):
+    data = xoutS[:,list(species_all).index('Mb')]
+    p,_ = find_peaks(data,height=30)
+    b = (np.diff(np.sign(np.diff(data))) > 0).nonzero()[0] + 1
+    
+    if sum(b>p[0]) > 0:
+    
+        dp = int(b[b>p[0]][0])
+        
+    else:
+        dp = np.nan
+    
+    return(dp)
+
+def find_dp_all(xoutS,species_all=species_all):
+    data = xoutS[:,list(species_all).index('Mb')]
+    p,_ = find_peaks(data,height=30)
+    b = (np.diff(np.sign(np.diff(data))) > 0).nonzero()[0] + 1
+    
+    return(b,p)
+
+
+gx_cx = 'g1_c4'
+
+output_dir_test = os.path.join(wd,'output','cellpop_test_0')
+
+timecourse_gc(output_dir_test,'Mb','g1_c4')
+output_ls_test = os.listdir(output_dir_test)
+
+output_gc = list(filter(lambda x:x.startswith(gx_cx+'_'),output_ls_test))
+
+xsf = list(filter(lambda x:x.endswith('xoutS.txt'),output_gc))[0]
+tf = list(filter(lambda x:x.endswith('tout.txt'),output_gc))[0]
+
+x_s = np.loadtxt(os.path.join(output_dir_test,xsf),delimiter='\t')
+tout_test = np.loadtxt(os.path.join(output_dir_test,tf),delimiter='\t')
+
+dp = find_dp_gc(x_s)
+
+dp_all,p_all = find_dp_all(x_s)
+
+xs2,tout2 = xs_cut(x_s,tout_test,27)
+
+dp2 = find_dp(xs2,tout2)
 #%% find number of alive cells at given time
 
 

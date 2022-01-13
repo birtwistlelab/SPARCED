@@ -30,7 +30,7 @@ parser = argparse.ArgumentParser(description='Input doses in uM')
 parser.add_argument('--dose', metavar='dose', help='input dose in nM', default = 100.0)
 parser.add_argument('--cellpop', metavar='cellpop', help='starting cell population', default = 5)
 parser.add_argument('--td',metavar='td', help='cell line doubling time (hrs) ', default = 48)
-parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'egf_drs_test')
+parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'egf_dose_response')
 args = parser.parse_args()
 
 wd = str(os.getcwd()).replace("jupyter_notebooks","")
@@ -110,7 +110,7 @@ if not os.path.exists(output_dose):
 
 
 
-th = 24
+th = 48
 
 output_dir = output_dose
 
@@ -457,14 +457,21 @@ while cellpop_gn0 > 0:
 
 # for f in concurrent.futures.as_completed(results_tout):
 #     results_tmax.append(f.result())
+output_palmetto = os.path.join('/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_test/egf_100.0')
 
+output_test1 = os.path.join('output/egf_dose_response_0/egf_100.0')
 
 #%% debug
 
 
 def read_tout(output_dir,tout_file):
     tout = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
-    tmax = max(tout)
+    
+    if np.shape(tout):
+        tmax = max(tout)
+    else:
+        tmax = float(tout)
+
     return (tmax)
 
 
@@ -488,13 +495,20 @@ def get_tmax(output_dir,read_tout=read_tout):
     
     return(tmax)
 
-timecourse_tmax = get_tmax(output_dir)    
 
+
+#%%
+output_dir = output_palmetto
+timecourse_tmax = get_tmax(output_dir)  
+# timecourse_tmax = get_tmax(output_palmetto)
+
+
+#%%
 def timecourse_gc(output_dir,species, gx_cx,get_tmax=get_tmax,read_tout=read_tout,tx='default'):
     
     outputs_ls = os.listdir(os.path.join(wd,output_dir))
     
-    outputs_gc = list(filter(lambda x:x.startswith(gx_cx),outputs_ls))
+    outputs_gc = list(filter(lambda x:x.startswith(str(gx_cx+'_')),outputs_ls))
     
     xoutS_file = list(filter(lambda x:x.endswith('xoutS.txt'),outputs_gc))[0]
     tout_file = list(filter(lambda x:x.endswith('tout.txt'),outputs_gc))[0]
@@ -527,7 +541,52 @@ def timecourse_gc(output_dir,species, gx_cx,get_tmax=get_tmax,read_tout=read_tou
     plt.title(gx_cx)
 
     plt.show
+
+#%%
+
+timecourse_gc(output_palmetto,'Mb','g1_c1')
+
+#%% test dataset
+outputs_ls_test = os.listdir(os.path.join(wd,output_test1))
+outputs_gc_test = list(filter(lambda x:x.startswith(str('g1_c3_')),outputs_ls_test))
+xoutS_file_test = list(filter(lambda x:x.endswith('xoutS.txt'),outputs_gc_test))[0]
+tout_file_test = list(filter(lambda x:x.endswith('tout.txt'),outputs_gc_test))[0]
+
+x_s_test = np.loadtxt(os.path.join(output_test1,xoutS_file_test),delimiter='\t')
+tout_test = np.loadtxt(os.path.join(output_test1,tout_file_test),delimiter='\t')
+
+data_test = x_s_test[:,list(species_all).index('Mb')]
+p,_ = find_peaks(data_test,height=30)
+
+
+if len(p)!=0:
     
+        b = (np.diff(np.sign(np.diff(data_test))) > 0).nonzero()[0] + 1
+        
+        if len(b)!=0:
+            dp = int(b[b>p[0]][0])
+        else:
+            dp = np.nan
+else:
+        dp = np.nan
+
+x_s_test2 = x_s_test[181:,:]
+tout_test2 = tout_test [181:]
+
+data_test2 = x_s_test2[:,list(species_all).index('Mb')]
+p2,_ = find_peaks(data_test,height=30)
+
+
+if len(p2)!=0:
+    
+        b2 = (np.diff(np.sign(np.diff(data_test2))) > 0).nonzero()[0] + 1
+        
+        if len(b2)!=0:
+            dp2 = int(b2[b2>p2[0]][0])
+        else:
+            dp2 = np.nan
+else:
+        dp2 = np.nan
 #%%
 
 def find_dp_gc(x_s,species_all=species_all):
@@ -599,7 +658,7 @@ tout_files = list(filter(lambda x:x.endswith('tout.txt'),output_ls))
 
 tout_test = np.loadtxt(os.path.join(wd,'output',output_dir,tout_files[0]),delimiter='\t')
 
-ti = 45.0
+ti = 46.31
 
 cells_all = np.zeros(len(tout_files))
 
@@ -624,3 +683,208 @@ for c in range(len(cells_all)):
             cells_all[c] = 1.0
 
 cells_alive_ti = int(sum(cells_all))
+
+#%%
+
+output_test3 = os.path.join('/media','arnab','bigchungus','projects','ccle_egf_drs','SPARCED','output','egf_drs_r1','egf_0.1')
+
+output_ls3 = os.listdir(output_test3)
+
+xoutS_files3 = list(filter(lambda x:x.endswith('xoutS.txt'),output_ls3))
+tout_files3 = list(filter(lambda x:x.endswith('tout.txt'),output_ls3))
+
+cells_all = np.zeros(len(tout_files3))
+
+ti = 46.31
+
+for c in range(len(cells_all)):
+    tout_c = np.loadtxt(os.path.join(output_test3,tout_files3[c]),delimiter='\t')/3600
+    
+    if np.shape(tout_c):
+    
+        tc_max = max(tout_c)
+        tc_min = min(tout_c)
+    else:
+        tc_max = tout_c
+        tc_min = tout_c
+       
+        
+    if tc_max > ti and tc_min < ti:
+        idx_ti = np.abs(tout_c - ti).argmin()
+        
+        gx_cx = str(tout_files3[c].split('_')[:2][0]) + '_' +  str(tout_files3[c].split('_')[:2][1])
+        
+        xoutS_file = list(filter(lambda x:x.startswith(gx_cx),xoutS_files3))[0]
+        
+        xout_c = np.loadtxt(os.path.join(output_test3,xoutS_file),delimiter='\t')[idx_ti,:]
+        
+        cPARP_ti = xout_c[species_all.index('cPARP')]
+        PARP_ti = xout_c[species_all.index('PARP')]
+        
+        if PARP_ti > cPARP_ti:
+        
+            cells_all[c] = 1.0
+
+cells_alive_ti = int(sum(cells_all))
+
+#%%
+
+timecourse_gc(output_test3,'Mb','g2_c15')
+
+
+def cellcount_dir(output_dir,ti):
+    output_ls = os.listdir(output_dir)
+    xoutS_files = list(filter(lambda x:x.endswith('xoutS.txt'),output_ls))
+    tout_files = list(filter(lambda x:x.endswith('tout.txt'),output_ls))
+    cells_all = np.zeros(len(tout_files))
+    
+    for c in range(len(cells_all)):
+        tout_c = np.loadtxt(os.path.join(output_dir,tout_files[c]),delimiter='\t')/3600
+        
+        if np.shape(tout_c):
+        
+            tc_max = max(tout_c)
+            tc_min = min(tout_c)
+        else:
+            tc_max = tout_c
+            tc_min = tout_c
+           
+            
+        if tc_max > ti and tc_min < ti:
+            idx_ti = np.abs(tout_c - ti).argmin()
+            
+            gx_cx = str(tout_files[c].split('_')[:2][0]) + '_' +  str(tout_files[c].split('_')[:2][1])
+            
+            xoutS_file = list(filter(lambda x:x.startswith(str(gx_cx+'_')),xoutS_files))[0]
+            
+            xout_c = np.loadtxt(os.path.join(output_dir,xoutS_file),delimiter='\t')[idx_ti,:]
+            
+            cPARP_ti = xout_c[species_all.index('cPARP')]
+            PARP_ti = xout_c[species_all.index('PARP')]
+            
+            if PARP_ti > cPARP_ti:
+            
+                cells_all[c] = 1.0
+        
+        cells_alive_ti = int(sum(cells_all))
+        
+    return cells_alive_ti 
+
+#%%
+
+output_palmetto_main = os.path.join('/media','arnab','bigchungus','projects','ccle_egf_drs','SPARCED','output','egf_drs')
+
+dir_doses = os.listdir(os.path.join(output_palmetto_main,os.listdir(output_palmetto_main)[0]))
+
+egf_doses = [float(str(x).split('_')[1]) for x in dir_doses]
+
+ti = 46.31
+
+results = pd.DataFrame()
+
+cell_count_doses = np.zeros(len(dir_doses))
+
+for d in range(len(dir_doses)):
+    
+    cell_count = cellcount_dir(os.path.join(output_palmetto_main,'egf_drs_r1',dir_doses[d]),ti)
+    cell_count_doses[d] = cell_count
+    
+results['doses'] = egf_doses
+
+results['r1'] = cell_count_doses
+
+#%%
+
+ti = 46.31
+
+output_palmetto_main = os.path.join('/media','arnab','bigchungus','projects','ccle_egf_drs','SPARCED','output','egf_drs')
+
+dir_doses = os.listdir(os.path.join(output_palmetto_main,os.listdir(output_palmetto_main)[0]))
+
+egf_doses = [float(str(x).split('_')[1]) for x in dir_doses]
+
+results = pd.DataFrame()
+
+for r in range(3):
+    
+    cell_count_doses = np.zeros(len(dir_doses))
+    
+    for d in range(len(dir_doses)):
+        
+        cell_count = cellcount_dir(os.path.join(output_palmetto_main,'egf_drs_r'+str(r+1),dir_doses[d]),ti)
+        cell_count_doses[d] = cell_count
+        
+    results['r'+str(r+1)] = cell_count_doses
+
+results['doses'] = egf_doses
+
+results = results.set_index('doses')
+
+results = results.sort_index()
+
+results['total'] = results.sum(1).values
+
+#%%
+
+ti = 46.31
+
+output_palmetto_main = os.path.join('/media','arnab','bigchungus','projects','ccle_egf_drs','SPARCED','output','egf_drs')
+
+dir_doses = os.listdir(os.path.join(output_palmetto_main,os.listdir(output_palmetto_main)[0]))
+
+egf_doses = [float(str(x).split('_')[1]) for x in dir_doses]
+
+results1 = pd.DataFrame()
+
+for r in range(4):
+    
+    cell_count_doses = np.zeros(len(dir_doses))
+    
+    for d in range(len(dir_doses)):
+        
+        cell_count = cellcount_dir(os.path.join(output_palmetto_main,'egf_drs_r'+str(r+1),dir_doses[d]),ti)
+        cell_count_doses[d] = cell_count
+        
+    results1['r'+str(r+1)] = cell_count_doses
+
+results1['doses'] = egf_doses
+
+results1 = results1.set_index('doses')
+
+results1 = results1.sort_index()
+
+results1['total'] = results1.sum(1).values
+
+
+#%% set 2 - egf doses 0.0010-0.01 nM
+
+ti = 46.31
+
+output_palmetto_main = os.path.join('/media','arnab','bigchungus','projects','ccle_egf_drs','SPARCED','output','egf_drs')
+
+dir_doses = os.listdir(os.path.join(output_palmetto_main,os.listdir(output_palmetto_main)[4]))
+
+egf_doses = [float(str(x).split('_')[1]) for x in dir_doses]
+
+results2 = pd.DataFrame()
+
+for r in range(4,8):
+    
+    cell_count_doses = np.zeros(len(dir_doses))
+    
+    for d in range(len(dir_doses)):
+        
+        cell_count = cellcount_dir(os.path.join(output_palmetto_main,'egf_drs_r'+str(r+1),dir_doses[d]),ti)
+        cell_count_doses[d] = cell_count
+        
+    results2['r'+str(r+1)] = cell_count_doses
+
+results2['doses'] = egf_doses
+
+results2 = results2.set_index('doses')
+
+results2 = results2.sort_index()
+
+results2['total'] = results2.sum(1).values
+
+#%%

@@ -30,7 +30,7 @@ parser = argparse.ArgumentParser(description='Input doses in uM')
 parser.add_argument('--dose', metavar='dose', help='input dose in nM', default = 100.0)
 parser.add_argument('--cellpop', metavar='cellpop', help='starting cell population', default = 5)
 parser.add_argument('--td',metavar='td', help='cell line doubling time (hrs) ', default = 48)
-parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'egf_drs_test')
+parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'egf_dose_response')
 args = parser.parse_args()
 
 wd = str(os.getcwd()).replace("jupyter_notebooks","")
@@ -110,11 +110,12 @@ if not os.path.exists(output_dose):
 
 
 
-th = 24
+th = 48
 
 output_dir = output_dose
 
-#%%
+#%%s
+
 
 def pre_incubate(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
     xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
