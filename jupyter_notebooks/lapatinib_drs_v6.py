@@ -557,9 +557,11 @@ def read_cell_g1(output_dir,g,cell_n):
                 
                 np.savetxt(os.path.join(output_dir,gx_cx+'_ic.txt'),sp_g2_cell,delimiter='\t')
                 
-                xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(dp+1),20)))
-                xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(dp+1),20)))
-                tout_lite = np.array(list(itertools.islice(tout_g1,0,(dp+1),20)))
+                dp1 = np.where(tout_g1 == tout_new[dp])[0][0]
+                
+                xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(dp1+1),20)))
+                xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(dp1+1),20)))
+                tout_lite = np.array(list(itertools.islice(tout_g1,0,(dp1+1),20)))
 
 
     
