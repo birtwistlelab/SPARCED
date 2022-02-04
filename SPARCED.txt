@@ -7041,5 +7041,3 @@ model SPARCED()
   unit volume = litre;
   unit substance = 1e-9 mole;
   unit nM = 1e-9 mole / litre;
-
-end

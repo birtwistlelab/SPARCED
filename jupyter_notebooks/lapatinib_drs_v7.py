@@ -24,6 +24,8 @@ import concurrent.futures
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
+from mpi4py.futures import MPIPoolExecutor
+
 mpl.rcParams['figure.dpi'] = 300
 
 parser = argparse.ArgumentParser(description='Input doses in uM')
@@ -31,7 +33,7 @@ parser.add_argument('--dose', metavar='dose', help='input laptinib dose in uM', 
 parser.add_argument('--egf', metavar='egf', help='input EGF conc in nM', default = 100.0)
 parser.add_argument('--cellpop', metavar='cellpop', help='starting cell population', default = 5)
 parser.add_argument('--td',metavar='td', help='cell line doubling time (hrs) ', default = 48)
-parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'lapatinib_drs_test_2')
+parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'lapatinib_drs_test_mpi')
 args = parser.parse_args()
 
 wd = str(os.getcwd()).replace("jupyter_notebooks","")
@@ -117,13 +119,18 @@ output_dir = output_dose
 
 #%%
 
-def pre_incubate(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
-    xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+# def pre_incubate(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
+#     xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
     
-    np.savetxt(os.path.join(output_dose,'c'+str(cell_n+1)+'_preinc.txt'),xoutS_all[-1],delimiter='\t')
+#     np.savetxt(os.path.join(output_dose,'c'+str(cell_n+1)+'_preinc.txt'),xoutS_all[-1],delimiter='\t')
     
     
 # start = time.perf_counter()
+
+def pre_incubate(cell_n):
+    xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+    
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n+1)+'_preinc.txt'),xoutS_all[-1],delimiter='\t')
 
 
 if __name__ == "__main__":
@@ -132,16 +139,39 @@ if __name__ == "__main__":
 
 
     
-    processes = []
+    # processes = []
     
-    for c in range(cell_pop):
-        p = multiprocessing.Process(target=pre_incubate, args = [c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
-        p.start()
-        processes.append(p)
+    # for c in range(cell_pop):
+    #     p = multiprocessing.Process(target=pre_incubate, args = [c,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input])
+    #     p.start()
+    #     processes.append(p)
         
-    for process in processes:
-        process.join()
+    # for process in processes:
+    #     process.join()
     
+    with MPIPoolExecutor() as executor:
+        res = executor.map(pre_incubate, range(cell_pop), unordered=True)
+        num_done = len(list(res))
+        print("Finished", num_done, "pre_incubate tasks.")
+    
+#%% pre_incubate alternate/comm executor
+from mpi4py import MPI
+
+from mpi4py.futures import MPICommExecutor
+
+
+def pre_incubate(cell_n):
+    xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
+    
+    np.savetxt(os.path.join(output_dose,'c'+str(cell_n+1)+'_preinc.txt'),xoutS_all[-1],delimiter='\t')
+
+with MPICommExecutor(MPI.COMM_WORLD, root=0) as executor:
+    
+    result = executor.map(pre_incubate,range(cell_pop)
+    # for result in executor.map(pre_incubate,range(cell_pop)):
+        # print(result)
+
+
 
 
 # finish = time.perf_counter()
@@ -150,7 +180,7 @@ if __name__ == "__main__":
 #%% pre-incubate with growth factors, random sampling
 # dose = 100.0 #temporary
 
-STIMligs = [0.001,0,0,0,0,0,0.0]
+STIMligs = [0.0,0,0,0,0,0,0.0]
 
 # doubling_time = float(args.td)
 dose_egf = float(args.egf)
@@ -236,13 +266,6 @@ def find_dp_0(dp_all,tp):
 # l = find_dp_0(k,89)
 
 #%% test / debug
-
-output_test = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/lapatinib_drs_r3_b0/lapatinib_0.0'
-output_test_mpi = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/lapatinib_drs_test_29/lapatinib_0.0'
-
-output_dir = output_test
-
-#%% test
 def read_tout(output_dir,tout_file):
     tout = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
     tmax = max(tout)
@@ -310,10 +333,9 @@ def timecourse_gc(output_dir,species, gx_cx,get_tmax=get_tmax,read_tout=read_tou
     plt.show
     
     
-    
 #%% test - g0
 
-timecourse_gc(output_dir,'Mb','g1_c1')
+# timecourse_gc(output_dir,'Mb','g0_c3')
 
 #%%
 # def cell_g1(cell_n,flagD,th,Vn,Vc,model,wd,omics_input,genereg_input):
@@ -479,16 +501,6 @@ def find_dp_0(dp_all,tp):
         dp0 = dp_all[k[0]]
     return dp0
     
-#%% debug
-cell_n = 2
-
-xoutS_g0 = np.loadtxt(os.path.join(output_dir,'g0_c'+str(int(cell_n+1))+'_xoutS.txt'),delimiter='\t')
-tout_g0 = np.loadtxt(os.path.join(output_dir,'g0_c'+str(int(cell_n+1))+'_tout.txt'),delimiter='\t')
-tp_g0 = int(np.loadtxt(os.path.join(output_dir,'g0_c'+str(int(cell_n+1))+'_tp.txt'),delimiter='\t'))
-
-
-
-
 #%%
 def read_cell_g1(output_dir,g,cell_n):
     
@@ -614,8 +626,6 @@ results_f = [bool(results_all[i].result()) for i in range(len(results_all))]
 results_notempty = np.array(results_all)[np.where(results_f)[0]]
 
 results_actual = [r.result() for r in results_notempty]
-
-#%%
 
 th_g2 = [r['th_g2'] for r in results_actual]
 
