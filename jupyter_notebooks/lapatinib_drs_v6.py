@@ -28,16 +28,25 @@ mpl.rcParams['figure.dpi'] = 300
 
 parser = argparse.ArgumentParser(description='Input doses in uM')
 parser.add_argument('--dose', metavar='dose', help='input laptinib dose in uM', default = 0.0)
-parser.add_argument('--egf', metavar='egf', help='input EGF conc in nM', default = 100.0)
+parser.add_argument('--egf', metavar='egf', help='input EGF conc in nM', default = 0.006)
 parser.add_argument('--cellpop', metavar='cellpop', help='starting cell population', default = 5)
 parser.add_argument('--td',metavar='td', help='cell line doubling time (hrs) ', default = 48)
-parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'lapatinib_drs_test_2')
+parser.add_argument('--sim_name',metavar='sim_name', help='insert exp name', default = 'lapatinib_drs_test')
 args = parser.parse_args()
 
 wd = str(os.getcwd()).replace("jupyter_notebooks","")
 
 
 sim_name = str(args.sim_name)
+
+startTime = time.strftime("%H_%M_%S")
+
+print('simulation began at '+str(startTime)+'\n')
+
+if sim_name == 'lapatinib_drs_test':
+    sim_name = sim_name + '_'+str(startTime)
+    
+
 
 output_path = os.path.join(wd,'output',sim_name)
 
@@ -118,9 +127,16 @@ output_dir = output_dose
 #%%
 
 def pre_incubate(cell_n,flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input):
+    
+    cell_name = 'g0_c'+str(cell_n+1)
+
+    
     xoutS_all, xoutG_all, tout_all, flagA = RunSPARCED(flagD,th,species_initializations,Vn,Vc,model,wd,omics_input,genereg_input)
     
     np.savetxt(os.path.join(output_dose,'c'+str(cell_n+1)+'_preinc.txt'),xoutS_all[-1],delimiter='\t')
+    np.savetxt(os.path.join(output_dir,str(cell_name)+'_xoutS.txt'),xoutS_all,delimiter='\t')
+    np.savetxt(os.path.join(output_dir,str(cell_name)+'_xoutG.txt'),xoutG_all,delimiter='\t')
+    np.savetxt(os.path.join(output_dir,str(cell_name)+'_tout.txt'),tout_all,delimiter='\t')
     
     
 # start = time.perf_counter()
@@ -150,7 +166,7 @@ if __name__ == "__main__":
 #%% pre-incubate with growth factors, random sampling
 # dose = 100.0 #temporary
 
-STIMligs = [0.001,0,0,0,0,0,0.0]
+STIMligs = [0.0,0,0,0,0,0,0.0]
 
 # doubling_time = float(args.td)
 dose_egf = float(args.egf)
