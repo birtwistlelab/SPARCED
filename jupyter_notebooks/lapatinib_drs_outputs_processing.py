@@ -143,7 +143,19 @@ test_dir2 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/lapati
 
 test_dir3 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/lapatinib_drs_test_58/lapatinib_0.0'
 
+dir_edrs_t20 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_test_20/egf_0.0001'
 
+dir_edrs_t22 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_test_22/egf_5e-05'
+
+dir_edrs_t23 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_test_23/egf_0.0'
+
+dir_edrs_t25 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_test_25/egf_7e-05'
+
+dir_edrs_t26 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_test_26/egf_8e-05'
+
+dir_edrs_t27 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_test_27/egf_9e-05'
+
+dir_edrs_t3_r1 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_t3_r1/egf_0.0001'
 
 #%% aux functions
 import re
