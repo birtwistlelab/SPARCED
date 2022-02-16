@@ -155,7 +155,9 @@ dir_edrs_t26 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf
 
 dir_edrs_t27 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_test_27/egf_9e-05'
 
-dir_edrs_t3_r1 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_t3_r1/egf_0.0001'
+dir_edrs_t3_r1 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_t3_r1/egf_0.0003'
+
+dir_lap_new = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/lapatinib_drs_test_t3_2/lapatinib_0.25'
 
 #%% aux functions
 import re
@@ -252,17 +254,20 @@ def get_desc_g1(output_dir,cn):
     
     g_all = np.array(g_all).astype('int')
     
-    g_max = max(g_all)
-    
-    output_gmax = list(filter(lambda x:x.startswith('g'+str(g_max)),outputs_lin))[0]
-    
-    lin_gmax = re.search('lin_(.*)_tout.txt',output_gmax).group(1).split('c')[1:]
-    
-    
-    
-    c_gmax = re.search('(g)'+str(g_max)+'(_c\d+)',output_gmax).group()
-    
-    lin_gmax.append(c_gmax.split('_c')[1])
+    if g_all.size !=0:
+        g_max = max(g_all)
+        
+        output_gmax = list(filter(lambda x:x.startswith('g'+str(g_max)),outputs_lin))[0]
+        
+        lin_gmax = re.search('lin_(.*)_tout.txt',output_gmax).group(1).split('c')[1:]
+        
+        
+        
+        c_gmax = re.search('(g)'+str(g_max)+'(_c\d+)',output_gmax).group()
+        
+        lin_gmax.append(c_gmax.split('_c')[1])
+    else:
+        lin_gmax = [str(cn)]
     
     return lin_gmax
 
@@ -482,7 +487,8 @@ def lin_tree(output_dir,g1_cx):
     
     # plt.title('lineage tree: g1_c'+str(g1_cx))
     plt.yticks([])
-    # plt.xlabel('time(hours)')
+    plt.xlabel('Time(hours)',fontname='Arial',fontsize=18)
+    
     plt.xticks(fontname='Arial',fontsize=18)
     plt.show()
             
@@ -507,50 +513,66 @@ def timecourse_lin_all(output_dir,species,cn):
     
     g_all = np.array(g_all).astype('int')
     
-    g_max = max(g_all)
+    if g_all.size != 0:
+        g_max = max(g_all)
+    else:
+        g_max = 1
     
-    output_gmax_all = list(filter(lambda x:x.startswith('g'+str(g_max)),outputs_lin))
+    if g_max>1:
     
-    
-    lin_gmax_all = [re.search('lin_(.*)_tout.txt',output_gmax_all[i]).group(1) for i in range(len(output_gmax_all))]
-    
-    gmat = [lin_gmax_all[i].split('c')[1:] for i in range(len(lin_gmax_all))]
-    
-    c_gmax_all = [re.search('(g)'+str(g_max)+'(_c\d+)',output_gmax_all[i]).group().split('c')[1] for i in range(len(output_gmax_all))]
-    
-    for i in range(len(c_gmax_all)):
-        gmat[i].append(c_gmax_all[i])
-    
-    gmat = np.array(gmat)
-    
-    gmat_u = [np.unique(gmat[:,i]) for i in range(np.shape(gmat)[1])]
-    
-    x_t_max = []
-    
-    for g in range(len(gmat_u)):
-        for c in range(len(gmat_u[g])):
-            gx_cx = 'g'+str(g+1)+'_c'+str(gmat_u[g][c])
-            outputs_gc = list(filter(lambda x:x.startswith(gx_cx+'_'),outputs_ls))
-            xoutS_file = list(filter(lambda x:x.endswith('xoutS.txt'),outputs_gc))[0]
-            tout_file = list(filter(lambda x:x.endswith('tout.txt'),outputs_gc))[0]
+        output_gmax_all = list(filter(lambda x:x.startswith('g'+str(g_max)),outputs_lin))
         
-    
-    
-            x_s = np.loadtxt(os.path.join(output_dir,xoutS_file),delimiter='\t')
-            tout_all = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
-    
         
-            x_t = x_s[:, list(species_all).index(species)]
-            x_t_max.append(max(x_t))
+        lin_gmax_all = [re.search('lin_(.*)_tout.txt',output_gmax_all[i]).group(1) for i in range(len(output_gmax_all))]
+        
+        gmat = [lin_gmax_all[i].split('c')[1:] for i in range(len(lin_gmax_all))]
+        
+        c_gmax_all = [re.search('(g)'+str(g_max)+'(_c\d+)',output_gmax_all[i]).group().split('c')[1] for i in range(len(output_gmax_all))]
+        
+        for i in range(len(c_gmax_all)):
+            gmat[i].append(c_gmax_all[i])
+        
+        gmat = np.array(gmat)
+        
+        gmat_u = [np.unique(gmat[:,i]) for i in range(np.shape(gmat)[1])]
+        
+        x_t_max = []
+        
+        for g in range(len(gmat_u)):
+            for c in range(len(gmat_u[g])):
+                gx_cx = 'g'+str(g+1)+'_c'+str(gmat_u[g][c])
+                outputs_gc = list(filter(lambda x:x.startswith(gx_cx+'_'),outputs_ls))
+                xoutS_file = list(filter(lambda x:x.endswith('xoutS.txt'),outputs_gc))[0]
+                tout_file = list(filter(lambda x:x.endswith('tout.txt'),outputs_gc))[0]
             
-            plt.plot(tout_all/3600,x_t,c=colors[g])
+        
+        
+                x_s = np.loadtxt(os.path.join(output_dir,xoutS_file),delimiter='\t')
+                tout_all = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
+        
             
-    ymax = max(np.array(x_t_max))
+                x_t = x_s[:, list(species_all).index(species)]
+                x_t_max.append(max(x_t))
+                
+                plt.plot(tout_all/3600,x_t,c=colors[g])
+                
+        ymax = max(np.array(x_t_max))
+        
+    else:
+        x_s = np.loadtxt(os.path.join(output_dir,'g1_c'+str(cn)+'_xoutS.txt'),delimiter='\t')
+        tout_all = np.loadtxt(os.path.join(output_dir,'g1_c'+str(cn)+'_tout.txt'),delimiter='\t')
+        
+        x_t = x_s[:, list(species_all).index(species)]
+        ymax = max(x_t)
+        
+        plt.plot(tout_all/3600,x_t,c=colors[0])
     
     plt.xlim(0,tmax/3600)
     plt.ylim(0,ymax*1.25)
     plt.xticks(fontname='Arial',fontsize=18)
     plt.yticks(fontname='Arial',fontsize=18)
+    plt.xlabel('Time (hours)',fontname='Arial',fontsize=18)
+    plt.ylabel(str(species)+' (nM)',fontname='Arial',fontsize=18)
     plt.show()
         
 #%% lin tree
@@ -624,7 +646,9 @@ def lin_tree(output_dir,g1_cx):
         g += 1   
 
     plt.yticks([])
-    plt.xticks(fontname='Arial',fontsize=18)   
+    plt.xticks(fontname='Arial',fontsize=18)
+    plt.xlabel('Time(hours)',fontname='Arial',fontsize=18)
+
     plt.show()
 
 
@@ -1623,9 +1647,14 @@ plt.show()
 
 #%% timecourse_lin_all with cPARP
 
-test_dir = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/lapatinib_drs_r4/lapatinib_8.0'
+# test_dir = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/lapatinib_drs_r4/lapatinib_8.0'
 
-output_dir = test_dir
+# output_dir = test_dir
+
+# output_dir = dir_edrs_t3_r1
+
+output_dir = dir_lap_new
+
 
 tmax = 72*3600
     
@@ -1633,14 +1662,15 @@ tmax = 72*3600
     
 # g1_cells = np.random.randint(0,99,size=25)
 
-g1_cells = range(0,99)
+# g1_cells = range(0,99)
+g1_cells = range(0,15)
 
-g1_cells = np.unique(g1_cells)
+# g1_cells = np.unique(g1_cells)
 
-g1_cells =  g1_cells[g1_cells !=13]
-g1_cells =  g1_cells[g1_cells !=16]
-g1_cells =  g1_cells[g1_cells !=51]
-g1_cells =  g1_cells[g1_cells !=83]
+# g1_cells =  g1_cells[g1_cells !=13]
+# g1_cells =  g1_cells[g1_cells !=16]
+# g1_cells =  g1_cells[g1_cells !=51]
+# g1_cells =  g1_cells[g1_cells !=83]
 
 
 x_t_max2 = []
@@ -1667,64 +1697,192 @@ for c in range(len(g1_cells)):
     
     g_all = np.array(g_all).astype('int')
     
-    g_max = max(g_all)
+    if g_all.size>0:
     
-    output_gmax_all = list(filter(lambda x:x.startswith('g'+str(g_max)),outputs_lin))
+        g_max = max(g_all)
     
-    output_gmax = list(filter(lambda x:x.startswith('g'+str(g_max)),outputs_lin))[0]
-    
-    lin_gmax_all = [re.search('lin_(.*)_tout.txt',output_gmax_all[i]).group(1) for i in range(len(output_gmax_all))]
-    
-    gmat = [lin_gmax_all[i].split('c')[1:] for i in range(len(lin_gmax_all))]
-    
-    c_gmax_all = [re.search('(g)'+str(g_max)+'(_c\d+)',output_gmax_all[i]).group().split('c')[1] for i in range(len(output_gmax_all))]
-    
-    for i in range(len(c_gmax_all)):
-        gmat[i].append(c_gmax_all[i])
-    
-    gmat = np.array(gmat)
-    
-    gmat_u = [np.unique(gmat[:,i]) for i in range(np.shape(gmat)[1])]
-    
-    x_t_max = []
-    
-    for g in range(len(gmat_u)):
-        for c in range(len(gmat_u[g])):
-            gx_cx = 'g'+str(g+1)+'_c'+str(gmat_u[g][c])
-            outputs_gc = list(filter(lambda x:x.startswith(gx_cx+'_'),outputs_ls))
-            xoutS_file = list(filter(lambda x:x.endswith('xoutS.txt'),outputs_gc))[0]
-            tout_file = list(filter(lambda x:x.endswith('tout.txt'),outputs_gc))[0]
+            
             
         
-    
-    
-            x_s = np.loadtxt(os.path.join(output_dir,xoutS_file),delimiter='\t')
-            
-            if np.shape(np.shape(x_s))[0]>1:
-                tout_all = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
-                
-                x_t1 = x_s[:, list(species_all).index('PARP')]
-                x_t2 = x_s[:, list(species_all).index('cPARP')]
-                x_t = x_t2/x_t1
+        output_gmax_all = list(filter(lambda x:x.startswith('g'+str(g_max)),outputs_lin))
         
-            
-                # x_t = x_s[:, list(species_all).index(species)]
-                x_t_max.append(max(x_t))
+        output_gmax = list(filter(lambda x:x.startswith('g'+str(g_max)),outputs_lin))[0]
+        
+        lin_gmax_all = [re.search('lin_(.*)_tout.txt',output_gmax_all[i]).group(1) for i in range(len(output_gmax_all))]
+        
+        gmat = [lin_gmax_all[i].split('c')[1:] for i in range(len(lin_gmax_all))]
+        
+        c_gmax_all = [re.search('(g)'+str(g_max)+'(_c\d+)',output_gmax_all[i]).group().split('c')[1] for i in range(len(output_gmax_all))]
+        
+        for i in range(len(c_gmax_all)):
+            gmat[i].append(c_gmax_all[i])
+        
+        gmat = np.array(gmat)
+        
+        gmat_u = [np.unique(gmat[:,i]) for i in range(np.shape(gmat)[1])]
+        
+        x_t_max = []
+        
+        for g in range(len(gmat_u)):
+            for c in range(len(gmat_u[g])):
+                gx_cx = 'g'+str(g+1)+'_c'+str(gmat_u[g][c])
+                outputs_gc = list(filter(lambda x:x.startswith(gx_cx+'_'),outputs_ls))
+                xoutS_file = list(filter(lambda x:x.endswith('xoutS.txt'),outputs_gc))[0]
+                tout_file = list(filter(lambda x:x.endswith('tout.txt'),outputs_gc))[0]
                 
-                plt.plot(tout_all/3600,x_t)
             
-    x_t_max2.append(max(x_t_max))
+        
+        
+                x_s = np.loadtxt(os.path.join(output_dir,xoutS_file),delimiter='\t')
+                
+                if np.shape(np.shape(x_s))[0]>1:
+                    tout_all = np.loadtxt(os.path.join(output_dir,tout_file),delimiter='\t')
+                    
+                    x_t1 = x_s[:, list(species_all).index('PARP')]
+                    x_t2 = x_s[:, list(species_all).index('cPARP')]
+                    x_t = x_t2/x_t1
+            
+                
+                    # x_t = x_s[:, list(species_all).index(species)]
+                    x_t_max.append(max(x_t))
+                    
+                    plt.plot(tout_all/3600,x_t)
+                
+        x_t_max2.append(max(x_t_max))
+        
+    else:
+        x_s = np.loadtxt(os.path.join(output_dir,'g1_c'+str(c)+'_xoutS.txt'),delimiter='\t')
+        tout_all = np.loadtxt(os.path.join(output_dir,'g1_c'+str(c)+'_tout.txt'),delimiter='\t')
+        x_t1 = x_s[:, list(species_all).index('PARP')]
+        x_t2 = x_s[:, list(species_all).index('cPARP')]
+        x_t = x_t2/x_t1
+        
+        plt.plot(tout_all/3600,x_t)
+        x_t_max2.append(max(x_t))
+        
+
+        
         
 ymax = max(np.array(x_t_max2))
 
-plt.xlim(0,tmax/3600)
+# plt.xlim(0,tmax/3600)
+plt.xlim(0,50)
 plt.ylim(0,ymax*1.25)
+plt.ylabel('cPARP/PARP',fontsize=18,fontname='Arial')
+plt.xlabel('Time (hours)',fontsize=18,fontname='Arial')
+plt.xticks(fontsize=18,fontname='Arial')
+plt.yticks(fontsize=18,fontname='Arial')
 plt.show()
     
     
     
     
+#%%
+
+## edrs_t3 cell population dynamics
+
+dir_edrs_t3 = '/media/arnab/bigchungus/projects/ccle_egf_drs/SPARCED/output/egf_drs_t3_r1'
+
+ls_drs_dir = os.listdir(dir_edrs_t3)
+
+ls_drs_dir.sort()
+
+doses = [float(dose.split('_')[1]) for dose in ls_drs_dir]
+
+doses.sort()
+
+result_doses = {}
+
+
+#
+for dose_dir in ls_drs_dir:
+    tcp, tpa, tds = drs_outputs(os.path.join(dir_edrs_t3,dose_dir))
+    result_dose = {}
+    result_dose['timecourse_cellpop'] = tcp
+    result_dose['timepoints_all'] = tpa
+    result_dose['tout_deaths'] = tds
     
+    result_doses[dose_dir] = result_dose
+
+
+
+#
+import pickle
+f = open(os.path.join(wd,"result_doses_edrs_t3_partial.pkl"),"wb")
+pickle.dump(result_doses,f)
+f.close()
+
+# file_to_read = open(os.path.join(wd,'result_doses.pkl'),'rb')
+# result_dic = pickle.load(file_to_read)
+
+
+#% plot
+colors = ['blue','orange','green','red','purple','brown','pink','gray']    
+colors = ['tab:'+str(x) for x in colors]
+
+
+# for dose_dir in ls_drs_dir:
+    
+    
+    
+#     tcp = result_doses[dose_dir]['timecourse_cellpop']
+#     tps = result_doses[dose_dir]['timepoints_all']
+    
+#     plt.plot(tps/3600,tcp)
+
+
+for i,d in enumerate(doses):
+    
+    dose_dir = 'egf_'+str(d)
+    
+    tcp = result_doses[dose_dir]['timecourse_cellpop']
+    tps = result_doses[dose_dir]['timepoints_all']
+    
+    
+    plt.plot(tps/3600,tcp,c=colors[-(i+1)])
+
+plt.axhline(200,linestyle='--',c='k')
+
+
+# plt.title('cell population over time')
+plt.xlabel('Time (hrs)',fontsize=18,fontname='Arial')
+plt.ylabel('Number of cells',fontsize=18,fontname='Arial')
+# plt.legend(ls_drs_dir)
+plt.xlim(0,50)
+plt.xticks(fontsize=18,fontname='Arial')
+plt.yticks(fontsize=18,fontname='Arial')
+plt.show()
+
+
+# print legends
+
+h = 10
+
+for i,d in enumerate(doses):
+    plt.axhline(h - i,c=colors[-(i+1)],linewidth=5)
+    
+plt.show()
+
+#% doubling time
+
+doses_d = doses[5:]
+
+td_all = []
+
+for d in doses_d:
+    dose_dir = 'egf_'+str(d)
+    tcp = result_doses[dose_dir]['timecourse_cellpop']
+    tps = result_doses[dose_dir]['timepoints_all']
+    td_idx = np.where(np.array(result_doses[dose_dir]['timecourse_cellpop']) >= 200)[0][0]
+    td = tps[td_idx]
+    td_all.append(td)
+ 
+doses_d = np.array(doses_d)
+td_all = np.array(td_all)
+    
+plt.plot(doses_d,td_all/3600)   
+ 
+plt.show()
     
 
 
