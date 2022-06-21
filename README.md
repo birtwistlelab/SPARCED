@@ -25,7 +25,7 @@ Once you have Docker installed, follow the simple steps below.
 2. Use `docker pull birtwistlelab/sparced-notebook:latest` to download the latest version of the docker image
 3. Once the download is complete, use `docker run -p 8888:8888 --name testnb1 -i -t birtwistlelab/sparced-notebook:latest`, and in your browser, go to the last URL produced in your terminal from this command
     - `testnb1` is just a sample name for the container you're creating with this command. If you try to create another container with this name, delete the old one first with `docker rm testnb1`
-4. Viola! Once this command finishes, you should see a URL in your terminal that looks similar to `http://127.0.0.1:8888/?token=4a7c71c7a3b0080a4f331b256ae435fbc70`--paste this into your browser. You can now begin stepping through the commands in each of the files in the `jupyter_notebooks` folder to learn more about the model and perform small runs.
+4. Voila! Once this command finishes, you should see a URL in your terminal that looks similar to `http://127.0.0.1:8888/?token=4a7c71c7a3b0080a4f331b256ae435fbc70`--paste this into your browser. You can now begin stepping through the commands in each of the files in the `jupyter_notebooks` folder to learn more about the model and perform small runs.
 
 To use custom data in the SPARCED-jupyter workflow, start a container with the commands above, and look at the `input_files` directory. Delete the current files and run `docker cp <datafile> <container-name(e.g. testnb1)>:/app/input_files/<datafile>` to replace them.
 
