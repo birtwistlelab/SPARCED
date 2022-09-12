@@ -11763,8 +11763,8 @@
           <speciesReference species="p53ac" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="ATMP"/>
           <modifierSpeciesReference species="ATRac"/>
+          <modifierSpeciesReference species="ATMP"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -13692,11 +13692,11 @@
           <speciesReference species="Mei" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Mep27"/>
           <modifierSpeciesReference species="Me"/>
-          <modifierSpeciesReference species="Map27"/>
-          <modifierSpeciesReference species="Ma"/>
+          <modifierSpeciesReference species="Mep27"/>
           <modifierSpeciesReference species="Mai"/>
+          <modifierSpeciesReference species="Ma"/>
+          <modifierSpeciesReference species="Map27"/>
           <modifierSpeciesReference species="Mep21"/>
           <modifierSpeciesReference species="Map21"/>
         </listOfModifiers>
@@ -14084,11 +14084,11 @@
           <speciesReference species="Mai" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Mep27"/>
           <modifierSpeciesReference species="Me"/>
           <modifierSpeciesReference species="Mei"/>
-          <modifierSpeciesReference species="Map27"/>
+          <modifierSpeciesReference species="Mep27"/>
           <modifierSpeciesReference species="Ma"/>
+          <modifierSpeciesReference species="Map27"/>
           <modifierSpeciesReference species="Mep21"/>
           <modifierSpeciesReference species="Map21"/>
         </listOfModifiers>
@@ -59616,8 +59616,8 @@
           <speciesReference species="m_SPRY2" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="pRSKnuc"/>
           <modifierSpeciesReference species="ppERKnuc"/>
+          <modifierSpeciesReference species="pRSKnuc"/>
           <modifierSpeciesReference species="ag_SPRY2"/>
         </listOfModifiers>
         <kineticLaw>
@@ -60383,8 +60383,8 @@
           <speciesReference species="m_DUSP6" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="pRSKnuc"/>
           <modifierSpeciesReference species="ppERKnuc"/>
+          <modifierSpeciesReference species="pRSKnuc"/>
           <modifierSpeciesReference species="ag_DUSP6"/>
         </listOfModifiers>
         <kineticLaw>
@@ -60580,8 +60580,8 @@
           <speciesReference species="m_DUSP1" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="pRSKnuc"/>
           <modifierSpeciesReference species="ppERKnuc"/>
+          <modifierSpeciesReference species="pRSKnuc"/>
           <modifierSpeciesReference species="ag_DUSP1"/>
         </listOfModifiers>
         <kineticLaw>
@@ -60657,9 +60657,9 @@
           <speciesReference species="m_FOS" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="ppERKnuc"/>
           <modifierSpeciesReference species="pRSKnuc"/>
           <modifierSpeciesReference species="pcFos_cJun"/>
-          <modifierSpeciesReference species="ppERKnuc"/>
           <modifierSpeciesReference species="ag_FOS"/>
         </listOfModifiers>
         <kineticLaw>
