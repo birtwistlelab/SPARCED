@@ -2577,26 +2577,26 @@
       <species id="m_PPM1D" compartment="Nucleus" initialConcentration="0.0006324961" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="m_ATM" compartment="Cytoplasm" initialConcentration="0.0009487441" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="m_ATR" compartment="Cytoplasm" initialConcentration="0.0006324961" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_RB1" compartment="Nucleus" initialConcentration="0.00316248" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_E2F1" compartment="Nucleus" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_E2F2" compartment="Nucleus" initialConcentration="0.000316248" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_E2F3" compartment="Nucleus" initialConcentration="0.0006324961" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_RB1" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_E2F1" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_E2F2" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_E2F3" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="m_CCND1" compartment="Nucleus" initialConcentration="0.001897488" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="m_CCND2" compartment="Nucleus" initialConcentration="0.000316248" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="m_CCND3" compartment="Nucleus" initialConcentration="0.0006324961" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CCNE1" compartment="Nucleus" initialConcentration="0.000316248" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CCNE2" compartment="Nucleus" initialConcentration="0.0006324961" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_SKP2" compartment="Nucleus" initialConcentration="0.0006324961" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CDC25A" compartment="Nucleus" initialConcentration="0.000316248" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CDC25B" compartment="Nucleus" initialConcentration="0.000316248" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CDC25C" compartment="Nucleus" initialConcentration="0.00316248" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CCNA2" compartment="Nucleus" initialConcentration="0.00158124" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CDKN1B" compartment="Nucleus" initialConcentration="0.0006324961" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CDH1" compartment="Nucleus" initialConcentration="0.00474372" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CCNB1" compartment="Nucleus" initialConcentration="0.02751358" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CDC20" compartment="Nucleus" initialConcentration="0.003794976" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_WEE1" compartment="Nucleus" initialConcentration="0.002213736" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="m_CHEK1" compartment="Cytoplasm" initialConcentration="0.00316248" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CCNE1" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CCNE2" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_SKP2" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CDC25A" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CDC25B" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CDC25C" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CCNA2" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CDKN1B" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CDH1" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CCNB1" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CDC20" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_WEE1" compartment="Nucleus" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="m_CHEK1" compartment="Cytoplasm" initialConcentration="0.005376217" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="m_CDKN1A" compartment="Cytoplasm" initialConcentration="0.003794976" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="m_CDK1" compartment="Cytoplasm" initialConcentration="0.01391491" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="m_CDK2" compartment="Cytoplasm" initialConcentration="0.0006324961" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
@@ -6489,9 +6489,9 @@
           <speciesReference species="Cd" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="pRBp"/>
           <modifierSpeciesReference species="pRB"/>
-          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="EIF4E"/>
           <modifierSpeciesReference species="m_CCND1"/>
         </listOfModifiers>
@@ -6546,9 +6546,9 @@
           <speciesReference species="Cd" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="pRBp"/>
           <modifierSpeciesReference species="pRB"/>
-          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="EIF4E"/>
           <modifierSpeciesReference species="m_CCND2"/>
         </listOfModifiers>
@@ -6603,9 +6603,9 @@
           <speciesReference species="Cd" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="pRBp"/>
           <modifierSpeciesReference species="pRB"/>
-          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="EIF4E"/>
           <modifierSpeciesReference species="m_CCND3"/>
         </listOfModifiers>
@@ -6660,9 +6660,9 @@
           <speciesReference species="Ce" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="pRBp"/>
           <modifierSpeciesReference species="pRB"/>
-          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="m_CCNE1"/>
         </listOfModifiers>
         <kineticLaw>
@@ -6700,9 +6700,9 @@
           <speciesReference species="Ce" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="pRBp"/>
           <modifierSpeciesReference species="pRB"/>
-          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="m_CCNE2"/>
         </listOfModifiers>
         <kineticLaw>
@@ -6812,9 +6812,9 @@
           <speciesReference species="Ca" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="pRBp"/>
           <modifierSpeciesReference species="pRB"/>
-          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="m_CCNA2"/>
         </listOfModifiers>
         <kineticLaw>
@@ -6852,9 +6852,9 @@
           <speciesReference species="p27" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="pRBp"/>
           <modifierSpeciesReference species="pRB"/>
-          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="m_CDKN1B"/>
         </listOfModifiers>
         <kineticLaw>
@@ -13694,9 +13694,9 @@
         <listOfModifiers>
           <modifierSpeciesReference species="Mep27"/>
           <modifierSpeciesReference species="Me"/>
+          <modifierSpeciesReference species="Map27"/>
           <modifierSpeciesReference species="Ma"/>
           <modifierSpeciesReference species="Mai"/>
-          <modifierSpeciesReference species="Map27"/>
           <modifierSpeciesReference species="Mep21"/>
           <modifierSpeciesReference species="Map21"/>
         </listOfModifiers>
@@ -14084,11 +14084,11 @@
           <speciesReference species="Mai" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Mei"/>
           <modifierSpeciesReference species="Mep27"/>
           <modifierSpeciesReference species="Me"/>
-          <modifierSpeciesReference species="Ma"/>
+          <modifierSpeciesReference species="Mei"/>
           <modifierSpeciesReference species="Map27"/>
+          <modifierSpeciesReference species="Ma"/>
           <modifierSpeciesReference species="Mep21"/>
           <modifierSpeciesReference species="Map21"/>
         </listOfModifiers>
@@ -57439,8 +57439,8 @@
           <speciesReference species="m_CCND1" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="cMyc"/>
           <modifierSpeciesReference species="pcFos_cJun"/>
+          <modifierSpeciesReference species="cMyc"/>
           <modifierSpeciesReference species="ag_CCND1"/>
         </listOfModifiers>
         <kineticLaw>
@@ -57523,8 +57523,8 @@
           <speciesReference species="m_CCND2" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="cMyc"/>
           <modifierSpeciesReference species="pcFos_cJun"/>
+          <modifierSpeciesReference species="cMyc"/>
           <modifierSpeciesReference species="ag_CCND2"/>
         </listOfModifiers>
         <kineticLaw>
@@ -57607,8 +57607,8 @@
           <speciesReference species="m_CCND3" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="cMyc"/>
           <modifierSpeciesReference species="pcFos_cJun"/>
+          <modifierSpeciesReference species="cMyc"/>
           <modifierSpeciesReference species="ag_CCND3"/>
         </listOfModifiers>
         <kineticLaw>
@@ -60658,8 +60658,8 @@
         </listOfProducts>
         <listOfModifiers>
           <modifierSpeciesReference species="pRSKnuc"/>
-          <modifierSpeciesReference species="ppERKnuc"/>
           <modifierSpeciesReference species="pcFos_cJun"/>
+          <modifierSpeciesReference species="ppERKnuc"/>
           <modifierSpeciesReference species="ag_FOS"/>
         </listOfModifiers>
         <kineticLaw>
