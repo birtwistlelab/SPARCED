@@ -3,6 +3,7 @@ import importlib
 import amici
 import numpy as np
 import pandas as pd
+import os
 
 from modules.SGEmodule import SGEmodule
 from modules.RunPrep import RunPrep
@@ -11,6 +12,10 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     ts = 30 # time-step to update mRNA numbers
     NSteps = int(th*3600/ts)
     tout_all = np.arange(0,th*3600+1,ts) 
+    
+    cd = os.getcwd()
+    wd = os.path.dirname(cd)
+    input_path = os.path.join(wd,'input_files')
     
     # Read-in the model SBML to get compartmental volumes (used to convert nM to mpc and vice versa)
     sbml_reader = libsbml.SBMLReader()
@@ -21,7 +26,7 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
     splist = list(model.getStateIds())
     if len(spdata)==0: # if no initial condition values are supplied, use the input file information
-        spdata0 = pd.read_csv('Species.txt',header=0,index_col=0,sep="\t")
+        spdata0 = pd.read_csv(os.path.join(input_path,'Species.txt'),header=0,index_col=0,sep="\t")
         spdata = np.float(spdata0.values[:,1])  
     
     # calculate 

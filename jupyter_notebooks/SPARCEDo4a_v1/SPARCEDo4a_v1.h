@@ -621,7 +621,7 @@ class Model_SPARCEDo4a_v1 : public amici::Model_ODE {
      * @return AMICI version string
      */
     virtual std::string getAmiciVersion() const override {
-        return "0.11.18";
+        return "0.11.16";
     }
 
     /**
