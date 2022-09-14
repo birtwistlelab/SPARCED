@@ -6489,9 +6489,9 @@
           <speciesReference species="Cd" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="E2F"/>
-          <modifierSpeciesReference species="pRB"/>
           <modifierSpeciesReference species="pRBp"/>
+          <modifierSpeciesReference species="pRB"/>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="EIF4E"/>
           <modifierSpeciesReference species="m_CCND1"/>
         </listOfModifiers>
@@ -6546,9 +6546,9 @@
           <speciesReference species="Cd" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="E2F"/>
-          <modifierSpeciesReference species="pRB"/>
           <modifierSpeciesReference species="pRBp"/>
+          <modifierSpeciesReference species="pRB"/>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="EIF4E"/>
           <modifierSpeciesReference species="m_CCND2"/>
         </listOfModifiers>
@@ -6603,9 +6603,9 @@
           <speciesReference species="Cd" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="E2F"/>
-          <modifierSpeciesReference species="pRB"/>
           <modifierSpeciesReference species="pRBp"/>
+          <modifierSpeciesReference species="pRB"/>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="EIF4E"/>
           <modifierSpeciesReference species="m_CCND3"/>
         </listOfModifiers>
@@ -6660,9 +6660,9 @@
           <speciesReference species="Ce" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="E2F"/>
-          <modifierSpeciesReference species="pRB"/>
           <modifierSpeciesReference species="pRBp"/>
+          <modifierSpeciesReference species="pRB"/>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="m_CCNE1"/>
         </listOfModifiers>
         <kineticLaw>
@@ -6700,9 +6700,9 @@
           <speciesReference species="Ce" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="E2F"/>
-          <modifierSpeciesReference species="pRB"/>
           <modifierSpeciesReference species="pRBp"/>
+          <modifierSpeciesReference species="pRB"/>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="m_CCNE2"/>
         </listOfModifiers>
         <kineticLaw>
@@ -6812,9 +6812,9 @@
           <speciesReference species="Ca" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="E2F"/>
-          <modifierSpeciesReference species="pRB"/>
           <modifierSpeciesReference species="pRBp"/>
+          <modifierSpeciesReference species="pRB"/>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="m_CCNA2"/>
         </listOfModifiers>
         <kineticLaw>
@@ -6852,9 +6852,9 @@
           <speciesReference species="p27" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="E2F"/>
-          <modifierSpeciesReference species="pRB"/>
           <modifierSpeciesReference species="pRBp"/>
+          <modifierSpeciesReference species="pRB"/>
+          <modifierSpeciesReference species="E2F"/>
           <modifierSpeciesReference species="m_CDKN1B"/>
         </listOfModifiers>
         <kineticLaw>
@@ -13182,8 +13182,8 @@
           <speciesReference species="pRBp" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Md"/>
           <modifierSpeciesReference species="Mdp27"/>
+          <modifierSpeciesReference species="Md"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -13497,9 +13497,9 @@
           <speciesReference species="Mdi" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Mdp21"/>
-          <modifierSpeciesReference species="Md"/>
           <modifierSpeciesReference species="Mdp27"/>
+          <modifierSpeciesReference species="Md"/>
+          <modifierSpeciesReference species="Mdp21"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -13692,13 +13692,13 @@
           <speciesReference species="Mei" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="Mep27"/>
+          <modifierSpeciesReference species="Me"/>
+          <modifierSpeciesReference species="Map27"/>
+          <modifierSpeciesReference species="Mai"/>
+          <modifierSpeciesReference species="Ma"/>
           <modifierSpeciesReference species="Map21"/>
           <modifierSpeciesReference species="Mep21"/>
-          <modifierSpeciesReference species="Me"/>
-          <modifierSpeciesReference species="Mep27"/>
-          <modifierSpeciesReference species="Ma"/>
-          <modifierSpeciesReference species="Mai"/>
-          <modifierSpeciesReference species="Map27"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -14084,13 +14084,13 @@
           <speciesReference species="Mai" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="Mei"/>
+          <modifierSpeciesReference species="Mep27"/>
+          <modifierSpeciesReference species="Me"/>
+          <modifierSpeciesReference species="Map27"/>
+          <modifierSpeciesReference species="Ma"/>
           <modifierSpeciesReference species="Map21"/>
           <modifierSpeciesReference species="Mep21"/>
-          <modifierSpeciesReference species="Mei"/>
-          <modifierSpeciesReference species="Me"/>
-          <modifierSpeciesReference species="Mep27"/>
-          <modifierSpeciesReference species="Ma"/>
-          <modifierSpeciesReference species="Map27"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -14638,9 +14638,9 @@
           <speciesReference species="Mbi" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="Mb"/>
           <modifierSpeciesReference species="Mbp27"/>
           <modifierSpeciesReference species="Mbp21"/>
-          <modifierSpeciesReference species="Mb"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -57439,8 +57439,8 @@
           <speciesReference species="m_CCND1" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="pcFos_cJun"/>
           <modifierSpeciesReference species="cMyc"/>
+          <modifierSpeciesReference species="pcFos_cJun"/>
           <modifierSpeciesReference species="ag_CCND1"/>
         </listOfModifiers>
         <kineticLaw>
@@ -57523,8 +57523,8 @@
           <speciesReference species="m_CCND2" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="pcFos_cJun"/>
           <modifierSpeciesReference species="cMyc"/>
+          <modifierSpeciesReference species="pcFos_cJun"/>
           <modifierSpeciesReference species="ag_CCND2"/>
         </listOfModifiers>
         <kineticLaw>
@@ -57607,8 +57607,8 @@
           <speciesReference species="m_CCND3" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="pcFos_cJun"/>
           <modifierSpeciesReference species="cMyc"/>
+          <modifierSpeciesReference species="pcFos_cJun"/>
           <modifierSpeciesReference species="ag_CCND3"/>
         </listOfModifiers>
         <kineticLaw>
