@@ -35,7 +35,7 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     
     xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
     
-    # xoutS_all = np.zeros(shape=(1,len(splist)))
+
     xoutS_all[0,:] = spdata # 24hr time point
     # xoutG_all = np.zeros(shape=(1,len(genedata)))
     xoutG_all = np.zeros(shape=(NSteps+1,len(genedata)))
@@ -63,11 +63,11 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
         # Store the end point as next 30sec time-point:
             
         xoutS_all[qq+1,:] = rdata._swigptr.x[-n_sp:]
-        # xoutS_all = np.vstack([xoutS_all, rdata['x'][-1,:]]) 
+ 
         rdata = None
         # Store active/inactive gene states:
         xoutG_all[qq+1,:] = genedata
-        # xoutG_all = np.vstack([xoutG_all, genedata]) 
+
         # check for cell death:
         if xoutS_all[-1,PARPind] < xoutS_all[-1,cPARPind]: 
             print('Apoptosis happened')

@@ -2,9 +2,10 @@
 #include "amici/defines.h"
 #include "sundials/sundials_types.h"
 
+#include <gsl/gsl-lite.hpp>
 #include <array>
 
-#include "x_rdata.h"
+#include "SPARCED_x_rdata.h"
 
 namespace amici {
 namespace model_SPARCED {
@@ -785,5 +786,5 @@ void x_solver_SPARCED(realtype *x_solver, const realtype *x_rdata){
     x_solver[772] = EIF4E_mT;
 }
 
-} // namespace amici
 } // namespace model_SPARCED
+} // namespace amici

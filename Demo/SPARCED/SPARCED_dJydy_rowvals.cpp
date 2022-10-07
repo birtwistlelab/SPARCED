@@ -115,5 +115,5 @@ static constexpr std::array<std::array<sunindextype, 1>, 102> dJydy_rowvals_SPAR
 void dJydy_rowvals_SPARCED(SUNMatrixWrapper &dJydy, int index){
     dJydy.set_indexvals(gsl::make_span(dJydy_rowvals_SPARCED_[index]));
 }
-} // namespace amici
 } // namespace model_SPARCED
+} // namespace amici
