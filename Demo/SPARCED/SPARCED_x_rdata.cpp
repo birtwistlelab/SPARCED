@@ -2,10 +2,11 @@
 #include "amici/defines.h"
 #include "sundials/sundials_types.h"
 
+#include <gsl/gsl-lite.hpp>
 #include <array>
 
-#include "tcl.h"
-#include "x.h"
+#include "SPARCED_x.h"
+#include "SPARCED_tcl.h"
 
 namespace amici {
 namespace model_SPARCED {
@@ -927,5 +928,5 @@ void x_rdata_SPARCED(realtype *x_rdata, const realtype *x, const realtype *tcl){
     x_rdata[913] = tcl_m_INS;
 }
 
-} // namespace amici
 } // namespace model_SPARCED
+} // namespace amici

@@ -115,5 +115,5 @@ static constexpr std::array<std::array<sunindextype, 103>, 102> dJydy_colptrs_SP
 void dJydy_colptrs_SPARCED(SUNMatrixWrapper &dJydy, int index){
     dJydy.set_indexptrs(gsl::make_span(dJydy_colptrs_SPARCED_[index]));
 }
-} // namespace amici
 } // namespace model_SPARCED
+} // namespace amici

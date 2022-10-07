@@ -2,15 +2,14 @@
 #include "amici/defines.h"
 #include "sundials/sundials_types.h"
 
+#include <gsl/gsl-lite.hpp>
 #include <array>
 
-#include "tcl.h"
-#include "p.h"
-#include "k.h"
-#include "w.h"
-#include "h.h"
-#include "x.h"
-#include "dwdx.h"
+#include "SPARCED_x.h"
+#include "SPARCED_k.h"
+#include "SPARCED_w.h"
+#include "SPARCED_tcl.h"
+#include "SPARCED_dwdx.h"
 
 namespace amici {
 namespace model_SPARCED {
@@ -3016,5 +3015,5 @@ void dwdx_SPARCED(realtype *dwdx, const realtype t, const realtype *x, const rea
     dflux_r245_dEIF4E_mT = 5.2499999999999996e-12*k250;  // dwdx[2997]
 }
 
-} // namespace amici
 } // namespace model_SPARCED
+} // namespace amici

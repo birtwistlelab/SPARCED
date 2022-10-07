@@ -14,5 +14,5 @@ static constexpr std::array<sunindextype, 774> dwdx_colptrs_SPARCED_ = {
 void dwdx_colptrs_SPARCED(SUNMatrixWrapper &dwdx){
     dwdx.set_indexptrs(gsl::make_span(dwdx_colptrs_SPARCED_));
 }
-} // namespace amici
 } // namespace model_SPARCED
+} // namespace amici
