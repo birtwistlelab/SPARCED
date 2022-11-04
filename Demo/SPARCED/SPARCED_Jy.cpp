@@ -2,13 +2,13 @@
 #include "amici/defines.h"
 #include "sundials/sundials_types.h"
 
+#include <gsl/gsl-lite.hpp>
 #include <array>
 
-#include "y.h"
-#include "my.h"
-#include "p.h"
-#include "k.h"
-#include "sigmay.h"
+#include "SPARCED_k.h"
+#include "SPARCED_y.h"
+#include "SPARCED_sigmay.h"
+#include "SPARCED_my.h"
 
 namespace amici {
 namespace model_SPARCED {
@@ -324,5 +324,5 @@ void Jy_SPARCED(realtype *Jy, const int iy, const realtype *p, const realtype *k
     }
 }
 
-} // namespace amici
 } // namespace model_SPARCED
+} // namespace amici

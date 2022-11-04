@@ -166,7 +166,7 @@ setup(
     # license = 'BSD',
     ext_modules=[MODEL_EXT],
     packages=find_packages(),
-    install_requires=['amici==0.11.12'],
+    install_requires=['amici==0.11.18'],
     extras_require={'wurlitzer': ['wurlitzer']},
     python_requires='>=3.7',
     package_data={},
