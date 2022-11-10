@@ -142,19 +142,11 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
                 for ematch in matches1:
                     formula = formula.replace(ematch.group(),paramnames[-1])
                 j +=1
-    if ratelaw[0] == 'Cytoplasm':
-        valcomp = 5.25e-12
-    elif ratelaw[0] == 'Extracellular':
-        valcomp = 5.00e-5
-    elif ratelaw[0] == 'Nucleus':
-        valcomp = 1.75e-12
-    elif ratelaw[0] == 'Mitochondrion':
-        valcomp = 3.675e-13
     #don't include reactions without products or reactants
     if products == [] and reactants == []:
         pass
     else:
-        fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
+        fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, ratelaw[0]))
 
 # Write compartment ICs
 fileModel.write("\n  # Compartment initializations:\n")
