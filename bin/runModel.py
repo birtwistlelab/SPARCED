@@ -111,8 +111,8 @@ elif flagD == 1:
         resi = [sub.replace('m_', 'ig_') for sub in columnsG]
         columnsG2 = np.concatenate((resa, resi), axis=None)
         condsSDF = pd.DataFrame(data=xoutS_all,columns=columnsS)
-        condsSDF.to_excel(nmxlsfile+'S_0.xlsx')
+        condsSDF.to_excel(nmxlsfile+'S.xlsx')
         condsSDF = None
         condsGDF = pd.DataFrame(data=xoutG_all,columns=columnsG2)
-        condsGDF.to_excel(nmxlsfile+'G_0.xlsx')
+        condsGDF.to_excel(nmxlsfile+'G.xlsx')
         condsGDF = None
