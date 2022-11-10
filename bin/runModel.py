@@ -65,11 +65,12 @@ if flagD == 0:
     solver.setMaxSteps = 1e10
     model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model)
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
 
     if flagWr==1:
         columnsS=[ele for ele in model.getStateIds()]
-        columnsG = columnsS[773:914]
+        columnsG = [x for n, x in enumerate(columnsS) if 'm_' in x]
+        columnsG = columnsG[1:]
         resa = [sub.replace('m_', 'ag_') for sub in columnsG]
         resi = [sub.replace('m_', 'ig_') for sub in columnsG]
         columnsG2 = np.concatenate((resa, resi), axis=None)
@@ -100,11 +101,12 @@ elif flagD == 1:
     solver.setMaxSteps = 1e10
     model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],Vn,Vc,model)
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
 
     if flagWr==1:
         columnsS=[ele for ele in model.getStateIds()]
-        columnsG = columnsS[773:914]
+        columnsG = [x for n, x in enumerate(columnsS) if 'm_' in x]
+        columnsG = columnsG[1:]
         resa = [sub.replace('m_', 'ag_') for sub in columnsG]
         resi = [sub.replace('m_', 'ig_') for sub in columnsG]
         columnsG2 = np.concatenate((resa, resi), axis=None)
