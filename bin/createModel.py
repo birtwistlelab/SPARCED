@@ -146,7 +146,7 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
     if products == [] and reactants == []:
         pass
     else:
-        fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, ratelaw[0]))
+        fileModel.write("  %s: %s => %s; (%s)*%.6s;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, ratelaw[0]))
 
 # Write compartment ICs
 fileModel.write("\n  # Compartment initializations:\n")
