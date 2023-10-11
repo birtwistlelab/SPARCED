@@ -10,10 +10,10 @@ FROM ubuntu:18.04
 RUN apt-get update -qq && apt-get install -qq -y curl git python3-dev python3-pip libhdf5-serial-dev libatlas-base-dev swig rsync && ln -s /usr/bin/python3 python
 
 # Changing working directory in Docker container
-WORKDIR /sparced_cellpop
+WORKDIR /SPARCED
 
 # Copy data from local into Docker container
-ADD . /sparced_cellpop
+ADD . /SPARCED
 
 # Install Miniconda
 RUN curl -o miniconda.sh -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
