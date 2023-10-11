@@ -1,0 +1,2 @@
+p53ac/(p53ac+p53inac+p53ac_MDM4)
+cPARP/PARP
