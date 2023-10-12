@@ -37,5 +37,5 @@ RUN pip install --no-cache-dir antimony==2.12.0.2
 RUN pip install --no-cache-dir numpy==1.23.2
 
 # Open directory
-WORKDIR /scripts
+WORKDIR ./scripts
 RUN python3 createModel_hpc.py
