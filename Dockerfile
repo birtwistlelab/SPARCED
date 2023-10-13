@@ -27,7 +27,7 @@ ENV PATH /opt/conda/bin:$PATH
 # Create and activate the Conda environment from environment.yml
 RUN conda env create -f environment.yml
 SHELL ["conda", "run", "-n", "sparced_cellPop", "/bin/bash", "-c"]
-
+RUN conda init bash
 RUN echo "source activate $(head -1 environment.yml | cut -d' ' -f2)" > ~/.bashrc
 ENV PATH /opt/conda/envs/$(head -1 environment.yml | cut -d' ' -f2)/bin:$PATH
 
