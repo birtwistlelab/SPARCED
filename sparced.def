@@ -38,7 +38,7 @@ from: continuumio/miniconda3
     . activate sparced
 
     #Append to the .bashrc file so the conda environment is also started on container run
-    echo "source activate sparced" >> ~/.bashrc
+    echo ". activate /opt/conda/envs/sparced" >> ~/.bashrc
     export PATH=/opt/conda/envs/sparced/bin:$PATH
 
     # Changing working directory in container
@@ -53,4 +53,4 @@ from: continuumio/miniconda3
 %runscript
     # Set the shell interpreter to use bash instead of /bin/sh
     exec /bin/bash
-    exec source activate sparced
+    exec source activate /opt/conda/envs/sparced
