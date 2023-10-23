@@ -4,13 +4,12 @@ from: continuumio/miniconda3
 %environment
     # Add conda to PATH
     export PATH=/opt/conda/bin:$PATH
-
     # Set the shell interpreter to use Bash
     export SHELL=/bin/bash
 
 %files
     #First pull in the environment.yml for working container construction. I don't think order matters here.
-    /home/jonah/Desktop/SPARCED/* /SPARCED/
+    $PWD/* /SPARCED/
 
 %post
     # Install system-level dependencies
@@ -42,15 +41,10 @@ from: continuumio/miniconda3
     export PATH=/opt/conda/envs/sparced/bin:$PATH
 
     # Changing working directory in container
-    #mkdir -p /SPARCED
     cd /SPARCED
-
-    # Copy data from local into container
-    #rsync -avP /SPARCED/ /SPARCED/
 
     cd /SPARCED/scripts
     python3 createModel_hpc.py
 %runscript
     # Set the shell interpreter to use bash instead of /bin/sh
-    exec /bin/bash
-    exec source activate /opt/conda/envs/sparced
+    exec /bin/bash -c "source /opt/conda/bin/activate sparced && exec /bin/bash"
