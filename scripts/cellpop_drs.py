@@ -4,11 +4,11 @@ Created on Fri May 12 18:06:40 2023
 
 @author: Arnab
 """
-
+# import all required libraries
 
 import pandas as pd
 import numpy as np
-# import re
+
 import libsbml
 import os
 import sys
@@ -17,15 +17,12 @@ import amici
 import argparse
 from scipy.signal import find_peaks
 import itertools
-import time
-import multiprocessing
-import concurrent.futures
 from datetime import datetime
 from mpi4py import MPI
 import pickle
 
 
-#%%
+#%% Retrieving MPI rank ID
 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
@@ -60,7 +57,8 @@ parser.add_argument('--override_ic_file', metavar='override_ic_file',default='ic
 args = parser.parse_args()
 
 
-#%%
+#%%  Define current and working directory, import SPARCED model
+
 cd = os.getcwd()
 wd = os.path.dirname(cd)
 sys.path.append(os.path.join(wd,'bin'))
@@ -77,25 +75,26 @@ if rank==0:
 
 sbml_file = "SPARCED.xml"
 model_name= sbml_file[0:-4]
-model_output_dir = model_name
-sys.path.insert(0, os.path.join(wd,model_output_dir))
+model_output_dir = model_name #Isn't this redundant?
+sys.path.insert(0, os.path.join(wd,model_output_dir)) #Why not just use model_name instead of model_output_dir?
 model_module = importlib.import_module(model_name)
 model = model_module.getModel()   
 
-#%%
 
 from modules.RunSPARCED import RunSPARCED
+
+#%% 
 
 omics_input = 'OmicsData.txt'
 genereg_input = 'GeneReg.txt'
 
-flagD = 0
+flagD = 0 # The flag for simulation type: deterministic=1, stochastic(hybrid)=0
 
-ts = 30
+ts = 30 # The time frame at which stochastic gene module and deterministic SBML module exhange/update information
 
-th = float(args.exp_time)
+th = float(args.exp_time) # The simulation time in hours, set by user defined 'exp_time' arguement via CLI
 
-species_all = list(model.getStateIds())
+species_all = list(model.getStateIds()) # List of all species in the model
 
 solver = model.getSolver()          # Create solver instance
 solver.setMaxSteps = 1e10
@@ -103,8 +102,7 @@ model.setTimepoints(np.linspace(0,ts))
 
 cell_pop = int(args.cellpop)
 
-#%%
-
+#%% Define initial stimulation conditions
 
 dose_egf = float(args.egf)
 dose_ins = float(args.ins)
@@ -115,16 +113,16 @@ dose_pdgf = float(args.pdgf)
 dose_nrg = float(args.nrg)
 
 
-STIMligs_id = ['E', 'H', 'HGF', 'P', 'F', 'I', 'INS']
+STIMligs_id = ['E', 'H', 'HGF', 'P', 'F', 'I', 'INS'] # Input ligand ID's in SPARCED
 
 
-STIMligs = [dose_egf,dose_nrg,dose_hgf,dose_pdgf,dose_fgf,dose_igf,dose_ins]
+STIMligs = [dose_egf,dose_nrg,dose_hgf,dose_pdgf,dose_fgf,dose_igf,dose_ins] # ligand concentrations
 
-drug = str(args.drug)
-dose = float(args.dose)*10e2
+drug = str(args.drug) # perturbant species ID
+dose = float(args.dose)*10e2 # perturbant dose in uM
 
 
-override_param = float(args.override_param)
+override_param = float(args.override_param) # 
 override_ic = float(args.override_ic)
 
 if override_ic > 0:
@@ -144,7 +142,7 @@ if override_param > 0:
 for l,lig in enumerate(STIMligs_id):
     species_initializations[species_all.index(lig)] = 0
 
-#%%
+#%% Define output directory
 
 output_dose = os.path.join(output_path,drug+'_'+str(float(args.dose)))
 
@@ -159,7 +157,7 @@ output_dir = output_dose
 
 
 
-#%% assign mpi tasks, preinc
+#%% Assign MPI tasks to ranks
 
 def assign_tasks(rank,n_cells,size):
     
@@ -177,37 +175,22 @@ def assign_tasks(rank,n_cells,size):
 
 
 
-#%%
+#%% Preincubate/Heterogenize
 
-
-# num_tasks = int(cell_pop)
-# num_ranks = int(size)
-
-# # Determine tasks to be assigned to each rank
-# tasks_per_rank = num_tasks // num_ranks
-# remainder = num_tasks % num_ranks
-
-# # Distribute the remaining tasks evenly among the ranks
-# if rank < remainder:
-#     my_tasks = tasks_per_rank + 1
-#     start_task = rank * my_tasks + 1
-# else:
-#     my_tasks = tasks_per_rank
-#     start_task = rank * tasks_per_rank + remainder + 1
 
 
 cellpop_preinc = int(cell_pop)
 
 cell0, cell_end = assign_tasks(rank,cellpop_preinc,size)
 
-#%%
+#%
 
 
 # Generate task-specific dictionaries
 preinc_dict = {}
 
 for task in range(cell0, cell_end):
-    # local_task = np.random.rand(rank+2)
+
     
     np.random.seed()
  
@@ -217,23 +200,12 @@ for task in range(cell0, cell_end):
     
     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
     
-    
-    # xoutS_lite = np.array(list(itertools.islice(xoutS_all,0,(len(xoutS_all)-1),20)))
-    # xoutG_lite = np.array(list(itertools.islice(xoutG_all,0,(len(xoutG_all)-1),20)))
-    # tout_lite = np.array(list(itertools.islice(tout_all,0,(len(tout_all)-1),20)))
+
  
     
     preinc_IC = xoutS_all[-1]
     
 
-    # output = {}
-    
-    # output['xoutS'] = xoutS_lite
-    # output['xoutG'] = xoutG_lite
-    # output['tout'] = tout_lite
- 
-    
-    # my_dict[task] = {'cell':int(task),'rank':rank, 'result':output}
     
     preinc_dict[task] = {'cell':int(task), 'preinc_IC':preinc_IC}
 
@@ -241,7 +213,6 @@ if rank != 0:
     comm.send(preinc_dict,dest=0)
 
 
-# comm.Barrier()
 
 results_preinc = None
 
@@ -266,12 +237,12 @@ if rank == 0:
     #     pickle.dump(merged_dicts_recv,f)
 results_preinc = comm.bcast(results_preinc, root = 0)
 
-#%%
+
 
 comm.Barrier()
 
 
-#%% initiate gen 0 
+#%% Initiate gen 0 (asynchronous cycling)
 
 th_g0 = 48
 
@@ -279,32 +250,18 @@ cellpop_g0 = cell_pop
 
 output_dir = output_dose
 
-# num_tasks = int(cell_pop_g0)
-
-# tasks_per_rank = num_tasks // num_ranks
-# remainder = num_tasks % num_ranks
-
-# if rank < remainder:
-#     my_tasks = tasks_per_rank + 1
-#     start_task = rank * my_tasks + 1
-# else:
-#     my_tasks = tasks_per_rank
-#     start_task = rank * tasks_per_rank + remainder + 1
 
 g0_dict = {}
-
-
-#%%
 
 
 
 g0_cell_start, g0_cell_end = assign_tasks(rank,cellpop_g0,size)
 
 
-#%%
+
 
 for task in range(g0_cell_start, g0_cell_end):
-    # local_task = np.random.rand(rank+2)
+
     
     cell_n = int(task)
     
@@ -316,7 +273,7 @@ for task in range(g0_cell_start, g0_cell_end):
     
     s_preinc_i = results_preinc[str(cell_n)]
     sp_input = np.array(s_preinc_i)
-    # species_initializations = np.array(sp_input)
+
     sp_input[np.argwhere(sp_input <= 1e-6)] = 0.0
     
     for l,lig in enumerate(STIMligs_id):
@@ -334,16 +291,15 @@ for task in range(g0_cell_start, g0_cell_end):
     
     output_g0_cell = {}
     
-    # output_g0_cell['cell'] = int(cell_n)
+
     output_g0_cell['xoutS'] = xoutS_all[:,list(species_all).index('Mb')]
-    # output_g0_cell['tout'] = tout_all
-    
+
     g0_dict[task] = {'cell':cell_n,'result':output_g0_cell,'ic_g1':ic_g1, 'tp_g0':tp_g0}
     
 if rank!= 0:
     comm.send(g0_dict,dest=0)
     
-# comm.Barrier()
+
   
 results_g0 = None
 ics_g1 = None
@@ -375,7 +331,7 @@ ics_g1 = comm.bcast(ics_g1, root = 0)
 tps_g0 = comm.bcast(tps_g0, root = 0)
 comm.Barrier()
 
-#%% aux functions
+#%% Functions for finding cell division time points
 
 mb_tr = float(args.mb_tr)
 
@@ -397,7 +353,7 @@ def find_dp(xoutS,tout,species_all=species_all):
     return(dp)
 
 def find_dp_all(data,species_all=species_all):
-    # data = xoutS[:,list(species_all).index('Mb')]
+
     p,_ = find_peaks(data,height=30)
     b = (np.diff(np.sign(np.diff(data))) > 0).nonzero()[0] + 1
     
@@ -415,7 +371,7 @@ def find_dp_all(data,species_all=species_all):
     return(dp_all)
 
 
-#%% initiate gen 1
+#%% Run gen 1
 
 exp_time = float(args.exp_time)
 
@@ -425,17 +381,6 @@ cellpop_g1 = cell_pop
 
 output_dir = output_dose
 
-# num_tasks = int(cell_pop_g1)
-
-# tasks_per_rank = num_tasks // num_ranks
-# remainder = num_tasks % num_ranks
-
-# if rank < remainder:
-#     my_tasks = tasks_per_rank + 1
-#     start_task = rank * my_tasks + 1
-# else:
-#     my_tasks = tasks_per_rank
-#     start_task = rank * tasks_per_rank + remainder + 1
 
 
 g1_cell_start, g1_cell_end = assign_tasks(rank,cellpop_g1,size)
@@ -453,13 +398,13 @@ for task in range(g1_cell_start, g1_cell_end):
     
     print("Running gen1 cell (%d) on rank %d | %s" %(cell_n, rank, tstmp))
     
-    # s_preinc_i = results_preinc[cell_n]
+
     
     x_s_g0 = results_g0[str(cell_n)]['xoutS']
     
     np.random.seed()
     
-    # tp_g0 = np.random.randint(0,np.shape(x_s_g0)[0])
+
     tp_g0 = tps_g0[str(cell_n)]    
     sp_input = ics_g1[str(cell_n)]
     sp_input = np.array(sp_input)
@@ -467,15 +412,12 @@ for task in range(g1_cell_start, g1_cell_end):
 
     sp_input[list(model.getStateIds()).index(drug)] = dose
     
-    xoutS_g1, xoutG_g1, tout_g1 = RunSPARCED(flagD,th,sp_input,[],sbml_file,model)
+    xoutS_g1, xoutG_g1, tout_g1 = RunSPARCED(flagD,th,sp_input,[],sbml_file,model) # Gen 1 cell simulation
     
 
     xoutS_mb_g0 = x_s_g0
     xoutS_mb_g1 = xoutS_g1[:,list(species_all).index('Mb')]
-    # tout_g0 = results_g0[str(cell_n)]['tout']
-    
-    
-    
+ 
     tout_g0 = np.arange(0,th_g0*3600+1,ts)
     tout_g0 = tout_g0[0:len(xoutS_mb_g0)]
     
@@ -493,22 +435,23 @@ for task in range(g1_cell_start, g1_cell_end):
         tout_new = np.concatenate((tout_g0_neg,tout_g1),axis=0)
     
     else:
-        # tout_g0_neg = 
-    # xoutS_new = np.concatenate((xoutS_g0[tneg_idx_start:tp_g0],xoutS_g1),axis=0)
     
         xoutS_mb_new = xoutS_mb_g1
     
         tout_new = tout_g1
    
-    # cb_peaks, _ = find_peaks(xoutS_new[:, list(species_all).index('Mb')],height=30)    
-    
+    # Detect cell divison event in gen 1 cell
+   
     cb_peaks, _ = find_peaks(xoutS_mb_new,height=30)  
     
+    # Downsample single cell outputs
     xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(len(xoutS_g1)-1),20)))
     xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(len(xoutG_g1)-1),20)))
     tout_lite = np.array(list(itertools.islice(tout_g1,0,(len(tout_g1)-1),20)))
     
     g2_start = {}
+    
+    # Determine division point and gen 2 simulation time
 
     if len(cb_peaks)>0:
         
@@ -523,7 +466,6 @@ for task in range(g1_cell_start, g1_cell_end):
     
                 dp = dp_all[dp_idx]
             
-            # dp_actual = dp - len(tout_new) + len(tout_g1)
   
         if ~np.isnan(dp):
             dp_actual = dp - len(tout_new) + len(tout_g1)
@@ -545,11 +487,9 @@ for task in range(g1_cell_start, g1_cell_end):
                 g2_start['lin'] = lin_g2_cell
                 g2_start['ic'] = sp_g2_cell
                 
-                # np.savetxt(os.path.join(output_dir,gx_cx+'_ic.txt'),sp_g2_cell,delimiter='\t')
                 
                 dp1 = np.where(tout_g1 == tout_new[dp])[0][0]
                 
-                # if diag == 'off':
                 
                 xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(dp1+1),20)))
                 xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(dp1+1),20)))
@@ -576,9 +516,8 @@ for task in range(g1_cell_start, g1_cell_end):
 if rank!= 0:
     comm.send(g1_dict,dest=0)
     
-# comm.Barrier()
+# Gather results from all ranks to rank 0
 
-# results_g1 = None
 results_g2start = None
 
 if rank == 0:
@@ -600,17 +539,13 @@ if rank == 0:
         results_g2start[str(cell)] = results_g1_collect[i]['result']['g2_start']
 
     with open(os.path.join(output_dir,"output_g1.pkl"),"wb") as f:
-        pickle.dump(results_g1,f)
+        pickle.dump(results_g1,f) # Write gen 1 output to disk
                 
-    
-        
-# results_g1 = comm.bcast(results_g1, root = 0)
+# Broadcast gen 2 details
+
 results_g2start = comm.bcast(results_g2start, root = 0)
 comm.Barrier()
     
-# results_g1_output = [results_g1[str(rn+1)]['output'] for rn in range(len(results_g1))]
-
-# g2_start_all = [results_g1[str(rn+1)]['g2_start'] for rn in range(len(results_g1))]
 
 g2_start_all = [results_g2start[str(rn+1)] for rn in range(len(results_g2start))]
 
@@ -638,7 +573,7 @@ if len(g2_start_actual) != 0:
 else:
     sys.exit("No division event detected at gen 1")
 
-#%% gen n while loop
+#%% While loop for running gen n (n>=2)
 
 lin_gn0 = lin_g2
 
@@ -654,20 +589,8 @@ comm.Barrier()
 
 while cellpop_gn0 > 0:
     
-    # num_tasks = int(cellpop_gn0)
-    # num_ranks = int(size)
     
-    # Determine tasks to be assigned to each rank
-    # tasks_per_rank = num_tasks // num_ranks
-    # remainder = num_tasks % num_ranks
-    
-    # # Distribute the remaining tasks evenly among the ranks
-    # if rank < remainder:
-    #     my_tasks = tasks_per_rank + 1
-    #     start_task = rank * my_tasks + 1
-    # else:
-    #     my_tasks = tasks_per_rank
-    #     start_task = rank * tasks_per_rank + remainder + 1
+
     
     gn_cell_start, gn_cell_end = assign_tasks(rank,cellpop_gn0,size)
 
@@ -698,9 +621,13 @@ while cellpop_gn0 > 0:
         xoutG_lite = np.array(list(itertools.islice(xoutG_all,0,(len(xoutG_all)-1),20)))
         tout_lite = np.array(list(itertools.islice(tout_all,0,(len(tout_all)-1),20)))     
         
+        # Find division events in gen n
+        
         cb_peaks, _ = find_peaks(xoutS_all[:, list(species_all).index('Mb')],height=30)
     
         gn1_start = {}        
+        
+        # Determine gen n division timepoints and gen (n+1) simulation times
         
         if len(cb_peaks)>0:
             
@@ -727,7 +654,6 @@ while cellpop_gn0 > 0:
                     gn1_start['th_gn'] = th- tdp_gn_cell    
                     gn1_start['lin'] = lin_gn_cell
                     gn1_start['ic'] = sp_gn_cell                             
-                    # np.savetxt(os.path.join(output_dir,gx_cx+'_ic.txt'),sp_gn_cell,delimiter='\t')
     
     
                     xoutS_lite = np.array(list(itertools.islice(xoutS_all,0,(dp+1),20)))
@@ -750,9 +676,7 @@ while cellpop_gn0 > 0:
     if rank!=0:
         comm.send(gn_dict,dest=0)
         
-    # comm.Barrier()
     
-    # results_gn = None
     results_gn1start = None
     if rank == 0:
         results_gn_recv = []
@@ -773,16 +697,15 @@ while cellpop_gn0 > 0:
             results_gn1start[str(cell)] = results_gn_collect[i]['result']['gn1_start']
             
         with open(os.path.join(output_dir,"output_g"+str(g)+".pkl"),"wb") as f:
-            pickle.dump(results_gn,f)
+            pickle.dump(results_gn,f) # Save gen n outputs to disk
     
-            
-    # results_gn = comm.bcast(results_gn, root = 0)
+
+    # Broadcast gen (n+1) details
     results_gn1start = comm.bcast(results_gn1start, root = 0)
     
     comm.Barrier()
     
-    # results_gn_output = [results_gn[str(rn+1)]['output'] for rn in range(len(results_gn))]
-    # gn1_start_all = [results_gn[str(rn+1)]['gn1_start'] for rn in range(len(results_gn))]    
+ 
     gn1_start_all = [results_gn1start[str(rn+1)] for rn in range(len(results_gn1start))]
     gn1_start_actual = np.array(gn1_start_all)[np.where(gn1_start_all)[0]]
     
@@ -809,8 +732,6 @@ while cellpop_gn0 > 0:
     
     if cellpop_gn0 > 0:
         
-        # np.savetxt(os.path.join(output_dose,'th_g'+str(g)+'.txt'),np.array(th_gn),delimiter='\t')
-        # np.savetxt(os.path.join(output_dose,'lin_g'+str(g)+'.txt'),np.array(lin_gn),delimiter='\t',fmt='%s')
         
         print("Division event detected at gen(%d)" %(g))
         g += 1
