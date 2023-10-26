@@ -1,8 +1,8 @@
-# .readthedocs.yml
 # Read the Docs configuration file
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
 
-version: 1.4
+#required
+version: 2
 
 # Set OS, Python version, and other tools for SPARCED
 build:
