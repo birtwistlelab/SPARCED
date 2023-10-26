@@ -125,4 +125,3 @@ dependencies:
       - webencodings==0.5.1
       - wurlitzer==3.0.3
       - xlrd==2.0.1
-prefix: /home/jonah/anaconda3/envs/sparced1
