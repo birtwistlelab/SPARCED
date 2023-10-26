@@ -8,6 +8,7 @@ SPARCED is a simple and efficient pipeline for construction, merging, expansion,
 - [Docker](https://docs.docker.com/get-docker/)
 - [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html) *(Optional: SPARCED-nf requirement only)*
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) *(Optional: SPARCED-nf requirement only)* 
+- [Anaconda](https://www.anaconda.com/download) *(Optional: Linux only)*
 
 ## Instructions
 ### Setting up your environment
@@ -15,6 +16,7 @@ SPARCED is a simple and efficient pipeline for construction, merging, expansion,
 1. Clone this repository from the command-line using `git clone --recursive https://github.com/birtwistlelab/SPARCED.git`
 2. Make sure the dependencies listed above are installed
 3. (SPARCED-nf only) Ensure you have a Kubernetes `config` file for your chosen cluster located in your `~/.kube` folder
+4. (Linux only) In a terminal window, use the command `conda env create -f ./SPARCED/environment.yml'
 
 ### SPARCED-jupyter
 
