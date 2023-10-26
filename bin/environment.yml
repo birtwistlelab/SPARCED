@@ -125,3 +125,6 @@ dependencies:
       - webencodings==0.5.1
       - wurlitzer==3.0.3
       - xlrd==2.0.1
+# Set the CONDARC environment variable to point to your custom .condarc location
+env:
+  CONDARC: ./bin/.condarc
