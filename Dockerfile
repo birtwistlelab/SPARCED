@@ -2,7 +2,7 @@
 #To relaunch: docker start -i testcp1
 
 # Ubuntu and conda base images:
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 FROM continuumio/miniconda3
 
 # Install system-level dependencies
@@ -17,11 +17,11 @@ ADD . /SPARCED
 # Add conda to PATH
 ENV PATH /opt/conda/bin:$PATH
 
-RUN /bin/sh -c echo "channels:\n  - conda-forge\n  - bioconda\n  - defaults" > /opt/conda/.condarc
-RUN /bin/sh -c echo "create_default_packages:\n  - pip\n  - openblas\n  - swig\n  - cxx-compiler"
+# Add .condarc location to path
+ENV CONDARC /SPARCED/bin/.condarc
 
 # Create and activate the Conda environment from environment.yml
-RUN conda env create -f environment.yml && \
+RUN conda env create -f bin/environment.yml && \
 conda init bash
 
 # Set the shell interpreter to use bash instead of /bin/sh
