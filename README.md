@@ -16,6 +16,7 @@ SPARCED is a simple and efficient pipeline for construction, merging, expansion,
 1. Clone this repository from the command-line using `git clone --recursive https://github.com/birtwistlelab/SPARCED.git`
 2. Make sure the dependencies listed above are installed
 3. (SPARCED-nf only) Ensure you have a Kubernetes `config` file for your chosen cluster located in your `~/.kube` folder
+4. (Linux only) In a terminal window, use the command `conda env create -f ./SPARCED/environment.yml
 
 ### SPARCED-jupyter
 
