@@ -8,6 +8,7 @@ SPARCED is a simple and efficient pipeline for construction, merging, expansion,
 - [Docker](https://docs.docker.com/get-docker/)
 - [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html) *(Optional: SPARCED-nf requirement only)*
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) *(Optional: SPARCED-nf requirement only)* 
+- [Anaconda](https://www.anaconda.com/download) *(Optional: Linux only)*
 
 ## Instructions
 ### Setting up your environment
