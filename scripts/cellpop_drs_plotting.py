@@ -5,96 +5,48 @@ Created on Sun Mar 26 22:58:16 2023
 @author: Arnab
 """
 # import required libraries
-
 import pickle
 import copy
 import re
 import random
 import itertools
 import math
-
-#%%
 import os
 import sys
-
 import libsbml
 import numpy as np
 import pandas as pd
-from scipy.stats import percentileofscore
-
 from Bio import Phylo
-
 from io import StringIO
-
 from scipy.interpolate import interp1d
-from scipy.stats import percentileofscore
-from scipy.stats import gaussian_kde
-import math
+from scipy.stats import percentileofscore, gaussian_kde
 import seaborn as sns
-import itertools
 import plotly.figure_factory as ff
 import plotly.io as pio
-
-#%%
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-mpl.rcParams['figure.dpi'] = 300
-mpl.rcParams['font.sans-serif'] = ['Arial']
 
+mpl.rcParams['figure.dpi'] = 300 # Set the DPI (dots per inch) for Matplotlib figures to 300.
 
-#%%
+mpl.rcParams['font.sans-serif'] = ['Arial'] # Set the default sans-serif font for Matplotlib figures to 'Arial'.
+
+#Set the working and current directory
 cd = os.getcwd()
 wd = os.path.dirname(cd)
-sys.path.append(os.path.join(wd,'bin'))
+sys.path.append(os.path.join(wd, 'bin'))
 
+#SBML file
 sbml_file = "SPARCED.xml"
 
+sbml_reader = libsbml.SBMLReader() # Define how the SBML file will be read from XML format
+sbml_doc = sbml_reader.readSBML(os.path.join(wd,sbml_file)) # Read the SBML file as XML
+sbml_model = sbml_doc.getModel() #Return object Model, which consists of a single container of all the model instances
 
-sbml_reader = libsbml.SBMLReader()
-sbml_doc = sbml_reader.readSBML(os.path.join(wd,sbml_file))
-sbml_model = sbml_doc.getModel()
-
+# Returns the list of all species IDs in the model
 species_all = [str(x.getId()) for x in list(sbml_model.getListOfSpecies())]
 
-
-
-#%%
-
-output_dir = 'D:\\projects\\sparced_mpi_pd\\sparced_5\\output\\testmpi_cellpop50\\trame_EC_0.0'
-output_dir = 'D:\\projects\\sparced_mpi_pd\\sparced_5\\output\\local_test01\\trame_EC_0.0'
-output_dir = 'D:\\projects\\sparced_mpi_pd\\sparced_5\\output\\local_test07\\trame_EC_0.0'
-
-#%% cellpop_drs_v13
-
-output_dir = 'D:\\projects\\sparced_mpi_pd\\sparced_5\\output\\local_test09\\lapat_EC_0.0'
-output_dir = 'D:\\projects\\sparced_mpi_pd\\sparced_5\\output\\local_test09\\lapat_EC_1.0'
-
-
-
-#%%
-sim_name = 'drs_lapat_rep2'
-
-drug = 'lapat_EC'
-
-output_dir_main = os.path.join(wd,'output')
-
-output_dir_sim = os.path.join(output_dir_main,sim_name)
-
-dir_doses_all = os.listdir(output_dir_sim)
-
-doses_all = [float(x.split('_')[-1]) for x in dir_doses_all]
-
-doses_all.sort()
-
-dir1 = os.path.join(output_dir_sim,drug+'_'+str(doses_all[4]))
-
-# output_all = load_outputs(dir1)
-
-#%%
-
-# define class for reading dose response outputs
-
+# Define class for reading dose response outputs
 class drs_dict():
     def __init__(self,main,drug,rep,dose_level):
         self.main = main
@@ -128,7 +80,7 @@ class drs_dict():
                 lin_g[str(c)] = self.results['output_g'+str(g)][str(c)]['output']['lin'].split('c')[1:]
                 
             self.lin_all['g'+str(g)] = lin_g
-        
+            
     def get_desc(self,g1cx): #find all gen1 cell descendents
         desc_all = {}
     
