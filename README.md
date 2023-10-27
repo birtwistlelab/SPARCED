@@ -53,6 +53,17 @@ See the `Demo` folder for an example model compilation and simulation results.
 - For problems, feel free to consult our [troubleshooting guide](https://github.com/birtwistlelab/SPARCED/blob/master/TROUBLESHOOTING.md) or create issue requests. 
 - For brave souls with a lot of local computer power but no Kubernetes cluster, SPARCED-nf is also built to be able to run locally. Simply launch with `nextflow run` instead of `kuberun` and work from the `configs/local-nextflow.config` template.
 
+### Converting SPARCED Docker container to Apptainer
+
+Apptainer has built-in functionality for DockerHub container conversion. 
+1. To build the apptainer container, in a terminal, enter the command `apptainer build --sandbox sparced/ docker://jonahhuggins/sparced:latest4`. 
+    - Apptainer containers are read-only by default. The `--sandbox` flag enables read & write capabilities. 
+2. Once the build is complete, use `apptainer shell --writable --pwd /SPARCED sparced/` to enter the container and work with SPARCED. 
+    - the `--writable` flag enables writable execution of commands within the container, which is necessary for Message Passing Interface functionality.
+    - The structure of the container binds the user's $HOME into the container by default. The `--pwd` flag allows for the starting directory to be specified by the user. If this flag is not used, one can find the SPARCED directory at root, /SPARCED. 
+
+
+
 ### SPARCED_Brep
 
 Files to exactly replicate Bouhaddou2018 model. In this format, mRNAs and protein species are tracked in separate variables. The number of species and ratelaws are also the same Bouhaddou2018 model. SPARCED is the new, updated, and cleaned up version.
