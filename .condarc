@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+create_default_packages:
+  - pip
+  - openblas
+  - swig
+  - cxx-compiler
