@@ -1,9 +1,10 @@
 openpyxl==3.0.3
-amici==0.11.12
-matplotlib==3.2.1
+amici==0.16.1
+matplotlib==3.7.1
 numpy==1.22.0
-pandas==1.0.3
+pandas==1.5.3
 xlrd==1.2.0
-scipy==1.4.1
+scipy==1.10.1
 python-libsbml==5.18.0
-antimony==2.11.0
+antimony==2.12.0.2
+mp4py==3.1.5
