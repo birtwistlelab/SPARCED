@@ -1,4 +1,3 @@
-
 #To Run: docker run -p 8888:8888 --name testcp1 -it sparced
 #To relaunch: docker start -i testcp1
 
@@ -7,7 +6,8 @@ FROM ubuntu:22.04
 FROM continuumio/miniconda3
 
 # Install system-level dependencies
-RUN apt-get update -qq && apt-get install -qq -y curl git python3-dev python3-pip libhdf5-serial-dev libatlas-base-dev libxml2 swig rsync && ln -s /usr/bin/python3 python
+RUN apt-get update -qq && apt-get install -qq -y curl git python3-dev python3-pip libhdf5-serial-dev libatlas-base-dev \
+libxml2 swig rsync && ln -s /usr/bin/python3 python
 
 # Changing working directory in Docker container
 WORKDIR /SPARCED

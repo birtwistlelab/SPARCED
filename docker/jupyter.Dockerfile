@@ -18,7 +18,7 @@ ADD . /app/
 # install python dependencies
 RUN pip3 install -r requirements.txt
 RUN pip3 install jupyter
-
+RUN pip3 install jupyterlab
 # open directory as jupyter notebook
 ENV TINI_VERSION v0.6.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
