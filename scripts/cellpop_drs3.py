@@ -4,11 +4,8 @@ Created on Fri May 12 18:06:40 2023
 
 @author: Arnab
 """
-
-
 import pandas as pd
 import numpy as np
-# import re
 import libsbml
 import os
 import sys
@@ -26,22 +23,23 @@ import pickle
 
 
 #%%
-
+# Start MPI
 comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
-size = comm.Get_size()
+rank = comm.Get_rank() # Get rank of current process
+size = comm.Get_size() # Get total number of processes
 
 
 #%% argparse parameters
 
 parser = argparse.ArgumentParser(description='')
-
 parser.add_argument('--cellpop', metavar='cellpop', help='starting cellpopulation', default = 5)
 parser.add_argument('--td',metavar='td', help='cell line doubling time (hrs) ', default = 48)
 parser.add_argument('--sim_name', metavar='sim_name', help='insert exp name', default = 'testmpi_tasks')
 parser.add_argument('--mb_tr',metavar='mb_tr',help='Mb trough upper limit (nM)', default = 2.0)
 parser.add_argument('--exp_time', metavar='exp_time', help='Enter experiment time in hours', default = 72.0)
 parser.add_argument('--drug', metavar='drug', help='input drug species name', default = 'trame_EC')
+
+###JRHUGGI: Why are we still hard coding stimulus concentrations instead of user defined?
 parser.add_argument('--dose', metavar='dose', help='input drug dose uM', default = 0.0)
 parser.add_argument('--egf', metavar='egf', help='input E conc in nM', default = 3.308)
 parser.add_argument('--ins', metavar='ins', help='input INS conc in nM', default = 1721.76)
@@ -51,6 +49,7 @@ parser.add_argument('--pdgf', metavar='pdgf', help='input PDGF conc in nM', defa
 parser.add_argument('--igf', metavar='igf', help='input IGF conc in nM', default = 0.0)
 parser.add_argument('--fgf', metavar='fgf', help='input FGF conc in nM', default = 0.0)
 
+###JRHUGGI: Are users going to be able to override parameters and initial conditions? 
 parser.add_argument('--override_param', metavar='override_param',default = 0.0)
 parser.add_argument('--override_ic', metavar='override_ic',default = 0.0)
 parser.add_argument('--override_param_id', metavar='override_param_id',default='k1813')
@@ -60,52 +59,49 @@ parser.add_argument('--override_ic_file', metavar='override_ic_file',default='ic
 args = parser.parse_args()
 
 
-#%%
+#%% Set the working and current directory
 cd = os.getcwd()
 wd = os.path.dirname(cd)
-sys.path.append(os.path.join(wd,'bin'))
+sys.path.append(os.path.join(wd,'bin')) # Internal SPARCED function locations are appended to $PATH
 
+sim_name = str(args.sim_name) # Simulation name defined by user via CLI
 
-sim_name = str(args.sim_name)
-
-output_path = os.path.join(wd,'output',sim_name)
+output_path = os.path.join(wd,'output',sim_name) # Output path for simulation results ~/SPARCED/output/sim_name
 
 if rank==0:
     if not os.path.exists(output_path):
         os.mkdir(output_path)
 
-
 sbml_file = "SPARCED.xml"
-model_name= sbml_file[0:-4]
-model_output_dir = model_name
-sys.path.insert(0, os.path.join(wd,model_output_dir))
+# model_name= sbml_file[0:-4] # I think a better way to do this would be:
+model_name = os.path.basename(sbml_file).split('.')[0] # Just in case file types change. 
+# model_output_dir = model_name ###JRHUGGI: Redundant
+sys.path.insert(0, os.path.join(wd,model_name))
+# model_module = importlib.import_module(model_output_dir)
 model_module = importlib.import_module(model_name)
 model = model_module.getModel()   
 
-#%%
-
+#%% Import SPARCED functions
 from modules.RunSPARCED import RunSPARCED
 
-omics_input = 'OmicsData.txt'
+omics_input = 'OmicsData.txt' 
 genereg_input = 'GeneReg.txt'
 
-flagD = 0
+flagD = 0 # Flag for Deterministic(0) or Stochastic(1) simulation
 
-ts = 30
+ts = 30 # Time step for simulation
 
-th = float(args.exp_time)
+th = float(args.exp_time) # simulation time in hours
 
-species_all = list(model.getStateIds())
+species_all = list(model.getStateIds()) # List of all species in the model
 
 solver = model.getSolver()          # Create solver instance
 solver.setMaxSteps = 1e10
-model.setTimepoints(np.linspace(0,ts))
+model.setTimepoints(np.linspace(0,ts)) 
 
-cell_pop = int(args.cellpop)
+cell_pop = int(args.cellpop) # Number of cells to simulate defined by user via CLI
 
-#%%
-
-
+#%% Set stimulus concentrations defined by user via CLI
 dose_egf = float(args.egf)
 dose_ins = float(args.ins)
 dose_hgf = float(args.hgf)
@@ -114,33 +110,32 @@ dose_igf = float(args.igf)
 dose_pdgf = float(args.pdgf)
 dose_nrg = float(args.nrg)
 
+STIMligs_id = ['E', 'H', 'HGF', 'P', 'F', 'I', 'INS'] # List of all stimulus species in the model
 
-STIMligs_id = ['E', 'H', 'HGF', 'P', 'F', 'I', 'INS']
+STIMligs = [dose_egf,dose_nrg,dose_hgf,dose_pdgf,dose_fgf,dose_igf,dose_ins] 
 
-
-STIMligs = [dose_egf,dose_nrg,dose_hgf,dose_pdgf,dose_fgf,dose_igf,dose_ins]
-
-drug = str(args.drug)
-dose = float(args.dose)*10e2
+drug = str(args.drug) # Drug species defined by user via CLI
+dose = float(args.dose)*10e2 # convert to uM
 
 
-override_param = float(args.override_param)
-override_ic = float(args.override_ic)
+override_param = float(args.override_param) # Override parameter flag defined by user via CLI
+override_ic = float(args.override_ic) # Override initial condition flag defined by user via CLI
 
-if override_ic > 0:
+if override_ic > 0: # If override initial condition flag is set, load initial conditions from file
     override_ic_file = str(args.override_ic_file)
     species_initializations = np.loadtxt(os.path.join(wd,'input_files',override_ic_file+'.txt'),delimiter='\t')
     
 else:
-    species_initializations = np.array(model_module.getModel().getInitialStates())
+    species_initializations = np.array(model_module.getModel().getInitialStates()) 
     species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 
 
-if override_param > 0:
+if override_param > 0: # If override parameter flag is set, override parameter value 
     override_param_id = str(args.override_param_id)
     override_param_val = float(args.override_param_val)
     model.setParameterById(override_param_id,override_param_val)
 
+# Set all stimulus species to 0
 for l,lig in enumerate(STIMligs_id):
     species_initializations[species_all.index(lig)] = 0
 
@@ -162,169 +157,107 @@ for pa in range(len(par_ids)):
     
     model.setParameterById(par_id,val)
 
-#%%
-
-output_dose = os.path.join(output_path,drug+'_'+str(float(args.dose)))
+# Output path for simulation results ~/SPARCED/output/sim_name/drug_dose
+output_dose = os.path.join(output_path,drug+'_'+str(float(args.dose))) 
 
 if rank==0:
     if not os.path.exists(output_dose):
         os.mkdir(output_dose)
 
 
-th = 48
+th = 48 #Preincubation time period
 
-output_dir = output_dose
+output_dir = output_dose ###JRHUGGI: Redundant
 
 
 
-#%% assign mpi tasks, preinc
-
-def assign_tasks(rank,n_cells,size):
+#%% Function to assign tasks to ranks
+def assign_tasks(rank,n_cells,size): # rank = rank of current process, n_cells = number of cells, size = total number of processes
     
-    cells_per_rank = n_cells // int(size)
-    remainder = n_cells % int(size)
+    cells_per_rank = n_cells // int(size) # Number of cells per rank
+    remainder = n_cells % int(size) # Remainder of cells from cells_per_rank
     
-    if rank < remainder:
+    if rank < remainder: # If rank is less than remainder, assign cells_per_rank + 1 cells to rank
         my_cells = cells_per_rank + 1
         start_cell = rank * my_cells + 1
-    else:
+    else: 
         my_cells = cells_per_rank
         start_cell = rank * cells_per_rank + remainder + 1
         
-    return start_cell, start_cell + my_cells
+    return start_cell, start_cell + my_cells # Return start and end cell number for each rank
 
 
 
 #%%
+cellpop_preinc = int(cell_pop) # Number of cells to preincubate defined by user via CLI
 
+cell0, cell_end = assign_tasks(rank,cellpop_preinc,size) # Receive start and end cell number for current rank
 
-# num_tasks = int(cell_pop)
-# num_ranks = int(size)
+#%% Generate cell (task)-specific dictionaries of preincubation. This is important to have cells at asynchronous states at the start of the simulation
+preinc_dict = {} # Dictionary to store preincubation results
+for task in range(cell0, cell_end): 
 
-# # Determine tasks to be assigned to each rank
-# tasks_per_rank = num_tasks // num_ranks
-# remainder = num_tasks % num_ranks
-
-# # Distribute the remaining tasks evenly among the ranks
-# if rank < remainder:
-#     my_tasks = tasks_per_rank + 1
-#     start_task = rank * my_tasks + 1
-# else:
-#     my_tasks = tasks_per_rank
-#     start_task = rank * tasks_per_rank + remainder + 1
-
-
-cellpop_preinc = int(cell_pop)
-
-cell0, cell_end = assign_tasks(rank,cellpop_preinc,size)
-
-#%%
-
-
-# Generate task-specific dictionaries
-preinc_dict = {}
-
-for task in range(cell0, cell_end):
-    # local_task = np.random.rand(rank+2)
-    
     np.random.seed()
  
-    tstmp = str(datetime.now().strftime("%d %m %Y %H:%M:%S"))
+    tstmp = str(datetime.now().strftime("%d %m %Y %H:%M:%S")) 
     
-    print("Running preincubate (%d) on rank %d | %s" %(task, rank, tstmp))
+    print("Running preincubate (%d) on rank %d | %s" %(task, rank, tstmp)) # Print cell (task) number, rank and timestamp
     
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
+    # Run SPARCED for preincubation time (th) with stimulus concentrations set to 0
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model) 
     
+    preinc_IC = xoutS_all[-1] # Set initial concentrations for cell (task) to last concentration of preincubation
     
-    # xoutS_lite = np.array(list(itertools.islice(xoutS_all,0,(len(xoutS_all)-1),20)))
-    # xoutG_lite = np.array(list(itertools.islice(xoutG_all,0,(len(xoutG_all)-1),20)))
-    # tout_lite = np.array(list(itertools.islice(tout_all,0,(len(tout_all)-1),20)))
- 
-    
-    preinc_IC = xoutS_all[-1]
-    
+    preinc_dict[task] = {'cell':int(task), 'preinc_IC':preinc_IC} # Store cell (task) number and initial concentrations in preinc_dict
 
-    # output = {}
-    
-    # output['xoutS'] = xoutS_lite
-    # output['xoutG'] = xoutG_lite
-    # output['tout'] = tout_lite
- 
-    
-    # my_dict[task] = {'cell':int(task),'rank':rank, 'result':output}
-    
-    preinc_dict[task] = {'cell':int(task), 'preinc_IC':preinc_IC}
-
-if rank != 0:
+if rank != 0: # If rank is not 0, send preinc_dict to rank 0
     comm.send(preinc_dict,dest=0)
 
+results_preinc = None # Initialize results_preinc variable
 
-# comm.Barrier()
-
-results_preinc = None
-
-if rank == 0:
+if rank == 0: # If rank is 0, receive preincubation results (preinc_dict) from all cells and store in results_preinc
     results_preinc_recv = []
     results_preinc_recv.append(preinc_dict)
-    for r in range(1,size):
-        results_preinc_recv.append(comm.recv(source=r))
+    for r in range(1,size): # catalog all preincubation results from all ranks in results_preinc_recv
+        results_preinc_recv.append(comm.recv(source=r)) # Receive preinc_dict from rank r
         
-    results_collect = []
+    results_collect = [] 
     
-    for i in range(size):
+    for i in range(size): # Collect all preincubation results (preinc_dict) from all ranks and append to results_collect
         results_collect.extend(list(results_preinc_recv[i].values()))
         
     results_preinc = {}
     
-    for i in range(len(results_collect)):
+    for i in range(len(results_collect)): # Store cell (task) number and initial concentrations in results_preinc
         cell = results_collect[i]['cell']
         results_preinc [str(cell)] = results_collect[i]['preinc_IC'] 
         
-    # with open(os.path.join(output_path,"output_g1.pkl"),"wb") as f:
-    #     pickle.dump(merged_dicts_recv,f)
-results_preinc = comm.bcast(results_preinc, root = 0)
+results_preinc = comm.bcast(results_preinc, root = 0) # Broadcast results_preinc to all ranks
 
 #%%
 
-comm.Barrier()
+comm.Barrier() # Wait for all ranks to reach this point before proceeding
 
 
 #%% initiate gen 0 
 
-th_g0 = 48
+th_g0 = 48 # Generation 0 preincubation time period
 
-cellpop_g0 = cell_pop
+cellpop_g0 = cell_pop 
 
-output_dir = output_dose
+output_dir = output_dose ##JRHUGGI: Still feels redundant, I'm not seeing why this is restated before and after preinc?
 
-# num_tasks = int(cell_pop_g0)
-
-# tasks_per_rank = num_tasks // num_ranks
-# remainder = num_tasks % num_ranks
-
-# if rank < remainder:
-#     my_tasks = tasks_per_rank + 1
-#     start_task = rank * my_tasks + 1
-# else:
-#     my_tasks = tasks_per_rank
-#     start_task = rank * tasks_per_rank + remainder + 1
-
-g0_dict = {}
-
+g0_dict = {} # Dictionary to store gen 0 results
 
 #%%
 
-
-
-g0_cell_start, g0_cell_end = assign_tasks(rank,cellpop_g0,size)
-
+g0_cell_start, g0_cell_end = assign_tasks(rank,cellpop_g0,size) # Receive start and end cell number for current rank
 
 #%%
+# Run gen 0 preincubation for each cell (task) with stimulus concentrations set to user defined values
+for task in range(g0_cell_start, g0_cell_end): 
 
-for task in range(g0_cell_start, g0_cell_end):
-    # local_task = np.random.rand(rank+2)
-    
-    cell_n = int(task)
+    cell_n = int(task) 
     
     np.random.seed()
  
@@ -332,36 +265,31 @@ for task in range(g0_cell_start, g0_cell_end):
     
     print("Running gen0 cell (%d) on rank %d | %s" %(cell_n, rank, tstmp))
     
-    s_preinc_i = results_preinc[str(cell_n)]
-    sp_input = np.array(s_preinc_i)
-    # species_initializations = np.array(sp_input)
-    sp_input[np.argwhere(sp_input <= 1e-6)] = 0.0
+    s_preinc_i = results_preinc[str(cell_n)] # Assign task specific initial concentrations from results_preinc to s_preinc_i
+    sp_input = np.array(s_preinc_i) # Convert s_preinc_i to numpy array
+    sp_input[np.argwhere(sp_input <= 1e-6)] = 0.0 # Set all concentrations less than 1e-6 to 0
     
-    for l,lig in enumerate(STIMligs_id):
-        sp_input[species_all.index(lig)] = STIMligs[l]
+    for l,lig in enumerate(STIMligs_id): # Set stimulus concentrations to user defined values
+        sp_input[species_all.index(lig)] = STIMligs[l] 
      
     
-    
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th_g0,sp_input,[],sbml_file,model)
+    # Run SPARCED for gen 0 preincubation time (th_g0) with stimulus concentrations set to user defined values
+    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th_g0,sp_input,[],sbml_file,model) 
     
     
     np.random.seed()
-    tp_g0 = np.random.randint(0,np.shape(xoutS_all)[0]) 
+    tp_g0 = np.random.randint(0,np.shape(xoutS_all)[0]) #
     ic_g1 = xoutS_all[tp_g0,:]
     
     
     output_g0_cell = {}
-    
-    # output_g0_cell['cell'] = int(cell_n)
+
     output_g0_cell['xoutS'] = xoutS_all[:,list(species_all).index('Mb')]
-    # output_g0_cell['tout'] = tout_all
     
     g0_dict[task] = {'cell':cell_n,'result':output_g0_cell,'ic_g1':ic_g1, 'tp_g0':tp_g0}
     
 if rank!= 0:
     comm.send(g0_dict,dest=0)
-    
-# comm.Barrier()
   
 results_g0 = None
 ics_g1 = None
@@ -671,21 +599,7 @@ g = 2
 comm.Barrier()
 
 while cellpop_gn0 > 0:
-    
-    # num_tasks = int(cellpop_gn0)
-    # num_ranks = int(size)
-    
-    # Determine tasks to be assigned to each rank
-    # tasks_per_rank = num_tasks // num_ranks
-    # remainder = num_tasks % num_ranks
-    
-    # # Distribute the remaining tasks evenly among the ranks
-    # if rank < remainder:
-    #     my_tasks = tasks_per_rank + 1
-    #     start_task = rank * my_tasks + 1
-    # else:
-    #     my_tasks = tasks_per_rank
-    #     start_task = rank * tasks_per_rank + remainder + 1
+
     
     gn_cell_start, gn_cell_end = assign_tasks(rank,cellpop_gn0,size)
 
