@@ -193,7 +193,8 @@ cellpop_preinc = int(cell_pop) # Number of cells to preincubate defined by user 
 
 cell0, cell_end = assign_tasks(rank,cellpop_preinc,size) # Receive start and end cell number for current rank
 
-#%% Generate cell (task)-specific dictionaries of preincubation. This is important to have cells at asynchronous states at the start of the simulation
+#%% Generate cell (task)-specific dictionaries of preincubation. This is important to have cells at asynchronous states at 
+# the start of the simulation
 preinc_dict = {} # Dictionary to store preincubation results
 for task in range(cell0, cell_end): 
 
@@ -278,179 +279,186 @@ for task in range(g0_cell_start, g0_cell_end):
     
     
     np.random.seed()
-    tp_g0 = np.random.randint(0,np.shape(xoutS_all)[0]) #
-    ic_g1 = xoutS_all[tp_g0,:]
-    
-    
-    output_g0_cell = {}
+    tp_g0 = np.random.randint(0,np.shape(xoutS_all)[0]) # Select a random number between 0 and the number of species in xoutS_all
+    ic_g1 = xoutS_all[tp_g0,:] # ic_g1 is assigned to all of the concentrations values of a random species from xoutS_all
+    ###JRHUGGI: What does selecting a random species tell us? Just curious what this is needed for. 
 
-    output_g0_cell['xoutS'] = xoutS_all[:,list(species_all).index('Mb')]
+    # Create an instance of xoutS within output_g0_cell and assign the simulated values of Mb
+    output_g0_cell = {} 
+
+    # Create an instance of xoutS within output_g0_cell and assign the simulated values of Mb, indicative of cell cycle completion
+    output_g0_cell['xoutS'] = xoutS_all[:,list(species_all).index('Mb')] 
     
-    g0_dict[task] = {'cell':cell_n,'result':output_g0_cell,'ic_g1':ic_g1, 'tp_g0':tp_g0}
+    # Here, we're creating a single cell's dictionary entry, including cell number, cell cycle completion, 
+    # the initial concentrations, and the time point at which the cell cycle completed
+    g0_dict[task] = {'cell':cell_n,'result':output_g0_cell,'ic_g1':ic_g1, 'tp_g0':tp_g0} 
     
-if rank!= 0:
+if rank!= 0: # If rank is not 0, send g0_dict to rank 0
     comm.send(g0_dict,dest=0)
   
-results_g0 = None
+results_g0 = None 
 ics_g1 = None
 tps_g0 = None
 
-if rank == 0:
+if rank == 0: # If rank is 0, receive gen 0 results (g0_dict) from all cells and store in results_g0
     results_g0_recv = []
     results_g0_recv.append(g0_dict)
     for r in range(1,size):
-        results_g0_recv.append(comm.recv(source=r))
+        results_g0_recv.append(comm.recv(source=r)) # append a range of g0 dictionaries from all ranks to results_g0_recv
         
     results_g0_collect = []
     
     for i in range(size):
-        results_g0_collect.extend(list(results_g0_recv[i].values()))
+        results_g0_collect.extend(list(results_g0_recv[i].values())) # Collect all gen 0 results (g0_dict) from all ranks and append to results_g0_collect
     
     results_g0 = {}    
     ics_g1 = {}
     tps_g0 = {}
     
-    for i in range(len(results_g0_collect)):
-        cell = results_g0_collect[i]['cell']
+    for i in range(len(results_g0_collect)): # Store the cell number, cell cycle completion, initial concentrations, and time point at which the cell cycle completed in results_g0
+        cell = results_g0_collect[i]['cell'] 
         results_g0[str(cell)] = results_g0_collect[i]['result']
         ics_g1[str(cell)] = results_g0_collect[i]['ic_g1']
         tps_g0[str(cell)] = results_g0_collect[i]['tp_g0']
         
-results_g0 = comm.bcast(results_g0, root = 0)
+results_g0 = comm.bcast(results_g0, root = 0) # Broadcast results_g0 to all ranks
 ics_g1 = comm.bcast(ics_g1, root = 0)
 tps_g0 = comm.bcast(tps_g0, root = 0)
-comm.Barrier()
+comm.Barrier() # Wait for all ranks to reach this point before proceeding
 
-#%% aux functions
+#%% aux functions ###JRHUGGI: Not sure what this means
 
-mb_tr = float(args.mb_tr)
+mb_tr = float(args.mb_tr) # Mb trough upper limit (nM) defined by user via CLI
 
-def find_dp(xoutS,tout,species_all=species_all):
+# Finds and returns the point at whic the cell has gone through mitosis and divided via Mb concentration
+def find_dp(xoutS,tout,species_all=species_all): ###JRHUGGI: I think variable names, like dp, could be less vague. 
     data = xoutS[:,list(species_all).index('Mb')]
     p,_ = find_peaks(data,height=30)
-    b = (np.diff(np.sign(np.diff(data))) > 0).nonzero()[0] + 1
+    b = (np.diff(np.sign(np.diff(data))) > 0).nonzero()[0] + 1 # Finds the indices of the local minima of Mb
     
-    if len(b)!=0:
-        b = np.array(b)[data[b]<mb_tr]
+    if len(b)!=0: # If there are local minima of Mb 
+        b = np.array(b)[data[b]<mb_tr] # Set b to the indices of the local minima of Mb that are less than the Mb trough upper limit
     
-    if sum(b>p[0]) > 0:
+    if sum(b>p[0]) > 0: # If there are local minima of Mb that are greater than the first peak of Mb
     
-        dp = int(b[b>p[0]][0])
+        dp = int(b[b>p[0]][0]) # Set dp to the first local minima of Mb that is greater than the first peak of Mb
         
     else:
-        dp = np.nan
+        dp = np.nan # If there are no local minima of Mb that are greater than the first peak of Mb, set dp to NaN
     
     return(dp)
 
-def find_dp_all(data,species_all=species_all):
-    # data = xoutS[:,list(species_all).index('Mb')]
-    p,_ = find_peaks(data,height=30)
+def find_dp_all(data, species_all=species_all):
+    # Find and return the local minima indices that are greater than the peaks in the data.
+    
+    # Find peaks in the data with a height threshold of 30.
+    p, _ = find_peaks(data, height=30) 
+
+    # Find the indices of local minima of species "data."
+    # The next line calculates the first derivative, then the second derivative,
+    # and checks for sign changes to identify local minima.
     b = (np.diff(np.sign(np.diff(data))) > 0).nonzero()[0] + 1
-    
+
     dp_all = []
+    # For each peak in the data, find the first local minimum that is greater than the peak.
     for i in range(len(p)):
-        b2 = np.where(b>p[i])[0]
-        if len(b2)!=0:
+        b2 = np.where(b > p[i])[0]
+
+        if len(b2) != 0:
             dp_all.append(b[b2[0]])
-    
-    if len(dp_all)!=0:
-        dp_all_actual = list(np.array(dp_all)[data[dp_all]<mb_tr])
+
+    # If there are local minima greater than the peaks and their corresponding data values are less than a threshold (mb_tr),
+    # update dp_all to include only such values.
+    if len(dp_all) != 0:
+        dp_all_actual = list(np.array(dp_all)[data[dp_all] < mb_tr])
         dp_all = dp_all_actual
 
-    
-    return(dp_all)
+    return dp_all  # Return the list of local minima indices that meet the criteria.
+
 
 
 #%% initiate gen 1
 
-exp_time = float(args.exp_time)
+exp_time = float(args.exp_time) # Experiment time in hours defined by user via CLI
 
-th = exp_time + 3.0
+th = exp_time + 3.0 # Simulation time in hours, add 3
 
-cellpop_g1 = cell_pop
+cellpop_g1 = cell_pop # Number of cells to start generation 1 with, as defined by user via CLI
 
-output_dir = output_dose
+output_dir = output_dose ###JRHUGGI: Redundant, no?
 
-# num_tasks = int(cell_pop_g1)
-
-# tasks_per_rank = num_tasks // num_ranks
-# remainder = num_tasks % num_ranks
-
-# if rank < remainder:
-#     my_tasks = tasks_per_rank + 1
-#     start_task = rank * my_tasks + 1
-# else:
-#     my_tasks = tasks_per_rank
-#     start_task = rank * tasks_per_rank + remainder + 1
+g1_cell_start, g1_cell_end = assign_tasks(rank,cellpop_g1,size) # Receive start and end cell number for current rank
 
 
-g1_cell_start, g1_cell_end = assign_tasks(rank,cellpop_g1,size)
+g1_dict = {} # generation 1 dictionary for results 
 
-
-g1_dict = {}
-
-for task in range(g1_cell_start, g1_cell_end):
+for task in range(g1_cell_start, g1_cell_end): # For each cell (task) in generation 1 
     cell_n = int(task)
     
-    cell_name = 'g1_c'+str(cell_n)
+    cell_name = 'g1_c'+str(cell_n) # assign gen1 string to cell's dictionary name, g1_c#
     
 
     tstmp = str(datetime.now().strftime("%d %m %Y %H:%M:%S"))
     
-    print("Running gen1 cell (%d) on rank %d | %s" %(cell_n, rank, tstmp))
+    print("Running gen1 cell (%d) on rank %d | %s" %(cell_n, rank, tstmp)) 
     
-    # s_preinc_i = results_preinc[cell_n]
-    
-    x_s_g0 = results_g0[str(cell_n)]['xoutS']
+    x_s_g0 = results_g0[str(cell_n)]['xoutS'] # Assign cell number n's results from gen 0 to x_s_g0
     
     np.random.seed()
-    
-    # tp_g0 = np.random.randint(0,np.shape(x_s_g0)[0])
-    tp_g0 = tps_g0[str(cell_n)]    
-    sp_input = ics_g1[str(cell_n)]
-    sp_input = np.array(sp_input)
-    sp_input[np.argwhere(sp_input <= 1e-6)] = 0.0
 
-    sp_input[list(model.getStateIds()).index(drug)] = dose
+    tp_g0 = tps_g0[str(cell_n)] # Assign a variable with the time point at which cell n completed division in gen 0
+    sp_input = ics_g1[str(cell_n)] # Assign a variable with the initial concentrations of cell n in gen 0
+    sp_input = np.array(sp_input) # Convert cell n's initial concentrations to a numpy array
+    sp_input[np.argwhere(sp_input <= 1e-6)] = 0.0 # Set all concentrations less than 1e-6 to 0
+
+    sp_input[list(model.getStateIds()).index(drug)] = dose # Set drug concentration to user defined value
     
-    xoutS_g1, xoutG_g1, tout_g1 = RunSPARCED(flagD,th,sp_input,[],sbml_file,model)
+    xoutS_g1, xoutG_g1, tout_g1 = RunSPARCED(flagD,th,sp_input,[],sbml_file,model) # Run SPARCED for gen 1 with initial concentrations set to sp_input
     
 
-    xoutS_mb_g0 = x_s_g0
-    xoutS_mb_g1 = xoutS_g1[:,list(species_all).index('Mb')]
-    # tout_g0 = results_g0[str(cell_n)]['tout']
+    xoutS_mb_g0 = x_s_g0 # Take the results from gen 0 and assign them to xoutS_mb_g0
+    xoutS_mb_g1 = xoutS_g1[:,list(species_all).index('Mb')] # Take the Mb results from cell n's generation 1 and assign them to xoutS_mb_g1
     
-    
-    
-    tout_g0 = np.arange(0,th_g0*3600+1,ts)
-    tout_g0 = tout_g0[0:len(xoutS_mb_g0)]
+    tout_g0 = np.arange(0,th_g0*3600+1,ts) # Create a time array for gen 0
+    tout_g0 = tout_g0[0:len(xoutS_mb_g0)] # Grab the gen 0 timepoints, for species 0 up to but not including Mb, thereby matching a timepoint list to xoutS_mb_g0
     
     
     if len(tout_g0[:tp_g0]) > 0:
-    
-        tneg_g0_min = max(tout_g0[:tp_g0]) - 16*3600
-        
-        tneg_idx_start = np.where(tout_g0[:tp_g0]>tneg_g0_min)[0][0]
-        
+        # Check if there are timepoints before the cell has divided in generation 0.
+
+        # Calculate the minimum timepoint 16 hours before the cell has divided in generation 0.
+        tneg_g0_min = max(tout_g0[:tp_g0]) - 16 * 3600
+
+        # Find the index of the first occurrence in the 'tout_g0' array, up to the 'tp_g0' index,
+        # where the value is greater than 'tneg_g0_min'.
+        tneg_idx_start = np.where(tout_g0[:tp_g0] > tneg_g0_min)[0][0]
+
+        # Create a new array 'tout_g0_neg' that contains a subset of 'tout_g0' from 'tneg_idx_start' to 'tp_g0',
+        # with each element subtracted by 'tout_g0[tp_g0]'.
         tout_g0_neg = tout_g0[:tp_g0][tneg_idx_start:tp_g0] - tout_g0[tp_g0]
-        
-        xoutS_mb_new = np.concatenate((xoutS_mb_g0[tneg_idx_start:tp_g0],xoutS_mb_g1),axis=0)
-        
-        tout_new = np.concatenate((tout_g0_neg,tout_g1),axis=0)
+
+        # Create a new array 'xoutS_mb_new' by concatenating 'xoutS_mb_g0' from 'tneg_idx_start' to 'tp_g0'
+        # with 'xoutS_mb_g1'.
+        xoutS_mb_new = np.concatenate((xoutS_mb_g0[tneg_idx_start:tp_g0], xoutS_mb_g1), axis=0)
+
+        # Create a new array 'tout_new' by concatenating 'tout_g0_neg' with 'tout_g1'.
+        # This covers any gaps in timepoints between the end of generation 0 and the start of generation 1.
+        tout_new = np.concatenate((tout_g0_neg, tout_g1), axis=0)
+
     
     else:
-        # tout_g0_neg = 
-    # xoutS_new = np.concatenate((xoutS_g0[tneg_idx_start:tp_g0],xoutS_g1),axis=0)
-    
+        # If there are no timepoints before the cell has divided in generation 0:
+
+        # Set 'xoutS_mb_new' to be equal to 'xoutS_mb_g1'.
         xoutS_mb_new = xoutS_mb_g1
-    
+
+        # Set 'tout_new' to be equal to 'tout_g1'.
         tout_new = tout_g1
-   
-    # cb_peaks, _ = find_peaks(xoutS_new[:, list(species_all).index('Mb')],height=30)    
+
     
-    cb_peaks, _ = find_peaks(xoutS_mb_new,height=30)  
+    cb_peaks, _ = find_peaks(xoutS_mb_new,height=30)  # Find the Mb peaks in the gen 1 cell, indicative of a division event. 
     
-    xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(len(xoutS_g1)-1),20)))
+    xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(len(xoutS_g1)-1),20))) 
     xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(len(xoutG_g1)-1),20)))
     tout_lite = np.array(list(itertools.islice(tout_g1,0,(len(tout_g1)-1),20)))
     
@@ -468,8 +476,6 @@ for task in range(g1_cell_start, g1_cell_end):
                 dp_idx = np.where(tout_new[dp_all]>0)[0][0]
     
                 dp = dp_all[dp_idx]
-            
-            # dp_actual = dp - len(tout_new) + len(tout_g1)
   
         if ~np.isnan(dp):
             dp_actual = dp - len(tout_new) + len(tout_g1)
@@ -491,11 +497,8 @@ for task in range(g1_cell_start, g1_cell_end):
                 g2_start['lin'] = lin_g2_cell
                 g2_start['ic'] = sp_g2_cell
                 
-                # np.savetxt(os.path.join(output_dir,gx_cx+'_ic.txt'),sp_g2_cell,delimiter='\t')
                 
                 dp1 = np.where(tout_g1 == tout_new[dp])[0][0]
-                
-                # if diag == 'off':
                 
                 xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(dp1+1),20)))
                 xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(dp1+1),20)))
@@ -659,8 +662,7 @@ while cellpop_gn0 > 0:
                     gn1_start['th_gn'] = th- tdp_gn_cell    
                     gn1_start['lin'] = lin_gn_cell
                     gn1_start['ic'] = sp_gn_cell                             
-                    # np.savetxt(os.path.join(output_dir,gx_cx+'_ic.txt'),sp_gn_cell,delimiter='\t')
-    
+
     
                     xoutS_lite = np.array(list(itertools.islice(xoutS_all,0,(dp+1),20)))
                     xoutG_lite = np.array(list(itertools.islice(xoutG_all,0,(dp+1),20)))
@@ -708,13 +710,10 @@ while cellpop_gn0 > 0:
             pickle.dump(results_gn,f)
     
             
-    # results_gn = comm.bcast(results_gn, root = 0)
     results_gn1start = comm.bcast(results_gn1start, root = 0)
     
     comm.Barrier()
-    
-    # results_gn_output = [results_gn[str(rn+1)]['output'] for rn in range(len(results_gn))]
-    # gn1_start_all = [results_gn[str(rn+1)]['gn1_start'] for rn in range(len(results_gn))]    
+
     gn1_start_all = [results_gn1start[str(rn+1)] for rn in range(len(results_gn1start))]
     gn1_start_actual = np.array(gn1_start_all)[np.where(gn1_start_all)[0]]
     
@@ -740,10 +739,7 @@ while cellpop_gn0 > 0:
     cellpop_gn0 = cellpop_gn
     
     if cellpop_gn0 > 0:
-        
-        # np.savetxt(os.path.join(output_dose,'th_g'+str(g)+'.txt'),np.array(th_gn),delimiter='\t')
-        # np.savetxt(os.path.join(output_dose,'lin_g'+str(g)+'.txt'),np.array(lin_gn),delimiter='\t',fmt='%s')
-        
+
         print("Division event detected at gen(%d)" %(g))
         g += 1
         
