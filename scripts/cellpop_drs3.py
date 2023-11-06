@@ -458,24 +458,25 @@ for task in range(g1_cell_start, g1_cell_end): # For each cell (task) in generat
     
     cb_peaks, _ = find_peaks(xoutS_mb_new,height=30)  # Find the Mb peaks in the gen 1 cell, indicative of a division event. 
     
-    xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(len(xoutS_g1)-1),20))) 
-    xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(len(xoutG_g1)-1),20)))
-    tout_lite = np.array(list(itertools.islice(tout_g1,0,(len(tout_g1)-1),20)))
+    xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(len(xoutS_g1)-1),20))) # select every 20th element from xoutS_g1
+    xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(len(xoutG_g1)-1),20))) # select every 20th element from xoutG_g1
+    tout_lite = np.array(list(itertools.islice(tout_g1,0,(len(tout_g1)-1),20))) # select every 20th element from tout_g1
     
-    g2_start = {}
+    g2_start = {} 
 
-    if len(cb_peaks)>0:
+    if len(cb_peaks)>0: # If there are Mb peaks in the gen 1 cell, indicative of a division event.
         
-        dp_all = find_dp_all(xoutS_mb_new)
+        dp_all = find_dp_all(xoutS_mb_new) 
 
-        dp = np.nan
+        dp = np.nan # Set dp to NaN
 
-        if len(dp_all)>0:
+        if len(dp_all)>0: # If there are local minima of Mb that are greater than the first peak of Mb
             
-            if len(np.where(tout_new[dp_all]>0)[0]) > 0:
-                dp_idx = np.where(tout_new[dp_all]>0)[0][0]
+            if len(np.where(tout_new[dp_all]>0)[0]) > 0: # If there are local minima of Mb that are greater than the 
+                #first peak of Mb and their corresponding data values are less than a threshold (mb_tr)
+                dp_idx = np.where(tout_new[dp_all]>0)[0][0] # Set dp_idx to the first local minima of Mb that is greater than the first peak of Mb
     
-                dp = dp_all[dp_idx]
+                dp = dp_all[dp_idx] # Set dp to the first local minima of Mb that is greater than the first peak of Mb
   
         if ~np.isnan(dp):
             dp_actual = dp - len(tout_new) + len(tout_g1)
@@ -525,9 +526,7 @@ for task in range(g1_cell_start, g1_cell_end): # For each cell (task) in generat
 if rank!= 0:
     comm.send(g1_dict,dest=0)
     
-# comm.Barrier()
 
-# results_g1 = None
 results_g2start = None
 
 if rank == 0:
@@ -553,13 +552,8 @@ if rank == 0:
                 
     
         
-# results_g1 = comm.bcast(results_g1, root = 0)
 results_g2start = comm.bcast(results_g2start, root = 0)
 comm.Barrier()
-    
-# results_g1_output = [results_g1[str(rn+1)]['output'] for rn in range(len(results_g1))]
-
-# g2_start_all = [results_g1[str(rn+1)]['g2_start'] for rn in range(len(results_g1))]
 
 g2_start_all = [results_g2start[str(rn+1)] for rn in range(len(results_g2start))]
 

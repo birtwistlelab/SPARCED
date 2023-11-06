@@ -50,7 +50,7 @@ class drs_dict(): ###JRHUGGI: drs is a little obfusicated in meaning, I suggest 
         self.path_doses = os.listdir(self.path_rep)
         self.doses = [float(x.split('_')[-1]) for x in self.path_doses]
         self.doses.sort()
-        ###JRHUGGI: The above lines are convoluted as hell. I suggest you use a dictionary to store all information, such as a JSON or XML dictionary file.###
+        ###JRHUGGI: The above lines seem very convoluted. I suggest you use a dictionary to store all information, such as a JSON or XML dictionary file.###
         self.path_dose = os.path.join(self.path_rep,str(drug)+'_EC_'+str(self.doses[dose_level]))
         
         dose_files = os.listdir(self.path_dose)
