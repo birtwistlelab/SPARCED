@@ -464,9 +464,9 @@ for task in range(g1_cell_start, g1_cell_end): # For each cell (task) in generat
     
     g2_start = {} 
 
-    if len(cb_peaks)>0: # If there are Mb peaks in the gen 1 cell, indicative of a division event.
+    if len(cb_peaks)>0: # If there are Mb peaks in the gen 1 cell, indicative of a division event:
         
-        dp_all = find_dp_all(xoutS_mb_new) 
+        dp_all = find_dp_all(xoutS_mb_new) # Find the local minima indices that are greater than the peaks in the data.
 
         dp = np.nan # Set dp to NaN
 
@@ -478,28 +478,28 @@ for task in range(g1_cell_start, g1_cell_end): # For each cell (task) in generat
     
                 dp = dp_all[dp_idx] # Set dp to the first local minima of Mb that is greater than the first peak of Mb
   
-        if ~np.isnan(dp):
-            dp_actual = dp - len(tout_new) + len(tout_g1)
-            parp_dp = float(xoutS_g1[dp_actual,list(species_all).index('PARP')])
-            cparp_dp = float(xoutS_g1[dp_actual,list(species_all).index('cPARP')])
+        if ~np.isnan(dp): # If dp is not NaN: 
+            dp_actual = dp - len(tout_new) + len(tout_g1) # Set dp_actual to dp - length of tout_new + length of tout_g1
+            parp_dp = float(xoutS_g1[dp_actual,list(species_all).index('PARP')]) # Set parp_dp to the PARP concentration at dp_actual
+            cparp_dp = float(xoutS_g1[dp_actual,list(species_all).index('cPARP')]) # Set cparp_dp to the cPARP concentration at dp_actual
             
-            if parp_dp > cparp_dp:
+            if parp_dp > cparp_dp: # cPARP is indicative of impending cell death, so if parp_dp is greater than cparp_dp, 
             
                 
-                tdp_g2_cell = tout_g1[dp_actual]/3600
+                tdp_g2_cell = tout_g1[dp_actual]/3600 # Set tdp_g2_cell to the time point at which the cell has divided in generation 1 (hours)
                 
-                sp_g2_cell = xoutS_g1[dp_actual]
+                sp_g2_cell = xoutS_g1[dp_actual] # Set sp_g2_cell to the concentrations of all species at the time point at which the cell has divided in generation 1
                 
-                lin_g2_cell = 'c'+str(int(cell_n))
+                lin_g2_cell = 'c'+str(int(cell_n)) # Set lin_g2_cell to the cell number
                 
-                g2_start['cell'] = int(cell_n)
-                g2_start['dp'] = dp
-                g2_start['th_g2'] = th- tdp_g2_cell    
-                g2_start['lin'] = lin_g2_cell
-                g2_start['ic'] = sp_g2_cell
+                g2_start['cell'] = int(cell_n) # Set g2_start['cell'] to the cell number
+                g2_start['dp'] = dp # Set g2_start['dp'] to the local minima index that is greater than the first peak of Mb
+                g2_start['th_g2'] = th- tdp_g2_cell # Set g2_start['th_g2'] to the time point at which the cell has divided in generation 1 (hours)
+                g2_start['lin'] = lin_g2_cell # Set g2_start['lin'] to the cell number
+                g2_start['ic'] = sp_g2_cell # Set g2_start['ic'] to the concentrations of all species at the time point at which the cell has divided in generation 1
                 
                 
-                dp1 = np.where(tout_g1 == tout_new[dp])[0][0]
+                dp1 = np.where(tout_g1 == tout_new[dp])[0][0] # Set dp1 to the index of the first occurrence in the 'tout_g1' array, up to the 'dp' index,
                 
                 xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(dp1+1),20)))
                 xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(dp1+1),20)))
