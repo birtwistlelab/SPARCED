@@ -501,6 +501,7 @@ for task in range(g1_cell_start, g1_cell_end): # For each cell (task) in generat
                 
                 dp1 = np.where(tout_g1 == tout_new[dp])[0][0] # Set dp1 to the index of the first occurrence in the 'tout_g1' array, up to the 'dp' index,
                 
+                # Select every 20th element from xoutS_g1, xoutG_g1, and tout_g1 to reduce the size of the arrays for memory purposes
                 xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(dp1+1),20)))
                 xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(dp1+1),20)))
                 tout_lite = np.array(list(itertools.islice(tout_g1,0,(dp1+1),20)))
@@ -508,28 +509,30 @@ for task in range(g1_cell_start, g1_cell_end): # For each cell (task) in generat
     
     
     
-    
+    # create a generation 1 dictionary for each cell (task)
     output_g1_cell = {}
     
-    output_g1_cell['cell'] = int(cell_n)
-    output_g1_cell['xoutS'] = xoutS_lite
+    # assign the reduced size arrays to the generation 1 dictionary
+    output_g1_cell['cell'] = int(cell_n) # cell number
+    output_g1_cell['xoutS'] = xoutS_lite 
     output_g1_cell['xoutG'] = xoutG_lite
     output_g1_cell['tout'] = tout_lite
     
+   
     result_g1_cell = {}
     
     result_g1_cell['output'] = output_g1_cell
-    result_g1_cell['g2_start'] = g2_start
+    result_g1_cell['g2_start'] = g2_start # starting point for generation 2
     
-    g1_dict[task] = {'cell': cell_n, 'result': result_g1_cell}
+    g1_dict[task] = {'cell': cell_n, 'result': result_g1_cell}  # culminate the generation 1 dictionary for each cell (task)
     
 if rank!= 0:
-    comm.send(g1_dict,dest=0)
+    comm.send(g1_dict,dest=0) # send the generation 1 dictionary for each cell (task) to rank 0
     
 
-results_g2start = None
+results_g2start = None 
 
-if rank == 0:
+if rank == 0: 
     results_g1_recv = []
     results_g1_recv.append(g1_dict)
     for r in range(1,size):
