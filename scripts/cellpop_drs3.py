@@ -24,14 +24,14 @@ import pickle
 
 #%%
 # Start MPI
-comm = MPI.COMM_WORLD
+comm = MPI.COMM_WORLD ###AMUTSUDD: Object that communicates between ranks; manages everything 
 rank = comm.Get_rank() # Get rank of current process
 size = comm.Get_size() # Get total number of processes
 
 
 #%% argparse parameters
 
-parser = argparse.ArgumentParser(description='')
+parser = argparse.ArgumentParser(description='') 
 parser.add_argument('--cellpop', metavar='cellpop', help='starting cellpopulation', default = 5)
 parser.add_argument('--td',metavar='td', help='cell line doubling time (hrs) ', default = 48)
 parser.add_argument('--sim_name', metavar='sim_name', help='insert exp name', default = 'testmpi_tasks')
@@ -40,6 +40,7 @@ parser.add_argument('--exp_time', metavar='exp_time', help='Enter experiment tim
 parser.add_argument('--drug', metavar='drug', help='input drug species name', default = 'trame_EC')
 
 ###JRHUGGI: Why are we still hard coding stimulus concentrations instead of user defined?
+###AMUTSUD: Important for the experimental context
 parser.add_argument('--dose', metavar='dose', help='input drug dose uM', default = 0.0)
 parser.add_argument('--egf', metavar='egf', help='input E conc in nM', default = 3.308)
 parser.add_argument('--ins', metavar='ins', help='input INS conc in nM', default = 1721.76)
@@ -48,8 +49,7 @@ parser.add_argument('--nrg', metavar='nrg', help='input H conc in nM', default =
 parser.add_argument('--pdgf', metavar='pdgf', help='input PDGF conc in nM', default = 0.0)
 parser.add_argument('--igf', metavar='igf', help='input IGF conc in nM', default = 0.0)
 parser.add_argument('--fgf', metavar='fgf', help='input FGF conc in nM', default = 0.0)
-
-###JRHUGGI: Are users going to be able to override parameters and initial conditions? 
+###JRHUGGI: Parameter override was just a one-off use for this specific use, might be something to expand upon. 
 parser.add_argument('--override_param', metavar='override_param',default = 0.0)
 parser.add_argument('--override_ic', metavar='override_ic',default = 0.0)
 parser.add_argument('--override_param_id', metavar='override_param_id',default='k1813')
@@ -64,11 +64,12 @@ cd = os.getcwd()
 wd = os.path.dirname(cd)
 sys.path.append(os.path.join(wd,'bin')) # Internal SPARCED function locations are appended to $PATH
 
-sim_name = str(args.sim_name) # Simulation name defined by user via CLI
+sim_name = str(args.sim_name)
 
 output_path = os.path.join(wd,'output',sim_name) # Output path for simulation results ~/SPARCED/output/sim_name
 
-if rank==0:
+if rank==0: ###JRHUGGI: Why does it matter rank 0?
+            ###AMUTSUD: Every single rank will execute this command unless specified. 
     if not os.path.exists(output_path):
         os.mkdir(output_path)
 
@@ -87,7 +88,7 @@ from modules.RunSPARCED import RunSPARCED
 omics_input = 'OmicsData.txt' 
 genereg_input = 'GeneReg.txt'
 
-flagD = 0 # Flag for Deterministic(0) or Stochastic(1) simulation
+flagD = 0 # Flag for Deterministic(1) or Stochastic(0) simulation 
 
 ts = 30 # Time step for simulation
 
@@ -118,7 +119,7 @@ drug = str(args.drug) # Drug species defined by user via CLI
 dose = float(args.dose)*10e2 # convert to uM
 
 
-override_param = float(args.override_param) # Override parameter flag defined by user via CLI
+override_param = float(args.override_param) # Override parameter flag defined by user via CLI ###JRHUGGGI: Remove all instances of this type of comment
 override_ic = float(args.override_ic) # Override initial condition flag defined by user via CLI
 
 if override_ic > 0: # If override initial condition flag is set, load initial conditions from file
@@ -167,7 +168,7 @@ if rank==0:
 
 th = 48 #Preincubation time period
 
-output_dir = output_dose ###JRHUGGI: Redundant
+output_dir = output_dose ###JRHUGGI: Redundant ###JRHUGGI: remove
 
 
 
@@ -212,7 +213,7 @@ for task in range(cell0, cell_end):
     preinc_dict[task] = {'cell':int(task), 'preinc_IC':preinc_IC} # Store cell (task) number and initial concentrations in preinc_dict
 
 if rank != 0: # If rank is not 0, send preinc_dict to rank 0
-    comm.send(preinc_dict,dest=0)
+    comm.send(preinc_dict,dest=0) # Send the results of preincuation to rank 0
 
 results_preinc = None # Initialize results_preinc variable
 
@@ -237,8 +238,7 @@ results_preinc = comm.bcast(results_preinc, root = 0) # Broadcast results_preinc
 
 #%%
 
-comm.Barrier() # Wait for all ranks to reach this point before proceeding
-
+comm.Barrier() # Tells all the ranks to wait here until all ranks have reached this point
 
 #%% initiate gen 0 
 
@@ -246,11 +246,11 @@ th_g0 = 48 # Generation 0 preincubation time period
 
 cellpop_g0 = cell_pop 
 
-output_dir = output_dose ##JRHUGGI: Still feels redundant, I'm not seeing why this is restated before and after preinc?
+output_dir = output_dose ##JRHUGGI: I think its a duplicate; verify in cellpop_drs.py
 
 g0_dict = {} # Dictionary to store gen 0 results
 
-#%%
+#%%in this phase, it takes the preincubated cells and adds growth factor to them. 
 
 g0_cell_start, g0_cell_end = assign_tasks(rank,cellpop_g0,size) # Receive start and end cell number for current rank
 
@@ -279,9 +279,10 @@ for task in range(g0_cell_start, g0_cell_end):
     
     
     np.random.seed()
-    tp_g0 = np.random.randint(0,np.shape(xoutS_all)[0]) # Select a random number between 0 and the number of species in xoutS_all
+    #Assign a random timepoint that defines where in the cell cycle each cell is at. 
+    tp_g0 = np.random.randint(0,np.shape(xoutS_all)[0]) # Select a random timepoint between 0 and the number of species in xoutS_all
     ic_g1 = xoutS_all[tp_g0,:] # ic_g1 is assigned to all of the concentrations values of a random species from xoutS_all
-    ###JRHUGGI: What does selecting a random species tell us? Just curious what this is needed for. 
+
 
     # Create an instance of xoutS within output_g0_cell and assign the simulated values of Mb
     output_g0_cell = {} 
@@ -457,10 +458,10 @@ for task in range(g1_cell_start, g1_cell_end): # For each cell (task) in generat
 
     
     cb_peaks, _ = find_peaks(xoutS_mb_new,height=30)  # Find the Mb peaks in the gen 1 cell, indicative of a division event. 
-    
-    xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(len(xoutS_g1)-1),20))) # select every 20th element from xoutS_g1
-    xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(len(xoutG_g1)-1),20))) # select every 20th element from xoutG_g1
-    tout_lite = np.array(list(itertools.islice(tout_g1,0,(len(tout_g1)-1),20))) # select every 20th element from tout_g1
+    # Select every 20th element from xoutS_g1, xoutG_g1, and tout_g1 to reduce the size of the arrays for memory purposes
+    xoutS_lite = np.array(list(itertools.islice(xoutS_g1,0,(len(xoutS_g1)-1),20)))
+    xoutG_lite = np.array(list(itertools.islice(xoutG_g1,0,(len(xoutG_g1)-1),20)))
+    tout_lite = np.array(list(itertools.islice(tout_g1,0,(len(tout_g1)-1),20)))
     
     g2_start = {} 
 
@@ -532,35 +533,39 @@ if rank!= 0:
 
 results_g2start = None 
 
-if rank == 0: 
-    results_g1_recv = []
-    results_g1_recv.append(g1_dict)
+if rank == 0: # 
+    results_g1_recv = [] 
+    results_g1_recv.append(g1_dict) # append the results of the g1 dictionary 
     for r in range(1,size):
-        results_g1_recv.append(comm.recv(source=r))
+        results_g1_recv.append(comm.recv(source=r)) # receive the results of the g1 dictionary from all ranks
         
-    results_g1_collect = []
+    results_g1_collect = [] 
     
     for i in range(size):
-        results_g1_collect.extend(list(results_g1_recv[i].values()))
+        results_g1_collect.extend(list(results_g1_recv[i].values())) ###JRHUGGI: not sure here, 
+        ###JRHUGGI: I know what extend does, just not quite sure why we need to create two separate lists?
+        ###JRHUGI: This means I probably don't understand this section of code very well.
     
     results_g1 = {}    
     results_g2start = {}
-    for i in range(len(results_g1_collect)):
-        cell = results_g1_collect[i]['cell']
-        results_g1[str(cell)] = results_g1_collect[i]['result']
-        results_g2start[str(cell)] = results_g1_collect[i]['result']['g2_start']
+    for i in range(len(results_g1_collect)): # Iterate over the results of the first generation
+        cell = results_g1_collect[i]['cell'] # Create a key within the results_g1 dictionary for each cell in the loop
+        results_g1[str(cell)] = results_g1_collect[i]['result'] #The Results for the current cell are stored as a value for the key (cell number)
+        results_g2start[str(cell)] = results_g1_collect[i]['result']['g2_start'] # Store the g2_start dictionary for each cell in the loop as a value for the key (cell number)
 
-    with open(os.path.join(output_dir,"output_g1.pkl"),"wb") as f:
-        pickle.dump(results_g1,f)
+    with open(os.path.join(output_dir,"output_g1.pkl"),"wb") as f: # save the first cell generation results as a pickle file
+        pickle.dump(results_g1,f) # Saved in SPARCED/ouput/in_silico_drs/drug/sim_name/drug_dose/output_g1.pkl
                 
     
         
-results_g2start = comm.bcast(results_g2start, root = 0)
-comm.Barrier()
+results_g2start = comm.bcast(results_g2start, root = 0) # Broadcast the generation 2 starting values to all processes
+comm.Barrier() # synchronize all cell's before proceeding
 
-g2_start_all = [results_g2start[str(rn+1)] for rn in range(len(results_g2start))]
+g2_start_all = [results_g2start[str(rn+1)] for rn in range(len(results_g2start))] # create a list of all generation 2 start initial conditions and starting times, as well as lineage information. 
 
-g2_start_actual = np.array(g2_start_all)[np.where(g2_start_all)[0]]
+
+
+g2_start_actual = np.array(g2_start_all)[np.where(g2_start_all)[0]] # extract 
 
 if len(g2_start_actual) != 0:
     
