@@ -61,7 +61,7 @@ args = parser.parse_args()
 
 cd = os.getcwd()
 wd = os.path.dirname(cd)
-sys.path.append(os.path.join(wd,'bin'))
+sys.path.append(os.path.join(wd,'bin')) # Internal SPARCED function locations are appended to $PATH
 
 
 sim_name = str(args.sim_name)
@@ -75,8 +75,8 @@ if rank==0:
 
 sbml_file = "SPARCED.xml"
 model_name= sbml_file[0:-4]
-model_output_dir = model_name #Isn't this redundant?
-sys.path.insert(0, os.path.join(wd,model_output_dir)) #Why not just use model_name instead of model_output_dir?
+model_output_dir = model_name 
+sys.path.insert(0, os.path.join(wd,model_output_dir))
 model_module = importlib.import_module(model_name)
 model = model_module.getModel()   
 
@@ -122,7 +122,7 @@ drug = str(args.drug) # perturbant species ID
 dose = float(args.dose)*10e2 # perturbant dose in uM
 
 
-override_param = float(args.override_param) # 
+override_param = float(args.override_param) 
 override_ic = float(args.override_ic)
 
 if override_ic > 0:
@@ -151,7 +151,7 @@ if rank==0:
         os.mkdir(output_dose)
 
 
-th = 48
+th = 48 #Preincubation time period
 
 output_dir = output_dose
 
@@ -181,12 +181,10 @@ def assign_tasks(rank,n_cells,size):
 
 cellpop_preinc = int(cell_pop)
 
-cell0, cell_end = assign_tasks(rank,cellpop_preinc,size)
+cell0, cell_end = assign_tasks(rank,cellpop_preinc,size) # Receive start and end cell number for current rank
 
-#%
-
-
-# Generate task-specific dictionaries
+#%% Generate cell (task)-specific dictionaries of preincubation. This is important to have cells at asynchronous states at 
+# the start of the simulation
 preinc_dict = {}
 
 for task in range(cell0, cell_end):
@@ -198,29 +196,29 @@ for task in range(cell0, cell_end):
     
     print("Running preincubate (%d) on rank %d | %s" %(task, rank, tstmp))
     
+    # Run SPARCED for preincubation time (th) with stimulus concentrations set to 0
     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
     
 
  
     
-    preinc_IC = xoutS_all[-1]
+    preinc_IC = xoutS_all[-1] # Set initial concentrations for cell (task) to last concentration of preincubation
     
 
     
     preinc_dict[task] = {'cell':int(task), 'preinc_IC':preinc_IC}
 
-if rank != 0:
+if rank != 0:  # send preincubation results from each rank to rank 0
     comm.send(preinc_dict,dest=0)
-
 
 
 results_preinc = None
 
-if rank == 0:
+if rank == 0: # Send the preincubation results (preinc_dict) from all ranks and store in rank 0
     results_preinc_recv = []
     results_preinc_recv.append(preinc_dict)
     for r in range(1,size):
-        results_preinc_recv.append(comm.recv(source=r))
+        results_preinc_recv.append(comm.recv(source=r)) 
         
     results_collect = []
     
@@ -229,16 +227,13 @@ if rank == 0:
         
     results_preinc = {}
     
-    for i in range(len(results_collect)):
+    for i in range(len(results_collect)): # Broadcast preincubation results to all ranks
         cell = results_collect[i]['cell']
         results_preinc [str(cell)] = results_collect[i]['preinc_IC'] 
         
-    # with open(os.path.join(output_path,"output_g1.pkl"),"wb") as f:
-    #     pickle.dump(merged_dicts_recv,f)
-results_preinc = comm.bcast(results_preinc, root = 0)
 
 
-
+# Here, ranks that have completed preincubation will wait for unfinished tasks.
 comm.Barrier()
 
 
