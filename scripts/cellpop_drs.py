@@ -238,10 +238,9 @@ comm.Barrier()
 
 
 #%% Initiate gen 0 (asynchronous cycling)
+th_g0 = 48 # Gen 0 simulation time
 
-th_g0 = 48
-
-cellpop_g0 = cell_pop
+cellpop_g0 = cell_pop 
 
 output_dir = output_dose
 
@@ -249,7 +248,7 @@ output_dir = output_dose
 g0_dict = {}
 
 
-
+# Run gen 0 preincubation for each cell (task) with stimulus concentrations set to user defined values
 g0_cell_start, g0_cell_end = assign_tasks(rank,cellpop_g0,size)
 
 
@@ -275,10 +274,11 @@ for task in range(g0_cell_start, g0_cell_end):
         sp_input[species_all.index(lig)] = STIMligs[l]
      
     
-    
+    # Run SPARCED for gen 0 time (th_g0) with stimulus concentrations set to user defined values
     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th_g0,sp_input,[],sbml_file,model)
     
     
+    # Select a random timepoint for each cell; defines asynchronous cycling state
     np.random.seed()
     tp_g0 = np.random.randint(0,np.shape(xoutS_all)[0]) 
     ic_g1 = xoutS_all[tp_g0,:]
@@ -286,21 +286,19 @@ for task in range(g0_cell_start, g0_cell_end):
     
     output_g0_cell = {}
     
-
+    # Assign the simulated values of Mb, indicative of cell cycle completion, to the generation 0 output dictionary
     output_g0_cell['xoutS'] = xoutS_all[:,list(species_all).index('Mb')]
-
     g0_dict[task] = {'cell':cell_n,'result':output_g0_cell,'ic_g1':ic_g1, 'tp_g0':tp_g0}
     
 if rank!= 0:
     comm.send(g0_dict,dest=0)
     
-
   
 results_g0 = None
 ics_g1 = None
 tps_g0 = None
 
-if rank == 0:
+if rank == 0: # Send gen 0 results (g0_dict) from all cells to rank 0 
     results_g0_recv = []
     results_g0_recv.append(g0_dict)
     for r in range(1,size):
@@ -321,14 +319,15 @@ if rank == 0:
         ics_g1[str(cell)] = results_g0_collect[i]['ic_g1']
         tps_g0[str(cell)] = results_g0_collect[i]['tp_g0']
         
-results_g0 = comm.bcast(results_g0, root = 0)
+results_g0 = comm.bcast(results_g0, root = 0) # Broadcast generation 0 results to all ranks
 ics_g1 = comm.bcast(ics_g1, root = 0)
 tps_g0 = comm.bcast(tps_g0, root = 0)
-comm.Barrier()
+comm.Barrier() # Wait for all ranks to complete gen 0
 
 #%% Functions for finding cell division time points
 
-mb_tr = float(args.mb_tr)
+mb_tr = float(args.mb_tr) ###JRHUGGI: This section needs to be commented, but I don't think Im the guy to do it, cause I'm lost
+
 
 def find_dp(xoutS,tout,species_all=species_all):
     data = xoutS[:,list(species_all).index('Mb')]
@@ -370,7 +369,7 @@ def find_dp_all(data,species_all=species_all):
 
 exp_time = float(args.exp_time)
 
-th = exp_time + 3.0
+th = exp_time + 3.0 # Gen 1 simulation time
 
 cellpop_g1 = cell_pop
 
@@ -382,6 +381,7 @@ g1_cell_start, g1_cell_end = assign_tasks(rank,cellpop_g1,size)
 
 
 g1_dict = {}
+
 
 for task in range(g1_cell_start, g1_cell_end):
     cell_n = int(task)
