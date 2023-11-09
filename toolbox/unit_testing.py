@@ -7,8 +7,6 @@ import amici
 import yaml
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.legend_handler import Line2D
 
 
 def load_petab_files(yaml_file):
@@ -31,29 +29,30 @@ def load_petab_files(yaml_file):
     
 
 
-def sparced_ERM(yaml_file):
+def sparced_erm(yaml_file):
     """
     Stands for SPARCED (E)xperimental (R)eplicate (M)odel; a function for replicating experimental data based on the PEtab format.
-    model_file: amici.Model instance
-    observable: (string) biological observable of interest
-    yaml_data: Dictionary containing data from yaml file
-
+    yaml_file: Dictionary containing data from yaml file
     """
-    currentDirectory = os.getcwd() #Gets current directory
+    currentDirectory = os.getcwd()
     sbml_file, parameter_df, conditions_df, measurement_df, observable_file = load_petab_files(yaml_file) #load petab input files
     model_name = os.path.basename(sbml_file).split('.')[0] #Gets the name of the sbml file
+
     sys.path.insert(0, os.path.join(currentDirectory,model_name)) #inserts model folder created by amici (post model creation) into the path
+    
     model_module = importlib.import_module(model_name) #manually assigns SPARCED into a module to be imported
+    
     model = model_module.getModel() #Retrieves model from using libSBML.getModel() function
 
-    solver = model.getSolver()###UNDERSTAND BETTER###
-    solver.setMaxSteps = 1e10###UNDERSTAND BETTER### 
+    solver = model.getSolver()
+    solver.setMaxSteps = 1e10
         
     results_dict = {} #create a dictionary to store simulation results
+    
     perturbants = list(conditions_df.columns[2:]) #Columns 3 and onwards are perturbants corresponding to species within species.txt of the SPARCED model
     unique_conditions = conditions_df.drop_duplicates(subset=perturbants) #Drops duplicates, leaving only unique conditions
 
-    simulationTime = measurement_df['time'].max() ###unit of time should be defined by the sbml in PETab's measurements file.
+    simulationTime = measurement_df['time'].max()
     model.setTimepoints(np.linspace(0,simulationTime,1000)) ###need to set interval based on experimental data; could be number of unique measurement time points? For example: uWEstern has 5
     
     speciesIds = list(model.getStateIds()) #contains a list of all species names within SPARCED 
@@ -67,13 +66,14 @@ def sparced_ERM(yaml_file):
             
             simulation = amici.runAmiciSimulation(model,solver) 
 
-            TimePoints = simulation['t']
-
             iterationName = condition['conditionId']
 
-            results_dict[iterationName] = simulation['x'] #stores simulation results in a dictionary
+            results_dict[iterationName] = iterationName #creates a key within the dictionary for each unique condition
+            
+            results_dict[iterationName]['xoutS'] = simulation['x'] #stores simulation results the  dictionary
+            results_dict[iterationName]['toutS'] = simulation['t'] #stores simulation timepoins the dictionary
 
-    return results_dict, TimePoints
+    return results_dict
 
 
 
@@ -107,7 +107,7 @@ def observableCalculator(yaml_file, results_dict):
                 sum(
                     np.array(
                         [
-                            results_dict[condition][:, speciesIds.index(species_name)]
+                            results_dict[condition]['xoutS'][:, speciesIds.index(species_name)]
                             * float(species_compartment)
                             for species in observable['observableFormula'].split('+')
                             for species_name, species_compartment in [species.split('*')]
@@ -115,37 +115,50 @@ def observableCalculator(yaml_file, results_dict):
                     )
                 )
             ]
-            condition_dict[condition] = sum(obs)
+            condition_dict[condition]['xoutS'] = sum(obs)
+            condition_dict[condition]['toutS'] = results_dict[condition]['toutS']
         observable_dict[observable['observableId']] = condition_dict
 
     return observable_dict        
 
 
-def unitTest(yaml_file):
+def unit_test(yaml_file, observable=None):
     """
     Creates a unit test for a given observable.
     yaml_file: path to yaml file
     observable: (string) observableID of interest from observable table, 'observableId' column, defined in yaml file
     """
-    #Import PEtab files
-    sbml_file, parameter_df, conditions_df, measurement_df, observable_df = load_petab_files(yaml_file)
 
     #Simulate experiment replicate model (ERM)
-    ERM_Data, ERM_Time = sparced_ERM(yaml_file)
+    experimental_replicate_model = sparced_erm(yaml_file)
  
     #Calculate observable values from ERM
-    observables_data = observableCalculator(yaml_file, ERM_Data)
+    observables_data = observableCalculator(yaml_file, experimental_replicate_model)
     
     #Create a dictionary of observables
     yamlName = yaml_file.split('.')[0]
-    if os.path.exists(os.getcwd() + '/' + yamlName):
-        shutil.rmtree(os.getcwd() + '/' + yamlName)
-        os.makedirs(os.getcwd() + '/' + yamlName)
-        os.chdir(os.getcwd() + '/' + yamlName)
-        jd.save(observables_data, yamlName + '.json')
-        shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
+    if observable != None:
+        if os.path.exists(os.getcwd() + '/' + yamlName):
+            shutil.rmtree(os.getcwd() + '/' + yamlName)
+            os.makedirs(os.getcwd() + '/' + yamlName)
+            os.chdir(os.getcwd() + '/' + yamlName)
+            jd.save(observables_data, yamlName + '.json')
+            shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
+        else:
+            os.makedirs(os.getcwd() + '/' + yamlName)
+            os.chdir(os.getcwd() + '/' + yamlName)
+            jd.save(observables_data, yamlName + '.json')
+            shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
+    
     else:
-        os.makedirs(os.getcwd() + '/' + yamlName)
-        os.chdir(os.getcwd() + '/' + yamlName)
-        jd.save(observables_data, yamlName + '.json')
-        shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
+        if os.path.exists(os.getcwd() + '/' + yamlName):
+            shutil.rmtree(os.getcwd() + '/' + yamlName)
+            os.makedirs(os.getcwd() + '/' + yamlName)
+            os.chdir(os.getcwd() + '/' + yamlName)
+            jd.save(experimental_replicate_model, yamlName + '.json')
+            shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
+        else:
+            os.makedirs(os.getcwd() + '/' + yamlName)
+            os.chdir(os.getcwd() + '/' + yamlName)
+            jd.save(experimental_replicate_model, yamlName + '.json')
+            shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
