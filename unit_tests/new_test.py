@@ -18,8 +18,9 @@ def create_directories(name):
         os.chdir(cd + '/' + name)
 
     # Copy createModel_unitTest.py & unit_testing.py into the new directory
-    shutil.copy(cd + '/createModel_unitTest.py', os.path.join(os.getcwd(), 'createModel_unitTest.py'))
-    shutil.copy(cd + '/unit_testing.py', os.path.join(os.getcwd(), 'unit_testing.py'))
+    os.makedirs(os.path.join(os.getcwd(), 'scripts'))
+    shutil.copy(cd + '/createModel_unitTest.py', os.path.join(os.getcwd(), 'scripts/createModel_unitTest.py'))
+    shutil.copy(cd + '/unit_testing.py', os.path.join(os.getcwd(), 'scripts/unit_testing.py'))
     
     # Copy 'input_files' directory and its contents into the new directory
     shutil.copytree(wd + '/input_files', os.path.join(os.getcwd(), 'input_files'))

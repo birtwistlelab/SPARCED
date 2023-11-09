@@ -62,7 +62,7 @@ import matplotlib.pyplot as plt
 
 #copy input files over to current directory
 current_dir = os.getcwd()
-input_data_folder = current_dir[0:current_dir.rfind('/')+1]+'input_files'
+input_data_folder = os.path.join(os.path.dirname(current_dir) +'/input_files')
 copyDirectory(input_data_folder, os.getcwd()+"/")
 
 
@@ -485,9 +485,9 @@ for i in range(len(obs_names)):
 # The actual compilation step by AMICI, takes a while to complete for large models
 sbml_importer.sbml2amici(model_name,
                          model_output_dir,
-                         verbose=False,
-                         observables=observables,
-                         constantParameters=constantParameters)
+                         verbose=False)
+                        #  observables=observables,
+                        #  constantParameters=constantParameters)
 
 
 # ## The model creation is now complete! Enjoy...
