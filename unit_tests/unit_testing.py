@@ -1,164 +1,157 @@
-import sys
 import os
-import importlib
+import sys
+import glob
 import shutil
-import jdata as jd
-import amici
+import importlib
 import yaml
-import numpy as np
 import pandas as pd
+import numpy as np
+import amici
+import jdata as jd
+import argparse
+from typing import Optional
+
+# copy the SBML model into the PEtab input files directory
+shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(os.getcwd()), 'petab_files/SPARCED.xml'))
 
 
-def load_petab_files(yaml_file):
-    """Load petab files from a yaml file.
-        yaml: path to yaml file"""
-    # Load yaml file
-    with open(yaml_file, 'r') as file:
-        yaml_dict = yaml.safe_load(file)
-    sbml_file = yaml_dict['problems'][0]['sbml_files'][0]
-    parameter_df = pd.read_csv(yaml_dict['parameter_file'], sep='\t')
-    condition_df = pd.read_csv(yaml_dict['problems'][0]['condition_files'][0], sep='\t')
-    measurement_df = pd.read_csv(yaml_dict['problems'][0]['measurement_files'][0], sep='\t')
-    observable_df = pd.read_csv(yaml_dict['problems'][0]['observable_files'][0], sep='\t')
-    if 'visualization_file' in yaml_dict['problems'][0]:
-        visualization_df = pd.read_csv(yaml_dict['problems'][0]['visualization_files'][0], sep='\t') 
+class SPARCEDUnitTester:
+    def __init__(self, yaml_file: str):
+        self.yaml_file = yaml_file
+        self.sbml_file, self.parameter_df, self.conditions_df, self.measurement_df, self.observable_df = self.load_petab_files()
 
-    return sbml_file, parameter_df, condition_df, measurement_df, observable_df
-    if 'visualization_df' in  locals():
-        return visualization_df
+    def load_petab_files(self):
+        """Load PETAB files from a YAML file."""
+        yaml_directory = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
+
+        with open(self.yaml_file, 'r') as file:
+            yaml_dict = yaml.safe_load(file)
+
+        # Construct full paths to petab files based on the YAML file's directory
+        sbml_file = os.path.join(yaml_directory, yaml_dict['problems'][0]['sbml_files'][0])
+        parameter_df = pd.read_csv(os.path.join(yaml_directory, yaml_dict['parameter_file']), sep='\t')
+        conditions_df = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['condition_files'][0]), sep='\t')
+        measurement_df = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['measurement_files'][0]), sep='\t')
+        observable_df = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['observable_files'][0]), sep='\t')
+
+        return sbml_file, parameter_df, conditions_df, measurement_df, observable_df
     
 
+    def sparced_erm(self):
+        """Simulate the experimental replicate model."""
+        current_directory = os.getcwd()
+        model_name = os.path.basename(self.sbml_file).split('.')[0]
 
-def sparced_erm(yaml_file):
-    """
-    Stands for SPARCED (E)xperimental (R)eplicate (M)odel; a function for replicating experimental data based on the PEtab format.
-    yaml_file: Dictionary containing data from yaml file
-    """
-    currentDirectory = os.getcwd()
-    sbml_file, parameter_df, conditions_df, measurement_df, observable_file = load_petab_files(yaml_file) #load petab input files
-    model_name = os.path.basename(sbml_file).split('.')[0] #Gets the name of the sbml file
+        sys.path.insert(0, os.path.join(current_directory, model_name))
 
-    sys.path.insert(0, os.path.join(currentDirectory,model_name)) #inserts model folder created by amici (post model creation) into the path
-    
-    model_module = importlib.import_module(model_name) #manually assigns SPARCED into a module to be imported
-    
-    model = model_module.getModel() #Retrieves model from using libSBML.getModel() function
+        model_module = importlib.import_module(model_name)
+        model = model_module.getModel()
 
-    solver = model.getSolver()
-    solver.setMaxSteps = 1e10
-        
-    results_dict = {} #create a dictionary to store simulation results
-    
-    perturbants = list(conditions_df.columns[2:]) #Columns 3 and onwards are perturbants corresponding to species within species.txt of the SPARCED model
-    unique_conditions = conditions_df.drop_duplicates(subset=perturbants) #Drops duplicates, leaving only unique conditions
+        solver = model.getSolver()
+        solver.setMaxSteps = 1e10
 
-    simulationTime = measurement_df['time'].max()
-    model.setTimepoints(np.linspace(0,simulationTime,1000)) ###need to set interval based on experimental data; could be number of unique measurement time points? For example: uWEstern has 5
-    
-    speciesIds = list(model.getStateIds()) #contains a list of all species names within SPARCED 
-    speciesInitialStates = np.array(model_module.getModel().getInitialStates()) #Creates an array of initial species states
+        results_dict = {}
 
-    for index, condition in unique_conditions.iterrows(): #iterates through each unique condition
-            for species in perturbants: #iterates through each perturbant
-                    speciesInitialStates[speciesIds.index(species)] = condition[species] #sets the initial state of each species to the value of the perturbant
+        perturbants = list(self.conditions_df.columns[2:])
+        unique_conditions = self.conditions_df.drop_duplicates(subset=perturbants)
 
-            model.setInitialStates(speciesInitialStates) #sets the initial states for simulation
-            
-            simulation = amici.runAmiciSimulation(model,solver) 
+        simulation_time = self.measurement_df['time'].max()
+        model.setTimepoints(np.linspace(0, simulation_time, 1000))
 
-            iterationName = condition['conditionId']
+        species_ids = list(model.getStateIds())
+        species_initial_states = np.array(model_module.getModel().getInitialStates())
 
-            results_dict[iterationName] = iterationName #creates a key within the dictionary for each unique condition
-            
-            results_dict[iterationName]['xoutS'] = simulation['x'] #stores simulation results the  dictionary
-            results_dict[iterationName]['toutS'] = simulation['t'] #stores simulation timepoins the dictionary
+        for index, condition in unique_conditions.iterrows():
+            for species in perturbants:
+                species_initial_states[species_ids.index(species)] = condition[species]
 
-    return results_dict
+            model.setInitialStates(species_initial_states)
 
+            simulation = amici.runAmiciSimulation(model, solver)
 
+            iteration_name = condition['conditionId']
 
-def observableCalculator(yaml_file, results_dict):
-    """
-    Calculates observable values from simulation results.
-    yaml_file: path to yaml file
-    results_dict: dictionary of simulation results
-    """
-    currentDirectory = os.getcwd()
-    sbml_file, parameter_df, conditions_df, measurement_df, observable_df = load_petab_files(yaml_file)
-    model_name = os.path.basename(sbml_file).split('.')[0]
-    sys.path.insert(0, os.path.join(currentDirectory,model_name))
-    model_module = importlib.import_module(model_name)
-    model = model_module.getModel()
+            results_dict[iteration_name] = {}
+            results_dict[iteration_name]['xoutS'] = simulation['x']
+            results_dict[iteration_name]['toutS'] = simulation['t']
 
-    perturbants = list(conditions_df.columns[2:])
-    unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
-    
-    iterationName = unique_conditions['conditionId'].tolist()  # Convert to list for iteration
+        return results_dict
 
-    speciesIds = list(model.getStateIds())
-    
-    observable_dict = {}
+    def observable_calculator(self, results_dict):
+        """Calculate observable values from simulation results."""
+        current_directory = os.getcwd()
+        model_name = os.path.basename(self.sbml_file).split('.')[0]
+        sys.path.insert(0, os.path.join(current_directory, model_name))
+        model_module = importlib.import_module(model_name)
+        model = model_module.getModel()
 
+        perturbants = list(self.conditions_df.columns[2:])
+        unique_conditions = self.conditions_df.drop_duplicates(subset=perturbants)
 
-    for index, observable in observable_df.iterrows():
-        condition_dict = {}
-        for condition in iterationName:
-            obs = [
-                sum(
-                    np.array(
-                        [
-                            results_dict[condition]['xoutS'][:, speciesIds.index(species_name)]
-                            * float(species_compartment)
-                            for species in observable['observableFormula'].split('+')
-                            for species_name, species_compartment in [species.split('*')]
-                        ]
+        iteration_names = unique_conditions['conditionId'].tolist()
+
+        species_ids = list(model.getStateIds())
+        observable_dict = {}
+
+        for _, observable in self.observable_df.iterrows():
+            condition_dict = {}
+            for condition in iteration_names:
+                obs = [
+                    sum(
+                        np.array(
+                            [
+                                results_dict[condition]['xoutS'][:, species_ids.index(species_name)]
+                                * float(species_compartment)
+                                for species in observable['observableFormula'].split('+')
+                                for species_name, species_compartment in [species.split('*')]
+                            ]
+                        )
                     )
-                )
-            ]
-            condition_dict[condition]['xoutS'] = sum(obs)
-            condition_dict[condition]['toutS'] = results_dict[condition]['toutS']
-        observable_dict[observable['observableId']] = condition_dict
+                ]
+                condition_dict[condition] = {}
+                condition_dict[condition]['xoutS'] = sum(obs)
+                condition_dict[condition]['toutS'] = results_dict[condition]['toutS']
+            observable_dict[observable['observableId']] = condition_dict
 
-    return observable_dict        
-
-
-def unit_test(yaml_file, observable=None):
-    """
-    Creates a unit test for a given observable.
-    yaml_file: path to yaml file
-    observable: (string) observableID of interest from observable table, 'observableId' column, defined in yaml file
-    """
-
-    #Simulate experiment replicate model (ERM)
-    experimental_replicate_model = sparced_erm(yaml_file)
- 
-    #Calculate observable values from ERM
-    observables_data = observableCalculator(yaml_file, experimental_replicate_model)
+        return observable_dict
     
-    #Create a dictionary of observables
-    yamlName = yaml_file.split('.')[0]
-    if observable != None:
-        if os.path.exists(os.getcwd() + '/' + yamlName):
-            shutil.rmtree(os.getcwd() + '/' + yamlName)
-            os.makedirs(os.getcwd() + '/' + yamlName)
-            os.chdir(os.getcwd() + '/' + yamlName)
-            jd.save(observables_data, yamlName + '.json')
-            shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
+
+    def unit_test(self, observable: Optional[str] = None):
+        """Create a unit test for a given observable."""
+        experimental_replicate_model = self.sparced_erm()
+        observables_data = self.observable_calculator(experimental_replicate_model)
+
+        yaml_name = os.path.basename(self.yaml_file).split('.')[0]
+
+        results_directory = os.path.join(os.path.dirname(os.getcwd()), 'results')
+
+        if not os.path.exists(results_directory):
+            os.makedirs(results_directory)
+
+        results_path = os.path.join(results_directory, f"{yaml_name}.json")
+
+        if observable is not None:
+            jd.save(observables_data, results_path)
         else:
-            os.makedirs(os.getcwd() + '/' + yamlName)
-            os.chdir(os.getcwd() + '/' + yamlName)
-            jd.save(observables_data, yamlName + '.json')
-            shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
-    
-    else:
-        if os.path.exists(os.getcwd() + '/' + yamlName):
-            shutil.rmtree(os.getcwd() + '/' + yamlName)
-            os.makedirs(os.getcwd() + '/' + yamlName)
-            os.chdir(os.getcwd() + '/' + yamlName)
-            jd.save(experimental_replicate_model, yamlName + '.json')
-            shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
-        else:
-            os.makedirs(os.getcwd() + '/' + yamlName)
-            os.chdir(os.getcwd() + '/' + yamlName)
-            jd.save(experimental_replicate_model, yamlName + '.json')
-            shutil.copyfile(os.path.dirname(os.getcwd()) +'/'+ yaml_file, os.getcwd()+ '/' + yaml_file)
+            jd.save(experimental_replicate_model, results_path)
+
+# Direct path to YAML files
+yaml_files_path = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
+
+# Find all YAML files in the specified directory
+yaml_files = glob.glob(os.path.join(yaml_files_path, '*.yml'))
+
+# Create a unit test for each YAML file
+
+sparc_unit_tester = SPARCEDUnitTester(yaml_files[0])
+sparc_unit_tester.unit_test()
+
+
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser(description="SPARCED Unit Tester")
+#     parser.add_argument("--yaml_file", required=False, help="Path to the YAML file")
+
+#     args = parser.parse_args()
+
+#     sparc_unit_tester = SPARCEDUnitTester(args.yaml_file)
+#     sparc_unit_tester.unit_test()
