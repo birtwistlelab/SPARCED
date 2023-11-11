@@ -9,56 +9,31 @@ Interacting with Project Foreman code is intended through the command line, wher
 Within the SPARCED model structure, specific unit test work takes place in SPARCED/unit_tests. Before conducting a unit test, the project structure is as follows:
 
 .
-
 ├── bin
-
-│   └── /
-
+│   └── /
 ├── configs
-
-│   └── /
-
+│   └── /
 ├── docker
-
-│   └── /
-
+│   └── /
 ├── licenses
-
-│   └── /
-
+│   └── /
 ├── LICENSE.txt
-
 ├── main.nf
-
 ├── nextflow.config
-
 ├── README.md
-
 ├── requirements.txt
-
 ├── SPARCED_Brep
-
-│   └── /
-
+│   └── /
 ├── input_files
-
-│   └── /
-
+│   └── /
 ├── toolbox
-
-│   └── /
-
+│   └── /
 ├── TROUBLESHOOTING.md
-
 └── unit_tests
+    ├── createModel_unitTest.py
+    ├── new_test.py
+    └── unit_testing.py
 
-    ├── createModel_unitTest.py
-
-    ├── new_test.py
-
-    └── unit_testing.py
-
-48 directories, 375 files
 
 Note: "│   └── /" signifies a directory containing other files however, for the sake of brevity, these have been removed from this tree.
 
@@ -87,60 +62,34 @@ python3 new_test.py --name arbitrary_name
 Example: unit_tests' tree structure after running python3 new_test.py --name test:
 
 SPARCED
+   │   └── /
+   └── unit_tests
+         ├── createModel_unitTest.py
+         ├── new_test.py
+         ├── test
+         │   ├── input_files
+         │   │   ├── Compartments.txt
+         │   │   ├── excelToTSV.py
+         │   │   ├── GeneReg.txt
+         │   │   ├── Initializer.txt
+         │   │   ├── Observables.txt
+         │   │   ├── OmicsData.txt
+         │   │   ├── Ratelaws.txt
+         │   │   ├── ratios.txt
+         │   │   ├── README.md
+         │   │   ├── Species.txt
+         │   │   └── StoicMat.txt
+         │   ├── petab_files
+         │   │   ├── conditions.tsv
+         │   │   ├── measurements.tsv
+         │   │   ├── observables.tsv
+         │   │   ├── parameters.tsv
+         │   │   └── test.yml
+         │   └── scripts
+         │       ├── createModel_unitTest.py
+         │       └── unit_testing.py
+         └── unit_testing.py
 
-│   └── /
-
-└── unit_tests
-
-├── createModel_unitTest.py
-
-├── new_test.py
-
-├── test
-
-│   ├── input_files
-
-│   │   ├── Compartments.txt
-
-│   │   ├── excelToTSV.py
-
-│   │   ├── GeneReg.txt
-
-│   │   ├── Initializer.txt
-
-│   │   ├── Observables.txt
-
-│   │   ├── OmicsData.txt
-
-│   │   ├── Ratelaws.txt
-
-│   │   ├── ratios.txt
-
-│   │   ├── README.md
-
-│   │   ├── Species.txt
-
-│   │   └── StoicMat.txt
-
-│   ├── petab_files
-
-│   │   ├── conditions.tsv
-
-│   │   ├── measurements.tsv
-
-│   │   ├── observables.tsv
-
-│   │   ├── parameters.tsv
-
-│   │   └── test.yml
-
-│   └── scripts
-
-│       ├── createModel_unitTest.py
-
-│       └── unit_testing.py
-
-└── unit_testing.py
 
 ## Semantics for Condition and Observable ID's in SPARCED
 
