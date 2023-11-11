@@ -1,10 +1,10 @@
-Project Foreman Documentation:
+# Project Foreman Documentation:
 
-Jonah R. Huggins' notes on using his work:
+### Author(s): Jonah R. Huggins
 
 Interacting with Project Foreman code is intended through the command line, where a user calls the python scripts new_test.py, unit_tests.py and createModel_unitTests.py to conduct an individualized unit test and specify user defined arguments.
 
-Structure and organization
+## Structure and organization
 
 Within the SPARCED model structure, specific unit test work takes place in SPARCED/unit_tests. Before conducting a unit test, the project structure is as follows:
 
@@ -62,7 +62,7 @@ Within the SPARCED model structure, specific unit test work takes place in SPARC
 
 Note: "│   └── /" signifies a directory containing other files however, for the sake of brevity, these have been removed from this tree.
 
-The new test script
+ ### The new test script
 
 The organization and structure of this work is made through the new_test.py script. Executing new_test.py creates the following organizational structure:
 
@@ -142,7 +142,7 @@ SPARCED
 
 └── unit_testing.py
 
-Semantics for Condition and Observable ID's in SPARCED
+## Semantics for Condition and Observable ID's in SPARCED
 
 -   Condition and Observable Identifiers are arbitrarily assigned, according to the PEtab format. Therefore, I use a standard naming convention for clarity's sake.
 
@@ -150,11 +150,11 @@ Semantics for Condition and Observable ID's in SPARCED
 
 -   'Species1 Model Identifier' + '_' + 'Species1 Conc.' + '_' +'Species$n Model identifier' + '_' + 'Species$n Conc.' +'_' + time
 
-Figure 4A Unit Test Notes:
+## Figure 4A Unit Test Notes:
 
 -   Basic look at the unit test shows that its a comparison of cell % death over time, with 3 time intervals: 24, 48, and 72 hours.
 
--   Questions:
+### Questions:
 
 -   How did they generate the cell population?
 
