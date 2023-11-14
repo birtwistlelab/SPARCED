@@ -79,13 +79,16 @@ class SPARCED_ERM:
                 # Run the simulation
                 print(f"Running simulation for condition {condition['conditionId']}")
                 xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
-
+                # simulation = amici.runAmiciSimulation(model, solver)
                 
                 iteration_name = condition['conditionId']
 
-                #Build the results dictionary
+                # #Build the results dictionary
                 results_dict[iteration_name] = {}
                 results_dict[iteration_name]['xoutS'] = xoutS_all
                 results_dict[iteration_name]['toutS'] = tout_all
+
+                # results_dict[iteration_name]['xoutS'] = simulation['x']
+                # results_dict[iteration_name]['toutS'] = simulation['t']
 
             return results_dict
