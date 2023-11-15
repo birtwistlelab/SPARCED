@@ -62,7 +62,7 @@ class SPARCED_ERM:
             unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
 
             # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
-            simulation_time = measurement_df['time'].max()
+            simulation_time = measurement_df['time'].max()/3600
             # Set the number of records as the number of unique timepoints
             model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
 
@@ -77,6 +77,7 @@ class SPARCED_ERM:
 
 
                 # Run the simulation
+                print(f"Running simulation for condition {condition['conditionId']}")
                 xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
 
                 

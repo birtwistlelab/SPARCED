@@ -22,7 +22,7 @@ shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirna
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
-    parser.add_argument('--deterministic', metavar='flagD', type=int, help='1 for deterministic run, 0 for stochastic')
+    parser.add_argument('--deterministic', metavar='flagD', type=int, help='1 for deterministic run, 0 for stochastic', default=1)
     args = parser.parse_args()
 
 
@@ -35,12 +35,12 @@ class SPARCEDUnitTester:
         yaml_file: str - path to the YAML file
         observable: str - name of the observable to test
         """
-
+        flagD = args.deterministic
         # Here, we simulate the model 
-        experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file)
+        experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file, flagD)
 
         if observable is not None:
-            observables_data = ObservableCalculator.observable_calculator(experimental_replicate_model)
+            observables_data = ObservableCalculator.observable_calculator(yaml_file, experimental_replicate_model)
 
         yaml_name = os.path.basename(self.yaml_file).split('.')[0]
 
