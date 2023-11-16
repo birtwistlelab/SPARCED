@@ -29,7 +29,40 @@ class SPARCED_ERM:
         self.yaml_file = yaml_file
         self.results_dict = self.sparced_erm()
 
-    def sparced_erm(self, yaml_file: str, flagD: Optional[int] = None):
+    def preincubate(self, yaml_file, flagP: Optional[int] = None):
+        """Simulate the preincubation step."""
+        if flagP != None:
+            th = flagP
+            # Load the PEtab files
+            sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+
+            # Load the SBML model
+            model_name = os.path.basename(sbml_file).split('.')[0]
+
+            # Here, we import the model's internal packages as a python module
+            model_module = importlib.import_module(model_name)
+            model = model_module.getModel()
+
+            # I want to validate that I can print a parameter value if provided the parameter ID
+            print(model_module.getModel().getParameterById('k316_3').getValue())
+
+            solver = model.getSolver()
+            solver.setMaxSteps = 1e10
+
+            # Serum starve the cell by setting the initial conditions of species to 0.0
+            species_initializations = np.array(model_module.getModel().getInitialStates())
+            species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+
+            # Generate cell (task)-specific dictionaries of preincubation. This is important to have cells at asynchronous states at 
+
+            # Run SPARCED for preincubation time (th) with stimulus concentrations set to 0
+            xoutS_all, xoutG_all, tout_all = RunSPARCED(0, flagP,species_initializations,[],sbml_file,model)
+
+            # Store the preincubation results in a dictionary
+            return xoutS_all, xoutG_all, tout_all
+            
+
+    def sparced_erm(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None):
             """Simulate the experimental replicate model."""
             
             current_directory = os.getcwd()
@@ -47,6 +80,12 @@ class SPARCED_ERM:
 
             flagD = int(flagD)
 
+            # Load the preincubation step
+            if flagP != None:    
+                preinc_xoutS_all, _, _ = SPARCED_ERM.preincubate(yaml_file,flagP)
+                species_initializations = preinc_xoutS_all[-1]
+            ###JRHUGGI: This is a good question for Arnab, how I continue with a preincubation step.
+            
 
             model_module = importlib.import_module(model_name)
             model = model_module.getModel()
@@ -54,33 +93,63 @@ class SPARCED_ERM:
             solver = model.getSolver()
             solver.setMaxSteps = 1e10
 
-
-            # Create dynamic unit tests based on PEtab files
-            results_dict = {}
-
-            perturbants = list(conditions_df.columns[2:])
-            unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
-
             # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
             simulation_time = measurement_df['time'].max()/3600
+
             # Set the number of records as the number of unique timepoints
             model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
 
             species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
             species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
 
+
+###JRHUGGI: This is where the preincubation step needs to be added to the model
+            simulation_time = measurement_df['time'].max()/3600 #Note; timepoints in measurements_df should be in seconds, as defined by the SBML file
+
+            # Set the number of records as the number of unique timepoints
+            model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
+
+
+            # Create dynamic unit tests based on PEtab files
+            results_dict = {}
+
+            # Here, we pull our unique conditions from the conditions file
+            perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
+
+            unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
+            print(unique_conditions)
+
+            species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
+            species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
+
             for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
+
                 species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
-                for species in perturbants:
-                    # Set the initial concentrations for the perturbants in the conditions
-                    species_initializations[species_ids.index(species)] = condition[species] 
+
+                for entity in perturbants:  # Set the initial concentrations for the perturbants in the conditions table
+                    try:
+                        # If the entity is a species: change that species value
+                        index = species_ids.index(entity)
+                        species_initializations[index] = condition[entity]
+                    except ValueError:
+                        # If the entity is not found in species_ids, move on to the next task
+                        pass
+
+                    # If the entity is a parameter: change that parameter's value
+                    if entity in parameters_df is not None:
+                        model.setParameterById(entity, condition[entity])
+
+                    # If the entity is a compartment: change that compartment's value
+                    elif entity in open(os.path.dirname(wd) + '/input_files/Compartments.txt') is not None:
+                        compartment = model.getCompartment(entity)
+                        compartment.setSize(condition[entity])
 
 
-                # Run the simulation
+
                 print(f"Running simulation for condition {condition['conditionId']}")
                 xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
+                print("fininshed running simulation")
 
-                
                 iteration_name = condition['conditionId']
 
                 #Build the results dictionary

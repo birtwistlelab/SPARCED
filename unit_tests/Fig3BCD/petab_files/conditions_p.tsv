@@ -1,0 +1,57 @@
+conditionId	conditionName	E	INS	K316_3	Nucleus
+EGF_0p01_0p0	Perturbant, Dose, Time	0.01	0	1000	10000000
+EGF_0p1_0p0	Perturbant, Dose, Time	0.1	0	1001	10000001
+EGF_01_0p0	Perturbant, Dose, Time	1	0	1002	10000002
+EGF_010_0p0	Perturbant, Dose, Time	10	0	1003	10000003
+INS_0p17_0p0	Perturbant, Dose, Time	0	0.17	1004	10000004
+INS_1p7_0p0	Perturbant, Dose, Time	0	1.7	1005	10000005
+INS_17p0	Perturbant, Dose, Time	0	17	1006	10000006
+INS_1721p0	Perturbant, Dose, Time	0	1721	1007	10000007
+EGF_INS_0p01_0p17_0p0	Perturbant, Dose, Time	0.01	0.17	1008	10000008
+EGF_INS_0p01_1721p0	Perturbant, Dose, Time	0.01	1721	1009	10000009
+EGF_INS_010_0p17_0p0	Perturbant, Dose, Time	10	0.17	1010	10000010
+EGF_INS_010_1721p0	Perturbant, Dose, Time	10	1721	1011	10000011
+00serum starved_0p0	Perturbant, Dose, Time	0	0	1012	10000012
+0LSM-4256 Neg Control_10p0	Perturbant, Dose, Time	0	0	1013	10000013
+EGF_0p01_0p0	Perturbant, Dose, Time	0.01	0	1014	10000014
+EGF_0p1_0p0	Perturbant, Dose, Time	0.1	0	1015	10000015
+EGF_01_0p0	Perturbant, Dose, Time	1	0	1016	10000016
+EGF_010_0p0	Perturbant, Dose, Time	10	0	1017	10000017
+INS_0p17_0p0	Perturbant, Dose, Time	0	0.17	1018	10000018
+INS_1p7_0p0	Perturbant, Dose, Time	0	1.7	1019	10000019
+INS_17p0	Perturbant, Dose, Time	0	17	1020	10000020
+INS_1721p0	Perturbant, Dose, Time	0	1721	1021	10000021
+EGF_INS_0p01_0p17_0p0	Perturbant, Dose, Time	0.01	0.17	1022	10000022
+EGF_INS_0p01_1721p0	Perturbant, Dose, Time	0.01	1721	1023	10000023
+EGF_INS_010_0p17_0p0	Perturbant, Dose, Time	10	0.17	1024	10000024
+EGF_INS_010_1721p0	Perturbant, Dose, Time	10	1721	1025	10000025
+00serum starved_0p0	Perturbant, Dose, Time	0	0	1026	10000026
+0LSM-4256 Neg Control_10p0	Perturbant, Dose, Time	0	0	1027	10000027
+EGF_0p01_0p0	Perturbant, Dose, Time	0.01	0	1028	10000028
+EGF_0p1_0p0	Perturbant, Dose, Time	0.1	0	1029	10000029
+EGF_01_0p0	Perturbant, Dose, Time	1	0	1030	10000030
+EGF_010_0p0	Perturbant, Dose, Time	10	0	1031	10000031
+INS_0p17_0p0	Perturbant, Dose, Time	0	0.17	1032	10000032
+INS_1p7_0p0	Perturbant, Dose, Time	0	1.7	1033	10000033
+INS_17p0	Perturbant, Dose, Time	0	17	1034	10000034
+INS_1721p0	Perturbant, Dose, Time	0	1721	1035	10000035
+EGF_INS_0p01_0p17_0p0	Perturbant, Dose, Time	0.01	0.17	1036	10000036
+EGF_INS_0p01_1721p0	Perturbant, Dose, Time	0.01	1721	1037	10000037
+EGF_INS_010_0p17_0p0	Perturbant, Dose, Time	10	0.17	1038	10000038
+EGF_INS_010_1721p0	Perturbant, Dose, Time	10	1721	1039	10000039
+00serum starved_0p0	Perturbant, Dose, Time	0	0	1040	10000040
+0LSM-4256 Neg Control_10p0	Perturbant, Dose, Time	0	0	1041	10000041
+EGF_0p01_0p0	Perturbant, Dose, Time	0.01	0	1042	10000042
+EGF_0p1_0p0	Perturbant, Dose, Time	0.1	0	1043	10000043
+EGF_01_0p0	Perturbant, Dose, Time	1	0	1044	10000044
+EGF_010_0p0	Perturbant, Dose, Time	10	0	1045	10000045
+INS_0p17_0p0	Perturbant, Dose, Time	0	0.17	1046	10000046
+INS_1p7_0p0	Perturbant, Dose, Time	0	1.7	1047	10000047
+INS_17p0	Perturbant, Dose, Time	0	17	1048	10000048
+INS_1721p0	Perturbant, Dose, Time	0	1721	1049	10000049
+EGF_INS_0p01_0p17_0p0	Perturbant, Dose, Time	0.01	0.17	1050	10000050
+EGF_INS_0p01_1721p0	Perturbant, Dose, Time	0.01	1721	1051	10000051
+EGF_INS_010_0p17_0p0	Perturbant, Dose, Time	10	0.17	1052	10000052
+EGF_INS_010_1721p0	Perturbant, Dose, Time	10	1721	1053	10000053
+00serum starved_0p0	Perturbant, Dose, Time	0	0	1054	10000054
+0LSM-4256 Neg Control_10p0	Perturbant, Dose, Time	0	0	1055	10000055
