@@ -2,7 +2,7 @@ import os
 import sys
 import importlib
 import numpy as np
-from petab_file_loader import PEtabFileLoader
+from petab_file_loader import load_petab_files
 
 class ObservableCalculator:
     def __init__(self, results_dict: str):
@@ -12,7 +12,7 @@ class ObservableCalculator:
     def observable_calculator(self, yaml_file, results_dict):
         """Calculate observable values from simulation results."""
         # Load the PEtab files
-        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = load_petab_files(yaml_file)
 
         # Load the SBML model
         current_directory = os.getcwd()

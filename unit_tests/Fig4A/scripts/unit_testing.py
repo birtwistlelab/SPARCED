@@ -3,6 +3,7 @@ import sys
 import glob
 import shutil
 import importlib
+import libsbml
 import yaml
 import pandas as pd
 import numpy as np
@@ -73,16 +74,9 @@ def sparced_erm(yaml_file):
 
         model_module = importlib.import_module(model_name)
         model = model_module.getModel()
-
+        
         solver = model.getSolver()
         solver.setMaxSteps = 1e10
-
-
-        # Create dynamic unit tests based on PEtab files
-        results_dict = {}
-
-        perturbants = list(conditions_df.columns[2:])
-        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
 
         # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
         simulation_time = measurement_df['time'].max()/3600 #Note; timepoints in measurements_df should be in seconds, as defined by the SBML file
@@ -91,27 +85,53 @@ def sparced_erm(yaml_file):
         model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
 
 
+        # Create dynamic unit tests based on PEtab files
+        results_dict = {}
+
+        # Now lets start dynamically changing model values for parameters, species, and/or compartments
+
+        # Here, we pull our unique conditions from the conditions file
+        perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
+
+        # I think I want to subset parameters, species, and compartment changes into different variables so I 
+        # can reduce the brevity of where I want the model to search 
+
+        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
+        print(unique_conditions)
+
+
         species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
         species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
 
         for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
+
             species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
-            for species in perturbants:
-                # Set the initial concentrations for the perturbants in the conditions
-                species_initializations[species_ids.index(species)] = condition[species] 
+
+            for entity in perturbants:  # Set the initial concentrations for the perturbants in the conditions table
+                try:
+                    # If the entity is a species: change that species value
+                    index = species_ids.index(entity)
+                    species_initializations[index] = condition[entity]
+                except ValueError:
+                    # If the entity is not found in species_ids, move on to the next task
+                    pass
+
+                # If the entity is a parameter: change that parameter's value
+                if entity in parameters_df is not None:
+                    model.setParameterById(entity, condition[entity])
+
+                # If the entity is a compartment: change that compartment's value
+                elif entity in open(os.path.dirname(wd) + '/input_files/Compartments.txt') is not None:
+                    compartment = model.getCompartment(entity)
+                    compartment.setSize(condition[entity])
 
 
-            import time 
-            start = time.time()
-            # Run the simulation
+
             print(f"Running simulation for condition {condition['conditionId']}")
             # xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
             xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
             print("fininshed running simulation")
-            end = time.time()
-            elapsed = end - start
-            with open('time.txt', 'a') as f:
-                f.write(f"Running simulation for condition {condition['conditionId']} took {elapsed} seconds\n")
+
 
 
             iteration_name = condition['conditionId']

@@ -16,11 +16,13 @@ def create_directories(name):
     else: #if the output directory doesn't exist, create it
         os.makedirs(cd + '/' + name)
         os.chdir(cd + '/' + name)
+        os.mkdir('scripts')
 
-    # Copy 'scripts' directory and its contents into the new directory
-    shutil.copytree(cd + '/scripts', os.path.join(os.getcwd(), 'scripts'))
+    # Copy create and run model files into the new directory
+    shutil.copy(cd + '/src/runModel_unitTest.py', os.path.join(os.getcwd(), 'scripts/runModel_unitTest.py'))
+    shutil.copy(cd + '/src/createModel_unitTest.py', os.path.join(os.getcwd(), 'scripts/createModel_unitTest.py'))
     # Copy 'input_files' directory and its contents into the new directory
-    shutil.copytree(wd + '/input_files', os.path.join(os.getcwd(), 'input_files'))
+    # shutil.copytree(wd + '/input_files', os.path.join(os.getcwd(), 'input_files'))
 
     # Create 'petab_files' directory within the new directory
     os.makedirs(os.path.join(os.getcwd(), 'petab_files'))

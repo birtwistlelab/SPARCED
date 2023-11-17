@@ -10,7 +10,12 @@ import amici
 import jdata as jd
 import argparse
 from typing import Optional
-from petab_file_loader import PEtabFileLoader
+# Get the directory path
+wd = os.path.dirname(os.path.abspath(__file__))
+# Create the formatted path
+sparced_root = '/'.join(wd.split(os.path.sep)[:wd.split(os.path.sep).index('SPARCED')+1])
+sys.path.append(os.path.join(sparced_root, 'unit_tests/src'))
+from petab_file_loader import load_petab_files
 from sparced_erm import SPARCED_ERM
 from observable_calc import ObservableCalculator
 
