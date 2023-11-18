@@ -27,6 +27,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="SPARCED Unit Tester")
     parser.add_argument("--yaml_file", required=False, help="Path to the YAML file")
     parser.add_argument("--deterministic", required=False, help="Deterministic (1) or stochastic simulation (0)",default=1)
+    parser.add_argument("--preincubation", required=False, help="Preincubation time in hours",default=24)
 
     args = parser.parse_args()
 
@@ -57,91 +58,130 @@ def load_petab_files(yaml_file: str):
     return sbml_file, parameter_df, conditions_df, measurement_df, observable_df    
 
 
-def sparced_erm(yaml_file):
-        """Simulate the experimental replicate model."""
-        
-        current_directory = os.getcwd()
 
+def preincubate(yaml_file, flagP: Optional[int] = None):
+    """Simulate the preincubation step."""
+    if flagP != None:
+        th = flagP
         # Load the PEtab files
         sbml_file, parameters_df, conditions_df, measurement_df, observable_df = load_petab_files(yaml_file)
 
         # Load the SBML model
         model_name = os.path.basename(sbml_file).split('.')[0]
-        sys.path.insert(0, os.path.join(current_directory, model_name))
+        sys.path.insert(0, os.path.join(os.getcwd(), model_name))
 
-        # Set model mathematical representation
-        flagD = int(args.deterministic)
-
+        # Here, we import the model's internal packages as a python module
         model_module = importlib.import_module(model_name)
         model = model_module.getModel()
-        
+
         solver = model.getSolver()
         solver.setMaxSteps = 1e10
 
-        # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
-        simulation_time = measurement_df['time'].max()/3600 #Note; timepoints in measurements_df should be in seconds, as defined by the SBML file
+        # Serum starve the cell by setting the initial conditions of species to 0.0
+        species_initializations = np.array(model_module.getModel().getInitialStates())
+        species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 
 
-        # Set the number of records as the number of unique timepoints
-        model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
+        # Run SPARCED for preincubation time (th) with stimulus concentrations set to 0
+        xoutS_all, xoutG_all, tout_all = RunSPARCED(0, th,species_initializations,[],sbml_file,model)
 
-
-        # Create dynamic unit tests based on PEtab files
-        results_dict = {}
-
-        # Now lets start dynamically changing model values for parameters, species, and/or compartments
-
-        # Here, we pull our unique conditions from the conditions file
-        perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
-
-        # I think I want to subset parameters, species, and compartment changes into different variables so I 
-        # can reduce the brevity of where I want the model to search 
-
-        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
-        print(unique_conditions)
+        # Store the preincubation results in a dictionary
+        return xoutS_all[-1]
 
 
-        species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
-        species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
+def sparced_erm(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None):
+            """Simulate the experimental replicate model."""
 
-        for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
+            # Load the PEtab files
+            sbml_file, parameters_df, conditions_df, measurement_df, observable_df = load_petab_files(yaml_file)
 
-            species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
+            # Load the SBML model
+            model_name = os.path.basename(sbml_file).split('.')[0]
+            sys.path.insert(0, os.path.join(os.getcwd(), model_name))
 
-            for entity in perturbants:  # Set the initial concentrations for the perturbants in the conditions table
-                try:
-                    # If the entity is a species: change that species value
-                    index = species_ids.index(entity)
-                    species_initializations[index] = condition[entity]
-                except ValueError:
-                    # If the entity is not found in species_ids, move on to the next task
-                    pass
+            # Set model mathematical representation
+            if  flagD == None:
+                flagD = 1
 
-                # If the entity is a parameter: change that parameter's value
-                if entity in parameters_df is not None:
-                    model.setParameterById(entity, condition[entity])
+            flagD = int(flagD)
 
-                # If the entity is a compartment: change that compartment's value
-                elif entity in open(os.path.dirname(wd) + '/input_files/Compartments.txt') is not None:
-                    compartment = model.getCompartment(entity)
-                    compartment.setSize(condition[entity])
+            # Load the preincubation step
+            if flagP != None:    
+                preinc_xoutS_all = preincubate(yaml_file,flagP)
+                species_initializations = preinc_xoutS_all
+            ###JRHUGGI: This is a good question for Arnab, how I continue with a preincubation step.
+            
+
+            model_module = importlib.import_module(model_name)
+            model = model_module.getModel()
+
+            solver = model.getSolver()
+            solver.setMaxSteps = 1e10
+
+            # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
+            simulation_time = measurement_df['time'].max()/3600
+
+            # Set the number of records as the number of unique timepoints
+            model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
+
+            species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
+            species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
+
+
+###JRHUGGI: This is where the preincubation step needs to be added to the model
+            simulation_time = measurement_df['time'].max()/3600 #Note; timepoints in measurements_df should be in seconds, as defined by the SBML file
+
+            # Set the number of records as the number of unique timepoints
+            model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
+
+
+            # Create dynamic unit tests based on PEtab files
+            results_dict = {}
+
+            # Here, we pull our unique conditions from the conditions file
+            perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
+
+            unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
+            print(unique_conditions)
+
+            species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
+            species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
+
+            for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
+
+                species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
+
+                for entity in perturbants:  # Set the initial concentrations for the perturbants in the conditions table
+                    try:
+                        # If the entity is a species: change that species value
+                        index = species_ids.index(entity)
+                        species_initializations[index] = condition[entity]
+                    except ValueError:
+                        # If the entity is not found in species_ids, move on to the next task
+                        pass
+
+                    # If the entity is a parameter: change that parameter's value
+                    if entity in parameters_df is not None:
+                        model.setParameterById(entity, condition[entity])
+
+                    # If the entity is a compartment: change that compartment's value
+                    elif entity in open(sparced_root + '/input_files/Compartments.txt') is not None:
+                        compartment = model.getCompartment(entity)
+                        compartment.setSize(condition[entity])
 
 
 
-            print(f"Running simulation for condition {condition['conditionId']}")
-            # xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
-            xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
-            print("fininshed running simulation")
+                print(f"Running simulation for condition {condition['conditionId']}")
+                xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
+                print("fininshed running simulation")
 
+                iteration_name = condition['conditionId']
 
+                #Build the results dictionary
+                results_dict[iteration_name] = {}
+                results_dict[iteration_name]['xoutS'] = xoutS_all
+                results_dict[iteration_name]['toutS'] = tout_all
 
-            iteration_name = condition['conditionId']
-
-            #Build the results dictionary
-            results_dict[iteration_name] = {}
-            results_dict[iteration_name]['xoutS'] = xoutS_all
-            results_dict[iteration_name]['toutS'] = tout_all
-
-        return results_dict
+            return results_dict
 
 
 def observable_calculator(yaml_file, results_dict):
@@ -187,10 +227,20 @@ def observable_calculator(yaml_file, results_dict):
     return observable_dict
 
 
-def unit_test(yaml_file, observable: Optional[str] = None):
-    """Create a unit test for a given observable."""
+def unit_test(yaml_file: str, flagP: Optional[str] = None, observable: Optional[str] = None):
+    """Create a unit test for a given observable.
+    yaml_file: str - path to the YAML file
+    observable: str - name of the observable to test
+    """
+    if flagP != None:
+        #visualing the preincubation step
+        preinc = preincubate(yaml_file, flagP=args.preincubation)
+
+    # Here, we simulate the model 
     experimental_replicate_model = sparced_erm(yaml_file)
-    observables_data = observable_calculator(yaml_file, experimental_replicate_model)
+
+    if observable is not None:
+        observables_data = observable_calculator(experimental_replicate_model)
 
     yaml_name = os.path.basename(yaml_file).split('.')[0]
 
@@ -206,6 +256,8 @@ def unit_test(yaml_file, observable: Optional[str] = None):
     else:
         jd.save(experimental_replicate_model, results_path)
 
+    #save the preinc data
+    jd.save(preinc, os.path.join(results_directory, f"{yaml_name}_preinc.json"))
 # Direct path to YAML files
 yaml_files_path = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
 
@@ -213,4 +265,4 @@ yaml_files_path = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
 yaml_files = glob.glob(os.path.join(yaml_files_path, '*.yml'))
 
 # Create a unit test for each YAML file
-unit_test(yaml_files[0])
+unit_test(yaml_files[0], flagP=args.preincubation)

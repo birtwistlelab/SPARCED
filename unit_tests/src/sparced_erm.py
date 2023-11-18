@@ -8,7 +8,7 @@ import amici
 import jdata as jd
 import argparse
 from typing import Optional
-from petab_file_loader import load_petab_files
+from petab_file_loader import PEtabFileLoader
 import libsbml
 import amici.plotting
 import matplotlib.pyplot as plt
@@ -18,7 +18,7 @@ import scipy.stats
 # Get the directory path
 wd = os.path.dirname(os.path.abspath(__file__))
 
-# Create the formatted path
+# Ensure the SPARCED root and bin directories are in the system path
 sparced_root = '/'.join(wd.split(os.path.sep)[:wd.split(os.path.sep).index('SPARCED')+1])
 sys.path.append(os.path.join(sparced_root, 'bin'))
 from modules.RunSPARCED import RunSPARCED
@@ -32,31 +32,30 @@ class SPARCED_ERM:
     def preincubate(yaml_file, flagP: Optional[int] = None):
         """Simulate the preincubation step."""
         if flagP != None:
-            th = flagP
+            th = int(flagP)
+            ts = 30
             # Load the PEtab files
-            sbml_file, parameters_df, conditions_df, measurement_df, observable_df = load_petab_files(yaml_file)
+            sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
 
             # Load the SBML model
             model_name = os.path.basename(sbml_file).split('.')[0]
+            sys.path.insert(0, os.path.join(os.getcwd(), model_name))
 
             # Here, we import the model's internal packages as a python module
             model_module = importlib.import_module(model_name)
             model = model_module.getModel()
 
-            # I want to validate that I can print a parameter value if provided the parameter ID
-            print(model_module.getModel().getParameterById('k316_3').getValue())
-
             solver = model.getSolver()
             solver.setMaxSteps = 1e10
 
+            model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
+
             # Serum starve the cell by setting the initial conditions of species to 0.0
             species_initializations = np.array(model_module.getModel().getInitialStates())
-            species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
-
-            # Generate cell (task)-specific dictionaries of preincubation. This is important to have cells at asynchronous states at 
+            species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 
 
             # Run SPARCED for preincubation time (th) with stimulus concentrations set to 0
-            xoutS_all, xoutG_all, tout_all = RunSPARCED(0, flagP,species_initializations,[],sbml_file,model)
+            xoutS_all, xoutG_all, tout_all = RunSPARCED(0, th,species_initializations,[],sbml_file,model)
 
             # Store the preincubation results in a dictionary
             return xoutS_all[-1]
@@ -64,29 +63,20 @@ class SPARCED_ERM:
 
     def sparced_erm(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None):
             """Simulate the experimental replicate model."""
-            
-            current_directory = os.getcwd()
 
             # Load the PEtab files
-            sbml_file, parameters_df, conditions_df, measurement_df, observable_df = load_petab_files(yaml_file)
+            sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
 
             # Load the SBML model
             model_name = os.path.basename(sbml_file).split('.')[0]
-            sys.path.insert(0, os.path.join(current_directory, model_name))
+            sys.path.insert(0, os.path.join(os.getcwd(), model_name))
 
             # Set model mathematical representation
             if  flagD == None:
                 flagD = 1
 
             flagD = int(flagD)
-
-            # Load the preincubation step
-            if flagP != None:    
-                preinc_xoutS_all = SPARCED_ERM.preincubate(yaml_file,flagP)
-                species_initializations = preinc_xoutS_all
-            ###JRHUGGI: This is a good question for Arnab, how I continue with a preincubation step.
             
-
             model_module = importlib.import_module(model_name)
             model = model_module.getModel()
 
@@ -100,10 +90,15 @@ class SPARCED_ERM:
             model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
 
             species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
-            species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
 
+                        # Load the preincubation step
+            if flagP != None:    
+                preinc_xoutS_all = SPARCED_ERM.preincubate(yaml_file,flagP)
+                species_initializations = preinc_xoutS_all
 
-###JRHUGGI: This is where the preincubation step needs to be added to the model
+            else:
+                species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
+
             simulation_time = measurement_df['time'].max()/3600 #Note; timepoints in measurements_df should be in seconds, as defined by the SBML file
 
             # Set the number of records as the number of unique timepoints
@@ -118,9 +113,6 @@ class SPARCED_ERM:
 
             unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
             print(unique_conditions)
-
-            species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
-            species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
 
             for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
 
@@ -143,7 +135,6 @@ class SPARCED_ERM:
                     elif entity in open(sparced_root + '/input_files/Compartments.txt') is not None:
                         compartment = model.getCompartment(entity)
                         compartment.setSize(condition[entity])
-
 
 
                 print(f"Running simulation for condition {condition['conditionId']}")
