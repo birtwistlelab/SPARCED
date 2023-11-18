@@ -2,7 +2,7 @@ format_version: 1
 parameter_file: parameters.tsv
 problems: 
   - condition_files: 
-    - conditions_p.tsv
+    - conditions.tsv
     measurement_files:
     - measurements.tsv
     observable_files:

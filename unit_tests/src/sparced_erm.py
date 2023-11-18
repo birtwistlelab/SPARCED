@@ -70,12 +70,6 @@ class SPARCED_ERM:
             # Load the SBML model
             model_name = os.path.basename(sbml_file).split('.')[0]
             sys.path.insert(0, os.path.join(os.getcwd(), model_name))
-
-            # Set model mathematical representation
-            if  flagD == None:
-                flagD = 1
-
-            flagD = int(flagD)
             
             model_module = importlib.import_module(model_name)
             model = model_module.getModel()
@@ -91,6 +85,12 @@ class SPARCED_ERM:
 
             species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
 
+                        # Set model mathematical representation
+            if  flagD == None:
+                flagD = 1
+
+            flagD = int(flagD)
+            
                         # Load the preincubation step
             if flagP != None:    
                 preinc_xoutS_all = SPARCED_ERM.preincubate(yaml_file,flagP)

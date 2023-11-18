@@ -29,6 +29,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
     parser.add_argument('--deterministic', required=False, type=int, help='1 for deterministic run, 0 for stochastic', default=1)
     parser.add_argument("--preincubation", required=False, help="Preincubation time in hours",default=None)
+    parser.add_argument('--observable', required=False, type=str, help='the observable of interest from an experiment', default=None)
     args = parser.parse_args()
 
 
