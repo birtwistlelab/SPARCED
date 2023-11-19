@@ -1,6 +1,7 @@
 import os
 import sys
 import importlib
+from typing import Optional
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -20,7 +21,7 @@ from observable_calc import ObservableCalculator
 class PlottingUnitTests:
 
     # Loop through the data and store unique conditions
-    def plot_data(yaml_file, json_dict, observable: str):
+    def plot_data(yaml_file, json_dict, observable: Optional[str] = None):
         # Load PEtab files
         sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
 
@@ -41,7 +42,10 @@ class PlottingUnitTests:
         model = model_module.getModel()
         species_ids = list(model.getStateIds())
 
-        index = species_ids.index(perturbants[observable])
+        if observable is not None:
+            index = species_ids.index(perturbants[observable])
+        else:
+            index = species_ids.index(perturbants[0])
         
         # Plot the data and add a custom legend with unique conditions and colors
         for i, condition in enumerate(unique_conditions['conditionId']):
@@ -57,9 +61,9 @@ class PlottingUnitTests:
 
         # for i, condition in enumerate(unique_conditions['conditionId']):
         data = jd.load(json_dict)
-        for i, condition in enumerate(list(data.keys())):
+        for i, condition in enumerate(unique_conditions['conditionId']):
             color = color_map(i)
-            plt.plot(data[condition]['toutS'], data[condition]['xoutS'][:,index], label=condition, color = color)
+            plt.plot(data[condition]['toutS'], data['EGF_INS_010_1721p0']['xoutS'][:, index], label=condition, color = color)
         plt.legend()
         plt.xlabel('Time')
         plt.ylabel('Measurement')
