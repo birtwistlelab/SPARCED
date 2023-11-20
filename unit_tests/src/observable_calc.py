@@ -9,7 +9,7 @@ class ObservableCalculator:
         self.results_dict = results_dict
         self.observable_dict = self.observable_calculator()
 
-    def observable_calculator(self, yaml_file, results_dict):
+    def species_summation(self, yaml_file, results_dict): 
         """Calculate observable values from simulation results."""
         # Load the PEtab files
         sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
@@ -55,4 +55,37 @@ class ObservableCalculator:
             observable_dict[observable['observableId']] = condition_dict
 
         return observable_dict
+
+    def death_rate(self, yaml_file, results_dict):
+        """Calculate the death rate from simulation results."""
+        # Load the PEtab files
+        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+
+        # Load the SBML model
+        current_directory = os.getcwd()
+        model_name = os.path.basename(self.sbml_file).split('.')[0]
+        sys.path.insert(0, os.path.join(current_directory, model_name))
+        model_module = importlib.import_module(model_name)
+        model = model_module.getModel()
+
+        # Get the condition names
+        perturbants = list(conditions_df.columns[2:])
+
+        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
+
+        # The first key in the results dictionary is the condition name
+        iteration_names = unique_conditions['conditionId'].tolist()
+
+        species_ids = list(model.getStateIds())
+
+        death_rate_dict = {}
+
+        for condition in iteration_names:
+            death_point = np.argwhere(results_dict[condition]['xoutS'][:, species_ids.index('cPARP')]>100.0)[0]
+            if len(death_point)>0:
+                time_of_death = results_dict[condition]['toutS'][death_point]
+
+        return death_rate_dict
+    
+
 

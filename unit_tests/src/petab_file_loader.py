@@ -1,7 +1,9 @@
 import os
+import sys
 import shutil
 import yaml
 import pandas as pd
+import importlib
 
 # Load the PEtab files
 class PEtabFileLoader:
@@ -39,3 +41,18 @@ class PEtabFileLoader:
         observable_df = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['observable_files'][0]), sep='\t')
 
         return sbml_file, parameter_df, conditions_df, measurement_df, observable_df
+    
+
+    def model_loader(yaml_file: str):
+        """Calculate the death rate from simulation results."""
+        # Load the PEtab files
+        sbml_file, _,_,_,_ = load_petab_files(yaml_file)
+
+        # Load the SBML model
+        current_directory = os.getcwd()
+        model_name = os.path.basename(sbml_file).split('.')[0]
+        sys.path.insert(0, os.path.join(current_directory, model_name))
+        model_module = importlib.import_module(model_name)
+        model = model_module.getModel()
+
+        return model

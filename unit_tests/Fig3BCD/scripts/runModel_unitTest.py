@@ -47,7 +47,7 @@ def unit_test(yaml_file: str, flagD: Optional[int] = args.deterministic, flagP: 
         experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file, flagD=flagD)
 
     if observable is not None:
-        observables_data = ObservableCalculator.observable_calculator(experimental_replicate_model)
+        observables_data = ObservableCalculator.species_summation(experimental_replicate_model)
 
     yaml_name = os.path.basename(yaml_file).split('.')[0]
 
