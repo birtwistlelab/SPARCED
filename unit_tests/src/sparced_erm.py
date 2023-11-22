@@ -59,7 +59,46 @@ class SPARCED_ERM:
 
             # Store the preincubation results in a dictionary
             return xoutS_all[-1]
+
+
+    def delayed_stimulus(xoutS_all, yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None):
+        # Load the PEtab files
+        sbml_file, _, _, _, _ = PEtabFileLoader.load_petab_files(yaml_file)
+
+        # Load the SBML model
+        model_name = os.path.basename(sbml_file).split('.')[0]
+        sys.path.insert(0, os.path.join(os.getcwd(), model_name))
+        
+        model_module = importlib.import_module(model_name)
+        model = model_module.getModel()
+
+        species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
+
+
+        #Find out if SPARCED died during the first round of stimulus
+        death_point = np.argwhere(xoutS_all[:, species_ids.index('cPARP')]>100.0)[0]
+        if len(death_point)>0: #If cPARP reached a critical concentration; do nothing, the cell likely died
+            pass
+        
+        else: #
+            #Take the last values from the first round of simulations and use them as the starting values for the next stimulus phase
+            stimulus2_initial_values = xoutS_all[-1]
             
+            species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
+
+            simulation_time = measurement_df['time'].max()/3600 #Note; timepoints in measurements_df should be in seconds, as defined by the SBML file
+
+            # Set the number of records as the number of unique timepoints
+            model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
+
+
+            # Create dynamic unit tests based on PEtab files
+            results_dict = {}
+
+            # Here, we pull our unique conditions from the conditions file
+            perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
+
+
 
     def sparced_erm(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None):
             """Simulate the experimental replicate model."""
@@ -149,3 +188,28 @@ class SPARCED_ERM:
                 results_dict[iteration_name]['toutS'] = tout_all
 
             return results_dict
+
+
+    def stochastic_cell_replicates(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None, \
+                                   num_cells: Optional[int] = None):
+        """"create a mock cell population that consists of single cells being ran in unison
+        yaml_file: str - path to the YAML file
+        flagD: int - 1 for deterministic, 0 for stochastic
+        flagP: int - preincubation time in hours
+        num_cells: int - number of cells to simulate
+        """
+
+        # Load the PEtab files
+        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+
+        # Load the SBML model
+        model_name = os.path.basename(sbml_file).split('.')[0]
+        sys.path.insert(0, os.path.join(os.getcwd(), model_name))
+        
+        model_module = importlib.import_module(model_name)
+        model = model_module.getModel()
+        
+        mock_cell_population = {}
+        for cell in num_cells:
+            results_dict = SPARCED_ERM.sparced_erm(yaml_file, flagD, flagP)
+            mock_cell_population['cell ' + cell] = results_dict

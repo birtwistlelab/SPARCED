@@ -19,7 +19,6 @@ from sparced_erm import SPARCED_ERM
 from observable_calc import ObservableCalculator
 
 class PlottingUnitTests:
-
     # Loop through the data and store unique conditions
     def plot_data(yaml_file, json_dict, observable: Optional[str] = None):
         # Load PEtab files

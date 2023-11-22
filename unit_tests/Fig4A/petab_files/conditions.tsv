@@ -1,6 +1,6 @@
-conditionId	conditionName	E	INS	k316_3
-E_0_INS_0_k316_3_24	Serum starved cells exposed to etoposide for 24 hours	0	0	100000
-E_0_INS_0_k316_3_48	Serum starved cells exposed to etoposide for 48 hours	0	0	100000
-E_20_INS_0p001_k316_3_24	EGF and INS stimulated cells exposed to etoposide	10	10000	100000
-E_20_INS_0p001_k316_3_48	EGF and INS stimulated cells exposed to etoposide	10	10000	100000
-E_20_INS_0p001_k316_3_72	EGF and INS stimulated cells exposed to etoposide	10	10000	100000
+conditionId	conditionName	E	INS
+E_0_INS_0_k316_3_24	Serum starved cells exposed to etoposide for 24 hours	0	0
+E_0_INS_0_k316_3_48	Serum starved cells exposed to etoposide for 48 hours	0	0
+E_20_INS_0p001_k316_3_24	EGF and INS stimulated cells exposed to etoposide	10	10000
+E_20_INS_0p001_k316_3_48	EGF and INS stimulated cells exposed to etoposide	10	10000
+E_20_INS_0p001_k316_3_72	EGF and INS stimulated cells exposed to etoposide	10	10000

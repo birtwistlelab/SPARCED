@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+from typing import Optional
 import yaml
 import pandas as pd
 import importlib
@@ -19,12 +20,13 @@ class PEtabFileLoader:
     #     return None
 
     def load_petab_files(yaml_file: str):
-        """Load PETAB files from a YAML file."""
-        yaml_directory = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
+        """Load PETAB files from a YAML file.
+        yaml_file: path to yaml file"""
+        yaml_directory = os.path.join(os.path.dirname(yaml_file))
         
         # copy the SBML model into the PEtab input files directory
         if not os.path.exists(os.path.join(yaml_directory, 'SPARCED.xml')):
-            shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(os.getcwd()), 'petab_files/SPARCED.xml'))
+            shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(yaml_file), 'SPARCED.xml'))
 
         with open(yaml_file, 'r') as file:
             yaml_dict = yaml.safe_load(file)
@@ -40,13 +42,51 @@ class PEtabFileLoader:
         
         observable_df = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['observable_files'][0]), sep='\t')
 
+        petab_file_names = ['condition_files', 'measurement_files', 'observable_files']
+
+        for i, files in enumerate(petab_file_names):
+
+            var_name = f'sbml_file{i}'
+            globals()[var_name] = os.path.join(yaml_directory, yaml_dict['problems'][0][files][i])
+
+            
+
+
         return sbml_file, parameter_df, conditions_df, measurement_df, observable_df
     
 
+    def load_secondary_files(yaml_file: str):
+        """Load PETAB files from a YAML file.
+        yaml_file: path to yaml file"""
+        yaml_directory = os.path.join(os.path.dirname(yaml_file))
+        
+        # copy the SBML model into the PEtab input files directory
+        if not os.path.exists(os.path.join(yaml_directory, 'SPARCED.xml')):
+            shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(yaml_file), 'SPARCED.xml'))
+
+        with open(yaml_file, 'r') as file:
+            yaml_dict = yaml.safe_load(file)
+
+        if len(yaml_dict['problems'][0]['condition_files']) > 1:
+          conditions_df2 = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['condition_files'][1]), sep='\t')
+        else: 
+            conditions_df2 = None
+        if len(yaml_dict['problems'][0]['measurement_files']) > 1:
+            measurement_df2 = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['measurement_files'][1]), sep='\t')
+        else:
+            measurement_df2 = None
+
+        if len(yaml_dict['problems'][0]['observable_files']) > 1:
+            observable_df2 = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['observable_files'][1]), sep='\t')
+        else:
+            observable_df2 = None
+
+        return conditions_df2, measurement_df2, observable_df2
+
     def model_loader(yaml_file: str):
-        """Calculate the death rate from simulation results."""
+        """preload model via normal instructions rather than continuously calling these lines in every file"""
         # Load the PEtab files
-        sbml_file, _,_,_,_ = load_petab_files(yaml_file)
+        sbml_file, _,_,_,_ = PEtabFileLoader.load_petab_files(yaml_file)
 
         # Load the SBML model
         current_directory = os.getcwd()
