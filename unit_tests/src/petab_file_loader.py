@@ -44,14 +44,6 @@ class PEtabFileLoader:
 
         petab_file_names = ['condition_files', 'measurement_files', 'observable_files']
 
-        for i, files in enumerate(petab_file_names):
-
-            var_name = f'sbml_file{i}'
-            globals()[var_name] = os.path.join(yaml_directory, yaml_dict['problems'][0][files][i])
-
-            
-
-
         return sbml_file, parameter_df, conditions_df, measurement_df, observable_df
     
 
