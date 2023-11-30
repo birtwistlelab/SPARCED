@@ -196,7 +196,7 @@ class SPARCED_ERM:
                                 # If the entity is a parameter: change that parameter's value
                                 elif any(entity in parameters for parameters in open('ParamsAll.txt', 'r')):
                                     parameter_value = second_condition[entity]
-                                    model.setFixedParameterById(entity, second_condition[entity])
+                                    model.setParameterById(entity, second_condition[entity])
                                     print(f"Setting parameter {entity} to {parameter_value}")
                                     print(f'Verifying parameter {entity} is set to {model.getParameterById(entity)}')
 
