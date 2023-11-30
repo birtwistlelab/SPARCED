@@ -77,9 +77,6 @@ class SPARCED_ERM:
             solver = model.getSolver()
             solver.setMaxSteps = 1e10
 
-            # # Set the number of records as the number of unique timepoints
-            # model.setTimepoints(np.linspace(0, simulation_time, len(measurement_df['time'].unique())))
-
             species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
 
                         # Set model mathematical representation
@@ -107,19 +104,17 @@ class SPARCED_ERM:
 
             for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
 
-                # species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
-
                 # Set the initial concentrations for the perturbants in the conditions table
-                for entity in secondary_perturbants:
+                for entity in perturbants:
                     # If the entity is a compartment: change that compartment's value
                     if entity in open(sparced_root + '/input_files/Compartments.txt'):
                         compartment = model.getCompartment(entity)
-                        compartment.setSize(second_condition[entity]) 
+                        compartment.setSize(condition[entity]) 
 
                     # If the entity is a parameter: change that parameter's value
-                    elif any(entity in parameters for parameters in open('ParamsAll.txt', 'r')):
-                        parameter_value = second_condition[entity]
-                        model.setParameterById(entity, second_condition[entity])
+                    elif entity in open('ParamsAll.txt', 'r'):
+                        parameter_value = condition[entity]
+                        model.setParameterById(entity, condition[entity])
                         print(f"Setting parameter {entity} to {parameter_value}")
 
                     else:
@@ -127,7 +122,7 @@ class SPARCED_ERM:
                         try:
                             # If the entity is a species: change that species value
                             index = species_ids.index(entity)
-                            species_initializations[index] = second_condition[entity]
+                            species_initializations[index] = condition[entity]
                         except ValueError:
                             # If the entity is not found in species_ids, move on to the next task
                             print(f"Entity {entity} not found!")
@@ -176,9 +171,9 @@ class SPARCED_ERM:
                     #Find out if SPARCED died during the first round of stimulus
                     death_point = np.argwhere(xoutS_all[:, species_ids.index('cPARP')]>100.0)
                     if len(death_point)>0: #If cPARP reached a critical concentration; do nothing, the cell likely died
-                        pass
+                        print('Apoptosis occured')
                     
-                    else: #
+                    else: 
                         #Take the last values from the first round of simulations and use them as the starting values for the next stimulus phase
                         stimulus2_initial_values = xoutS_all[-1]  
                     
@@ -201,8 +196,9 @@ class SPARCED_ERM:
                                 # If the entity is a parameter: change that parameter's value
                                 elif any(entity in parameters for parameters in open('ParamsAll.txt', 'r')):
                                     parameter_value = second_condition[entity]
-                                    model.setParameterById(entity, second_condition[entity])
+                                    model.setFixedParameterById(entity, second_condition[entity])
                                     print(f"Setting parameter {entity} to {parameter_value}")
+                                    print(f'Verifying parameter {entity} is set to {model.getParameterById(entity)}')
 
                                 else:
                                     # Set the secondary concentrations for the perturbants in the conditions table
