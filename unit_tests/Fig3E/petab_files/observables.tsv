@@ -1,1 +1,2 @@
-observables.tsv, delete on data entry
+observableId	observableFormula	noiseFormula
+p53_active	P53ac*1.0	1

@@ -1,2 +1,7 @@
 conditionId	conditionName	k313_1	k314_1	k315_1	damageDSB	damageSSB
-					25	25
+damageSSB_25_k313_1_0_k314_1_0_k315_1_0	single strand break with parameters set to 0	0	0	0	0	25
+damageSSB_25_k313_1_7p5eNeg5_k314_1_7p5eNeg5_k315_1_7p5eNeg5	single strand break with parameters multiplied by 15 percent	0.0000075	0.0000015	0.0000015	0	25
+damageDSB_25_k313_1_0_k314_1_0_k315_1_0	double strand break with parameters set to 0	0	0	0	25	0
+damageDSB_25_k313_1_7p5eNeg5_k314_1_7p5eNeg5_k315_1_7p5eNeg5	double strand break with parameters multiplied by 5	0.00025	0.00005	0.00005	25	0
+damageSSB_25_damageDSB_25_k313_1_0_k314_1_0_k315_1_0	single and double strand breaks with parameters set to 0	0	0	0	25	25
+damageSSB_25_damageDSB_25_k313_1_0_k314_1_0_k315_1_0	single and double strand breaks with parameters multiplied by 5	0.00025	0.00005	0.00005	25	25
