@@ -110,23 +110,27 @@ class SPARCED_ERM:
                 # species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
 
                 # Set the initial concentrations for the perturbants in the conditions table
-                for entity in perturbants:  
-                    try:
-                        # If the entity is a species: change that species value
-                        index = species_ids.index(entity)
-                        species_initializations[index] = condition[entity]
-                    except ValueError:
-                        # If the entity is not found in species_ids, move on to the next task
-                        pass
+                for entity in secondary_perturbants:
+                    # If the entity is a compartment: change that compartment's value
+                    if entity in open(sparced_root + '/input_files/Compartments.txt'):
+                        compartment = model.getCompartment(entity)
+                        compartment.setSize(second_condition[entity]) 
 
                     # If the entity is a parameter: change that parameter's value
-                    if entity in parameters_df is not None:
-                        model.setParameterById(entity, condition[entity])
+                    elif any(entity in parameters for parameters in open('ParamsAll.txt', 'r')):
+                        parameter_value = second_condition[entity]
+                        model.setParameterById(entity, second_condition[entity])
+                        print(f"Setting parameter {entity} to {parameter_value}")
 
-                    # If the entity is a compartment: change that compartment's value
-                    elif entity in open(sparced_root + '/input_files/Compartments.txt') is not None:
-                        compartment = model.getCompartment(entity)
-                        compartment.setSize(condition[entity])
+                    else:
+                        # Set the secondary concentrations for the perturbants in the conditions table
+                        try:
+                            # If the entity is a species: change that species value
+                            index = species_ids.index(entity)
+                            species_initializations[index] = second_condition[entity]
+                        except ValueError:
+                            # If the entity is not found in species_ids, move on to the next task
+                            print(f"Entity {entity} not found!")
 
                 if secondary_conditions is None:
                     # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
@@ -152,7 +156,7 @@ class SPARCED_ERM:
                     first_stimulus_time = secondary_conditions
 
                     # Set the number of records as the number of unique timepoints
-                    model.setTimepoints(np.linspace(0, 30, len(measurement_df['time'].unique())))
+                    model.setTimepoints(np.linspace(0, 30, 2))
 
                     print(f"Running simulation for condition {condition['conditionId']}")
                     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,first_stimulus_time,species_initializations,[],sbml_file,model)
@@ -188,41 +192,46 @@ class SPARCED_ERM:
 
                             # species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
 
-                            for entity in secondary_perturbants:  # Set the secondary concentrations for the perturbants in the conditions table
-                                try:
-                                    # If the entity is a species: change that species value
-                                    index = species_ids.index(entity)
-                                    species_initializations[index] = second_condition[entity]
-                                except ValueError:
-                                    # If the entity is not found in species_ids, move on to the next task
-                                    pass
+                            for entity in secondary_perturbants:
+                                # If the entity is a compartment: change that compartment's value
+                                if entity in open(sparced_root + '/input_files/Compartments.txt'):
+                                    compartment = model.getCompartment(entity)
+                                    compartment.setSize(second_condition[entity]) 
 
                                 # If the entity is a parameter: change that parameter's value
-                                if entity in parameters_df is not None:
+                                elif any(entity in parameters for parameters in open('ParamsAll.txt', 'r')):
+                                    parameter_value = second_condition[entity]
                                     model.setParameterById(entity, second_condition[entity])
+                                    print(f"Setting parameter {entity} to {parameter_value}")
 
-                                # If the entity is a compartment: change that compartment's value
-                                elif entity in open(sparced_root + '/input_files/Compartments.txt') is not None:
-                                    compartment = model.getCompartment(entity)
-                                    compartment.setSize(second_condition[entity])
+                                else:
+                                    # Set the secondary concentrations for the perturbants in the conditions table
+                                    try:
+                                        # If the entity is a species: change that species value
+                                        index = species_ids.index(entity)
+                                        species_initializations[index] = second_condition[entity]
+                                    except ValueError:
+                                        # If the entity is not found in species_ids, move on to the next task
+                                        print(f"Entity {entity} not found!")
 
 
-                                # after the second stimulus is added, run the simulation for the remainder of the max timepoint
-                                secondary_timeframe = (measurement_df['time'].max()/3600) - first_stimulus_time
-                                # Set the number of records as the number of unique timepoints
-                                model.setTimepoints(np.linspace(0, 30, 2))
 
-                                print(f"Running simulation for condition {condition['conditionId']}")
-                                xoutS_all2, xoutG_all2, tout_all2 = RunSPARCED(flagD,secondary_timeframe,species_initializations,[],sbml_file,model)
-                                print("Finished running simulation")
+                            # after the second stimulus is added, run the simulation for the remainder of the max timepoint
+                            secondary_timeframe = (measurement_df['time'].max()/3600) - first_stimulus_time
+                            # Set the number of records as the number of unique timepoints
+                            model.setTimepoints(np.linspace(0, 30, 2))
 
-                                tout_all2 = tout_all2 + (first_stimulus_time * 3600 +30) # add the first stimulus time to the second stimulus time
-                                
-                                iteration_name = condition['conditionId']
+                            print(f"Running simulation for condition {second_condition['conditionId']}")
+                            xoutS_all2, xoutG_all2, tout_all2 = RunSPARCED(flagD,secondary_timeframe,species_initializations,[],sbml_file,model)
+                            print("Finished running simulation")
 
-                                #append secondary conditions to the results dictionary
-                                results_dict[iteration_name]['xoutS'] = np.append(results_dict[iteration_name]['xoutS'], xoutS_all2, axis=0)
-                                results_dict[iteration_name]['toutS'] = np.append(results_dict[iteration_name]['toutS'], tout_all2, axis=0)
+                            tout_all2 = tout_all2 + (first_stimulus_time * 3600 +30) # add the first stimulus time to the second stimulus time
+
+                            iteration_name = condition['conditionId']
+
+                            #append secondary conditions to the results dictionary
+                            results_dict[iteration_name]['xoutS'] = np.append(results_dict[iteration_name]['xoutS'], xoutS_all2, axis=0)
+                            results_dict[iteration_name]['toutS'] = np.append(results_dict[iteration_name]['toutS'], tout_all2, axis=0)
 
                         
             return results_dict
