@@ -102,9 +102,11 @@ class SPARCED_ERM:
         unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
         print(unique_conditions)
 
+
         for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
 
-            # Set the initial concentrations for the perturbants in the conditions table
+            # species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
+
             for entity in perturbants:
                 # If the entity is a compartment: change that compartment's value
                 if entity in open(sparced_root + '/input_files/Compartments.txt'):
@@ -112,14 +114,18 @@ class SPARCED_ERM:
                     compartment.setSize(condition[entity]) 
 
                 # If the entity is a parameter: change that parameter's value
-                elif any(entity in parameters for parameters in open('ParamsAll.txt', 'r')):
+                elif entity in parameters_df.iloc[:,0]:
                     parameter_value = condition[entity]
                     try:
                         model.setParameterById(entity, condition[entity])
-                    except ValueError:
+                        print(f"Setting parameter {entity} to {parameter_value}")
+                    except RuntimeError:
+                        pass
+                    try:
                         model.setFixedParameterById(entity, condition[entity])
-
-                    print(f"Setting parameter {entity} to {parameter_value}")
+                        print(f"Setting parameter {entity} to {parameter_value}")
+                    except RuntimeError:
+                        pass
 
                 else:
                     # Set the secondary concentrations for the perturbants in the conditions table
@@ -127,9 +133,11 @@ class SPARCED_ERM:
                         # If the entity is a species: change that species value
                         index = species_ids.index(entity)
                         species_initializations[index] = condition[entity]
-                    except ValueError:
+                        print(f"Setting species {entity} to {condition[entity]}")
+                    except RuntimeError:
                         # If the entity is not found in species_ids, move on to the next task
                         print(f"Entity {entity} not found!")
+
 
             if secondary_conditions is None:
                 # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
@@ -200,9 +208,16 @@ class SPARCED_ERM:
                             # If the entity is a parameter: change that parameter's value
                             elif any(entity in parameters for parameters in open('ParamsAll.txt', 'r')):
                                 parameter_value = second_condition[entity]
-                                model.setParameterById(entity, second_condition[entity])
+                                try:
+                                    model.setParameterById(entity, second_condition[entity])
+                                except RuntimeError:
+                                    pass
+                                try:
+                                    model.setFixedParameterById(entity, second_condition[entity])
+                                except RuntimeError:
+                                    pass
+
                                 print(f"Setting parameter {entity} to {parameter_value}")
-                                print(f'Verifying parameter {entity} is set to {model.getParameterById(entity)}')
 
                             else:
                                 # Set the secondary concentrations for the perturbants in the conditions table
@@ -210,11 +225,9 @@ class SPARCED_ERM:
                                     # If the entity is a species: change that species value
                                     index = species_ids.index(entity)
                                     species_initializations[index] = second_condition[entity]
-                                except ValueError:
+                                except RuntimeError:
                                     # If the entity is not found in species_ids, move on to the next task
                                     print(f"Entity {entity} not found!")
-
-
 
                         # after the second stimulus is added, run the simulation for the remainder of the max timepoint
                         secondary_timeframe = (measurement_df['time'].max()/3600) - first_stimulus_time
