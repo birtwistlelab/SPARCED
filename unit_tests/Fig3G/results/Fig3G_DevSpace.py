@@ -63,7 +63,8 @@ plt.savefig('cPARP_Fig3G3.png')
 
 
 
-def time_to_death(yaml_file, data):   
+def time_to_death(data):   
+    """"Returns the time for each simulated cell death for each condition in the results dictionary"""
     dead_simulations = {}
     time_of_death = []
     for condition in data:

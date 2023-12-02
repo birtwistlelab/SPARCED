@@ -55,6 +55,30 @@ class ObservableCalculator:
             observable_dict[observable['observableId']] = condition_dict
 
         return observable_dict
+    
+    
+    def time_to_death(data):   
+        """"Returns the time for each simulated cell death for each condition in the results dictionary"""
+        dead_simulations = {}
+        time_of_death = []
+        for condition in data:
+            dead_simulation = np.argwhere(data[condition]['xoutS'][-1, 103] < data[condition]['xoutS'][-1, 105])
+            if len(dead_simulation) > 0:
+                dead_simulations[condition] = data[condition]# I need to grab the timepoints where each simulation died
+        if len(dead_simulations) < len(data):
+            print('Not all simulations died')
+            first_condition = list(data.keys())[0]
+            [time_of_death.append(data[first_condition]['toutS'].max()/3600)for alive_remainder in range(len(data) - len(dead_simulations))]
+
+        for dead_condition in dead_simulations:
+            #Grab the first instance in xoutS where PARP was less than cPARP
+            point_of_death = np.argwhere(dead_simulations[dead_condition]['xoutS'][:, 103] < dead_simulations[dead_condition]['xoutS'][:, 105])[0]
+            # I need to grab the timepoints where each simulation died
+
+            time_of_death.append(int(dead_simulations[dead_condition]['toutS'][point_of_death]/3600))
+
+        return time_of_death
+
 
     def death_rate(self, yaml_file, results_dict):
         """Calculate the death rate from simulation results."""
