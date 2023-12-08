@@ -68,3 +68,19 @@ class PlottingUnitTests:
         plt.ylabel('Measurement')
         plt.title('simulation data')
         plt.show()
+
+
+    def plot_death_ratios(death_ratios):
+        # Plot for each condition
+        for condition, ratios in death_ratios.items():
+            plt.figure(figsize=(3, 6))  # Create a new figure for each condition
+            plt.bar(list(ratios.keys()), list(ratios.values()), width=20)
+            plt.title(f'Condition: {condition}')
+            plt.xlabel('Time Points')
+            plt.ylabel('Death %(Scale 0-1)')
+            plt.grid(True)
+            plt.ylim(0,1)
+            plt.xticks(list(ratios.keys()))
+
+            # Show the plot
+            plt.savefig(f'{condition}.png')

@@ -113,3 +113,41 @@ class ObservableCalculator:
     
 
 
+    def collect_the_dead(data):
+        """Returns the time for each simulated cell death for each condition in the results dictionary"""
+        unique_conditions = set([stim for cells in data for stim in data[cells]])
+        perished_cells = {stim: [] for stim in unique_conditions}
+        for cell in data:
+            for stim in data[cell]:
+                perished_cell = np.argwhere(data[cell][stim]['xoutS'][:, 105]>100.0)
+                if len(perished_cell) > 0: 
+                    death_point = perished_cell[0] #Instance where we rule apoptosis is irreversible
+                    time_of_death = data[cell][stim]['toutS'][death_point] # Timepoint to match death point. 
+                    perished_cells[stim].extend(time_of_death/3600)
+                
+        # Our returned array now has every cell listed, and the timepoints for when it died for each condition
+        # Ex: cell 0: condition1: 48.5hours
+        return perished_cells
+    
+
+    def timepoints_of_interest(toutS, timepoints, time_steps):
+        """Saves to the results_dict the timepoints of interest"""
+        toutS = []
+        for timepoint in timepoints:
+            toutS.append(timepoint / time_steps)
+        
+        xoutS = []
+        for timepoint in toutS:
+            xoutS.append(xoutS[(timepoint/time_steps), :])
+
+        return toutS, xoutS
+    
+    def death_ratios(data, population_size):
+        """Returns the ratio of dead cells, should be proceeded by collect_the_dead function"""
+        death_ratios = {}
+        for condition in data:
+            conditional_death_ratio = len(data[condition]) / population_size
+            death_ratios[condition] = conditional_death_ratio
+        # return death_ratios
+        return death_ratios
+
