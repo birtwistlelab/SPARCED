@@ -105,8 +105,6 @@ class SPARCED_ERM:
 
         for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
 
-            # species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 # Set any initializations less than 1e-6 to 0.0
-
             for entity in perturbants:
                 # If the entity is a compartment: change that compartment's value
                 if entity in open(sparced_root + '/input_files/Compartments.txt'):
@@ -127,7 +125,7 @@ class SPARCED_ERM:
                     except RuntimeError:
                         pass
 
-                else:
+                elif entity in species_ids.index(entity):
                     # Set the secondary concentrations for the perturbants in the conditions table
                     try:
                         # If the entity is a species: change that species value
@@ -135,8 +133,19 @@ class SPARCED_ERM:
                         species_initializations[index] = condition[entity]
                         print(f"Setting species {entity} to {condition[entity]}")
                     except RuntimeError:
-                        # If the entity is not found in species_ids, move on to the next task
+                        pass
+                
+                elif entity in open('OmicsData.txt'): #This will check the unit test OmicsData,txt file
+                    try:
+                        with open('OmicsData.txt', 'r') as omics_data_file:
+                            omics_data = pd.read_csv(omics_data_file, sep = '\t', index_col=0)
+                            omics_data.loc[entity, 'GCN'] = condition[entity]
+                            pd.to_csv(omics_data_file, sep = '\t')
+
+                    except RuntimeError:     
+                        # If the entity is not found in OmicsData: cancel the simulation
                         print(f"Entity {entity} not found!")
+                        sys.exit(1)
 
 
             if secondary_conditions is None:
@@ -219,15 +228,26 @@ class SPARCED_ERM:
 
                                 print(f"Setting parameter {entity} to {parameter_value}")
 
-                            else:
+                            elif entity in species_ids.index(entity):
                                 # Set the secondary concentrations for the perturbants in the conditions table
                                 try:
                                     # If the entity is a species: change that species value
                                     index = species_ids.index(entity)
                                     species_initializations[index] = second_condition[entity]
+                                    print(f"Setting species {entity} to {condition[entity]}")
                                 except RuntimeError:
-                                    # If the entity is not found in species_ids, move on to the next task
+                                    pass
+                            
+                            elif entity in open('OmicsData.txt'): #This will check the unit test OmicsData,txt file
+                                try:
+                                    with open('OmicsData.txt', 'r') as omics_data_file:
+                                        omics_data = pd.read_csv(omics_data_file, sep = '\t', index_col=0)
+                                        omics_data.loc[entity, 'GCN'] = second_condition[entity]
+
+                                except RuntimeError:     
+                                    # If the entity is not found in OmicsData: cancel the simulation
                                     print(f"Entity {entity} not found!")
+                                    sys.exit(1)
 
                         # after the second stimulus is added, run the simulation for the remainder of the max timepoint
                         secondary_timeframe = (measurement_df['time'].max()/3600) - first_stimulus_time
