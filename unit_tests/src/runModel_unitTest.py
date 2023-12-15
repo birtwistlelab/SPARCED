@@ -31,21 +31,21 @@ if __name__ == "__main__":
     parser.add_argument("--preincubation", required=False, help="Preincubation time in hours",default=None)
     parser.add_argument('--secondary_stimuli', required=False, type=int, help='timeframe to pause the simulation and add any secondary stimuli', default=None)
     parser.add_argument('--num_cells', required=False, type=int, help='number of cells to simulate', default=None)
-    parser.add_argument('--observable', required=False, type=str, help='the observable of interest from an experiment', default=None)
+    parser.add_argument('--observable', required=False, type=int, help='the observable of interest from an experiment', default=0)
     parser.add_argument('--name', required=False, type=str, help='the name of the file to save the results', default=None)
     args = parser.parse_args()
 
 
 
 def unit_test(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None, secondary_stimuli: Optional[int] = None, \
-              num_cells: Optional[int] = None, observable: Optional[str] = None, name: Optional[str] = None):
+              num_cells: Optional[int] = None, observable: Optional[int] = None, name: Optional[str] = None):
     """Create a unit test for a given observable.
     yaml_file: str - path to the YAML file
     flagD: int - 1 for deterministic, 0 for stochastic
     flagP: int - preincubation time in hours
     secondary_stimuli: int - timeframe to pause the simulation and add any secondary stimuli
     num_cells: int - number of cells to simulate
-    observable: str - name of the observable to test
+    observable: int - 1 for run with observable, 0 for run without observable
     """
     if num_cells is None:
         #Simulate the SPARCED model as SPARCED_ERM
@@ -54,8 +54,9 @@ def unit_test(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] 
         # Create replicates of the SPARCED model
         experimental_replicate_model = SPARCED_ERM.stochastic_cell_replicates(yaml_file, flagD, flagP, secondary_stimuli, num_cells)
 
-    if observable is not None:
-        observables_data = ObservableCalculator.species_summation(experimental_replicate_model)
+    if observable == 1:
+        print("Calculating observable")
+        observables_data = ObservableCalculator.species_summation(yaml_file, experimental_replicate_model)
 
     yaml_name = os.path.basename(yaml_file).split('.')[0]
 
@@ -66,18 +67,18 @@ def unit_test(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] 
 
     results_path = os.path.join(results_directory, f"{yaml_name}.json")
 
-    if name is None:
-        if observable is not None:
+    if name is not None:
+        if observable == 1:
             jd.save(observables_data, results_path)
 
         else:
             jd.save(experimental_replicate_model, results_path)
-    else:
-        if observable is not None:
-            jd.save(observables_data, os.path.join(results_directory, f"{name}.json"))
 
-        else:
-            jd.save(experimental_replicate_model, os.path.join(results_directory, f"{name}.json"))
+    if observable == 1:
+        jd.save(observables_data, os.path.join(results_directory, f"{name}.json"))
+
+    else:
+        jd.save(experimental_replicate_model, os.path.join(results_directory, f"{name}.json"))
 
 
 

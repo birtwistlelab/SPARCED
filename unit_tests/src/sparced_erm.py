@@ -107,7 +107,7 @@ class SPARCED_ERM:
 
             for entity in perturbants:
                 # If the entity is a compartment: change that compartment's value
-                if entity in open(sparced_root + '/input_files/Compartments.txt'):
+                if entity in open('Compartments.txt'):
                     compartment = model.getCompartment(entity)
                     compartment.setSize(condition[entity]) 
 
@@ -124,28 +124,41 @@ class SPARCED_ERM:
                         print(f"Setting parameter {entity} to {parameter_value}")
                     except RuntimeError:
                         pass
-
-                elif entity in species_ids.index(entity):
-                    # Set the secondary concentrations for the perturbants in the conditions table
+                
+                elif entity in species_ids:
+                    # Set the primary concentrations for the perturbants in the conditions table
                     try:
                         # If the entity is a species: change that species value
                         index = species_ids.index(entity)
                         species_initializations[index] = condition[entity]
                         print(f"Setting species {entity} to {condition[entity]}")
-                    except RuntimeError:
+                    except ValueError:
                         pass
-                
-                elif entity in open('OmicsData.txt'): #This will check the unit test OmicsData,txt file
+
+                elif entity.lower().strip() in open('OmicsData.txt', 'r').read().lower().strip(): #This will check the unit test OmicsData,txt file
                     try:
                         with open('OmicsData.txt', 'r') as omics_data_file:
                             omics_data = pd.read_csv(omics_data_file, sep = '\t', index_col=0)
                             omics_data.loc[entity, 'GCN'] = condition[entity]
-                            pd.to_csv(omics_data_file, sep = '\t')
-
+                            omics_data.loc[entity, 'kTCleak'] = 0.0
+                            omics_data.loc[entity, 'kTCmaxs'] = 0.0
+                            omics_data.loc[entity, 'kTCd'] = 0.0
+                            omics_data.to_csv('OmicsData.txt', sep = '\t')
+                            print(f"Setting mRNA {entity} concentration to {condition[entity]}")
                     except RuntimeError:     
                         # If the entity is not found in OmicsData: cancel the simulation
                         print(f"Entity {entity} not found!")
-                        sys.exit(1)
+                        sys.exit(1) 
+
+                # else:
+                #     # Set the primary concentrations for the perturbants in the conditions table
+                #     try:
+                #         # If the entity is a species: change that species value
+                #         index = species_ids.index(entity)
+                #         species_initializations[index] = condition[entity]
+                #         print(f"Setting species {entity} to {condition[entity]}")
+                #     except ValueError:
+                #         pass            
 
 
             if secondary_conditions is None:

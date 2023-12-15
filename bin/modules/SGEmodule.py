@@ -7,7 +7,7 @@ def SGEmodule(flagD,ts,genedata,spdata,Vn,Vc,kTCmaxs,kTCleak,kTCd,AllGenesVec,Ge
               tcnas,tck50as,tcnrs,tck50rs,spIDs,mRNAInds0):
     # Inputs:
     # flagD = deterministic (1) or stochastic (0) simulation
-    # ts = time
+    # ts = time step
     # genedata = 1D array of latest gene-expression module concentrations
     # spdata = 1D array of latest species concentrations
     # Vn = nuclear volume

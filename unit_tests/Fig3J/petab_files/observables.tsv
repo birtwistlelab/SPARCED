@@ -1,1 +1,5 @@
-observables.tsv, delete on data entry
+observableId	observableFormula	noiseFormula
+Cd_total	Cd*1.0	1
+Ce_total	Ce*1.0	1
+Ca_total	Ca*1.0	1
+Cb_total	Cb*1.0	1

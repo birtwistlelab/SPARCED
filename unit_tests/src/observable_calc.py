@@ -9,14 +9,17 @@ class ObservableCalculator:
         self.results_dict = results_dict
         self.observable_dict = self.observable_calculator()
 
-    def species_summation(self, yaml_file, results_dict): 
-        """Calculate observable values from simulation results."""
+    def species_summation(yaml_file, results_dict): 
+        """Calculate observable values from simulation results.
+        yaml_file: yaml file containing the PEtab files
+        results_dict: dictionary containing the simulation results from SPARCED_ERM
+        """
         # Load the PEtab files
         sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
 
         # Load the SBML model
         current_directory = os.getcwd()
-        model_name = os.path.basename(self.sbml_file).split('.')[0]
+        model_name = os.path.basename(sbml_file).split('.')[0]
         sys.path.insert(0, os.path.join(current_directory, model_name))
         model_module = importlib.import_module(model_name)
         model = model_module.getModel()
@@ -26,22 +29,42 @@ class ObservableCalculator:
 
         unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
 
+        unique_timepoints = measurement_df['time'].unique()
+
         # The first key in the results dictionary is the condition name
         iteration_names = unique_conditions['conditionId'].tolist()
 
         species_ids = list(model.getStateIds())
 
+        timepoints_of_interest = {}
 
         observable_dict = {}
 
         for _, observable in observable_df.iterrows():
+
             condition_dict = {}
+
             for condition in iteration_names:
+                time_steps = 30 #Not a fan of hard coding, this is a "works for now" solution
+                timepoints_of_interest[condition] = {}
+
+                timepoints_of_interest[condition]['toutS'] = []
+                timepoints_of_interest[condition]['xoutS'] = []
+
+                for timepoint in unique_timepoints:
+                    tp_by_ts = timepoint / time_steps
+                    timepoints_of_interest[condition]['toutS'].append(timepoint / time_steps)
+                    timepoints_of_interest[condition]['xoutS'].append(list(results_dict[condition]['xoutS'][int(tp_by_ts), :]))
+
+                timepoints_of_interest[condition]['toutS'] = np.array(timepoints_of_interest[condition]['toutS'])
+                timepoints_of_interest[condition]['xoutS'] = np.array(timepoints_of_interest[condition]['xoutS'])
+                
+
                 obs = [
                     sum(
                         np.array(
                             [
-                                results_dict[condition]['xoutS'][:, species_ids.index(species_name)]
+                                timepoints_of_interest[condition]['xoutS'][:, species_ids.index(species_name)]
                                 * float(species_compartment)
                                 for species in observable['observableFormula'].split('+')
                                 for species_name, species_compartment in [species.split('*')]
@@ -51,7 +74,7 @@ class ObservableCalculator:
                 ]
                 condition_dict[condition] = {}
                 condition_dict[condition]['xoutS'] = sum(obs)
-                condition_dict[condition]['toutS'] = results_dict[condition]['toutS']
+                condition_dict[condition]['toutS'] = timepoints_of_interest[condition]['toutS']
             observable_dict[observable['observableId']] = condition_dict
 
         return observable_dict
@@ -129,18 +152,6 @@ class ObservableCalculator:
         # Ex: cell 0: condition1: 48.5hours
         return perished_cells
     
-
-    def timepoints_of_interest(toutS, timepoints, time_steps):
-        """Saves to the results_dict the timepoints of interest"""
-        toutS = []
-        for timepoint in timepoints:
-            toutS.append(timepoint / time_steps)
-        
-        xoutS = []
-        for timepoint in toutS:
-            xoutS.append(xoutS[(timepoint/time_steps), :])
-
-        return toutS, xoutS
     
     def death_ratios(data, population_size):
         """Returns the ratio of dead cells, should be proceeded by collect_the_dead function"""

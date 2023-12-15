@@ -1,1 +1,4 @@
-conditions.tsv, delete on data entry
+conditionId	conditionName	CCND1	CCND2	CCND3	E	H	HGF	P	F	I	INS
+GF_0_CCND123_1	cyclin D 1.0	1	1	1	0	0	0	0	0	0	0
+GF_0_CCND123_10	cyclin D 10.0	10	10	10	0	0	0	0	0	0	0
+GF_0_CCND123_60	cyclin D 60.0	60	60	60	0	0	0	0	0	0	0
