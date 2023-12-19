@@ -1,0 +1,4 @@
+observableId	simulationConditionId	measurement	time
+cPARP_total	TRAIL_only	400	360000
+cPARP_total	TRAIL_ERK_AKT	400	360000
+cPARP_total	TRIAL_PUMA_NOXA	400	360000

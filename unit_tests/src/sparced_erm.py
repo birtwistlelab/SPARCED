@@ -29,9 +29,9 @@ class SPARCED_ERM:
         self.yaml_file = yaml_file
         self.results_dict = self.sparced_erm()
 
-    def preincubate(yaml_file, flagP: int):
+    def heterogenization(yaml_file, heterogenize: int):
         """Simulate the preincubation step."""
-        th = int(flagP)
+        th = int(heterogenize)
         ts = 30
         # Load the PEtab files
         sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
@@ -60,7 +60,7 @@ class SPARCED_ERM:
         return xoutS_all[-1]
 
 
-    def sparced_erm(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None, \
+    def sparced_erm(yaml_file: str, flagD: Optional[int] = None, heterogenize: Optional[int] = None, \
                     secondary_conditions: Optional[int] = None):
         """Simulate the experimental replicate model."""
 
@@ -86,8 +86,8 @@ class SPARCED_ERM:
         flagD = int(flagD)
         
                     # Load the preincubation step
-        if flagP != None:    
-            preinc_xoutS_all = SPARCED_ERM.preincubate(yaml_file,flagP)
+        if heterogenize != None:    
+            preinc_xoutS_all = SPARCED_ERM.preincubate(yaml_file,heterogenize)
             species_initializations = preinc_xoutS_all
 
         else:
@@ -112,19 +112,18 @@ class SPARCED_ERM:
                     compartment.setSize(condition[entity]) 
 
                 # If the entity is a parameter: change that parameter's value
-                elif entity in parameters_df.iloc[:,0]:
+                elif entity.strip() in parameters_df.iloc[:, 0].str.strip().tolist():
                     parameter_value = condition[entity]
                     try:
                         model.setParameterById(entity, condition[entity])
                         print(f"Setting parameter {entity} to {parameter_value}")
                     except RuntimeError:
-                        pass
-                    try:
                         model.setFixedParameterById(entity, condition[entity])
                         print(f"Setting parameter {entity} to {parameter_value}")
                     except RuntimeError:
+                        print(f"Parameter {entity}  not found")
                         pass
-                
+
                 elif entity in species_ids:
                     # Set the primary concentrations for the perturbants in the conditions table
                     try:
@@ -136,20 +135,24 @@ class SPARCED_ERM:
                         pass
 
                 elif entity.lower().strip() in open('OmicsData.txt', 'r').read().lower().strip(): #This will check the unit test OmicsData,txt file
+                    # if "m_" in entity:
+                    #     if condition[entity] > 0.0:
+                    #         entity = entity.replace("m_", "")
                     try:
                         with open('OmicsData.txt', 'r') as omics_data_file:
                             omics_data = pd.read_csv(omics_data_file, sep = '\t', index_col=0)
-                            omics_data.loc[entity, 'GCN'] = condition[entity]
+                            omics_data.loc[entity, 'Exp RNA'] = condition[entity]
+                            print(f"Setting mRNA {entity} copy number to {condition[entity]}")
                             omics_data.loc[entity, 'kTCleak'] = 0.0
                             omics_data.loc[entity, 'kTCmaxs'] = 0.0
                             omics_data.loc[entity, 'kTCd'] = 0.0
                             omics_data.to_csv('OmicsData.txt', sep = '\t')
-                            print(f"Setting mRNA {entity} concentration to {condition[entity]}")
-                    except RuntimeError:     
+                            print(f"Turning mRNA {entity} synthesis and degredation off")
+
+                    except ValueError:
                         # If the entity is not found in OmicsData: cancel the simulation
                         print(f"Entity {entity} not found!")
                         sys.exit(1) 
-
                 # else:
                 #     # Set the primary concentrations for the perturbants in the conditions table
                 #     try:
