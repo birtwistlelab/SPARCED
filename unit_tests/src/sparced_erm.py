@@ -92,7 +92,7 @@ class SPARCED_ERM:
 
         else:
             species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
-
+        
         # Create dynamic unit tests based on PEtab files
         results_dict = {}
 
@@ -106,23 +106,28 @@ class SPARCED_ERM:
         for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
 
             for entity in perturbants:
+
+                #Defines the mathematical representation of the model
+                if entity == 'flagD':
+                    flagD = condition[entity]
+
                 # If the entity is a compartment: change that compartment's value
-                if entity in open('Compartments.txt'):
+                elif entity in open('Compartments.txt'):
                     compartment = model.getCompartment(entity)
                     compartment.setSize(condition[entity]) 
 
                 # If the entity is a parameter: change that parameter's value
                 elif entity.strip() in parameters_df.iloc[:, 0].str.strip().tolist():
-                    parameter_value = condition[entity]
                     try:
                         model.setParameterById(entity, condition[entity])
-                        print(f"Setting parameter {entity} to {parameter_value}")
+                        parameter_value = model.getParameterById(entity)
+                        print(f"Parameter {entity} set to {parameter_value}")
                     except RuntimeError:
                         model.setFixedParameterById(entity, condition[entity])
-                        print(f"Setting parameter {entity} to {parameter_value}")
-                    except RuntimeError:
-                        print(f"Parameter {entity}  not found")
-                        pass
+                        print(f"Setting fixed parameter {entity} to {parameter_value}")
+                    # except RuntimeError:
+                    #     print(f"Parameter {entity}  not found")
+                    #     pass
 
                 elif entity in species_ids:
                     # Set the primary concentrations for the perturbants in the conditions table
@@ -132,22 +137,24 @@ class SPARCED_ERM:
                         species_initializations[index] = condition[entity]
                         print(f"Setting species {entity} to {condition[entity]}")
                     except ValueError:
+                        print(f"Species {entity} not found")
                         pass
 
                 elif entity.lower().strip() in open('OmicsData.txt', 'r').read().lower().strip(): #This will check the unit test OmicsData,txt file
+                    print('found in omics data')
                     # if "m_" in entity:
                     #     if condition[entity] > 0.0:
                     #         entity = entity.replace("m_", "")
                     try:
                         with open('OmicsData.txt', 'r') as omics_data_file:
                             omics_data = pd.read_csv(omics_data_file, sep = '\t', index_col=0)
-                            omics_data.loc[entity, 'Exp RNA'] = condition[entity]
-                            print(f"Setting mRNA {entity} copy number to {condition[entity]}")
+                            # omics_data.loc[entity, 'Exp RNA'] = condition[entity]
+                            # print(f"Setting mRNA {entity} copy number to {condition[entity]}")
                             omics_data.loc[entity, 'kTCleak'] = 0.0
                             omics_data.loc[entity, 'kTCmaxs'] = 0.0
                             omics_data.loc[entity, 'kTCd'] = 0.0
                             omics_data.to_csv('OmicsData.txt', sep = '\t')
-                            print(f"Turning mRNA {entity} synthesis and degredation off")
+                            print(f"Turning mRNA {omics_data.loc[entity]} synthesis and degredation off")
 
                     except ValueError:
                         # If the entity is not found in OmicsData: cancel the simulation
@@ -171,15 +178,16 @@ class SPARCED_ERM:
                 # Set the number of records as the number of unique timepoints
                 model.setTimepoints(np.linspace(0, 30, 2))
 
-                print(f"Running simulation for condition {condition['conditionId']}")
+                print(f"Running simulation for condition {condition['conditionId']}")   
                 xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
-                print("fininshed running simulation")
+                print("finished running simulation")
 
                 iteration_name = condition['conditionId']
 
                 #Build the results dictionary
                 results_dict[iteration_name] = {}
                 results_dict[iteration_name]['xoutS'] = xoutS_all
+                results_dict[iteration_name]['xoutG'] = xoutG_all
                 results_dict[iteration_name]['toutS'] = tout_all    
 
 
@@ -198,6 +206,7 @@ class SPARCED_ERM:
                 #Build the results dictionary
                 results_dict[iteration_name] = {}
                 results_dict[iteration_name]['xoutS'] = xoutS_all
+                results_dict[iteration_name]['xoutG'] = xoutG_all
                 results_dict[iteration_name]['toutS'] = tout_all
 
                 print("Pausing simulation; setting next conditions")
@@ -269,7 +278,6 @@ class SPARCED_ERM:
                         secondary_timeframe = (measurement_df['time'].max()/3600) - first_stimulus_time
                         # Set the number of records as the number of unique timepoints
                         model.setTimepoints(np.linspace(0, 30, 2))
-
                         print(f"Running simulation for condition {second_condition['conditionId']}")
                         xoutS_all2, xoutG_all2, tout_all2 = RunSPARCED(flagD,secondary_timeframe,species_initializations,[],sbml_file,model)
                         print("Finished running simulation")
@@ -280,12 +288,13 @@ class SPARCED_ERM:
 
                         #append secondary conditions to the results dictionary
                         results_dict[iteration_name]['xoutS'] = np.append(results_dict[iteration_name]['xoutS'], xoutS_all2, axis=0)
+                        results_dict[iteration_name]['xoutG'] = np.append(results_dict[iteration_name]['xoutG'], xoutG_all2, axis=0)
                         results_dict[iteration_name]['toutS'] = np.append(results_dict[iteration_name]['toutS'], tout_all2, axis=0)
 
         return results_dict
 
 
-    def stochastic_cell_replicates(yaml_file: str, flagD: Optional[int] = None, flagP: Optional[int] = None, \
+    def stochastic_cell_replicates(yaml_file: str, flagD: Optional[int] = None, heterogenize: Optional[int] = None, \
                                    secondary_conditions: Optional[int] = None, num_cells: Optional[int] = None):
         """"create a mock cell population that consists of single cells being ran in unison
         yaml_file: str - path to the YAML file
@@ -298,7 +307,7 @@ class SPARCED_ERM:
         stochastic_cell_replicates = {}
         for cell in range(num_cells):
             print(f"Running cell {cell}")
-            results_dict = SPARCED_ERM.sparced_erm(yaml_file, flagD, flagP, secondary_conditions)
+            results_dict = SPARCED_ERM.sparced_erm(yaml_file, flagD, heterogenize, secondary_conditions)
             stochastic_cell_replicates['cell ' + str(cell)] = results_dict
 
         return stochastic_cell_replicates

@@ -4,7 +4,7 @@ problems:
   - condition_files: 
     - conditions.tsv
     measurement_files:
-    - measurements1.tsv
+    - measurements.tsv
     observable_files:
     - observables.tsv
     sbml_files:
