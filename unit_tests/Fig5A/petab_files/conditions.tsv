@@ -1,0 +1,6 @@
+conditionId	conditionName	heterogenize	flagD	num_cells	E	H	HGF	P	F	I	INS	MEKi	AKTi
+GF_0	No growth Factors added	24	0	30	0	0	0	0	0	0	0	0	0
+EGF_3p3_INS_1721	EGF and Insulin turned to 3.3 and 1721	24	0	30	3.3	0	0	0	0	0	1721	0	0
+EGF_3p3_INS_1721_MEKi_10000	EGF and Insulin turned to 3.3 and 1721, MEK inhibitor set to 10000	24	0	30	3.3	0	0	0	0	0	1721	10000	0
+EGF_3p3_INS_1721_AKTi_10000	EGF and Insulin turned to 3.3 and 1721, AKT inhibitor set to 10000	24	0	30	3.3	0	0	0	0	0	1721	0	10000
+EGF_3p3_INS_1721_MEKi_10000AKTi_10000	EGF and Insulin turned to 3.3 and 1721, MEKi and AKT inhibitor set to 10000	24	0	30	3.3	0	0	0	0	0	1721	10000	10000

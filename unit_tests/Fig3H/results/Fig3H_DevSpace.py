@@ -31,11 +31,6 @@ from plotting_unit_tests import PlottingUnitTests
 from observable_calc import ObservableCalculator
 
 
-# In[4]:
-
-
-tod = ObservableCalculator.collect_the_dead(data)
-
 
 # In[5]:
 
