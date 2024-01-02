@@ -9,6 +9,86 @@ class ObservableCalculator:
         self.results_dict = results_dict
         self.observable_dict = self.observable_calculator()
 
+    def observable_isolator(yaml_file, results_dict):
+        """isolate only the observables of interest from the simulation data. Primary function is to cut down on data.
+        yaml_file: yaml file containing the PEtab files
+        results_dict: dictionary containing the simulation results from SPARCED_ERM
+        """
+        # Load the PEtab files
+        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+
+        # Load the SBML model
+        current_directory = os.getcwd()
+        model_name = os.path.basename(sbml_file).split('.')[0]
+        sys.path.insert(0, os.path.join(current_directory, model_name))
+        model_module = importlib.import_module(model_name)
+        model = model_module.getModel()
+
+        # Get the condition names
+        perturbants = list(conditions_df.columns[2:])
+
+        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
+
+        unique_timepoints = measurement_df['time'].unique()
+
+        # The first key in the results dictionary is the condition name
+        iteration_names = unique_conditions['conditionId'].tolist()
+
+        species_ids = list(model.getStateIds())
+
+        observable_dict = {}
+
+        # for _, observable in observable_df.iterrows():
+            # print(observable['observableId'])
+        for condition in iteration_names:
+            if list(results_dict[condition].keys())[0] == 'cell 0': # 3 here accounts for results of timepoints, species, and gene trajectories.
+                observable_dict[condition] = {}
+                for cell in results_dict[condition]:
+                    observable_dict[condition][cell] = {}
+                    print(cell)
+                    for _, observable in observable_df.iterrows():
+                        print(observable['observableId'])
+                        obs = [
+                            sum(
+                                np.array(
+                                    [
+                                        results_dict[condition][cell]['xoutS'][:, species_ids.index(species_name)]
+                                        * float(species_compartment)
+                                        for species in observable['observableFormula'].split('+')
+                                        for species_name, species_compartment in [species.split('*')]
+                                    ]
+                                )
+                            )
+                        ]
+
+                        observable_name = observable['observableId']
+                        observable_dict[condition][cell][observable_name] = {}
+                        observable_dict[condition][cell][observable_name]['xoutS'] = sum(obs)
+                        observable_dict[condition][cell][observable_name]['toutS'] = results_dict[condition][cell]['toutS']
+                        observable_dict[condition][cell][observable_name]['xoutG'] = results_dict[condition][cell]['xoutG']
+
+            else: # 3 here accounts for results of timepoints, species, and gene trajectories. 
+                # so if each condition contains more than 1 set of results(3 long), then proceed isolating species  composing the observable
+                observable_dict[condition] = {}
+                obs = [
+                    sum(
+                        np.array(
+                            [
+                                results_dict[condition][cell]['xoutS'][:, species_ids.index(species_name)]
+                                * float(species_compartment)
+                                for species in observable['observableFormula'].split('+')
+                                for species_name, species_compartment in [species.split('*')]
+                            ]
+                        )
+                    )
+                ]
+
+                observable_dict[condition]['xoutS'] = sum(obs)
+                observable_dict[condition]['toutS'] = results_dict[condition]['toutS']
+                observable_dict[condition]['xoutG'] = results_dict[condition]['xoutG']
+
+        return observable_dict
+
     def species_summation(yaml_file, results_dict): 
         """Calculate observable values from simulation results.
         yaml_file: yaml file containing the PEtab files

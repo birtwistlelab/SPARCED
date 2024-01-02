@@ -86,13 +86,13 @@ class SPARCED_ERM:
         flagD = int(flagD)
         
                     # Load the preincubation step
-        if heterogenize != None:    
-            preinc_xoutS_all = SPARCED_ERM.preincubate(yaml_file,heterogenize)
-            species_initializations = preinc_xoutS_all
+        # if heterogenize != None:    
+        #     preinc_xoutS_all = SPARCED_ERM.preincubate(yaml_file,heterogenize)
+        #     species_initializations = preinc_xoutS_all
 
-        else:
-            species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
-        
+        # else:
+            # species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
+        species_initializations = np.array(model_module.getModel().getInitialStates()) # Get the initial states from the model
         # Create dynamic unit tests based on PEtab files
         results_dict = {}
 
@@ -107,12 +107,23 @@ class SPARCED_ERM:
 
             for entity in perturbants:
 
+                if entity == 'heterogenize':
+                    heterogenize = condition[entity]
+                    preinc_xoutS_all = SPARCED_ERM.heterogenization(yaml_file,heterogenize)
+                    species_initializations = preinc_xoutS_all
+                    print(f"Cell heterogenized for {heterogenize} hours")
+
                 #Defines the mathematical representation of the model
                 if entity == 'flagD':
                     flagD = condition[entity]
+                    print(f"Setting solver to {flagD}")
+                
+                if entity == 'num_cells':
+                    num_cells = condition[entity]
+                    print(f"Setting number of cells to {num_cells}")
 
                 # If the entity is a compartment: change that compartment's value
-                elif entity in open('Compartments.txt'):
+                if entity in open('Compartments.txt'):
                     compartment = model.getCompartment(entity)
                     compartment.setSize(condition[entity]) 
 
@@ -159,16 +170,7 @@ class SPARCED_ERM:
                     except ValueError:
                         # If the entity is not found in OmicsData: cancel the simulation
                         print(f"Entity {entity} not found!")
-                        sys.exit(1) 
-                # else:
-                #     # Set the primary concentrations for the perturbants in the conditions table
-                #     try:
-                #         # If the entity is a species: change that species value
-                #         index = species_ids.index(entity)
-                #         species_initializations[index] = condition[entity]
-                #         print(f"Setting species {entity} to {condition[entity]}")
-                #     except ValueError:
-                #         pass            
+                        sys.exit(1)         
 
 
             if secondary_conditions is None:
@@ -178,17 +180,35 @@ class SPARCED_ERM:
                 # Set the number of records as the number of unique timepoints
                 model.setTimepoints(np.linspace(0, 30, 2))
 
-                print(f"Running simulation for condition {condition['conditionId']}")   
-                xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
-                print("finished running simulation")
-
                 iteration_name = condition['conditionId']
-
-                #Build the results dictionary
                 results_dict[iteration_name] = {}
-                results_dict[iteration_name]['xoutS'] = xoutS_all
-                results_dict[iteration_name]['xoutG'] = xoutG_all
-                results_dict[iteration_name]['toutS'] = tout_all    
+                
+                if 'num_cells' in locals() and num_cells is not None:
+                    for cell in range(num_cells):
+                        print(f"Running cell {cell}")
+                        xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
+                        print("finished running simulation")
+
+                        iteration_name = condition['conditionId']
+
+                        #Build the results dictionary
+                        results_dict[iteration_name][f"cell {cell}"] = {}
+                        results_dict[iteration_name][f"cell {cell}"]['xoutS'] = xoutS_all
+                        results_dict[iteration_name][f"cell {cell}"]['xoutG'] = xoutG_all
+                        results_dict[iteration_name][f"cell {cell}"]['toutS'] = tout_all   
+
+                else:
+                    print(f"Running simulation for condition {condition['conditionId']}")   
+                    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
+                    print("finished running simulation")
+
+
+
+                    #Build the results dictionary
+                    results_dict[iteration_name] = {}
+                    results_dict[iteration_name]['xoutS'] = xoutS_all
+                    results_dict[iteration_name]['xoutG'] = xoutG_all
+                    results_dict[iteration_name]['toutS'] = tout_all 
 
 
             else:
