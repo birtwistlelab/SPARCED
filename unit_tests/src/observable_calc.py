@@ -47,7 +47,6 @@ class ObservableCalculator:
                     observable_dict[condition][cell] = {}
                     print(cell)
                     for _, observable in observable_df.iterrows():
-                        print(observable['observableId'])
                         obs = [
                             sum(
                                 np.array(
@@ -70,22 +69,26 @@ class ObservableCalculator:
             else: # 3 here accounts for results of timepoints, species, and gene trajectories. 
                 # so if each condition contains more than 1 set of results(3 long), then proceed isolating species  composing the observable
                 observable_dict[condition] = {}
-                obs = [
-                    sum(
-                        np.array(
-                            [
-                                results_dict[condition][cell]['xoutS'][:, species_ids.index(species_name)]
-                                * float(species_compartment)
-                                for species in observable['observableFormula'].split('+')
-                                for species_name, species_compartment in [species.split('*')]
-                            ]
+                for _, observable in observable_df.iterrows():
+                    obs = [
+                        sum(
+                            np.array(
+                                [
+                                    results_dict[condition]['xoutS'][:, species_ids.index(species_name)]
+                                    * float(species_compartment)
+                                    for species in observable['observableFormula'].split('+')
+                                    for species_name, species_compartment in [species.split('*')]
+                                ]
+                            )
                         )
-                    )
-                ]
+                    ]
 
-                observable_dict[condition]['xoutS'] = sum(obs)
-                observable_dict[condition]['toutS'] = results_dict[condition]['toutS']
-                observable_dict[condition]['xoutG'] = results_dict[condition]['xoutG']
+                    observable_name = observable['observableId']
+                    print(observable_name)
+                    observable_dict[condition][observable_name] = {}
+                    observable_dict[condition][observable_name]['xoutS'] = sum(obs)
+                    observable_dict[condition][observable_name]['toutS'] = results_dict[condition]['toutS']
+                    observable_dict[condition][observable_name]['xoutG'] = results_dict[condition]['xoutG']
 
         return observable_dict
 
