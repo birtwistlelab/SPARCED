@@ -56,7 +56,7 @@ def unit_test(yaml_file: str, flagD: Optional[int] = None, heterogenize: Optiona
 
     if observable == 1:
         print("Calculating observable")
-        observables_data = ObservableCalculator.observable_isolator(yaml_file, experimental_replicate_model)
+        observables_data = ObservableCalculator.species_summation(yaml_file, experimental_replicate_model)
 
     yaml_name = os.path.basename(yaml_file).split('.')[0]
 

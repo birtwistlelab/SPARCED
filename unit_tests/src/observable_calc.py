@@ -45,7 +45,6 @@ class ObservableCalculator:
                 observable_dict[condition] = {}
                 for cell in results_dict[condition]:
                     observable_dict[condition][cell] = {}
-                    print(cell)
                     for _, observable in observable_df.iterrows():
                         obs = [
                             sum(

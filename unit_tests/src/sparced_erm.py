@@ -102,21 +102,26 @@ class SPARCED_ERM:
         unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
         print(unique_conditions)
 
-
         for index, condition in unique_conditions.iterrows(): # Iterate through the unique conditions
+            model2 = model
+
+            if 'heterogenize' in perturbants:
+                heterogenize = condition['heterogenize']
+                preinc_xoutS_all = SPARCED_ERM.heterogenization(yaml_file,heterogenize)
+                species_initializations = preinc_xoutS_all
+                print(f"Cell heterogenized for {heterogenize} hours")
 
             for entity in perturbants:
 
-                if entity == 'heterogenize':
-                    heterogenize = condition[entity]
-                    preinc_xoutS_all = SPARCED_ERM.heterogenization(yaml_file,heterogenize)
-                    species_initializations = preinc_xoutS_all
-                    print(f"Cell heterogenized for {heterogenize} hours")
+                # if entity == 'heterogenize':
 
                 #Defines the mathematical representation of the model
                 if entity == 'flagD':
                     flagD = condition[entity]
-                    print(f"Setting solver to {flagD}")
+                    if flagD == 0:
+                        print(f"Setting gene sampling to stochastic")
+                    else:
+                        print(f"Setting gene sampling to deterministic")
                 
                 if entity == 'num_cells':
                     num_cells = condition[entity]
@@ -124,21 +129,18 @@ class SPARCED_ERM:
 
                 # If the entity is a compartment: change that compartment's value
                 if entity in open('Compartments.txt'):
-                    compartment = model.getCompartment(entity)
+                    compartment = model2.getCompartment(entity)
                     compartment.setSize(condition[entity]) 
 
                 # If the entity is a parameter: change that parameter's value
                 elif entity.strip() in parameters_df.iloc[:, 0].str.strip().tolist():
                     try:
-                        model.setParameterById(entity, condition[entity])
+                        model2.setParameterById(entity, condition[entity])
                         parameter_value = model.getParameterById(entity)
                         print(f"Parameter {entity} set to {parameter_value}")
                     except RuntimeError:
-                        model.setFixedParameterById(entity, condition[entity])
+                        model2.setFixedParameterById(entity, condition[entity])
                         print(f"Setting fixed parameter {entity} to {parameter_value}")
-                    # except RuntimeError:
-                    #     print(f"Parameter {entity}  not found")
-                    #     pass
 
                 elif entity in species_ids:
                     # Set the primary concentrations for the perturbants in the conditions table
@@ -146,7 +148,7 @@ class SPARCED_ERM:
                         # If the entity is a species: change that species value
                         index = species_ids.index(entity)
                         species_initializations[index] = condition[entity]
-                        print(f"Setting species {entity} to {condition[entity]}")
+                        print(f"Setting species {entity} to {species_initializations[index]}")
                     except ValueError:
                         print(f"Species {entity} not found")
                         pass
@@ -178,7 +180,7 @@ class SPARCED_ERM:
                 simulation_time = (measurement_df['time'].max())/3600
 
                 # Set the number of records as the number of unique timepoints
-                model.setTimepoints(np.linspace(0, 30, 2))
+                model2.setTimepoints(np.linspace(0, 30, 2))
 
                 iteration_name = condition['conditionId']
                 results_dict[iteration_name] = {}
@@ -186,7 +188,7 @@ class SPARCED_ERM:
                 if 'num_cells' in locals() and num_cells is not None:
                     for cell in range(num_cells):
                         print(f"Running cell {cell}")
-                        xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
+                        xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model2)
                         print("finished running simulation")
 
                         iteration_name = condition['conditionId']
@@ -199,7 +201,7 @@ class SPARCED_ERM:
 
                 else:
                     print(f"Running simulation for condition {condition['conditionId']}")   
-                    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model)
+                    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,simulation_time,species_initializations,[],sbml_file,model2)
                     print("finished running simulation")
 
 
