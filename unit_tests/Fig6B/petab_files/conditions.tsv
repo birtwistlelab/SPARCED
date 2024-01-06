@@ -1,6 +1,6 @@
 conditionId	conditionName	flagD	num_cells	MEKi	AKTi	E	H	HGF	P	F	I	INS	heterogenize
 EGF_only	cell cycle progression over 30 hours, EGF stimulus only	0	30	0	0	10	0	0	0	0	0	0	24
 INS_only	cell cycle progression over 30 hours, INS stimulus only	0	30	0	0	0	0	0	0	0	0	1721	24
-EGF_INS__only	cell cycle progression over 30 hours, EGF and INS stimulus only	0	30	0	0	10	0	0	0	0	0	1721	24
-MEKi_EGF_INS	cell cycle progression over 30 hours, MEK inhibitor, EGF, and INS	0	30	10000	0	10	0	0	0	0	0	1721	24
-AKTi_EGF_INS	cell cycle progression over 30 hours, AKT inhibitor, EGF, and INS	0	30	0	10000	10	0	0	0	0	0	1721	24
+EGF_INS	cell cycle progression over 30 hours, INS and EGF stimulus	0	30	0	0	10	0	0	0	0	0	1721	24
+EGF_INS_MEKi	cell cycle progression over 30 hours, INS, EKT, and ERKi stimulus	0	30	10000	0	10	0	0	0	0	0	1721	24
+EGF_INS_AKTi	cell cycle progression over 30 hours, INS, EKT, and AKTi stimulus	0	30	0	10000	10	0	0	0	0	0	1721	24
