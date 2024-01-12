@@ -1,6 +1,5 @@
-conditionId	conditionName	E	INS
-E_0_INS_0_k316_3	Serum starved cells exposed to etoposide for 24 hours	0	0
-E_0_INS_0_k316_3	Serum starved cells exposed to etoposide for 48 hours	0	0
-E_20_INS_0p001_k316_3	EGF and INS stimulated cells exposed to etoposide	10	10000
-E_20_INS_0p001_k316_3	EGF and INS stimulated cells exposed to etoposide	10	10000
-E_20_INS_0p001_k316_3	EGF and INS stimulated cells exposed to etoposide	10	10000
+conditionId	conditionName	E	INS	num_cells	flagD	heterogenize	k316_3
+E_0_INS_0_preequilibrate	EGF set to 0, INS set to 0, first condition before etoposide	0	0	1	0	24	0
+E_0_INS_0_k316_3	Serum starved cells exposed to etoposide for 24 hours	0	0	80	0	24	100000
+E_3.3_INS_1721_preequilibrate	EGF set to 3.3, INS set to 1721, first condition before etoposide	3.3	1721	1	0	24	0
+E_20_INS_0p001_k316_3	EGF and INS stimulated cells exposed to etoposide	3.3	1721	100	0	24	100000

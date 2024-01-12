@@ -3,7 +3,6 @@ parameter_file: parameters.tsv
 problems: 
   - condition_files: 
     - conditions.tsv
-    - conditions2.tsv
     measurement_files:
     - measurements.tsv
     observable_files:
