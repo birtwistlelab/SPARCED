@@ -76,7 +76,7 @@ class SPARCED_ERM:
         if 'flagD' not in perturbants:
             flagD = 1
 
-        if 'heterogenize' in perturbants: ### DEAL WITH THIS
+        if 'heterogenize' in perturbants: # Dealt with in the sparced_erm function section
             pass
             
         # set simulation perturbants for the pre-equilibration condition
@@ -90,8 +90,8 @@ class SPARCED_ERM:
                 else:
                     print(f"Setting gene sampling to deterministic")
                 
-            if entity == 'num_cells':
-                pass
+            if entity == 'num_cells': 
+                pass # This is more importantly used in sparced_erm, as its better this sits outside the for loop
 
             # If the entity is a compartment: change that compartment's value
             if entity in open('Compartments.txt'):
@@ -164,17 +164,29 @@ class SPARCED_ERM:
         unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
         print(unique_conditions)
 
+
+        # Filter out the preequilibration conditions to isolate all unique experimental conditions
         filtered_conditions = [condition for index, condition in unique_conditions.iterrows() \
                             if 'preequilibrationConditionId' not in measurement_df.columns \
                                 or condition['conditionId'] not in measurement_df['preequilibrationConditionId'].values]
 
+
         for condition in filtered_conditions: # Iterate through the unique conditions 
-        
+
+
+            iteration_name = condition['conditionId']
+
+            results_dict[iteration_name] = {}
+
+
+            # Set the number of cells to simulate, 1 by default
             num_cells = condition['num_cells'] if 'num_cells' in condition and condition['num_cells'] is not None else 1
 
-            for cell in range(num_cells):
 
+            for cell in range(num_cells):
+                
                 print(f"Running cell {cell}")  
+
 
                 if 'heterogenize' in condition and condition['heterogenize'] is not None:
                     heterogenize = condition['heterogenize']
@@ -184,15 +196,18 @@ class SPARCED_ERM:
 
                 if 'preequilibrationConditionId' in measurement_df.columns:
 
-                    #I first need the preequilibration condition from the measurement_df for this condition
+                    #Isolate the preequilibration condition if included in the measurement table
                     preequilibrate_condition = measurement_df.loc[measurement_df['simulationConditionId'] == condition['conditionId'], \
                                                                 'preequilibrationConditionId'].dropna().unique()
 
+
+                    # Set the preequilibration concentrations for the perturbants in the conditions table
                     preequilibrate_model, species_initializations, flagD = SPARCED_ERM.set_perturbations(
                                                                                                         yaml_file=yaml_file, 
                                                                                                         condition=preequilibrate_condition, 
                                                                                                         model=model
                                                                                                             )
+                    
                     
                     # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
                     preequilibrate_simulation_time = measurement_df['time'][measurement_df['preequilibrationConditionId']\
@@ -204,9 +219,6 @@ class SPARCED_ERM:
                     # Set the number of records as the number of unique timepoints
                     preequilibrate_model.setTimepoints(np.linspace(0, 30, 2))
 
-                    iteration_name = condition['conditionId']
-
-                    results_dict[iteration_name] = {}
                     
                     xoutS_all, xoutG_all, tout_all = RunSPARCED(
                                                             flagD=flagD,
@@ -229,7 +241,6 @@ class SPARCED_ERM:
                     #Find out if SPARCED died during the first round of stimulus
                     death_point = np.argwhere(xoutS_all[:, species_ids.index('cPARP')]>100.0)
                     if len(death_point)>0: #If cPARP reached a critical concentration; do nothing, the cell likely died
-                        print('Apoptosis occured')
                         pass
                     else:
                         #Use final values of preequilibration as the starting values for the next stimulus phase
@@ -282,7 +293,7 @@ class SPARCED_ERM:
                                                                                             axis=0
                                                                                             )
                         
-                else:
+                else: # If there are no preequilibration conditions in the measurement table, run the simulation as normal
 
                     erm_model, species_initializations, flagD = SPARCED_ERM.set_perturbations(
                                                                                                 yaml_file=yaml_file, 
@@ -299,32 +310,27 @@ class SPARCED_ERM:
 
                     # Set the number of records as the number of unique timepoints
                     erm_model.setTimepoints(np.linspace(0, 30, 2))
+                    
+                    # RunSPARCED(flagD,th,spdata,genedata,sbml_file,model)
+                    xoutS_all, xoutG_all, tout_all = RunSPARCED(
+                                                            flagD=flagD,
+                                                                th=simulation_timeframe,
+                                                                    spdata=species_initializations,
+                                                                        genedata=[],
+                                                                            sbml_file=sbml_file,
+                                                                                model=erm_model
+                                                                                )
+
+
+                    print("finished running simulation")
 
                     iteration_name = condition['conditionId']
-                    results_dict[iteration_name] = {}
-                    
-                    for cell in range(num_cells):
-                        print(f"Running cell {cell}")
-                        # RunSPARCED(flagD,th,spdata,genedata,sbml_file,model)
-                        xoutS_all, xoutG_all, tout_all = RunSPARCED(
-                                                                flagD=flagD,
-                                                                    th=simulation_timeframe,
-                                                                        spdata=species_initializations,
-                                                                            genedata=[],
-                                                                                sbml_file=sbml_file,
-                                                                                    model=erm_model
-                                                                                    )
 
-
-                        print("finished running simulation")
-
-                        iteration_name = condition['conditionId']
-
-                        #Build the results dictionary
-                        results_dict[iteration_name][f"cell {cell}"] = {}
-                        results_dict[iteration_name][f"cell {cell}"]['xoutS'] = xoutS_all
-                        results_dict[iteration_name][f"cell {cell}"]['xoutG'] = xoutG_all
-                        results_dict[iteration_name][f"cell {cell}"]['toutS'] = tout_all   
+                    #Build the results dictionary
+                    results_dict[iteration_name][f"cell {cell}"] = {}
+                    results_dict[iteration_name][f"cell {cell}"]['xoutS'] = xoutS_all
+                    results_dict[iteration_name][f"cell {cell}"]['xoutG'] = xoutG_all
+                    results_dict[iteration_name][f"cell {cell}"]['toutS'] = tout_all   
                     
 
         return results_dict
