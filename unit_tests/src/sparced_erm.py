@@ -250,7 +250,8 @@ class SPARCED_ERM:
                         secondary_timeframe = (measurement_df['time'][measurement_df['simulationConditionId']\
                                                                         .isin(condition)]\
                                                                             .max()/3600)
-                        
+
+
                         # Set the secondary concentrations for the perturbants in the conditions table
                         secondary_model, species_initializations2, flagD = SPARCED_ERM.set_perturbations(
                                                                                                     yaml_file=yaml_file,
@@ -304,9 +305,10 @@ class SPARCED_ERM:
                             # Set the next time frame to simulate
                     simulation_timeframe = (
                                             measurement_df['time'][measurement_df['simulationConditionId']\
-                                                                .isin(condition)]\
-                                                                    .max()/3600
+                                                                .isin(condition)]
+                                                                .max()/3600
                                                                     )
+                    
 
                     # Set the number of records as the number of unique timepoints
                     erm_model.setTimepoints(np.linspace(0, 30, 2))
