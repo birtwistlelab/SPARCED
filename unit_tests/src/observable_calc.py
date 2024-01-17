@@ -24,56 +24,20 @@ class ObservableCalculator:
         model_module = importlib.import_module(model_name)
         model = model_module.getModel()
 
-        # Get the condition names
-        perturbants = list(conditions_df.columns[2:])
-
-        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
-
-        unique_timepoints = measurement_df['time'].unique()
-
-        # The first key in the results dictionary is the condition name
-        iteration_names = unique_conditions['conditionId'].tolist()
-
         species_ids = list(model.getStateIds())
 
         observable_dict = {}
 
-        # for _, observable in observable_df.iterrows():
-            # print(observable['observableId'])
-        for condition in iteration_names:
-            if list(results_dict[condition].keys())[0] == 'cell 0': # 3 here accounts for results of timepoints, species, and gene trajectories.
-                observable_dict[condition] = {}
-                for cell in results_dict[condition]:
-                    observable_dict[condition][cell] = {}
-                    for _, observable in observable_df.iterrows():
-                        obs = [
-                            sum(
-                                np.array(
-                                    [
-                                        results_dict[condition][cell]['xoutS'][:, species_ids.index(species_name)]
-                                        * float(species_compartment)
-                                        for species in observable['observableFormula'].split('+')
-                                        for species_name, species_compartment in [species.split('*')]
-                                    ]
-                                )
-                            )
-                        ]
-
-                        observable_name = observable['observableId']
-                        observable_dict[condition][cell][observable_name] = {}
-                        observable_dict[condition][cell][observable_name]['xoutS'] = sum(obs)
-                        observable_dict[condition][cell][observable_name]['toutS'] = results_dict[condition][cell]['toutS']
-                        observable_dict[condition][cell][observable_name]['xoutG'] = results_dict[condition][cell]['xoutG']
-
-            else: # 3 here accounts for results of timepoints, species, and gene trajectories. 
-                # so if each condition contains more than 1 set of results(3 long), then proceed isolating species  composing the observable
-                observable_dict[condition] = {}
+        for condition in results_dict:
+            observable_dict[condition] = {}
+            for cell in results_dict[condition]:
+                observable_dict[condition][cell] = {}
                 for _, observable in observable_df.iterrows():
                     obs = [
                         sum(
                             np.array(
                                 [
-                                    results_dict[condition]['xoutS'][:, species_ids.index(species_name)]
+                                    results_dict[condition][cell]['xoutS'][:, species_ids.index(species_name)]
                                     * float(species_compartment)
                                     for species in observable['observableFormula'].split('+')
                                     for species_name, species_compartment in [species.split('*')]
@@ -83,11 +47,10 @@ class ObservableCalculator:
                     ]
 
                     observable_name = observable['observableId']
-                    print(observable_name)
-                    observable_dict[condition][observable_name] = {}
-                    observable_dict[condition][observable_name]['xoutS'] = sum(obs)
-                    observable_dict[condition][observable_name]['toutS'] = results_dict[condition]['toutS']
-                    observable_dict[condition][observable_name]['xoutG'] = results_dict[condition]['xoutG']
+                    observable_dict[condition][cell][observable_name] = {}
+                    observable_dict[condition][cell][observable_name]['xoutS'] = sum(obs)
+                    observable_dict[condition][cell][observable_name]['toutS'] = results_dict[condition][cell]['toutS']
+                    observable_dict[condition][cell][observable_name]['xoutG'] = results_dict[condition][cell]['xoutG']
 
         return observable_dict
 
