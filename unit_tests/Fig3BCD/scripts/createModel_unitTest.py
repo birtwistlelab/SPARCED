@@ -29,15 +29,12 @@ import sys
 import os
 
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
+## Get the directory path
+wd = os.path.dirname(os.path.abspath(__file__))
 
-# Get the 'SPARCED' project directory by going up two levels
-project_dir = os.path.abspath(os.path.join(script_dir, '..', '..', '..'))
-
-# Append the 'bin' directory to the Python path
-bin_dir = os.path.join(project_dir, 'bin')
-sys.path.append(bin_dir)
+# Ensure the SPARCED root and bin directories are in the system path
+sparced_root = '/'.join(wd.split(os.path.sep)[:wd.split(os.path.sep).index('SPARCED')+1])
+sys.path.append(os.path.join(sparced_root, 'bin'))
 
 import libsbml
 import importlib
@@ -62,7 +59,7 @@ import matplotlib.pyplot as plt
 
 #copy input files over to current directory
 current_dir = os.getcwd()
-input_data_folder = os.path.join(os.path.dirname(current_dir) +'/input_files')
+input_data_folder = os.path.join(sparced_root +'/input_files')
 copyDirectory(input_data_folder, os.getcwd()+"/")
 
 

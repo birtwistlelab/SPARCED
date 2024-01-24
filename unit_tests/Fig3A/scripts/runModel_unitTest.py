@@ -49,14 +49,14 @@ def unit_test(yaml_file: str, flagD: Optional[int] = None, heterogenize: Optiona
     """
     if num_cells is None:
         #Simulate the SPARCED model as SPARCED_ERM
-        experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file, flagD, heterogenize, secondary_stimuli)
+        experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file)
     else: 
         # Create replicates of the SPARCED model
-        experimental_replicate_model = SPARCED_ERM.stochastic_cell_replicates(yaml_file, flagD, heterogenize, secondary_stimuli, num_cells)
+        experimental_replicate_model = SPARCED_ERM.stochastic_cell_replicates(yaml_file)
 
     if observable == 1:
         print("Calculating observable")
-        observables_data = ObservableCalculator.species_summation(yaml_file, experimental_replicate_model)
+        observables_data = ObservableCalculator.observable_isolator(yaml_file, experimental_replicate_model)
 
     yaml_name = os.path.basename(yaml_file).split('.')[0]
 
@@ -88,5 +88,4 @@ yaml_files_path = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
 yaml_files = glob.glob(os.path.join(yaml_files_path, '*.yml'))
 
 # Create a unit test for each YAML file
-unit_test(yaml_files[0], flagD= args.deterministic, heterogenize=args.heterogenize, secondary_stimuli=args.secondary_stimuli, \
-          num_cells=args.num_cells, observable=args.observable, name=args.name)
+unit_test(yaml_files[0], observable=args.observable, name=args.name)
