@@ -66,9 +66,12 @@ class SPARCED_ERM:
 
         condition = conditions_df[conditions_df['conditionId'] == condition[0]]
 
-        species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
+        model_clone = model.clone() #ensuring that, inbetween conditions, the model is reset to its original state, avoiding carryover. 
+
+
+        species_ids = list(model_clone.getStateIds()) # Get the species IDs built in from Species.txt
         
-        species_initializations = np.array(model.getInitialStates()) # Get the initial states from the model
+        species_initializations = np.array(model_clone.getInitialStates()) # Get the initial states from the model
 
         # Pull our unique conditions from the conditions file
         perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
@@ -95,17 +98,17 @@ class SPARCED_ERM:
 
             # If the entity is a compartment: change that compartment's value
             if entity in open('Compartments.txt'):
-                compartment = model.getCompartment(entity)
+                compartment = model_clone.getCompartment(entity)
                 compartment.setSize(condition[entity]) 
 
             # If the entity is a parameter: change that parameter's value
             elif entity.strip() in parameters_df.iloc[:, 0].str.strip().tolist():
                 try:
-                    model.setParameterById(entity, condition[entity].item())
-                    parameter_value = model.getParameterById(entity)
+                    model_clone.setParameterById(entity, condition[entity].item())
+                    parameter_value = model_clone.getParameterById(entity)
                     print(f"Parameter {entity} set to {parameter_value}")
                 except RuntimeError:
-                    model.setFixedParameterById(entity, str(condition[entity]))
+                    model_clone.setFixedParameterById(entity, str(condition[entity]))
                     print(f"Setting fixed parameter {entity} to {parameter_value}")
 
             elif entity in species_ids:
@@ -137,7 +140,7 @@ class SPARCED_ERM:
                     print(f"Entity {entity} not found!")
                     sys.exit(1)    
 
-        return model, species_initializations, flagD
+        return model_clone, species_initializations, flagD
 
     def sparced_erm(yaml_file: str):
         """Simulate the experimental replicate model."""
@@ -152,6 +155,7 @@ class SPARCED_ERM:
         model = model_module.getModel()
         solver = model.getSolver()
         solver.setMaxSteps = 1e10
+
 
         species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
 
@@ -173,6 +177,7 @@ class SPARCED_ERM:
 
         for condition in filtered_conditions: # Iterate through the unique conditions 
 
+            model_copy = model.clone() #ensuring that, inbetween conditions, the model is reset to its original state, avoiding carryover. 
 
             iteration_name = condition['conditionId']
 
@@ -191,7 +196,7 @@ class SPARCED_ERM:
                 if 'heterogenize' in condition and condition['heterogenize'] is not None:
                     heterogenize = condition['heterogenize']
                     preinc_xoutS_all = SPARCED_ERM.heterogenization(yaml_file,heterogenize)
-                    model.setInitialStates(preinc_xoutS_all)
+                    model_copy.setInitialStates(preinc_xoutS_all)
 
 
                 if 'preequilibrationConditionId' in measurement_df.columns:
@@ -205,7 +210,7 @@ class SPARCED_ERM:
                     preequilibrate_model, species_initializations, flagD = SPARCED_ERM.set_perturbations(
                                                                                                         yaml_file=yaml_file, 
                                                                                                         condition=preequilibrate_condition, 
-                                                                                                        model=model
+                                                                                                        model=model_copy
                                                                                                             )
                     
                     
@@ -246,8 +251,11 @@ class SPARCED_ERM:
                         #Use final values of preequilibration as the starting values for the next stimulus phase
                         species_initializations = xoutS_all[-1]
 
-                        # Set the next time frame to simulate
-                        secondary_timeframe = (measurement_df['time'][measurement_df['simulationConditionId']\
+                        # Set the next time frame to simulate; remove the preequilibration condition from the measurement table
+                        measurement_df_without_preequilibration = measurement_df[measurement_df['preequilibrationConditionId'].isna()] 
+
+                        # Set the secondary time frame to simulate
+                        secondary_timeframe = (measurement_df_without_preequilibration['time'][measurement_df_without_preequilibration['simulationConditionId']\
                                                                         .isin(condition)]\
                                                                             .max()/3600)
 
@@ -299,7 +307,7 @@ class SPARCED_ERM:
                     erm_model, species_initializations, flagD = SPARCED_ERM.set_perturbations(
                                                                                                 yaml_file=yaml_file, 
                                                                                                 condition=condition, 
-                                                                                                model=model
+                                                                                                model=model_copy
                                                                                                 )
                     
                             # Set the next time frame to simulate
@@ -308,7 +316,6 @@ class SPARCED_ERM:
                                                                 .isin(condition)]
                                                                 .max()/3600
                                                                     )
-                    
 
                     # Set the number of records as the number of unique timepoints
                     erm_model.setTimepoints(np.linspace(0, 30, 2))

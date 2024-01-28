@@ -1,15 +1,15 @@
-conditionId	conditionName	E	INS
-EGF_0.0	Perturbant, Dose, Time	0.01	0
-EGF_0.1	Perturbant, Dose, Time	0.1	0
-EGF_1	Perturbant, Dose, Time	1	0
-EGF_10	Perturbant, Dose, Time	10	0
-INS_0.17	Perturbant, Dose, Time	0	0.17
-INS_1.7	Perturbant, Dose, Time	0	1.7
-INS_17.0	Perturbant, Dose, Time	0	17
-INS_1721.0	Perturbant, Dose, Time	0	1721
-EGF_INS_0.01_0.17	Perturbant, Dose, Time	0.01	0.17
-EGF_INS_0.01_1721.0	Perturbant, Dose, Time	0.01	1721
-EGF_INS_10_0.17	Perturbant, Dose, Time	10	0.17
-EGF_INS_10_1721.0	Perturbant, Dose, Time	10	1721
-serum_starved	Perturbant, Dose, Time	0	0
-Neg_Control	Perturbant, Dose, Time	0	0
+conditionId	conditionName	E	INS	flagD
+EGF_0.0	Perturbant, Dose, Time	0.01	0	1
+EGF_0.1	Perturbant, Dose, Time	0.1	0	1
+EGF_1	Perturbant, Dose, Time	1	0	1
+EGF_10	Perturbant, Dose, Time	10	0	1
+INS_0.17	Perturbant, Dose, Time	0	0.17	1
+INS_1.7	Perturbant, Dose, Time	0	1.7	1
+INS_17.0	Perturbant, Dose, Time	0	17	1
+INS_1721.0	Perturbant, Dose, Time	0	1721	1
+EGF_INS_0.01_0.17	Perturbant, Dose, Time	0.01	0.17	1
+EGF_INS_0.01_1721.0	Perturbant, Dose, Time	0.01	1721	1
+EGF_INS_10_0.17	Perturbant, Dose, Time	10	0.17	1
+EGF_INS_10_1721.0	Perturbant, Dose, Time	10	1721	1
+serum_starved	Perturbant, Dose, Time	0	0	1
+Neg_Control	Perturbant, Dose, Time	0	0	1

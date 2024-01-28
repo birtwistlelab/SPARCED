@@ -207,3 +207,33 @@ class ObservableCalculator:
         # return death_ratios
         return death_ratios
 
+    def experimental_comparator(yaml_file):
+        """
+        Returns a dictionary of experimental data for each observable and condition,
+        matching simulation results dictionary format.
+
+        Parameters:
+        - yaml_file (str): Path to the yaml file.
+
+        Returns:
+        - result_dict (dict): Dictionary containing experimental data.
+        """
+        result_dict = {}
+
+        # Load the PEtab files
+        _, _, _, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+
+        # Group by observableId and simulationConditionId
+        grouped_data = measurement_df.groupby(['observableId', 'simulationConditionId'])
+
+        for (observable, condition), condition_data in grouped_data:
+            if condition not in result_dict:
+                result_dict[condition] = {}
+
+            if observable not in result_dict[condition]:
+                result_dict[condition][observable] = {}
+
+            result_dict[condition][observable]['time'] = condition_data['time'].values
+            result_dict[condition][observable]['measurement'] = condition_data['measurement'].values
+
+        return result_dict

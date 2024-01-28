@@ -1,4 +1,6 @@
 observableId	observableFormula	noiseFormula
-MAPK1ac	1	1
-MAPK3ac	1	1
-ERK_total	1	1
+MAPK1ac	Bcl2*1	1
+MAPK3ac	Baxm_Bcl2*1	1
+MAPK1_mRNA	m_MAPK1*1	1
+MAPK3_mRNA	m_MAPK3*1	1
+ERK_total	ppERK_BIM*1+ppERK_BAD*1+E1_ppERK*1+E2_ppERK*1+E4_ppERK*1+ERKnuc*1+ppERKnuc*1+ERK*1+pERK*1+ppERK*1+G2_SOS_ppERK*1+CRaf_ppERK*1+NF1_ppERK*1+ERK_ppMEK*1+pERK_ppMEK*1+RSK_ppERK*1+ppERKnuc_MKP1*1+cFos_ppERKnuc*1+pERK_MKP3*1+ppERK_MKP3*1+ppERKnuc_pMKP1*1	1

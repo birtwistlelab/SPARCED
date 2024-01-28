@@ -38,7 +38,7 @@ def unit_test(yaml_file: str, observable: Optional[int] = None, name: Optional[s
     yaml_file: str - path to the YAML file
     observable: int - 1 for run with observable, 0 for run without observable
     """
-
+    print(observable)
     experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file)
 
     yaml_name = os.path.basename(yaml_file).split('.')[0]
