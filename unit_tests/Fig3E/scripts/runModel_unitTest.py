@@ -27,27 +27,19 @@ shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirna
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
-    parser.add_argument('--deterministic', required=False, type=int, help='1 for deterministic run, 0 for stochastic', default=1)
-    parser.add_argument("--preincubation", required=False, help="Preincubation time in hours",default=None)
-    parser.add_argument('--observable', required=False, type=str, help='the observable of interest from an experiment', default=None)
+    parser.add_argument('--observable', required=False, type=int, help='the observable of interest from an experiment', default=1)
+    parser.add_argument('--name', required=False, type=str, help='the name of the file to save the results', default=None)
     args = parser.parse_args()
 
 
 
-def unit_test(yaml_file: str, flagD: Optional[int] = args.deterministic, flagP: Optional[int] = args.preincubation, observable: Optional[str] = None):
+def unit_test(yaml_file: str, observable: Optional[int] = None, name: Optional[str] = None):
     """Create a unit test for a given observable.
     yaml_file: str - path to the YAML file
-    observable: str - name of the observable to test
+    observable: int - 1 for run with observable, 0 for run without observable
     """
-    if flagP is not None:
-        # Here, we simulate the model 
-        experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file, flagD = flagD, flagP=flagP)
-    else:
-         # Here, we simulate the model 
-        experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file, flagD=flagD)
-
-    if observable is not None:
-        observables_data = ObservableCalculator.species_summation(experimental_replicate_model)
+    print(observable)
+    experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file)
 
     yaml_name = os.path.basename(yaml_file).split('.')[0]
 
@@ -58,10 +50,25 @@ def unit_test(yaml_file: str, flagD: Optional[int] = args.deterministic, flagP: 
 
     results_path = os.path.join(results_directory, f"{yaml_name}.json")
 
-    if observable is not None:
-        jd.save(observables_data, results_path)
-    else:
-        jd.save(experimental_replicate_model, results_path)
+
+    if observable == 0:
+        if name is not None:
+            jd.save(experimental_replicate_model, os.path.join(results_directory, f"{name}.json"))
+
+        else:
+            jd.save(experimental_replicate_model, results_path)
+    else: 
+        print("Calculating observable")
+        observables_data = ObservableCalculator.observable_isolator(yaml_file, experimental_replicate_model)
+        if name is not None:
+            jd.save(observables_data, os.path.join(results_directory, f"{name}.json"))
+
+        else:
+            jd.save(observables_data, results_path)
+
+
+
+
 
 # Direct path to YAML files
 yaml_files_path = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
@@ -70,4 +77,4 @@ yaml_files_path = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
 yaml_files = glob.glob(os.path.join(yaml_files_path, '*.yml'))
 
 # Create a unit test for each YAML file
-unit_test(yaml_files[0], flagP=args.preincubation)
+unit_test(yaml_files[0], observable=args.observable, name=args.name)
