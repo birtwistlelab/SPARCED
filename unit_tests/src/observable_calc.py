@@ -224,7 +224,7 @@ class ObservableCalculator:
         _, _, _, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
 
         # Group by observableId and simulationConditionId
-        grouped_data = measurement_df.groupby(['observableId', 'simulationConditionId'])
+        grouped_data = measurement_df[measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
 
         for (observable, condition), condition_data in grouped_data:
             if condition not in result_dict:
