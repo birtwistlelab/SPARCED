@@ -59,7 +59,8 @@ def unit_test(yaml_file: str, observable: Optional[int] = None, name: Optional[s
             jd.save(experimental_replicate_model, results_path)
     else: 
         print("Calculating observable")
-        observables_data = ObservableCalculator.observable_isolator(yaml_file, experimental_replicate_model)
+        observables_data = ObservableCalculator(yaml_file, experimental_replicate_model)
+        observables_data = observables_data()
         if name is not None:
             jd.save(observables_data, os.path.join(results_directory, f"{name}.json"))
 

@@ -5,17 +5,21 @@ import numpy as np
 from petab_file_loader import PEtabFileLoader
 
 class ObservableCalculator:
-    def __init__(self, results_dict: str):
+    def __init__(self, yaml_file:str, results_dict: str):
+        """This class is designed to calculate observable values from simulation results."""
+        self.yaml_file = yaml_file
         self.results_dict = results_dict
-        self.observable_dict = self.observable_calculator()
 
-    def observable_isolator(yaml_file, results_dict):
+
+    def __call__(self):
         """isolate only the observables of interest from the simulation data. Primary function is to cut down on data.
         yaml_file: yaml file containing the PEtab files
         results_dict: dictionary containing the simulation results from SPARCED_ERM
-        """
+
+        output: dictionary containing the observables of interest"""
+
         # Load the PEtab files
-        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(self.yaml_file)
 
         # Load the SBML model
         current_directory = os.getcwd()
@@ -26,6 +30,7 @@ class ObservableCalculator:
 
         species_ids = list(model.getStateIds())
 
+        results_dict = self.results_dict
         observable_dict = {}
 
         for condition in results_dict:
@@ -54,160 +59,8 @@ class ObservableCalculator:
 
         return observable_dict
 
-    def species_summation(yaml_file, results_dict): 
-        """Calculate observable values from simulation results.
-        yaml_file: yaml file containing the PEtab files
-        results_dict: dictionary containing the simulation results from SPARCED_ERM
-        """
-        # Load the PEtab files
-        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
 
-        # Load the SBML model
-        current_directory = os.getcwd()
-        model_name = os.path.basename(sbml_file).split('.')[0]
-        sys.path.insert(0, os.path.join(current_directory, model_name))
-        model_module = importlib.import_module(model_name)
-        model = model_module.getModel()
-
-        # Get the condition names
-        perturbants = list(conditions_df.columns[2:])
-
-        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
-
-        unique_timepoints = measurement_df['time'].unique()
-
-        # The first key in the results dictionary is the condition name
-        iteration_names = unique_conditions['conditionId'].tolist()
-
-        species_ids = list(model.getStateIds())
-
-        timepoints_of_interest = {}
-
-        observable_dict = {}
-
-        for _, observable in observable_df.iterrows():
-
-            condition_dict = {}
-
-            for condition in iteration_names:
-                time_steps = 30 #Not a fan of hard coding, this is a "works for now" solution
-                timepoints_of_interest[condition] = {}
-
-                timepoints_of_interest[condition]['toutS'] = []
-                timepoints_of_interest[condition]['xoutS'] = []
-
-                for timepoint in unique_timepoints:
-                    tp_by_ts = timepoint / time_steps
-                    timepoints_of_interest[condition]['toutS'].append(timepoint / time_steps)
-                    timepoints_of_interest[condition]['xoutS'].append(list(results_dict[condition]['xoutS'][int(tp_by_ts), :]))
-
-                timepoints_of_interest[condition]['toutS'] = np.array(timepoints_of_interest[condition]['toutS'])
-                timepoints_of_interest[condition]['xoutS'] = np.array(timepoints_of_interest[condition]['xoutS'])
-                
-
-                obs = [
-                    sum(
-                        np.array(
-                            [
-                                timepoints_of_interest[condition]['xoutS'][:, species_ids.index(species_name)]
-                                * float(species_compartment)
-                                for species in observable['observableFormula'].split('+')
-                                for species_name, species_compartment in [species.split('*')]
-                            ]
-                        )
-                    )
-                ]
-                condition_dict[condition] = {}
-                condition_dict[condition]['xoutS'] = sum(obs)
-                condition_dict[condition]['toutS'] = timepoints_of_interest[condition]['toutS']
-            observable_dict[observable['observableId']] = condition_dict
-
-        return observable_dict
-    
-    
-    def time_to_death(data):   
-        """"Returns the time for each simulated cell death for each condition in the results dictionary"""
-        dead_simulations = {}
-        time_of_death = []
-        for condition in data:
-            dead_simulation = np.argwhere(data[condition]['xoutS'][-1, 103] < data[condition]['xoutS'][-1, 105])
-            if len(dead_simulation) > 0:
-                dead_simulations[condition] = data[condition]# I need to grab the timepoints where each simulation died
-        if len(dead_simulations) < len(data):
-            print('Not all simulations died')
-            first_condition = list(data.keys())[0]
-            [time_of_death.append(data[first_condition]['toutS'].max()/3600)for alive_remainder in range(len(data) - len(dead_simulations))]
-
-        for dead_condition in dead_simulations:
-            #Grab the first instance in xoutS where PARP was less than cPARP
-            point_of_death = np.argwhere(dead_simulations[dead_condition]['xoutS'][:, 103] < dead_simulations[dead_condition]['xoutS'][:, 105])[0]
-            # I need to grab the timepoints where each simulation died
-
-            time_of_death.append(int(dead_simulations[dead_condition]['toutS'][point_of_death]/3600))
-
-        return time_of_death
-
-
-    def death_rate(self, yaml_file, results_dict):
-        """Calculate the death rate from simulation results."""
-        # Load the PEtab files
-        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
-
-        # Load the SBML model
-        current_directory = os.getcwd()
-        model_name = os.path.basename(self.sbml_file).split('.')[0]
-        sys.path.insert(0, os.path.join(current_directory, model_name))
-        model_module = importlib.import_module(model_name)
-        model = model_module.getModel()
-
-        # Get the condition names
-        perturbants = list(conditions_df.columns[2:])
-
-        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
-
-        # The first key in the results dictionary is the condition name
-        iteration_names = unique_conditions['conditionId'].tolist()
-
-        species_ids = list(model.getStateIds())
-
-        death_rate_dict = {}
-
-        for condition in iteration_names:
-            death_point = np.argwhere(results_dict[condition]['xoutS'][:, species_ids.index('cPARP')]>100.0)[0]
-            if len(death_point)>0:
-                time_of_death = results_dict[condition]['toutS'][death_point]
-
-        return death_rate_dict
-    
-
-
-    def collect_the_dead(data):
-        """Returns the time for each simulated cell death for each condition in the results dictionary"""
-        unique_conditions = set([stim for cells in data for stim in data[cells]])
-        perished_cells = {stim: [] for stim in unique_conditions}
-        for cell in data:
-            for stim in data[cell]:
-                perished_cell = np.argwhere(data[cell][stim]['xoutS'][:, 105]>100.0)
-                if len(perished_cell) > 0: 
-                    death_point = perished_cell[0] #Instance where we rule apoptosis is irreversible
-                    time_of_death = data[cell][stim]['toutS'][death_point] # Timepoint to match death point. 
-                    perished_cells[stim].extend(time_of_death/3600)
-                
-        # Our returned array now has every cell listed, and the timepoints for when it died for each condition
-        # Ex: cell 0: condition1: 48.5hours
-        return perished_cells
-    
-    
-    def death_ratios(data, population_size):
-        """Returns the ratio of dead cells, should be proceeded by collect_the_dead function"""
-        death_ratios = {}
-        for condition in data:
-            conditional_death_ratio = len(data[condition]) / population_size
-            death_ratios[condition] = conditional_death_ratio
-        # return death_ratios
-        return death_ratios
-
-    def experimental_comparator(yaml_file):
+    def experimental_comparator(self):
         """
         Returns a dictionary of experimental data for each observable and condition,
         matching simulation results dictionary format.
@@ -218,14 +71,19 @@ class ObservableCalculator:
         Returns:
         - result_dict (dict): Dictionary containing experimental data.
         """
+
         result_dict = {}
 
         # Load the PEtab files
-        _, _, _, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+        _, _, _, measurement_df, observable_df = PEtabFileLoader.load_petab_files(self.yaml_file)
 
         # Group by observableId and simulationConditionId
-        grouped_data = measurement_df[measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
+        if 'preequilibrationConditionId' in measurement_df.columns:
+            grouped_data = measurement_df[measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
 
+        else:
+            grouped_data = measurement_df.groupby(['observableId', 'simulationConditionId'])
+            
         for (observable, condition), condition_data in grouped_data:
             if condition not in result_dict:
                 result_dict[condition] = {}
@@ -237,3 +95,66 @@ class ObservableCalculator:
             result_dict[condition][observable]['measurement'] = condition_data['measurement'].values
 
         return result_dict
+
+
+class CellDeathMetrics:
+    def __init__(self, data, observable_name):
+        """ This is extended functionality for the observable calculator class. 
+        It is designed to calculate different death point metrics for each cell in the simulation results.
+
+        data: dictionary containing the simulation results from SPARCED_ERM
+        observable_name: name of the observable to be used to determine time of death
+        """
+        self.data = data
+        self.observable_name = observable_name
+
+    def time_to_death(self):
+        """"Returns the time for each simulated cell death for each condition in the results dictionary
+        
+        output: dictionary containing the times to death for each cell per condition"""
+
+        time_of_death = {}
+        for condition in self.data:
+            time_of_death[condition] = []
+            for cell in self.data[condition]:
+                dead_simulation = np.argwhere(self.data[condition][cell][self.observable_name]['xoutS'] > 100.0)
+                if len(dead_simulation) > 0:
+                    time_of_death[condition].append(self.data[condition][cell][self.observable_name]['toutS'][dead_simulation]/3600)
+                else:
+                    time_of_death[condition].append(None)
+        return time_of_death
+    
+    def average_time_to_death(self):   
+        """"Returns the time for the average simulated cell death for each condition in the results dictionary
+        
+        output: dictionary containing the average time to death for each condition"""
+
+        time_of_death = self.time_to_death()
+        for condition, cell_times in self.time_to_death().items():
+            time_of_death[condition] = np.mean([time for time in time_of_death[condition] if time is not None])
+
+        return time_of_death
+
+    def death_ratio(self):
+        """Returns the ratio of dead cells, should be proceeded by collect_the_dead function
+        time_to_death: dictionary containing the times to death for each cell per condition from the time_to_death function
+
+        output: dictionary containing the ratio of dead cells for each condition"""
+
+        dead_cells = {}
+        for condition, cell_times in self.time_to_death().items():
+            dead_cells[condition] = 0
+            total_cells = len(self.data[condition])
+            dead_cells[condition] += sum(1 for time in cell_times if time is not None)
+            # dead_cells[condition] = [dead_cells[condition] * (1 / total_cells) if total_cells !=0 else None for condition in dead_cells]
+            dead_cells[condition] = dead_cells[condition] / total_cells if total_cells != 0 else None
+        return dead_cells
+    
+    def alive_ratio(self):
+        """Returns the ratio of alive cells, should be proceeded by collect_the_dead function
+        
+        output: dictionary containing the ratio of alive cells for each condition"""
+
+        death_ratio = self.death_ratio()
+        alive_ratio = [(1 - x)*100 for x in death_ratio.values()]
+        return alive_ratio

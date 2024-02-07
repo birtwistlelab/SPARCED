@@ -34,7 +34,7 @@ class SPARCED_ERM:
         th = int(heterogenize)
         ts = 30
         # Load the PEtab files
-        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+        sbml_file, _, _, _, _ = PEtabFileLoader.load_petab_files(yaml_file)
 
         # Load the SBML model
         model_name = os.path.basename(sbml_file).split('.')[0]
@@ -54,7 +54,7 @@ class SPARCED_ERM:
         species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0 
 
         # Run SPARCED for preincubation time (th) with stimulus concentrations set to 0
-        xoutS_all, xoutG_all, tout_all = RunSPARCED(0, th,species_initializations,[],sbml_file,model)
+        xoutS_all, _, tout_all = RunSPARCED(0, th,species_initializations,[],sbml_file,model)
         print(f'heterogenized for {tout_all[-1]/3600} hours')
         # Store the preincubation results in a dictionary
         return xoutS_all[-1]
@@ -62,7 +62,7 @@ class SPARCED_ERM:
     def set_perturbations(yaml_file, condition, model):
         """Set the perturbations for the simulation."""
         # Load the PEtab files
-        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+        _, parameters_df, conditions_df, _, _= PEtabFileLoader.load_petab_files(yaml_file)
 
         condition = conditions_df[conditions_df['conditionId'] == condition[0]]
 
@@ -75,6 +75,7 @@ class SPARCED_ERM:
 
         # Pull our unique conditions from the conditions file
         perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
+
 
         if 'flagD' not in perturbants:
             flagD = 1
@@ -146,7 +147,7 @@ class SPARCED_ERM:
         """Simulate the experimental replicate model."""
 
         # Load the PEtab files
-        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+        sbml_file, _, conditions_df, measurement_df, _ = PEtabFileLoader.load_petab_files(yaml_file)
 
         # Load the SBML model
         model_name = os.path.basename(sbml_file).split('.')[0]
@@ -164,7 +165,7 @@ class SPARCED_ERM:
 
         # Pull our unique conditions from the conditions file
         perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
-        
+
         unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
         print(unique_conditions)
 
@@ -173,6 +174,7 @@ class SPARCED_ERM:
         filtered_conditions = [condition for index, condition in unique_conditions.iterrows() \
                             if 'preequilibrationConditionId' not in measurement_df.columns \
                                 or condition['conditionId'] not in measurement_df['preequilibrationConditionId'].values]
+
 
 
         for condition in filtered_conditions: # Iterate through the unique conditions 

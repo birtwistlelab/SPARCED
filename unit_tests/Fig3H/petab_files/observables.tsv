@@ -1,3 +1,3 @@
 observableId	observableFormula	noiseFormula
-cPARP_total	CPARP*1	1
+cPARP_total	cPARP*1	1
 PARP_total	PARP*1	1

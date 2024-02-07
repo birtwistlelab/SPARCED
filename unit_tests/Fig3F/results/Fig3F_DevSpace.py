@@ -52,7 +52,7 @@ for condition in reorg:
 
 # %%
 # fig, axes = plt.subplots(4,1, figsize=(8, 4 * len(p53_only)))
-fig, axes = plt.subplots(4,1)
+fig, axes = plt.subplots(4,1, figsize=(4,6))
 for i, condition in enumerate(p53_only):
     ax = axes[i]
     for cell in p53_only[condition]:
@@ -64,8 +64,15 @@ for i, condition in enumerate(p53_only):
         # ax.set_title(condition)
         # ax.legend()
         ax.set_xlim(0, 30)
+        ax.set_xticks([])
+    if i==3:
+        ax.set_xticks(np.arange(0, 31, step=5))
+    
+    ax.set_xticklabels(ax.get_xticks(), fontsize=16, weight='bold')
+    ax.set_yticklabels(ax.get_yticks(), fontsize=16, weight='bold')
 plt.subplots_adjust(hspace=0.5)
-plt.show()
+plt.tight_layout()
+fig.savefig('Fig3F_ERM.png')
 
 # %%
 

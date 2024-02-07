@@ -1,4 +1,3 @@
-# %%
 import sys
 import os 
 import importlib
@@ -7,57 +6,58 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 sys.path.append('/home/jonah/Desktop/SPARCED/unit_tests/src')
-from petab_file_loader import PEtabFileLoader
 
-os.chdir('/home/jonah/Desktop/SPARCED/unit_tests/Fig3J/scripts')
-data = jd.load('../results/Fig3J.json')
+os.chdir('/home/jonah/Desktop/SPARCED/unit_tests/Fig3J/results')
+data = jd.load('Fig3J.json')
 
+observables = []
+conditions = []
+for condition in data:
+    conditions.append(condition)
+    for observable in data[condition]['cell 0']:
+        observables.append(observable)
+print(observables)
+fig, ax = plt.subplots(2,2, figsize=(12.5,8))
 
-yaml_file = '../petab_files/Fig3J.yml'
-# Load the PEtab files
-sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(yaml_file)
+#Cyclin D plot
+ax[0,0].plot(data[conditions[0]]['cell 0'][observables[0]]['toutS']/3600, data[conditions[0]]['cell 0'][observables[0]]['xoutS'], linewidth=4, color='b')
+ax[0,0].plot(data[conditions[1]]['cell 0'][observables[0]]['toutS']/3600, data[conditions[1]]['cell 0'][observables[0]]['xoutS'], linewidth=4, color='r')
+ax[0,0].plot(data[conditions[2]]['cell 0'][observables[0]]['toutS']/3600, data[conditions[2]]['cell 0'][observables[0]]['xoutS'], linewidth=4, color='tab:orange')
+ax[0,0].set_yticklabels(ax[0,0].get_yticks().astype(int), weight='bold', fontsize=16)
+ax[0,0].set_xticklabels(ax[0,0].get_xticks().astype(int), weight='bold', fontsize=16)
+# ax[0,0].set_title('Cyclin D', weight='bold', fontsize=16)
+ax[0,0].set_ylabel('Cyclin D', weight='bold', fontsize=20)
 
-# Load the SBML model
-model_name = os.path.basename(sbml_file).split('.')[0]
-sys.path.insert(0, os.path.join(os.getcwd(), model_name))
+#Cyclin E plot
+ax[0,1].plot(data[conditions[0]]['cell 0'][observables[1]]['toutS']/3600, data[conditions[0]]['cell 0'][observables[1]]['xoutS'], linewidth=4, color='b')
+ax[0,1].plot(data[conditions[1]]['cell 0'][observables[1]]['toutS']/3600, data[conditions[1]]['cell 0'][observables[1]]['xoutS'], linewidth=4, color='r')
+ax[0,1].plot(data[conditions[2]]['cell 0'][observables[1]]['toutS']/3600, data[conditions[2]]['cell 0'][observables[1]]['xoutS'], linewidth=4, color='tab:orange')
+ax[0,1].set_yticklabels(ax[0,1].get_yticks().astype(int), weight='bold', fontsize=16)
+ax[0,1].set_xticklabels(ax[0,1].get_xticks().astype(int), weight='bold', fontsize=16)
+# ax[0,1].set_title('Cyclin E', weight='bold', fontsize=16)
+ax[0,1].set_ylabel('Cyclin E', weight='bold', fontsize=20)
+ax[0,1].legend(['Basal Cyclin D mRNA x1', 'x10', 'x60'], bbox_to_anchor=(1.05, 1), loc='upper left', frameon=False, fontsize=16)
 
-model_module = importlib.import_module(model_name)
-model = model_module.getModel()
+#Cyclin A plot
+ax[1,0].plot(data[conditions[0]]['cell 0'][observables[2]]['toutS']/3600, data[conditions[0]]['cell 0'][observables[2]]['xoutS'], linewidth=4, color='b')
+ax[1,0].plot(data[conditions[1]]['cell 0'][observables[2]]['toutS']/3600, data[conditions[1]]['cell 0'][observables[2]]['xoutS'], linewidth=4, color='r')
+ax[1,0].plot(data[conditions[2]]['cell 0'][observables[2]]['toutS']/3600, data[conditions[2]]['cell 0'][observables[2]]['xoutS'], linewidth=4, color='tab:orange')
+ax[1,0].set_yticklabels(ax[1,0].get_yticks().astype(int), weight='bold', fontsize=16)
+ax[1,0].set_xticklabels(ax[1,0].get_xticks().astype(int), weight='bold', fontsize=16)
+ax[1,0].set_ylabel('Cyclin A', weight='bold', fontsize=20)
+# ax[1,0].set_title('Cyclin A', weight='bold', fontsize=16)
 
-species_ids = list(model.getStateIds())
+#Cyclin B plot
+ax[1,1].plot(data[conditions[0]]['cell 0'][observables[3]]['toutS']/3600, data[conditions[0]]['cell 0'][observables[3]]['xoutS'], linewidth=4, color='b')
+ax[1,1].plot(data[conditions[1]]['cell 0'][observables[3]]['toutS']/3600, data[conditions[1]]['cell 0'][observables[3]]['xoutS'], linewidth=4, color='r')
+ax[1,1].plot(data[conditions[2]]['cell 0'][observables[3]]['toutS']/3600, data[conditions[2]]['cell 0'][observables[3]]['xoutS'], linewidth=4, color='tab:orange')
+ax[1,1].set_yticklabels(ax[1,1].get_yticks().astype(int), weight='bold', fontsize=16)
+ax[1,1].set_xticklabels(ax[1,1].get_xticks().astype(int), weight='bold', fontsize=16)
+# ax[1,1].set_title('Cyclin B', weight='bold', fontsize=16)
+ax[1,1].set_ylabel('Cyclin B', weight='bold', fontsize=20)
 
-
-# %%
-observables = ['Cd', 'Ce', 'Ca', 'Cb']
-for observable in observables:
-    for condition in data:
-        print(data[condition]['xoutS'][:, species_ids.index(observable)])
-        plt.plot(data[condition]['toutS'], data[condition]['xoutS'][:, species_ids.index(observable)], label=condition)
-        plt.ylabel(observable)
-        plt.xlabel('time')
-        # plt.ylim(0, 1.1*np.max(data[condition]['xoutS']))
-        plt.ticklabel_format(style='plain', axis='y')
-        plt.legend()
-    plt.show()
-
-# %%
-import matplotlib.pyplot as plt
-
-observables = ['Cd', 'Ce', 'Ca', 'Cb']
-
-fig, axes = plt.subplots(2, 2, figsize=(10, 8))
-
-for i, observable in enumerate(observables):
-    for condition in data:
-        axes[i // 2, i % 2].plot(data[condition]['toutS'], data[condition]['xoutS'][:, species_ids.index(observable)], label=condition)
-
-    axes[i // 2, i % 2].set_ylabel(observable)
-    axes[i // 2, i % 2].set_xlabel('time')
-    axes[i // 2, i % 2].ticklabel_format(style='plain', axis='y')
-    axes[i // 2, i % 2].legend()
-
-plt.tight_layout()
-plt.show()
+fig.tight_layout()
+fig.savefig('Fig3J.png', dpi=300)
 
 
 # %%

@@ -12,13 +12,6 @@ class PEtabFileLoader:
         self.yaml_file = yaml_file
         self.sbml_file, self.parameter_df, self.conditions_df, self.measurement_df, self.observable_df = self.load_petab_files()
 
-    # def find_file(file_name, search_path='.'):
-    #     for root, dirs, files in os.walk(search_path):
-    #         if file_name in files:
-    #             return os.path.join(root, file_name)
-
-    #     return None
-
     def load_petab_files(yaml_file: str):
         """Load PETAB files from a YAML file.
         yaml_file: path to yaml file"""
@@ -42,7 +35,11 @@ class PEtabFileLoader:
         
         observable_df = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['observable_files'][0]), sep='\t')
 
-        petab_file_names = ['condition_files', 'measurement_files', 'observable_files']
+        if 'model_specification_files' in yaml_dict['problems'][0]:
+
+            model_specs = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['model_specification_files'][0]), sep='\t')
+
+            conditions_df = pd.merge(conditions_df, model_specs, on='conditionId')
 
         return sbml_file, parameter_df, conditions_df, measurement_df, observable_df
     
