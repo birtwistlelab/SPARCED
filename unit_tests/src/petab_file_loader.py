@@ -8,20 +8,19 @@ import importlib
 
 # Load the PEtab files
 class PEtabFileLoader:
-    def __init__(self, yaml_file: str):
+    def __init__(self, yaml_file: str) -> str:
         self.yaml_file = yaml_file
-        self.sbml_file, self.parameter_df, self.conditions_df, self.measurement_df, self.observable_df = self.load_petab_files()
 
-    def load_petab_files(yaml_file: str):
+    def __call__(self):
         """Load PETAB files from a YAML file.
         yaml_file: path to yaml file"""
-        yaml_directory = os.path.join(os.path.dirname(yaml_file))
+        yaml_directory = os.path.join(os.path.dirname(self.yaml_file))
         
         # copy the SBML model into the PEtab input files directory
         if not os.path.exists(os.path.join(yaml_directory, 'SPARCED.xml')):
-            shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(yaml_file), 'SPARCED.xml'))
+            shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(self.yaml_file), 'SPARCED.xml'))
 
-        with open(yaml_file, 'r') as file:
+        with open(self.yaml_file, 'r') as file:
             yaml_dict = yaml.safe_load(file)
 
         # Construct full paths to petab files based on the YAML file's directory
@@ -42,46 +41,3 @@ class PEtabFileLoader:
             conditions_df = pd.merge(conditions_df, model_specs, on='conditionId')
 
         return sbml_file, parameter_df, conditions_df, measurement_df, observable_df
-    
-
-    def load_secondary_files(yaml_file: str):
-        """Load PETAB files from a YAML file.
-        yaml_file: path to yaml file"""
-        yaml_directory = os.path.join(os.path.dirname(yaml_file))
-        
-        # copy the SBML model into the PEtab input files directory
-        if not os.path.exists(os.path.join(yaml_directory, 'SPARCED.xml')):
-            shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(yaml_file), 'SPARCED.xml'))
-
-        with open(yaml_file, 'r') as file:
-            yaml_dict = yaml.safe_load(file)
-
-        if len(yaml_dict['problems'][0]['condition_files']) > 1:
-          conditions_df2 = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['condition_files'][1]), sep='\t')
-        else: 
-            conditions_df2 = None
-        if len(yaml_dict['problems'][0]['measurement_files']) > 1:
-            measurement_df2 = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['measurement_files'][1]), sep='\t')
-        else:
-            measurement_df2 = None
-
-        if len(yaml_dict['problems'][0]['observable_files']) > 1:
-            observable_df2 = pd.read_csv(os.path.join(yaml_directory, yaml_dict['problems'][0]['observable_files'][1]), sep='\t')
-        else:
-            observable_df2 = None
-
-        return conditions_df2, measurement_df2, observable_df2
-
-    def model_loader(yaml_file: str):
-        """preload model via normal instructions rather than continuously calling these lines in every file"""
-        # Load the PEtab files
-        sbml_file, _,_,_,_ = PEtabFileLoader.load_petab_files(yaml_file)
-
-        # Load the SBML model
-        current_directory = os.getcwd()
-        model_name = os.path.basename(sbml_file).split('.')[0]
-        sys.path.insert(0, os.path.join(current_directory, model_name))
-        model_module = importlib.import_module(model_name)
-        model = model_module.getModel()
-
-        return model

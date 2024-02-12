@@ -1,7 +1,9 @@
 import os
+import re
 import sys
 import importlib
 import numpy as np
+from typing import Optional
 from petab_file_loader import PEtabFileLoader
 
 class ObservableCalculator:
@@ -19,7 +21,7 @@ class ObservableCalculator:
         output: dictionary containing the observables of interest"""
 
         # Load the PEtab files
-        sbml_file, parameters_df, conditions_df, measurement_df, observable_df = PEtabFileLoader.load_petab_files(self.yaml_file)
+        sbml_file, _, _, _, observable_df = PEtabFileLoader(self.yaml_file).__call__()
 
         # Load the SBML model
         current_directory = os.getcwd()
@@ -31,29 +33,33 @@ class ObservableCalculator:
         species_ids = list(model.getStateIds())
 
         results_dict = self.results_dict
-        observable_dict = {}
 
+        observable_dict = {}
         for condition in results_dict:
             observable_dict[condition] = {}
             for cell in results_dict[condition]:
                 observable_dict[condition][cell] = {}
                 for _, observable in observable_df.iterrows():
-                    obs = [
-                        sum(
-                            np.array(
-                                [
-                                    results_dict[condition][cell]['xoutS'][:, species_ids.index(species_name)]
-                                    * float(species_compartment)
-                                    for species in observable['observableFormula'].split('+')
-                                    for species_name, species_compartment in [species.split('*')]
-                                ]
-                            )
-                        )
-                    ]
+                    obs_formula = str(observable['observableFormula'])
+    
+                    # Search the obs formula for species names
+                    species = re.findall(r'\b\w+(?:\.\w+)?\*\w+(?:\.\w+)?\b', obs_formula)
+
+                    for species in species:
+                        # Split the species into its name and compartment
+                        species_name, species_compartment = species.split('*')
+        #                 # Construct the regex pattern to match the species name exactly
+                        pattern = r'\b{}\b'.format(re.escape(species_name))
+        #                 # Replace only the exact matches of the species name in the formula
+                        obs_formula = re.sub(pattern, f'results_dict[condition][cell]["xoutS"][:, species_ids.index("{species_name}")]', obs_formula)
+
+                    # print(obs_formula)
+
+                    obs = eval(obs_formula)
 
                     observable_name = observable['observableId']
                     observable_dict[condition][cell][observable_name] = {}
-                    observable_dict[condition][cell][observable_name]['xoutS'] = sum(obs)
+                    observable_dict[condition][cell][observable_name]['xoutS'] = obs
                     observable_dict[condition][cell][observable_name]['toutS'] = results_dict[condition][cell]['toutS']
                     observable_dict[condition][cell][observable_name]['xoutG'] = results_dict[condition][cell]['xoutG']
 
@@ -75,7 +81,7 @@ class ObservableCalculator:
         result_dict = {}
 
         # Load the PEtab files
-        _, _, _, measurement_df, observable_df = PEtabFileLoader.load_petab_files(self.yaml_file)
+        _, _, _, measurement_df, observable_df = PEtabFileLoader(self.yaml_file).__call__()
 
         # Group by observableId and simulationConditionId
         if 'preequilibrationConditionId' in measurement_df.columns:
@@ -102,7 +108,7 @@ class CellDeathMetrics:
         """ This is extended functionality for the observable calculator class. 
         It is designed to calculate different death point metrics for each cell in the simulation results.
 
-        data: dictionary containing the simulation results from SPARCED_ERM
+        data: dictionary containing the simulation results from ObservableCalculator
         observable_name: name of the observable to be used to determine time of death
         """
         self.data = data
@@ -135,7 +141,7 @@ class CellDeathMetrics:
 
         return time_of_death
 
-    def death_ratio(self):
+    def death_ratio(self, percent:Optional[bool] = False):
         """Returns the ratio of dead cells, should be proceeded by collect_the_dead function
         time_to_death: dictionary containing the times to death for each cell per condition from the time_to_death function
 
@@ -148,6 +154,9 @@ class CellDeathMetrics:
             dead_cells[condition] += sum(1 for time in cell_times if time is not None)
             # dead_cells[condition] = [dead_cells[condition] * (1 / total_cells) if total_cells !=0 else None for condition in dead_cells]
             dead_cells[condition] = dead_cells[condition] / total_cells if total_cells != 0 else None
+            if percent:
+                dead_cells[condition] = dead_cells[condition] * 100
+
         return dead_cells
     
     def alive_ratio(self):
