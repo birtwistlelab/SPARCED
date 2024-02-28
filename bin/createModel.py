@@ -41,7 +41,7 @@ fileModel.write("model SPARCED()\n") # model name
 # SBML model we want to import
 sbml_file = 'SPARCED.xml'
 # Name of the model that will also be the name of the python module
-model_name = sbml_file[0:-4] # 'BigModel_byparts_v1'
+model_name = sbml_file[0:-4]
 # Directory to which the generated model code is written
 model_output_dir = model_name
 
@@ -142,19 +142,11 @@ for rowNum, ratelaw in enumerate(ratelaw_data):
                 for ematch in matches1:
                     formula = formula.replace(ematch.group(),paramnames[-1])
                 j +=1
-    if ratelaw[0] == 'Cytoplasm':
-        valcomp = 5.25e-12
-    elif ratelaw[0] == 'Extracellular':
-        valcomp = 5.00e-5
-    elif ratelaw[0] == 'Nucleus':
-        valcomp = 1.75e-12
-    elif ratelaw[0] == 'Mitochondrion':
-        valcomp = 3.675e-13
     #don't include reactions without products or reactants
     if products == [] and reactants == []:
         pass
     else:
-        fileModel.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
+        fileModel.write("  %s: %s => %s; (%s)*%.6s;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, ratelaw[0]))
 
 # Write compartment ICs
 fileModel.write("\n  # Compartment initializations:\n")
@@ -256,7 +248,7 @@ sbml_importer = amici.SbmlImporter(sbml_file)
 
 constantParameters = [params.getId() for params in sbml_model.getListOfParameters()]
 
-observables={'actp53':{'formula': 'p53ac'},'phERK':{'formula': 'ppERK'},'egfLR':{'formula': 'EE1'}}
+observables={'actp53':{'formula': 'p53ac'},'ppERK':{'formula': 'ppERK'},'egfLR':{'formula': 'EE1'}}
 
 sbml_importer.sbml2amici(model_name,
                          model_output_dir,

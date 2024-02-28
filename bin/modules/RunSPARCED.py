@@ -25,11 +25,11 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
         spdata = np.float(spdata0.values[:,1])  
     
     # calculate 
-    genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)
+    genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)  
     
-    xoutS_all = np.zeros(shape=(1,len(splist)))
+    xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
     xoutS_all[0,:] = spdata # 24hr time point
-    xoutG_all = np.zeros(shape=(1,len(genedata)))
+    xoutG_all = np.zeros(shape=(NSteps+1,len(genedata)))
     xoutG_all[0,:] = genedata  
     
     solver = model.getSolver() # Create solver instance
@@ -39,7 +39,7 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     mRNAIndDs = mRNAIndDs[1:]
     PARPind = [ind for ind,ele in enumerate(splist) if ele in {'PARP'}] # find the index for PARP
     cPARPind = [ind for ind,ele in enumerate(splist) if ele in {'cPARP'}] # find the index for cleaved-PARP (used to decide for apoptosis) 
-    
+    n_sp = len(splist)
     # Run 30sec (ts) simulations until final th is reached:
     for qq in range(NSteps): 
         # Call the function (based on the current state of the model species) for gene in/activation and mRNA birth/death events.   
@@ -52,10 +52,10 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
         # Run the simulation:
         rdata = amici.runAmiciSimulation(model, solver)  
         # Store the end point as next 30sec time-point:
-        xoutS_all = np.vstack([xoutS_all, rdata['x'][-1,:]]) 
+        xoutS_all[qq+1,:] = rdata._swigptr.x[-n_sp:]
         rdata = None
         # Store active/inactive gene states:
-        xoutG_all = np.vstack([xoutG_all, genedata]) 
+        xoutG_all[qq+1,:] = genedata
         # check for cell death:
         if xoutS_all[-1,PARPind] < xoutS_all[-1,cPARPind]: 
             print('Apoptosis happened')
