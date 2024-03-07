@@ -33,13 +33,18 @@ if __name__ == "__main__":
 
 
 
-def unit_test(yaml_file: str, observable: Optional[int] = None, name: Optional[str] = None):
+def __call__(yaml_file: str, observable: Optional[int] = None, name: Optional[str] = None):
     """Create a unit test for a given observable.
-    yaml_file: str - path to the YAML file
-    observable: int - 1 for run with observable, 0 for run without observable
+    input:
+        yaml_file: str - path to the YAML file
+        observable: int - 1 for run with observable, 0 for run without observable
+        name: str - name of the file to save the results
+    
+    output:
+        returns the results of the SPARCED model unit test simulation
     """
-    print(observable)
-    experimental_replicate_model = SPARCED_ERM.sparced_erm(yaml_file)
+
+    experimental_replicate_model = SPARCED_ERM(yaml_file).__call__()
 
     yaml_name = os.path.basename(yaml_file).split('.')[0]
 
@@ -59,14 +64,13 @@ def unit_test(yaml_file: str, observable: Optional[int] = None, name: Optional[s
             jd.save(experimental_replicate_model, results_path)
     else: 
         print("Calculating observable")
-        observables_data = ObservableCalculator.observable_isolator(yaml_file, experimental_replicate_model)
+        observables_data = ObservableCalculator(yaml_file, experimental_replicate_model).__call__()
+        # observables_data = observables_data()
         if name is not None:
             jd.save(observables_data, os.path.join(results_directory, f"{name}.json"))
 
         else:
             jd.save(observables_data, results_path)
-
-
 
 
 
@@ -77,4 +81,4 @@ yaml_files_path = os.path.join(os.path.dirname(os.getcwd()), 'petab_files/')
 yaml_files = glob.glob(os.path.join(yaml_files_path, '*.yml'))
 
 # Create a unit test for each YAML file
-unit_test(yaml_files[0], observable=args.observable, name=args.name)
+__call__(yaml_files[0], observable=args.observable, name=args.name)

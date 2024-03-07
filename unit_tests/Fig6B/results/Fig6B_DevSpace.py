@@ -4,48 +4,38 @@ import jdata as jd
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-os.chdir('/home/jonah/Desktop/SPARCED/unit_tests/Fig6B/scripts')
+os.chdir('/home/jonah/Desktop/SPARCED/unit_tests/Fig6B/results')
 
 sys.path.insert(0, '/home/jonah/Desktop/SPARCED/unit_tests/src')
 
-data = jd.load('../results/Fig6B.json')
+data = jd.load('Fig6B.json')
 
 
 import matplotlib.pyplot as plt
 
-# Assuming 'data' is your dictionary containing the entries
-# 'data' should have the structure: {entry1: {cell1: {...}, cell2: {...}, ...}, entry2: {...}, ...}
-
-# Create subplots
 fig, axes = plt.subplots(5, 1, figsize=(7, 7))
+for i, condition in enumerate(data):
+    for cell in data[condition]:
+        axes[i].plot(data[condition][cell]['cycA_Cdk2_total']['toutS']/3600, \
+            data[condition][cell]['cycA_Cdk2_total']['xoutS'], linewidth=4)
 
-# Iterate over dictionary entries
-for i, (entry, cell_data) in enumerate(data.items()):
-    # Iterate over cells in each entry
-    for cell, cell_values in cell_data.items():
-        # Assuming 'toutS' and 'xoutS' are keys in the cell_values dictionary
-        axes[i].plot(cell_values['cycA_Cdk2_total']['toutS']/3600, cell_values['cycA_Cdk2_total']['xoutS'], label=f'Cell {cell}')
-        # if i == 4:
-            # axes[i].set_xlabel('Time (h)', fontsize=18)
 
     # axes[i].set_title(entry)
     axes[i].set_ylim(0, 50)
     axes[i].axvline(x=24, color='black', linestyle='--', label='24-hour point')  # Add vertical dashed line
-    # axes[i].set_xlabel('Time')
-    # axes[i].set_ylabel('CycA/Cdk2 (nM)')
-    # axes[i].legend()
+    axes[i].set_xticklabels(axes[i].get_xticks(), fontsize=16, weight='bold')
+    axes[i].set_yticklabels(axes[i].get_yticks(), fontsize=16, weight='bold')
 
 plt.tight_layout()
 # plt.subplots_adjust(hspace=-0.00005)
-plt.show()
-
-
+fig.savefig('Fig6B.png', dpi=300)
 # Create the proliferation bar plots
 num_cells = 30
 CellsInSphase = {}
 labels = ['Sim', 'Exp']
 exp_data = [36.4773, 3.899, 49.2645, 1.55545, 0.81705]
-fig, axes = plt.subplots(5, 1, figsize=(1.5, 7))
+cond_labels = ['EGF', 'INS', 'EGF+INS', 'EGF+INS+MEKi', 'EGF+INS+AKTi']
+fig, axes = plt.subplots(5, 1, figsize=(2, 7))
 for i, condition in enumerate(data):
     CellsInSphase[condition] = {}
     CellsInSphase[condition]['Ratio'] = []
@@ -61,11 +51,11 @@ for i, condition in enumerate(data):
     CellsInSphase[condition]['Ratio'] = []
     CellsInSphase[condition]['Ratio'].append(ratio)
     CellsInSphase[condition]['Ratio'].append(exp_data[i])
-
-    axes[i].bar(labels, CellsInSphase[condition]['Ratio'], label=condition, color = ['blue', 'grey'])
+    dc_sem = np.sqrt(ratio*(100-ratio)/num_cells)
+    axes[i].bar(labels, CellsInSphase[condition]['Ratio'], yerr=dc_sem, color = ['blue', 'grey'])
     axes[i].set_ylim(0, 60)
-    # axes[i].set_ylabel('Ratio of cells in S phase')
-    # axes[i].set_xlabel('Sim vs. Exp')
+    axes[i].set_yticklabels(axes[i].get_yticks(), fontsize=16, weight='bold')
+    axes[i].set_ylabel(cond_labels[i], weight='bold')
     axes[i].set_xticks([])
-    # axes[i].legend()
 plt.tight_layout()
+fig.savefig('SPhase_barplot.png')

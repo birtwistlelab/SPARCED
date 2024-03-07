@@ -40,8 +40,10 @@ plt.savefig('Fig2B_g2.png')
 # %%
 
 
-plt.figure(figsize=(7, 4))
-plt.plot(data['average_sim']['toutS']/3600.0,data['average_sim']['xoutS'][:,888],'b',linewidth=4)
+mRNA_MAPK1_2mpc = data['average_sim']['cell 0']['MAPK1_mRNA']['xoutS']*(1/(1.0E9/(5.2500E-12*6.023E+23)))
+mRNA_MAPK3_2mpc = data['average_sim']['cell 0']['MAPK3_mRNA']['xoutS']*(1/(1.0E9/(5.2500E-12*6.023E+23)))
+
+plt.plot(data['average_sim']['cell 0']['MAPK3_mRNA']['toutS']/3600.0,mRNA_MAPK1_2mpc,'b',linewidth=4)
 # plt.xlabel('Time (hrs)')
 # plt.ylabel('MAPK1 mRNAs', multialignment='center')
 plt.grid(True)
@@ -52,11 +54,11 @@ plt.yticks(fontsize=16, weight='bold')
 ax = plt.gca()
 ax.yaxis.get_offset_text().set_fontsize(24)
 ax.yaxis.get_offset_text().set_weight('bold')
-plt.ticklabel_format(style='sci', scilimits=(-1, 0))
+plt.ticklabel_format(style='sci', scilimits=(1, 1))
 # plt.savefig('Fig2B_m1.png')
 
 # plt.figure(figsize=(7, 4))
-plt.plot(data['average_sim']['toutS']/3600.0,data['average_sim']['xoutS'][:,889],'r',linewidth=4)
+plt.plot(data['average_sim']['cell 0']['MAPK3_mRNA']['toutS']/3600.0,mRNA_MAPK3_2mpc,'r',linewidth=4)
 # plt.xlabel('Time (hrs)')
 # plt.ylabel('MAPK3 mRNAs', multialignment='center')
 # plt.grid(True)
@@ -65,6 +67,7 @@ plt.plot(data['average_sim']['toutS']/3600.0,data['average_sim']['xoutS'][:,889]
 # plt.xticks([])
 # plt.yticks(fontsize=14)
 plt.savefig('Fig2B_m1_m2.png')
+
 
 
 
