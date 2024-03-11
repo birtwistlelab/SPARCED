@@ -21,7 +21,11 @@ class ObservableCalculator:
         output: dictionary containing the observables of interest"""
 
         # Load the PEtab files
-        sbml_file, _, _, _, observable_df = PEtabFileLoader(self.yaml_file).__call__()
+        # sbml_file, _, _, _, observable_df = PEtabFileLoader(self.yaml_file).__call__()
+        petab_files = PEtabFileLoader(self.yaml_file).__call__()
+        sbml_file = petab_files.sbml_file
+        observable_df = petab_files.observable_df
+
 
         # Load the SBML model
         current_directory = os.getcwd()
@@ -30,31 +34,32 @@ class ObservableCalculator:
         model_module = importlib.import_module(model_name)
         model = model_module.getModel()
 
-        species_ids = list(model.getStateIds())
+        species_ids = list(model.getStateIds()) # assign species IDs to a list
 
-        results_dict = self.results_dict
+        results_dict = self.results_dict # assign the results dictionary to a variable
 
-        observable_dict = {}
+        observable_dict = {} # Instantiate the observable dictionary, dictionary structure will be condition -> cell -> observable -> xoutS, toutS, xoutG
         for condition in results_dict:
-            observable_dict[condition] = {}
+            observable_dict[condition] = {} # Instatiate the condition dictionary
             for cell in results_dict[condition]:
-                observable_dict[condition][cell] = {}
+                observable_dict[condition][cell] = {} # Instantiate the cell dictionary
                 for _, observable in observable_df.iterrows():
                     obs_formula = str(observable['observableFormula'])
-    
-                    # Search the obs formula for species names
-                    species = re.findall(r'\b\w+(?:\.\w+)?\*\w+(?:\.\w+)?\b', obs_formula)
+                    try:
+                        # Search the obs formula for species names
+                        species = re.findall(r'\b\w+(?:\.\w+)?\*\w+(?:\.\w+)?\b', obs_formula)
 
-                    for species in species:
-                        # Split the species into its name and compartment
-                        species_name, species_compartment = species.split('*')
-        #                 # Construct the regex pattern to match the species name exactly
-                        pattern = r'\b{}\b'.format(re.escape(species_name))
-        #                 # Replace only the exact matches of the species name in the formula
-                        obs_formula = re.sub(pattern, f'results_dict[condition][cell]["xoutS"][:, species_ids.index("{species_name}")]', obs_formula)
+                        for species in species:
+                            # Split the species into its name and compartment
+                            species_name, species_compartment = species.split('*')
+            #                 # Construct the regex pattern to match the species name exactly
+                            pattern = r'\b{}\b'.format(re.escape(species_name))
+            #                 # Replace only the exact matches of the species name in the formula
+                            obs_formula = re.sub(pattern, f'results_dict[condition][cell]["xoutS"][:, species_ids.index("{species_name}")]', obs_formula)
 
-                    # print(obs_formula)
-
+                    except:
+                        print(f'Error in observable formula: {obs_formula}')
+                        break
                     obs = eval(obs_formula)
 
                     observable_name = observable['observableId']
@@ -123,9 +128,11 @@ class CellDeathMetrics:
         for condition in self.data:
             time_of_death[condition] = []
             for cell in self.data[condition]:
-                dead_simulation = np.argwhere(self.data[condition][cell][self.observable_name]['xoutS'] > 100.0)
-                if len(dead_simulation) > 0:
-                    time_of_death[condition].append(self.data[condition][cell][self.observable_name]['toutS'][dead_simulation]/3600)
+                dead_simulation = np.array(self.data[condition][cell][self.observable_name]['toutS']\
+                                           [self.data[condition][cell][self.observable_name]['xoutS'] > 100.0])
+                if dead_simulation.size > 0:
+                    dead_simulation_times = dead_simulation[0]/3600             
+                    time_of_death[condition].extend(dead_simulation_times.flatten().tolist())
                 else:
                     time_of_death[condition].append(None)
         return time_of_death

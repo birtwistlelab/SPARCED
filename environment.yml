@@ -1,4 +1,4 @@
-name: sparced
+name: foreman
 channels:
   - anaconda
   - defaults

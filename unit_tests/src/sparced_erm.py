@@ -1,19 +1,10 @@
 import os
 import sys
-import shutil
+import math
 import importlib
 import pandas as pd
 import numpy as np
-import amici
-import jdata as jd
-import argparse
-from typing import Optional
 from petab_file_loader import PEtabFileLoader
-import libsbml
-import amici.plotting
-import matplotlib.pyplot as plt
-from datetime import datetime
-import scipy.stats
 
 # Get the directory path
 wd = os.path.dirname(os.path.abspath(__file__))
@@ -27,13 +18,17 @@ from modules.RunSPARCED import RunSPARCED
 class SPARCED_ERM:
     def __init__(self, yaml_file: str):
         self.yaml_file = yaml_file
-        # self.results_dict = self.sparced_erm()
 
     def __call__(self):
         """Simulate the experimental replicate model."""
 
         # Load the PEtab files
-        sbml_file, _, conditions_df, measurement_df, _ = PEtabFileLoader(self.yaml_file).__call__()
+        # sbml_file, _, conditions_df, measurement_df, _ = PEtabFileLoader(self.yaml_file).__call__()
+        petab_files = PEtabFileLoader(self.yaml_file).__call__()
+        sbml_file = petab_files.sbml_file
+        conditions_df = petab_files.conditions_df
+        measurement_df = petab_files.measurement_df
+
 
         # Load the SBML model
         model_name = os.path.basename(sbml_file).split('.')[0]
@@ -44,13 +39,12 @@ class SPARCED_ERM:
         solver.setMaxSteps = 1e10
 
 
-        species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
+        species_ids = list(model.getStateIds()) # assign species IDs to a list
 
-        # Create dynamic unit tests based on PEtab files
-        results_dict = {}
+        results_dict = {} #instantiate the results dictionary
 
         # Pull our unique conditions from the conditions file
-        perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
+        perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, gene, compartment, or model-specific condition
 
         unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
         print(unique_conditions)
@@ -63,33 +57,30 @@ class SPARCED_ERM:
 
 
 
-        for condition in filtered_conditions: # Iterate through the unique conditions 
+        for condition in filtered_conditions:  
 
-            model_copy = model.clone() #ensuring that, inbetween conditions, the model is reset to its original state, avoiding carryover. 
+            model_copy = model.clone() #ensures the model is reset to its original state inbetween conditions, avoiding carryover. 
 
             iteration_name = condition['conditionId']
 
-            results_dict[iteration_name] = {}
+            results_dict[iteration_name] = {} # each condition has its own results section
 
 
             # Set the number of cells to simulate, 1 by default
             num_cells = condition['num_cells'] if 'num_cells' in condition and condition['num_cells'] is not None else 1
 
-
             for cell in range(num_cells):
                 
                 print(f"Running cell {cell}")  
 
-
-                if 'heterogenize' in condition and condition['heterogenize'] is not None:
-                    heterogenize = condition['heterogenize']
-                    preinc_xoutS_all = SPARCED_ERM.heterogenization(self.yaml_file,heterogenize)
-                    model_copy.setInitialStates(preinc_xoutS_all)
-
+                # Set the primary concentrations for species in the model to heterogenized values
+                if 'heterogenize' in condition and not math.isnan(condition['heterogenize']): # handles int and empty (NaN) cells in the num_cells column
+                    preinc_xoutS_all = SPARCED_ERM.heterogenization(self.yaml_file,condition['heterogenize'])
+                    model_copy.setInitialStates(preinc_xoutS_all) # Set the initial states to the heterogenized values
 
                 if 'preequilibrationConditionId' in measurement_df.columns:
 
-                    #Isolate the preequilibration condition if included in the measurement table
+                    # Isolate the preequilibration condition if included in the measurement table
                     preequilibrate_condition = measurement_df.loc[measurement_df['simulationConditionId'] == condition['conditionId'], \
                                                                 'preequilibrationConditionId'].dropna().unique()
 
@@ -112,7 +103,7 @@ class SPARCED_ERM:
                     # Set the number of records as the number of unique timepoints
                     preequilibrate_model.setTimepoints(np.linspace(0, 30, 2))
 
-                    
+                    # simulation event
                     xoutS_all, xoutG_all, tout_all = RunSPARCED(
                                                             flagD=flagD,
                                                                 th=preequilibrate_simulation_time,
@@ -123,7 +114,7 @@ class SPARCED_ERM:
                                                                                 )
 
 
-                    #Build the results dictionary
+                    # Assign the various 
                     results_dict[iteration_name][f"cell {cell}"] = {}
                     results_dict[iteration_name][f"cell {cell}"]['xoutS'] = xoutS_all
                     results_dict[iteration_name][f"cell {cell}"]['xoutG'] = xoutG_all
@@ -134,7 +125,7 @@ class SPARCED_ERM:
                     #Find out if SPARCED died during the first round of stimulus
                     death_point = np.argwhere(xoutS_all[:, species_ids.index('cPARP')]>100.0)
                     if len(death_point)>0: #If cPARP reached a critical concentration; do nothing, the cell likely died
-                        pass
+                        break
                     else:
                         #Use final values of preequilibration as the starting values for the next stimulus phase
                         species_initializations = xoutS_all[-1]
@@ -158,6 +149,7 @@ class SPARCED_ERM:
                         # Set the number of records as the number of unique timepoints
                         secondary_model.setTimepoints(np.linspace(0, 30, 2))
 
+                        # Run the our primary simulation of interest
                         xoutS_all2, xoutG_all2, tout_all2 = RunSPARCED(
                                                                 flagD=flagD,
                                                                     th=secondary_timeframe,
@@ -235,17 +227,24 @@ class SPARCED_ERM:
 
 
     def heterogenization(yaml_file, heterogenize: int):
-        """Simulate the preincubation step."""
-        th = int(heterogenize)
+        """Simulate the preincubation step.
+        yaml_file: str: The path to the PEtab YAML file
+        heterogenize: int: The time to heterogenize for
+        
+        Returns:
+        xoutS_all[-1]: np.array: The last values of the simulation, these are the heterogenized values that inform the conditions start values"""
+        th = int(heterogenize)/3600 # convert to hours
         ts = 30
         # Load the PEtab files
-        sbml_file, _, _, _, _ = PEtabFileLoader(yaml_file).__call__()
+        # sbml_file, _, _, _, _ = PEtabFileLoader(yaml_file).__call__()
+        petab_files = PEtabFileLoader(yaml_file).__call__()
+        sbml_file = petab_files.sbml_file
 
         # Load the SBML model
         model_name = os.path.basename(sbml_file).split('.')[0]
         sys.path.insert(0, os.path.join(os.getcwd(), model_name))
 
-        # Here, we import the model's internal packages as a python module
+        # Import the model's internal packages as a python module
         model_module = importlib.import_module(model_name)
         model = model_module.getModel()
 
@@ -261,15 +260,27 @@ class SPARCED_ERM:
         # Run SPARCED for preincubation time (th) with stimulus concentrations set to 0
         xoutS_all, _, tout_all = RunSPARCED(0, th,species_initializations,[],sbml_file,model)
         print(f'heterogenized for {tout_all[-1]/3600} hours')
-        # Store the preincubation results in a dictionary
+        # return only the last values of the simulation, these are the heterogenized values that inform the conditions start values
         return xoutS_all[-1]
     
     def set_perturbations(yaml_file, condition, model):
-        """Set the perturbations for the simulation."""
+        """Set the perturbations for the simulation.
+        yaml_file: str: The path to the PEtab YAML file
+        condition: pd.Series: The condition to set the perturbations for
+        model: libsbml.Model: The model to set the perturbations for
+        
+        Returns:
+        model: libsbml.Model: The model with the perturbations set
+        species_initializations: np.array: The initial species concentrations
+        flagD: int: The flagD value"""
         # Load the PEtab files
-        _, parameters_df, conditions_df, _, _= PEtabFileLoader(yaml_file).__call__()
+        # _, parameters_df, conditions_df, _, _= PEtabFileLoader(yaml_file).__call__()
+        petab_files = PEtabFileLoader(yaml_file).__call__()
+        parameters_df = petab_files.parameter_df
+        conditions_df = petab_files.conditions_df
 
-        condition = conditions_df[conditions_df['conditionId'] == condition[0]]
+
+        condition = conditions_df[conditions_df['conditionId'] == condition[0]] # grabs the first condition
 
         model_clone = model.clone() #ensuring that, inbetween conditions, the model is reset to its original state, avoiding carryover. 
 
@@ -283,9 +294,9 @@ class SPARCED_ERM:
 
 
         if 'flagD' not in perturbants:
-            flagD = 1
+            flagD = 1 # Default to deterministic gene sampling
 
-        if 'heterogenize' in perturbants: # Dealt with in the sparced_erm function section
+        if 'heterogenize' in perturbants: # Ignore's this to be dealt with separately
             pass
             
         # set simulation perturbants for the pre-equilibration condition
@@ -300,13 +311,14 @@ class SPARCED_ERM:
                     print(f"Setting gene sampling to deterministic")
                 
             if entity == 'num_cells': 
-                pass # This is more importantly used in sparced_erm, as its better this sits outside the for loop
+                pass # This is used in sparced_erm, its better this sits outside the for loop
 
             # If the entity is a compartment: change that compartment's value
             if entity in open('Compartments.txt'):
                 compartment = model_clone.getCompartment(entity)
                 compartment.setSize(condition[entity]) 
-
+                print(f"Compartment {entity} set to {compartment.getSize()}")
+                
             # If the entity is a parameter: change that parameter's value
             elif entity.strip() in parameters_df.iloc[:, 0].str.strip().tolist():
                 try:

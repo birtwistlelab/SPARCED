@@ -60,6 +60,14 @@ import matplotlib.pyplot as plt
 #copy input files over to current directory
 current_dir = os.getcwd()
 input_data_folder = os.path.join(sparced_root +'/input_files')
+
+
+parent_dir = os.path.dirname(os.getcwd())
+unique_input_data_folder = os.path.join(parent_dir +'/input_files')
+if os.path.exists(unique_input_data_folder):
+    input_data_folder = unique_input_data_folder
+
+
 copyDirectory(input_data_folder, os.getcwd()+"/")
 
 
@@ -439,37 +447,37 @@ constantParameters = [params.getId() for params in sbml_model.getListOfParameter
 # In[ ]:
 
 
-# creates observables.
-ObsMat = pd.read_csv('Observables.txt', sep='\t',header=0, index_col=0)
-Vc = float(compartment_sheet[compartment_sheet[:,0]=='Cytoplasm',1])
+# # creates observables.
+# ObsMat = pd.read_csv('Observables.txt', sep='\t',header=0, index_col=0)
+# Vc = float(compartment_sheet[compartment_sheet[:,0]=='Cytoplasm',1])
 
-species_names = np.array([species_sheet[i][0] for i in range(1,len(species_sheet))])
-Vol_species = np.array([species_sheet[i][1] for i in range(1,len(species_sheet))])
-Vol_species = [float(compartment_sheet[compartment_sheet[:,0]==Vol_species[i],1][0]) for i in range(len(Vol_species))]
-Vol_species = pd.Series(Vol_species, index=species_names)
+# species_names = np.array([species_sheet[i][0] for i in range(1,len(species_sheet))])
+# Vol_species = np.array([species_sheet[i][1] for i in range(1,len(species_sheet))])
+# Vol_species = [float(compartment_sheet[compartment_sheet[:,0]==Vol_species[i],1][0]) for i in range(len(Vol_species))]
+# Vol_species = pd.Series(Vol_species, index=species_names)
 
-formula_obs = []
-for obs in ObsMat.columns:
-    sp_obs = ObsMat.index[np.nonzero(np.array(ObsMat.loc[:,obs]>0))[0]]
-    sp_obs_id = np.nonzero(np.array(ObsMat.loc[:,obs]>0))[0]
-    Vr = Vol_species/Vc
-    Vf = Vr*ObsMat.loc[:,obs].values
-    if len(sp_obs) == 1:
-        formula_i = sp_obs[0]+'*'+str(Vf[sp_obs_id][0])
-    elif len(sp_obs) == 2:
-        formula_i = str(sp_obs[0]+'*'+str(Vf[sp_obs_id][0])+'+'+sp_obs[1]+'*'+str(Vf[sp_obs_id][1]))
-    elif len(sp_obs) > 2:
-        formula_i = ''
-        for j in range(len(sp_obs)-1):
-            formula_i = formula_i+sp_obs[j]+'*'+str(Vf[sp_obs_id][j])+'+'
-        formula_i = formula_i+str(sp_obs[-1])+'*'+str(Vf[sp_obs_id][-1])
-    formula_obs.append(formula_i)
+# formula_obs = []
+# for obs in ObsMat.columns:
+#     sp_obs = ObsMat.index[np.nonzero(np.array(ObsMat.loc[:,obs]>0))[0]]
+#     sp_obs_id = np.nonzero(np.array(ObsMat.loc[:,obs]>0))[0]
+#     Vr = Vol_species/Vc
+#     Vf = Vr*ObsMat.loc[:,obs].values
+#     if len(sp_obs) == 1:
+#         formula_i = sp_obs[0]+'*'+str(Vf[sp_obs_id][0])
+#     elif len(sp_obs) == 2:
+#         formula_i = str(sp_obs[0]+'*'+str(Vf[sp_obs_id][0])+'+'+sp_obs[1]+'*'+str(Vf[sp_obs_id][1]))
+#     elif len(sp_obs) > 2:
+#         formula_i = ''
+#         for j in range(len(sp_obs)-1):
+#             formula_i = formula_i+sp_obs[j]+'*'+str(Vf[sp_obs_id][j])+'+'
+#         formula_i = formula_i+str(sp_obs[-1])+'*'+str(Vf[sp_obs_id][-1])
+#     formula_obs.append(formula_i)
 
-observables = {}
-obs_names = list(ObsMat.columns)
-for i in range(len(obs_names)):
-    observables[obs_names[i]] = {}
-    observables[obs_names[i]]['formula'] = formula_obs[i]
+# observables = {}
+# obs_names = list(ObsMat.columns)
+# for i in range(len(obs_names)):
+#     observables[obs_names[i]] = {}
+#     observables[obs_names[i]]['formula'] = formula_obs[i]
 
 
 # #### Compile the model and create required C++ dependencies for simulation. 
