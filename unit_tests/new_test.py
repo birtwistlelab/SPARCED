@@ -1,8 +1,18 @@
 import os
 import shutil
 import argparse
+from typing import Optional
 
-def create_directories(name):
+if __name__ == "__main__":
+    # Set up command-line argument parser
+    parser = argparse.ArgumentParser(description="Create directories and files.")
+    parser.add_argument("--name", required=True, help="Name of the new directory")
+    parser.add_argument('-C', '--custom-input-files', required=False, type=int, help='(bool) define whether custom input files are necessary', default=0)
+    args = parser.parse_args()
+
+
+def create_directories(name, custom_input_files: Optional[int] = None):
+
     #orient script within the directory
     cd = os.getcwd()
     wd = os.path.dirname(cd)
@@ -21,8 +31,10 @@ def create_directories(name):
     # Copy create and run model files into the new directory
     shutil.copy(cd + '/src/runModel_unitTest.py', os.path.join(os.getcwd(), 'scripts/runModel_unitTest.py'))
     shutil.copy(cd + '/src/createModel_unitTest.py', os.path.join(os.getcwd(), 'scripts/createModel_unitTest.py'))
-    # Copy 'input_files' directory and its contents into the new directory
-    # shutil.copytree(wd + '/input_files', os.path.join(os.getcwd(), 'input_files'))
+    
+    #If user defines preference Copy 'input_files' directory and its contents into the new directory
+    if custom_input_files == 1:
+        shutil.copytree(wd + '/input_files', os.path.join(os.getcwd(), 'input_files'))
 
     # Create 'petab_files' directory within the new directory
     os.makedirs(os.path.join(os.getcwd(), 'petab_files'))
@@ -42,25 +54,25 @@ def create_directories(name):
     format_version: 1 
     parameter_file: parameters.tsv
     problems: 
-    - condition_files: 
+      - condition_files: 
         - conditions.tsv
-    measurement_files:
+      measurement_files:
         - measurements.tsv
-    observable_files:
+      observable_files:
         - observables.tsv
-    sbml_files:
+      sbml_files:
         - SPARCED.xml
     """)
         
 
-if __name__ == "__main__":
-    # Set up command-line argument parser
-    parser = argparse.ArgumentParser(description="Create directories and files.")
-    parser.add_argument("--name", required=True, help="Name of the new directory")
+# if __name__ == "__main__":
+#     # Set up command-line argument parser
+#     parser = argparse.ArgumentParser(description="Create directories and files.")
+#     parser.add_argument("--name", required=True, help="Name of the new directory")
 
-    # Parse command-line arguments
-    args = parser.parse_args()
+#     # Parse command-line arguments
+#     args = parser.parse_args()
 
-    # Call the function to perform the specified tasks
-    create_directories(args.name)
+#     # Call the function to perform the specified tasks
+create_directories(args.name, args.custom_input_files)
 
