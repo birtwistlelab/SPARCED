@@ -68,7 +68,9 @@ class ObservableCalculator:
                     observable_dict[condition][cell][observable_name]['toutS'] = results_dict[condition][cell]['toutS']
                     observable_dict[condition][cell][observable_name]['xoutG'] = results_dict[condition][cell]['xoutG']
 
+        
         return observable_dict
+
 
 
     def experimental_comparator(self):
@@ -86,7 +88,8 @@ class ObservableCalculator:
         result_dict = {}
 
         # Load the PEtab files
-        _, _, _, measurement_df, observable_df = PEtabFileLoader(self.yaml_file).__call__()
+        petab_files = PEtabFileLoader(self.yaml_file).__call__()
+        measurement_df = petab_files.measurement_df
 
         # Group by observableId and simulationConditionId
         if 'preequilibrationConditionId' in measurement_df.columns:
@@ -95,6 +98,11 @@ class ObservableCalculator:
         else:
             grouped_data = measurement_df.groupby(['observableId', 'simulationConditionId'])
             
+        # look for experimental data in the measurements file by exculding all NaN values in measurement_df['measurement']
+        # if all values are NaN, then there is no experimental data to compare to
+        if measurement_df['measurement'].isna().all():
+            return None
+
         for (observable, condition), condition_data in grouped_data:
             if condition not in result_dict:
                 result_dict[condition] = {}

@@ -2,20 +2,19 @@ import os
 import sys
 import glob
 import shutil
-import jdata as jd
+import pickle
 import argparse
 from typing import Optional
 
 # Get the directory path
 wd = os.path.dirname(os.path.abspath(__file__))
+
 # Create the formatted path to the SPARCED input files
 sparced_root = '/'.join(wd.split(os.path.sep)[:wd.split(os.path.sep).index('SPARCED')+1])
 sys.path.append(os.path.join(sparced_root, 'unit_tests/src'))
 
 from sparced_erm import SPARCED_ERM
 from observable_calc import ObservableCalculator
-
-
 
 # copy the SBML model into the PEtab input files directory
 shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(os.getcwd()), 'petab_files/SPARCED.xml'))
@@ -50,23 +49,33 @@ def __call__(yaml_file: str, observable: Optional[int] = None, name: Optional[st
     if not os.path.exists(results_directory): # ensures if you've already created the directory, it won't throw an error
         os.makedirs(results_directory)
 
-    results_path = os.path.join(results_directory, f"{yaml_name}.json") # final output is saved in json format !!! Might Need To Reconsider !!!
+    results_path = os.path.join(results_directory, f"{yaml_name}.pkl") # final output is saved in json format !!! Might Need To Reconsider !!!
 
     if observable == 0: # This opts out of the observable calculation, saving al gene/time/species data
         if name is not None:
-            jd.save(experimental_replicate_model, os.path.join(results_directory, f"{name}.json"))
+            results_path = os.path.join(results_directory, f"{name}.pkl")
+            with open(results_path, 'wb') as f:
+                pickle.dump(experimental_replicate_model, f)
+            # jd.save(experimental_replicate_model, os.path.join(results_directory, f"{name}.json"))
 
         else:
-            jd.save(experimental_replicate_model, results_path)
-    else: # !!! Not sure if the else loop is even needed
+            # jd.save(experimental_replicate_model, results_path)
+            with open(results_path, 'wb') as f:
+                pickle.dump(experimental_replicate_model, f)
+    else: 
         print("Calculating observable")
         observables_data = ObservableCalculator(yaml_file, experimental_replicate_model).__call__()
-        # observables_data = observables_data()
+
         if name is not None:
-            jd.save(observables_data, os.path.join(results_directory, f"{name}.json"))
+            results_path = os.path.join(results_directory, f"{name}.pkl")
+            # jd.save(observables_data, os.path.join(results_directory, f"{name}.json"))
+            with open(results_path, 'wb') as f:
+                pickle.dump(observables_data, f)
 
         else:
-            jd.save(observables_data, results_path)
+            # jd.save(observables_data, results_path)
+            with open(results_path, 'wb') as f:
+                pickle.dump(observables_data, f)
 
 
 
