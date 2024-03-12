@@ -16,47 +16,36 @@ from modules.RunSPARCED import RunSPARCED
 
 
 class SPARCED_ERM:
-    def __init__(self, yaml_file: str):
+    def __init__(self, yaml_file: str, model: str, conditions_df: pd.DataFrame, measurement_df: pd.DataFrame, parameters_df: pd.DataFrame, sbml_file: str):
         self.yaml_file = yaml_file
+        self.model = model
+        self.conditions_df = conditions_df
+        self.measurement_df = measurement_df
+        self.parameters_df = parameters_df
+        self.sbml_file = sbml_file
+
 
     def __call__(self):
         """Simulate the experimental replicate model."""
 
-        # Load the PEtab files
-        # sbml_file, _, conditions_df, measurement_df, _ = PEtabFileLoader(self.yaml_file).__call__()
-        petab_files = PEtabFileLoader(self.yaml_file).__call__()
-        sbml_file = petab_files.sbml_file
-        conditions_df = petab_files.conditions_df
-        measurement_df = petab_files.measurement_df
 
-
-        # Load the SBML model
-        model_name = os.path.basename(sbml_file).split('.')[0]
-        sys.path.insert(0, os.path.join(os.getcwd(), model_name))
-        model_module = importlib.import_module(model_name)
-        model = model_module.getModel()
-        solver = model.getSolver()
-        solver.setMaxSteps = 1e10
-
-
-        species_ids = list(model.getStateIds()) # assign species IDs to a list
+        species_ids = list(self.model.getStateIds()) # assign species IDs to a list
 
         results_dict = {} #instantiate the results dictionary
 
         # Pull our unique conditions from the conditions file
-        perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, gene, compartment, or model-specific condition
+        perturbants = list(self.conditions_df.columns[2:]) # can be a species, parameter, gene, compartment, or model-specific condition
 
-        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
+        unique_conditions = self.conditions_df.drop_duplicates(subset=perturbants)
         print(unique_conditions)
 
         # Filter out the preequilibration conditions to isolate all unique experimental conditions
         filtered_conditions = [condition for index, condition in unique_conditions.iterrows() \
-                            if 'preequilibrationConditionId' not in measurement_df.columns \
-                                or condition['conditionId'] not in measurement_df['preequilibrationConditionId'].values]
+                            if 'preequilibrationConditionId' not in self.measurement_df.columns \
+                                or condition['conditionId'] not in self.measurement_df['preequilibrationConditionId'].values]
 
 
         for condition in filtered_conditions:  
-
             iteration_name = condition['conditionId']
 
             results_dict[iteration_name] = {} # each condition has its own results section
@@ -66,21 +55,24 @@ class SPARCED_ERM:
 
             for cell in range(num_cells):
                 
-                model_copy = model.clone() #ensures the model is reset to its original state inbetween conditions, avoiding carryover. 
+                model_copy = self.model.clone() #ensures the model is reset to its original state inbetween conditions, avoiding carryover. 
 
                 print(f"Running cell {cell}")  
 
                 # Set the primary concentrations for species in the model to heterogenized values
                 if 'heterogenize' in condition and not math.isnan(condition['heterogenize']): # handles int and empty (NaN) cells in the num_cells column
                     
-                    preinc_xoutS_all = SPARCED_ERM._heterogenization(sbml_file, model_copy, condition['heterogenize'])
+                    preinc_xoutS_all = SPARCED_ERM._heterogenization(self, condition['heterogenize'], model_copy)
                     
                     model_copy.setInitialStates(preinc_xoutS_all) # Set the initial states to the heterogenized values
 
-                if 'preequilibrationConditionId' in measurement_df.columns:
+                if 'preequilibrationConditionId' in self.measurement_df.columns:
 
                     #Use final values of preequilibration as the starting values for the next stimulus phase
-                    model_copy = SPARCED_ERM._preequilibration_condition(self, condition, model_copy, measurement_df, sbml_file)
+                    model_copy = SPARCED_ERM._preequilibration_condition(self, 
+                                                                         condition=condition, 
+                                                                         model=model_copy)
+                    
                     print(f"setting secondary conditions for {condition['conditionId']}")
 
                 #Find out if starting cPARP is too high to start the simulation
@@ -90,15 +82,14 @@ class SPARCED_ERM:
                 if parp_value < cPARP_value:
                     break
 
-                erm_model, species_initializations, flagD = SPARCED_ERM._set_perturbations(
-                                                                                            yaml_file=self.yaml_file, 
+                erm_model, species_initializations, flagD = SPARCED_ERM._set_perturbations(self,
                                                                                             condition=condition, 
                                                                                             model=model_copy
                                                                                             )
                 
                         # Set the next time frame to simulate
                 simulation_timeframe = (
-                                        measurement_df['time'][measurement_df['simulationConditionId']\
+                                        self.measurement_df['time'][self.measurement_df['simulationConditionId']\
                                                             .isin(condition)]
                                                             .max()/3600
                                                                 )
@@ -112,7 +103,7 @@ class SPARCED_ERM:
                                                             th=simulation_timeframe,
                                                                 spdata=species_initializations,
                                                                     genedata=[],
-                                                                        sbml_file=sbml_file,
+                                                                        sbml_file=self.sbml_file,
                                                                             model=erm_model
                                                                             )
 
@@ -132,7 +123,7 @@ class SPARCED_ERM:
 
 
 
-    def _heterogenization(sbml_file, model, heterogenize: int):
+    def _heterogenization(self, heterogenize: int, model):
         """Simulate the preincubation step.
         yaml_file: str: The path to the PEtab YAML file
         heterogenize: int: The time to heterogenize for
@@ -146,16 +137,23 @@ class SPARCED_ERM:
 
         # Serum starve the cell by setting the initial conditions of species to 0.0
         species_initializations = np.array(model.getInitialStates())
+        growth_factors = ['E', 'H', 'HGF', 'P', 'F', 'I', 'INS']
+        species_ids = list(model.getStateIds())
+        for species in growth_factors:
+            index = species_ids.index(species)
+            species_initializations[index] = 0
+
+
 
         # Run SPARCED for preincubation time (th) with stimulus concentrations set to 0
-        xoutS_all, _, tout_all = RunSPARCED(0, th,species_initializations,[],sbml_file,model)
+        xoutS_all, _, tout_all = RunSPARCED(0, th,species_initializations,[],self.sbml_file,model)
         print(f'heterogenized for {tout_all[-1]/3600} hours')
         # return only the last values of the simulation, these are the heterogenized values that inform the conditions start values
         return xoutS_all[-1]
 
 
 
-    def _preequilibration_condition(self, condition, model_copy, measurement_df, sbml_file):
+    def _preequilibration_condition(self, condition, model):
         """Isolate the preequilibration condition if included in the measurement table.
         condition: pd.Series: The condition to set the perturbations for
         model_copy: libsbml.Model: The model to set the perturbations for
@@ -167,21 +165,20 @@ class SPARCED_ERM:
         preequilibrate_model: libsbml.Model: The model with the perturbations set"""
 
         # Isolate the preequilibration condition if included in the measurement table
-        preequilibrate_condition = measurement_df.loc[measurement_df['simulationConditionId'] == condition['conditionId'], \
+        preequilibrate_condition = self.measurement_df.loc[self.measurement_df['simulationConditionId'] == condition['conditionId'], \
                                                     'preequilibrationConditionId'].dropna().unique()
 
 
         # Set the preequilibration concentrations for the perturbants in the conditions table
         sys.stdout = open(os.devnull, "w") # Suppresses the _set_perturbation print statements, just for this function
-        preequilibrate_model, species_initializations, flagD = SPARCED_ERM._set_perturbations(
-                                                                                            yaml_file=self.yaml_file, 
+        preequilibrate_model, species_initializations, flagD = SPARCED_ERM._set_perturbations(self,
                                                                                             condition=preequilibrate_condition, 
-                                                                                            model=model_copy
+                                                                                            model=model
                                                                                                 )
         sys.stdout = sys.__stdout__ # Re-enables print statements
         
         # Timepoints are set by the number of unique timepoints and maximum timepoint in the measurement table
-        preequilibrate_simulation_time = measurement_df['time'][measurement_df['preequilibrationConditionId']\
+        preequilibrate_simulation_time = self.measurement_df['time'][self.measurement_df['preequilibrationConditionId']\
                                                                 .isin(preequilibrate_condition)]\
                                                                     .dropna()\
                                                                         .unique()\
@@ -196,7 +193,7 @@ class SPARCED_ERM:
                                         th=preequilibrate_simulation_time,
                                             spdata=species_initializations,
                                                 genedata=[],
-                                                    sbml_file=sbml_file,
+                                                    sbml_file=self.sbml_file,
                                                         model=preequilibrate_model
                                                         )
 
@@ -207,7 +204,7 @@ class SPARCED_ERM:
         return preequilibrate_model
 
 
-    def _set_perturbations(yaml_file, condition, model):
+    def _set_perturbations(self, condition, model):
         """Set the perturbations for the simulation.
         yaml_file: str: The path to the PEtab YAML file
         condition: pd.Series: The condition to set the perturbations for
@@ -217,21 +214,15 @@ class SPARCED_ERM:
         model: libsbml.Model: The model with the perturbations set
         species_initializations: np.array: The initial species concentrations
         flagD: int: The flagD value"""
-        # Load the PEtab files
-        # _, parameters_df, conditions_df, _, _= PEtabFileLoader(yaml_file).__call__()
-        petab_files = PEtabFileLoader(yaml_file).__call__()
-        parameters_df = petab_files.parameter_df
-        conditions_df = petab_files.conditions_df
 
-
-        condition = conditions_df[conditions_df['conditionId'] == condition[0]] # grabs the first condition
+        condition = self.conditions_df[self.conditions_df['conditionId'] == condition[0]] # grabs the first condition
 
         species_ids = list(model.getStateIds()) # Get the species IDs built in from Species.txt
         
         species_initializations = np.array(model.getInitialStates()) # Get the initial states from the model
 
         # Pull our unique conditions from the conditions file
-        perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, or compartment
+        perturbants = list(self.conditions_df.columns[2:]) # can be a species, parameter, or compartment
 
         if 'flagD' not in perturbants:
             flagD = 1 # Default to deterministic gene sampling
@@ -260,7 +251,7 @@ class SPARCED_ERM:
                 print(f"Compartment {entity} set to {compartment.getSize()}")
                 
             # If the entity is a parameter: change that parameter's value
-            elif entity.strip() in parameters_df.iloc[:, 0].str.strip().tolist():
+            elif entity.strip() in self.parameters_df.iloc[:, 0].str.strip().tolist():
                 try:
                     model.setParameterById(entity, condition[entity].item())
                     parameter_value = model.getParameterById(entity)

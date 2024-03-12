@@ -3,47 +3,39 @@ import re
 import sys
 import importlib
 import numpy as np
+import pandas as pd
 from typing import Optional
 from petab_file_loader import PEtabFileLoader
 
 class ObservableCalculator:
-    def __init__(self, yaml_file:str, results_dict: str):
-        """This class is designed to calculate observable values from simulation results."""
+    def __init__(self, yaml_file:str, results_dict: dict, observable_df: str, model: str):
+        """This class is designed to calculate observable values from simulation results.
+        input:
+            yaml_file: str - path to the YAML file
+            results_dict: dict - dictionary containing the simulation results
+            observable_df: str - path to the observable dataframe
+            model: str - path to the SBML model
+        """
         self.yaml_file = yaml_file
         self.results_dict = results_dict
+        self.observable_df = observable_df
+        self.model = model
 
 
     def __call__(self):
         """isolate only the observables of interest from the simulation data. Primary function is to cut down on data.
-        yaml_file: yaml file containing the PEtab files
-        results_dict: dictionary containing the simulation results from SPARCED_ERM
 
         output: dictionary containing the observables of interest"""
 
-        # Load the PEtab files
-        # sbml_file, _, _, _, observable_df = PEtabFileLoader(self.yaml_file).__call__()
-        petab_files = PEtabFileLoader(self.yaml_file).__call__()
-        sbml_file = petab_files.sbml_file
-        observable_df = petab_files.observable_df
 
-
-        # Load the SBML model
-        current_directory = os.getcwd()
-        model_name = os.path.basename(sbml_file).split('.')[0]
-        sys.path.insert(0, os.path.join(current_directory, model_name))
-        model_module = importlib.import_module(model_name)
-        model = model_module.getModel()
-
-        species_ids = list(model.getStateIds()) # assign species IDs to a list
-
-        results_dict = self.results_dict # assign the results dictionary to a variable
+        species_ids = list(self.model.getStateIds()) # assign species IDs to a list
 
         observable_dict = {} # Instantiate the observable dictionary, dictionary structure will be condition -> cell -> observable -> xoutS, toutS, xoutG
-        for condition in results_dict:
+        for condition in self.results_dict:
             observable_dict[condition] = {} # Instatiate the condition dictionary
-            for cell in results_dict[condition]:
+            for cell in self.results_dict[condition]:
                 observable_dict[condition][cell] = {} # Instantiate the cell dictionary
-                for _, observable in observable_df.iterrows():
+                for _, observable in self.observable_df.iterrows():
                     obs_formula = str(observable['observableFormula'])
                     try:
                         # Search the obs formula for species names
@@ -55,7 +47,7 @@ class ObservableCalculator:
             #                 # Construct the regex pattern to match the species name exactly
                             pattern = r'\b{}\b'.format(re.escape(species_name))
             #                 # Replace only the exact matches of the species name in the formula
-                            obs_formula = re.sub(pattern, f'results_dict[condition][cell]["xoutS"][:, species_ids.index("{species_name}")]', obs_formula)
+                            obs_formula = re.sub(pattern, f'self.results_dict[condition][cell]["xoutS"][:, species_ids.index("{species_name}")]', obs_formula)
 
                     except:
                         print(f'Error in observable formula: {obs_formula}')
@@ -65,8 +57,8 @@ class ObservableCalculator:
                     observable_name = observable['observableId']
                     observable_dict[condition][cell][observable_name] = {}
                     observable_dict[condition][cell][observable_name]['xoutS'] = obs
-                    observable_dict[condition][cell][observable_name]['toutS'] = results_dict[condition][cell]['toutS']
-                    observable_dict[condition][cell][observable_name]['xoutG'] = results_dict[condition][cell]['xoutG']
+                    observable_dict[condition][cell][observable_name]['toutS'] = self.results_dict[condition][cell]['toutS']
+                    observable_dict[condition][cell][observable_name]['xoutG'] = self.results_dict[condition][cell]['xoutG']
 
         
         return observable_dict
@@ -87,20 +79,17 @@ class ObservableCalculator:
 
         result_dict = {}
 
-        # Load the PEtab files
-        petab_files = PEtabFileLoader(self.yaml_file).__call__()
-        measurement_df = petab_files.measurement_df
 
         # Group by observableId and simulationConditionId
-        if 'preequilibrationConditionId' in measurement_df.columns:
-            grouped_data = measurement_df[measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
+        if 'preequilibrationConditionId' in self.measurement_df.columns:
+            grouped_data = self.measurement_df[self.measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
 
         else:
-            grouped_data = measurement_df.groupby(['observableId', 'simulationConditionId'])
+            grouped_data = self.measurement_df.groupby(['observableId', 'simulationConditionId'])
             
         # look for experimental data in the measurements file by exculding all NaN values in measurement_df['measurement']
         # if all values are NaN, then there is no experimental data to compare to
-        if measurement_df['measurement'].isna().all():
+        if self.measurement_df['measurement'].isna().all():
             return None
 
         for (observable, condition), condition_data in grouped_data:
