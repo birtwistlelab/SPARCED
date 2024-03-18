@@ -1,3 +1,7 @@
+# Python files
+*.py[cod]
+__pycache__/
+
 old*
 *.ipynb_check*
 .nextflow*
