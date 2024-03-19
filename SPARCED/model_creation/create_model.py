@@ -10,14 +10,13 @@ import argparse
 import libsbml
 
 from antimony_utils import *
-from src.copydir import copy_directory
-from src.sbml_utils import *
+# from src.copydir import copy_directory
+# from src.sbml_utils import *
 
 
 def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec,verbose):
-    # Antimony
+    # Create and load Antimony model
     antimony_file_name = antimony_write_model(antimony_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec)
-    # Load Antimony model
     try:
         assert not loadFile(antimony_file_name) == -1
     except:
@@ -25,8 +24,8 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate
         sys.exit(0)
     else:
         if args.verbose: print("SPARCED: Success loading Antimony file")
-
     # Convert Antimony model into SBML
+    sbml_file_name = sbml_model_name + ".xml"
     try:
         assert not writeSBMLFile(sbml_file_name, antimony_model_name) == 0
     except:
@@ -34,7 +33,6 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate
         sys.exit(0)
     else:
         if args.verbose: print("SPARCED: Success converting Antimony file to SBML")
-
     # SBML: Annotation
     # Import SBML file
     sbml_reader = libsbml.SBMLReader()
