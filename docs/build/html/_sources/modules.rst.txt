@@ -1,0 +1,7 @@
+SPARCED
+=======
+
+.. toctree::
+   :maxdepth: 4
+
+   SPARCED

@@ -1,0 +1,10 @@
+SPARCED package
+===============
+
+Module contents
+---------------
+
+.. automodule:: SPARCED
+   :members:
+   :undoc-members:
+   :show-inheritance:
