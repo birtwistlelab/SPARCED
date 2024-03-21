@@ -1,3 +1,5 @@
-This is a documentation test.
-.. autofunction:: SPARCED.model_creation.antimony_utils.antimony_utils.antimony_init
+Test documentation
+==================
+
+.. autofunction:: lumache.get_random_ingredients
 

@@ -7,9 +7,11 @@ Welcome to SPARCED's documentation!
 ===================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    SPARCED
 
+.. toctree::
+    :maxdepth: 4
+    :caption: Contents:
 
 
 Indices and tables

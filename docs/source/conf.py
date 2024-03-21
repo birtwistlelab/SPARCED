@@ -3,13 +3,15 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Path setup --------------------------------------------------------------
-import os
+import pathlib
 import sys
+import os
 
 import sphinx_pdj_theme
 
-sys.path.insert(0, os.path.abspath('../SPARCED/model_creation/antimony_utils'))
+# -- Path setup --------------------------------------------------------------
+sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
+sys.path.insert(0, os.path.abspath('../../SPARCED/model_creation/antimony_utils'))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information

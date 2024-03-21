@@ -1,0 +1,23 @@
+﻿SPARCED
+=======
+
+.. automodule:: SPARCED
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
