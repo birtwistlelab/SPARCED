@@ -5,6 +5,7 @@ import shutil
 import pickle
 import argparse
 import importlib
+from mpi4py import MPI
 from typing import Optional
 
 # Get the directory path
@@ -15,7 +16,7 @@ sparced_root = '/'.join(wd.split(os.path.sep)[:wd.split(os.path.sep).index('SPAR
 sys.path.append(os.path.join(sparced_root, 'unit_tests/src'))
 
 from petab_file_loader import PEtabFileLoader
-from sparced_erm import SPARCED_ERM
+from sparced_erm_multiprocessing import SPARCED_ERM
 from observable_calc import ObservableCalculator
 
 # copy the SBML model into the PEtab input files directory
@@ -76,7 +77,61 @@ class UnitTest:
         
         
         # execute the unit test
-        experimental_replicate_model = SPARCED_ERM(self.yaml_file, model, conditions_df, measurement_df, parameters_df, sbml_file).__call__()
+        # experimental_replicate_model = SPARCED_ERM(self.yaml_file, model, conditions_df, measurement_df, parameters_df, sbml_file).__call__()
+
+        results_dict = {} #instantiate the results dictionary
+
+        # Pull our unique conditions from the conditions file
+        perturbants = list(conditions_df.columns[2:]) # can be a species, parameter, gene, compartment, or model-specific condition
+
+        unique_conditions = conditions_df.drop_duplicates(subset=perturbants)
+        print(unique_conditions)
+
+        # Filter out the preequilibration conditions to isolate all unique experimental conditions
+        filtered_conditions = [condition for index, condition in unique_conditions.iterrows() \
+                            if 'preequilibrationConditionId' not in measurement_df.columns \
+                                or condition['conditionId'] not in measurement_df['preequilibrationConditionId'].values]
+
+        # --------------------------------------------------------------------------------------------------------------------#
+        # Conditions are the unique combinations of perturbants in the conditions file. Each condition is a unique simulation.#
+        # --------------------------------------------------------------------------------------------------------------------#
+        for condition in filtered_conditions: 
+
+            iteration_name = condition['conditionId']
+
+            results_dict[iteration_name] = {} # each condition has its own results section
+
+            # Set the number of cells to simulate, 1 by default
+            num_cells = condition['num_cells'] if 'num_cells' in condition and condition['num_cells'] is not None else 1
+
+            for cell in range(num_cells):
+            
+
+                #  cells should be ran in parallel, not conditions
+                comm = MPI.COMM_WORLD
+
+                rank = comm.Get_rank()
+
+                size = comm.Get_size()
+
+                xoutS_all, xoutG_all, tout_all = SPARCED_ERM(self.yaml_file, model, conditions_df, measurement_df, parameters_df, sbml_file)\
+                    ._process_cell_condition(self, condition, cell, results_dict)
+               
+
+                all_results = comm.gather(xoutS_all, root=0)
+                print('finished simulation')
+
+                        #Build the results dictionary
+                results_dict[iteration_name][f"cell {cell}"] = {}
+                results_dict[iteration_name][f"cell {cell}"]['xoutS'] = xoutS_all
+                results_dict[iteration_name][f"cell {cell}"]['xoutG'] = xoutG_all
+                results_dict[iteration_name][f"cell {cell}"]['toutS'] = tout_all
+
+
+
+
+
+
 
         # Create a results directory adjacent to scripts directory
         yaml_name = os.path.basename(self.yaml_file).split('.')[0]

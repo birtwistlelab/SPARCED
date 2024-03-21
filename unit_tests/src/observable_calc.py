@@ -8,7 +8,7 @@ from typing import Optional
 from petab_file_loader import PEtabFileLoader
 
 class ObservableCalculator:
-    def __init__(self, yaml_file:str, results_dict: dict, observable_df: str, model: str):
+    def __init__(self, yaml_file:str, results_dict: dict, observable_df: pd.DataFrame, measurement_df: pd.DataFrame, model: str):
         """This class is designed to calculate observable values from simulation results.
         input:
             yaml_file: str - path to the YAML file
@@ -19,6 +19,7 @@ class ObservableCalculator:
         self.yaml_file = yaml_file
         self.results_dict = results_dict
         self.observable_df = observable_df
+        self.measurement_df = measurement_df
         self.model = model
 
 
@@ -47,8 +48,9 @@ class ObservableCalculator:
             #                 # Construct the regex pattern to match the species name exactly
                             pattern = r'\b{}\b'.format(re.escape(species_name))
             #                 # Replace only the exact matches of the species name in the formula
-                            obs_formula = re.sub(pattern, f'self.results_dict[condition][cell]["xoutS"][:, species_ids.index("{species_name}")]', obs_formula)
+                            obs_formula = re.sub(pattern, f'self.results_dict[condition]["{cell}"]["xoutS"][:, species_ids.index("{species_name}")]', obs_formula)
 
+                            #I need to also isolate the parallel gene data saved in xoutG ### JRH keep that in mind
                     except:
                         print(f'Error in observable formula: {obs_formula}')
                         break
@@ -60,12 +62,19 @@ class ObservableCalculator:
                     observable_dict[condition][cell][observable_name]['toutS'] = self.results_dict[condition][cell]['toutS']
                     observable_dict[condition][cell][observable_name]['xoutG'] = self.results_dict[condition][cell]['xoutG']
 
-        
         return observable_dict
 
-
-
-    def experimental_comparator(self):
+    def _sum_unique_dict_entries(self):
+        """Sum the unique entries in the results dictionary."""
+        unique_entries = {}
+        for key, value in self.results_dict.items():
+            unique_entries[f'{key}'] = []
+            for sub_key, sub_value in value.items():
+                unique_entries[f'{key}'].append(1)
+            unique_entries[f'{key}'] =  sum(unique_entries[f'{key}'])
+        return unique_entries
+    
+    def _add_experimental_data(self, observable_dict: dict):
         """
         Returns a dictionary of experimental data for each observable and condition,
         matching simulation results dictionary format.
@@ -77,31 +86,28 @@ class ObservableCalculator:
         - result_dict (dict): Dictionary containing experimental data.
         """
 
-        result_dict = {}
-
+        result_dict = observable_dict
 
         # Group by observableId and simulationConditionId
         if 'preequilibrationConditionId' in self.measurement_df.columns:
-            grouped_data = self.measurement_df[self.measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
+            # grouped_data = self.measurement_df[self.measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
+            grouped_data = self.measurement_df.dropna(subset=['preequilibrationConditionId']).groupby(['observableId', 'simulationConditionId'])
 
         else:
             grouped_data = self.measurement_df.groupby(['observableId', 'simulationConditionId'])
-            
         # look for experimental data in the measurements file by exculding all NaN values in measurement_df['measurement']
         # if all values are NaN, then there is no experimental data to compare to
         if self.measurement_df['measurement'].isna().all():
-            return None
+            print('No experimental data to compare to')
+            return observable_dict
 
         for (observable, condition), condition_data in grouped_data:
-            if condition not in result_dict:
-                result_dict[condition] = {}
-
-            if observable not in result_dict[condition]:
-                result_dict[condition][observable] = {}
-
-            result_dict[condition][observable]['time'] = condition_data['time'].values
-            result_dict[condition][observable]['measurement'] = condition_data['measurement'].values
-
+            # print(condition_data)
+            # print(observable, condition)
+            for i in range(0, self._sum_unique_dict_entries()[condition]):
+                result_dict[condition][f'cell {i}'][observable]['experiment time'] = condition_data['time'].values
+                result_dict[condition][f'cell {i}'][observable]['experiment measurement'] = condition_data['measurement'].values
+                # print(f'Added experimental data for {observable} in condition {condition}')
         return result_dict
 
 
