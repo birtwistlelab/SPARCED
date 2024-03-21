@@ -75,7 +75,13 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../generated/create_model.html">create_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/write_model.html">write_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#antimony">Antimony</a></li>
 </ul>
 </li>
 </ul>
@@ -158,14 +164,15 @@
 <div class="viewcode-block" id="antimony_terminal">
 <a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_terminal">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_terminal</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write constant variables and unit definitions in the given Antimony file</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write constant variables and unit definitions in a given Antimony file</span>
 <span class="sd">    WARNING: This function contains hard-coded values</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        f: the Antimony file to write in as an open (w) file</span>
+<span class="sd">    :param f: the Antimony file to write in</span>
+<span class="sd">    :type f: [open (w) file]</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: [void]</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Constant variables</span>
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Other declarations:</span><span class="se">\n</span><span class="s2">const &quot;</span><span class="p">)</span>
@@ -181,20 +188,25 @@
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  unit nM = 1e-9 mole / litre;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="antimony_write_compartments">
+<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_compartments">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_compartments</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">comp</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write compartments&#39; names in the given Antimony file</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write compartments names in a given Antimony file</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        f: the Antimony file to write in as an open (w) file</span>
-<span class="sd">        comp: the compartments&#39; names as a list of strings</span>
+<span class="sd">    :param f: the Antimony file to write in</span>
+<span class="sd">    :type f: [open(w) file]</span>
+<span class="sd">    :param comp: the compartments names to write</span>
+<span class="sd">    :type comp: list[str]</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: [void]</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Compartments and Species:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">comp</span><span class="p">)):</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Compartment </span><span class="si">{comp_name}</span><span class="s2">; &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">comp_name</span><span class="o">=</span><span class="n">comp</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 
 <span class="k">def</span> <span class="nf">antimony_write_init_compartments</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write compartments&#39; initial conditions in the given Antimony file</span>

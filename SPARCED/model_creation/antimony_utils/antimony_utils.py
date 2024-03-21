@@ -29,14 +29,15 @@ def antimony_init(f_cv, f_s):
     return((comp, vol, spec))
 
 def antimony_terminal(f):
-    """Write constant variables and unit definitions in the given Antimony file
+    """
+    Write constant variables and unit definitions in a given Antimony file
     WARNING: This function contains hard-coded values
 
-    Args:
-        f: the Antimony file to write in as an open (w) file
+    :param f: the Antimony file to write in
+    :type f: [open (w) file]
+    :return: None
+    :rtype: [void]
 
-    Returns:
-        None.
     """
     # Constant variables
     f.write("# Other declarations:\nconst ")
@@ -52,14 +53,16 @@ def antimony_terminal(f):
     f.write("  unit nM = 1e-9 mole / litre;\n\n")
 
 def antimony_write_compartments(f, comp):
-    """Write compartments' names in the given Antimony file
+    """
+    Write compartments names in a given Antimony file
 
-    Args:
-        f: the Antimony file to write in as an open (w) file
-        comp: the compartments' names as a list of strings
+    :param f: the Antimony file to write in
+    :type f: [open(w) file]
+    :param comp: the compartments names to write
+    :type comp: list[str]
+    :return: None
+    :rtype: [void]
 
-    Returns:
-        None.
     """
     f.write("# Compartments and Species:\n")
     for i in range(len(comp)):

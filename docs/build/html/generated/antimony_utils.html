@@ -35,7 +35,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 00.00.01 documentation" href="../index.html"/>
         <link rel="up" title="SPARCED" href="../SPARCED.html"/>
-        <link rel="prev" title="SPARCED" href="../SPARCED.html"/>
+        <link rel="next" title="Model Creation" href="../model_creation.html"/>
+        <link rel="prev" title="write_model" href="write_model.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -75,7 +76,14 @@
           
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="create_model.html">create_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="write_model.html">write_model</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">antimony_utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#antimony">Antimony</a></li>
 </ul>
 </li>
 </ul>
@@ -126,14 +134,14 @@
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_init</span></code>(f_cv, f_s)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../model_creation.html#antimony_utils.antimony_init" title="antimony_utils.antimony_init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_init</span></code></a>(f_cv, f_s)</p></td>
 <td><p>Load compartments, volumes and species from data files</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_terminal</span></code>(f)</p></td>
-<td><p>Write constant variables and unit definitions in the given Antimony file WARNING: This function contains hard-coded values</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../model_creation.html#antimony_utils.antimony_terminal" title="antimony_utils.antimony_terminal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_terminal</span></code></a>(f)</p></td>
+<td><p>Write constant variables and unit definitions in a given Antimony file WARNING: This function contains hard-coded values</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_compartments</span></code>(f, comp)</p></td>
-<td><p>Write compartments' names in the given Antimony file</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../model_creation.html#antimony_utils.antimony_write_compartments" title="antimony_utils.antimony_write_compartments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_compartments</span></code></a>(f, comp)</p></td>
+<td><p>Write compartments names in a given Antimony file</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_init_compartments</span></code>(f, comp, vol)</p></td>
 <td><p>Write compartments' initial conditions in the given Antimony file</p></td>
@@ -160,8 +168,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../model_creation.html" class="btn btn-neutral float-right" title="Model Creation">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="../SPARCED.html" class="btn btn-neutral" title="SPARCED"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="write_model.html" class="btn btn-neutral" title="write_model"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
