@@ -8,7 +8,25 @@ from antimony_utils import *
 
 def antimony_write_model(antimony_model_name,f_compartments,f_stoichmat,
                          f_output_params,f_ratelaws,f_species):
+    """
+    Generate an Antimony file based on given data
 
+    :param antimony_model_name: name for the generated antimony model
+    :type antimony_model_name: [str]
+    :param f_compartments: compartments & volumes file
+    :type f_compartments: [str]
+    :param f_stoichmat: stoichiometric matrix file
+    :type f_stoichmat: [str]
+    :param f_output_params: output parameters file
+    :type f_output_params: [str]
+    :param f_ratelaws: ratelaws file
+    :type f_ratelaws: [str]
+    :param f_species: species file
+    :type f_species: [str]
+    :return: The file name of the generated Antimony model
+    :rtype: [str]
+    
+    """
     antimony_file = antimony_model_name + ".txt"
 
     with open(antimony_file,"w") as antimony_model:
@@ -59,5 +77,6 @@ if __name__ == '__main__':
     f_ratelaws = args.inputdir + args.ratelaws
     f_species = args.inputdir + args.species
     # Write model
-    antimony_write_model(args.antimony,f_compartments,f_stoichmat,f_output_params,f_ratelaws,f_species)
+    antimony_write_model(args.antimony,f_compartments,f_stoichmat,
+                         f_output_params,f_ratelaws,f_species)
 

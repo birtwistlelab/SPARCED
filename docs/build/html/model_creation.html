@@ -34,6 +34,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="SPARCED 00.00.01 documentation" href="index.html"/>
+        <link rel="prev" title="antimony_utils" href="generated/antimony_utils.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -71,10 +72,16 @@
 	
           
           
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="SPARCED.html">SPARCED</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="generated/create_model.html">create_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/write_model.html">write_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/antimony_utils.html">antimony_utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Model Creation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#antimony">Antimony</a></li>
 </ul>
 </li>
 </ul>
@@ -150,8 +157,33 @@
 </dl>
 </dd></dl>
 
-<section id="antimony-utils">
-<h2>antimony_utils<a class="headerlink" href="#antimony-utils" title="Link to this heading">¶</a></h2>
+<section id="antimony">
+<h2>Antimony<a class="headerlink" href="#antimony" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="write_model.antimony_write_model">
+<span class="sig-prename descclassname"><span class="pre">write_model.</span></span><span class="sig-name descname"><span class="pre">antimony_write_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/write_model.html#antimony_write_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#write_model.antimony_write_model" title="Link to this definition">¶</a></dt>
+<dd><p>Generate an Antimony file based on given data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>antimony_model_name</strong> (<em>[</em><em>str</em><em>]</em>) – name for the generated antimony model</p></li>
+<li><p><strong>f_compartments</strong> (<em>[</em><em>str</em><em>]</em>) – compartments &amp; volumes file</p></li>
+<li><p><strong>f_stoichmat</strong> (<em>[</em><em>str</em><em>]</em>) – stoichiometric matrix file</p></li>
+<li><p><strong>f_output_params</strong> (<em>[</em><em>str</em><em>]</em>) – output parameters file</p></li>
+<li><p><strong>f_ratelaws</strong> (<em>[</em><em>str</em><em>]</em>) – ratelaws file</p></li>
+<li><p><strong>f_species</strong> (<em>[</em><em>str</em><em>]</em>) – species file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The file name of the generated Antimony model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Utilities</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="antimony_utils.antimony_init">
 <span class="sig-prename descclassname"><span class="pre">antimony_utils.</span></span><span class="sig-name descname"><span class="pre">antimony_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/antimony_utils.html#antimony_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#antimony_utils.antimony_init" title="Link to this definition">¶</a></dt>
@@ -178,6 +210,13 @@
 
 	    </div>
             <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="generated/antimony_utils.html" class="btn btn-neutral" title="antimony_utils"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

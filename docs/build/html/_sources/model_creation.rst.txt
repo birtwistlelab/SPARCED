@@ -3,8 +3,12 @@ Model Creation
 
 .. autofunction:: create_model.create_model()
 
-antimony_utils
---------------
+Antimony
+---------
+
+.. autofunction:: write_model.antimony_write_model()
+
+Utilities
 
 .. autofunction:: antimony_utils.antimony_init()
 
