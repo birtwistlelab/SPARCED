@@ -6,14 +6,16 @@ import pandas as pd
 import re
 
 def antimony_init(f_cv, f_s):
-    """Load compartments, volumes and species lists from input files
+    """
+    Load compartments, volumes and species from data files
 
-    Args:
-        f_cv: the name of the compartments (and volumes) file as a string
-        f_s: the name of the species file as a string
-
-    Returns:
-        A tuple with the compartments, volumes and species lists.
+    :param f_cv: name of the compartments & volumes file
+    :type f_cv: [str]
+    :param f_s: name of the species file
+    :type f_s: [str]
+    :return: A tuple of the compartments, volumes and species lists
+    :rtype: (list[str],list[str],list[str])
+    
     """
     # Compartments and Volumes
     comp = []

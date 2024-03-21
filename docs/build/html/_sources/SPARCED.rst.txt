@@ -7,4 +7,5 @@ Documentation for SPARCED
 .. autosummary::
     :toctree: generated
 
-    antimony_utils
+	create_model
+	antimony_utils

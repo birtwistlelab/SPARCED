@@ -15,6 +15,29 @@ from antimony_utils import *
 
 
 def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec,verbose):
+    """
+    Generate Antimony and SBML models based on given data
+
+    :param antimony_model_name: name for the generated Antimony model
+    :type antimony_model_name: [str]
+    :param sbml_model_name: name for the generated SBML model
+    :type sbml_model_name: [str]
+    :param f_comp: compartments & volumes file
+    :type f_comp: [str]
+    :param f_stoi: stoichiometric matric file
+    :type f_stoi: [str]
+    :param f_outp: output parameters file
+    :type f_outp: [str]
+    :param f_rate: ratelaws file
+    :param f_rate: [str]
+    :param f_spec: species file
+    :type f_spec: [str]
+    :param verbose: verbose
+    :param verbose: [bool]
+    :return: Nothing
+    :rtype: [void]
+
+    """
     # Create and load Antimony model
     antimony_file_name = antimony_write_model(antimony_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec)
     try:
@@ -23,7 +46,7 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate
         print("SPARCED: Failed to load Antimony file")
         sys.exit(0)
     else:
-        if args.verbose: print("SPARCED: Success loading Antimony file")
+        if verbose: print("SPARCED: Success loading Antimony file")
     # Convert Antimony model into SBML
     sbml_file_name = sbml_model_name + ".xml"
     try:
@@ -32,7 +55,7 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate
         print("SPARCED: Failed to convert Antimony file to SBML")
         sys.exit(0)
     else:
-        if args.verbose: print("SPARCED: Success converting Antimony file to SBML")
+        if verbose: print("SPARCED: Success converting Antimony file to SBML")
     # SBML: Annotation
     # Import SBML file
     sbml_reader = libsbml.SBMLReader()

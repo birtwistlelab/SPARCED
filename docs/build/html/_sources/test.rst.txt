@@ -1,5 +1,0 @@
-Test documentation
-==================
-
-.. autofunction:: lumache.get_random_ingredients
-

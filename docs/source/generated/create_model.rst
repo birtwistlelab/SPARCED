@@ -1,7 +1,7 @@
-﻿lumache
-=======
+﻿create\_model
+=============
 
-.. automodule:: lumache
+.. automodule:: create_model
 
    
    
@@ -13,7 +13,8 @@
 
    .. autosummary::
    
-      get_random_ingredients
+      create_model
+      parse_args
    
    
 
