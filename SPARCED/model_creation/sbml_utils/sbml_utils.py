@@ -1,6 +1,5 @@
-#!/usr/bin/env python
+#/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""SBML Utilities"""
 
 
 def write_compartments_annotations(f, comp):

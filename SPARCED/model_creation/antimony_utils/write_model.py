@@ -23,8 +23,8 @@ def antimony_write_model(antimony_model_name,f_compartments,f_stoichmat,
     :type f_ratelaws: [str]
     :param f_species: species file
     :type f_species: [str]
-    :return: The file name of the generated Antimony model
-    :rtype: [str]
+    :return: The file name of the generated Antimony model + compartments and species
+    :rtype: ([str], list[str], list[str])
     
     """
     antimony_file = antimony_model_name + ".txt"
@@ -51,7 +51,7 @@ def antimony_write_model(antimony_model_name,f_compartments,f_stoichmat,
         # Write other declarations and unit definitions
         antimony_terminal(antimony_model)
         antimony_model.write("\nend")
-    return(antimony_file)
+    return(antimony_file, compartments, species)
 
 
 def parse_args():

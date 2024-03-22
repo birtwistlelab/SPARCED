@@ -10,8 +10,7 @@ import argparse
 import libsbml
 
 from antimony_utils import *
-# from src.copydir import copy_directory
-# from src.sbml_utils import *
+from sbml_utils import *
 
 
 def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec,verbose):
@@ -39,7 +38,7 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate
 
     """
     # Create and load Antimony model
-    antimony_file_name = antimony_write_model(antimony_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec)
+    antimony_file_name, compartments, species = antimony_write_model(antimony_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec)
     try:
         assert not loadFile(antimony_file_name) == -1
     except:
@@ -57,21 +56,11 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate
     else:
         if verbose: print("SPARCED: Success converting Antimony file to SBML")
     # SBML: Annotation
-    # Import SBML file
-    sbml_reader = libsbml.SBMLReader()
-    sbml_doc = sbml_reader.readSBML(sbml_file_name)
-    sbml_model = sbml_doc.getModel()
-    # Set species annotations
-    write_species_annotations(sbml_model, species)
-    # Set compartments annotations
-    # write_compartments_annotations(sbml_model, compartments)
-    # Export the annotated SBML file
-    writer = libsbml.SBMLWriter()
-    writer.writeSBML(sbml_doc, sbml_file_name)
+    sbml_annotate_model(sbml_file_name, species, compartments)
 
     # SBML: Compilation
-    # Import annotated SBML file
-    sys.path.insert(0, os.path.abspath(model_output_dir))
+    # Import
+    sys.path.insert(0, os.path.abspath(sbml_model_name))
     sbml_reader = libsbml.SBMLReader()
     sbml_doc = sbml_reader.readSBML(sbml_file_name)
     sbml_model = sbml_doc.getModel()
@@ -79,7 +68,7 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate
     const_params = [params.getId() for params in sbml_model.getListOfParameters()]
     # Compile
     sbml_importer.sbml2amici(sbml_model_name, model_output_dir, verbose=args.verbose)
-    if args.verbose: print("SPARCED: Sucess compiling the model")
+    if verbose: print("SPARCED: Sucess compiling the model")
 
 
 def parse_args():
