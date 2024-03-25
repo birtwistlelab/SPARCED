@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# This file conducts user defined, condition-specific simulations using SPARCED and returns the results in a dictionary.
+# This file conducts user defined, condition-specific simulations using SPARCED and returns the results as nested NumPy arrays.
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Import required libraries append to path necessary directories
@@ -44,7 +44,6 @@ class SPARCED_ERM:
         self.sbml_file = sbml_file
 
 
-    # def __call__(self, condition: pd.Series, cell: int):
     def __call__(self, condition: pd.Series):
         """
         Isolate the preequilibration condition if included in the measurement table.
@@ -54,14 +53,9 @@ class SPARCED_ERM:
         Returns:
         results_dict: dict: The results dictionary
         """
-        sys.stdout = open(os.devnull, "w") # REMOVE
-
-
-        # iteration_name = condition['conditionId']
+        sys.stdout = open(os.devnull, "w") # REMOVE # IDK, kinda like it...
 
         model_copy = self.model.clone() #ensures the model is reset to its original state inbetween conditions, avoiding carryover. 
-
-        # print(f"Running cell {cell} in condition {iteration_name}")  
 
         # Set the primary concentrations for species in the model to heterogenized values
         if 'heterogenize' in condition and not math.isnan(condition['heterogenize']): # handles int and empty (NaN) cells in the num_cells column
@@ -244,7 +238,6 @@ class SPARCED_ERM:
                     print(f"Setting gene sampling to deterministic")
                 
             if entity == 'num_cells':
-                print('made it to line 246')
                 pass # This is used in sparced_erm, its better this sits outside the for loop
 
             # If the entity is a compartment: change that compartment's value
