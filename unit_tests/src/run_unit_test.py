@@ -25,14 +25,17 @@ wd = os.path.dirname(os.path.abspath(__file__))
 # Create the formatted path to the SPARCED input files
 sparced_root = ('/'.join(wd.split(os.path.sep)[:wd.split(os.path.sep)
                                               .index('SPARCED')+1]))
-sys.path.append(os.path.join(sparced_root, 'unit_tests/src'))
-
+# sys.path.append(os.path.join(sparced_root, 'unit_tests/src'))
+src_dir = os.path.join(sparced_root, 'unit_tests/src')
+sys.path.append(src_dir)
+sys.path.append(os.path.join(src_dir, 'SPARCED'))
 from petab_file_loader import PEtabFileLoader
 from sparced_erm_multiprocessing import SPARCED_ERM
 from observable_calc import ObservableCalculator
+import SPARCED
 
 # copy the SBML model into the PEtab input files directory
-shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), 
+shutil.copy(os.path.join(src_dir, 'SPARCEDo4a_v1.xml'), 
             os.path.join(os.path.dirname(os.getcwd()), 
                          'petab_files/SPARCED.xml'))
 
@@ -58,6 +61,10 @@ if __name__ == "__main__":
     communicator = MPI.COMM_WORLD # Create the MPI communicator
     rank = communicator.Get_rank() # The rank of the current process
     size = communicator.Get_size() # Total number of processes assigned
+
+    shutil.copytree(sparced_root + '/input_files', os.path.join(os.getcwd()), 
+                    dirs_exist_ok=True)
+
 
 # ---------------------------------------------------------------------------#
 class UnitTest:
@@ -128,10 +135,7 @@ class UnitTest:
         communicator.Barrier()
 
         # Load the SBML model
-        model_name = os.path.basename(sbml_file).split('.')[0]
-        sys.path.insert(0, os.path.join(os.getcwd(), model_name))
-        model_module = importlib.import_module(model_name)
-        model = model_module.getModel()
+        model = SPARCED.getModel()
         solver = model.getSolver()
         solver.setMaxSteps = 1e10
 
@@ -201,7 +205,7 @@ class UnitTest:
                 condition['conditionId'] == condition_name][0]) 
 
             # Code can be found @ sparced_erm_multiprocessing.py, line 47
-            xoutS_all, xoutG_all, tout_all = (
+            xoutS_all, tout_all, xoutG_all = (
                                     SPARCED_ERM(
                                                 yaml_file=self.yaml_file, 
                                                 model=model, 
@@ -214,8 +218,10 @@ class UnitTest:
             
             
             results_dict[condition_name][f'cell {cell}']['xoutS'] = xoutS_all
-            results_dict[condition_name][f'cell {cell}']['xoutG'] = xoutG_all
             results_dict[condition_name][f'cell {cell}']['toutS'] = tout_all
+
+            if xoutG_all != []:
+                results_dict[condition_name][f'cell {cell}']['xoutG'] = xoutG_all
         
         if rank > 0:
             results_dict_i = results_dict
@@ -249,12 +255,13 @@ class UnitTest:
                             results_dict[condition][cell]['xoutS'] = (
                                 results_dict_i[condition][cell]['xoutS']
                                 )
-                            results_dict[condition][cell]['xoutG'] = (
-                                results_dict_i[condition][cell]['xoutG']
-                                )
                             results_dict[condition][cell]['toutS'] = (
                                 results_dict_i[condition][cell]['toutS']
                                 )
+                            if 'xoutG' in results_dict_i[condition][cell]:
+                                results_dict[condition][cell]['xoutG'] = (
+                                    results_dict_i[condition][cell]['xoutG']
+                                    )
                 # Create a results directory adjacent to scripts directory
                 yaml_name = os.path.basename(self.yaml_file).split('.')[0]
                 results_directory = os.path.join(

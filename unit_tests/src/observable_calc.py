@@ -60,7 +60,8 @@ class ObservableCalculator:
                     observable_dict[condition][cell][observable_name] = {}
                     observable_dict[condition][cell][observable_name]['xoutS'] = obs
                     observable_dict[condition][cell][observable_name]['toutS'] = self.results_dict[condition][cell]['toutS']
-                    observable_dict[condition][cell][observable_name]['xoutG'] = self.results_dict[condition][cell]['xoutG']
+                    if 'xoutG' in self.results_dict[condition][cell]:
+                        observable_dict[condition][cell][observable_name]['xoutG'] = self.results_dict[condition][cell]['xoutG']
 
         return observable_dict
 

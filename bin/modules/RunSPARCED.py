@@ -16,8 +16,8 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     sbml_reader = libsbml.SBMLReader()
     sbml_doc = sbml_reader.readSBML(sbml_file)
     sbml_model = sbml_doc.getModel()
-    Vc = sbml_model.getCompartment(0).getVolume() # Should be the index for Cytoplasm
-    Vn = sbml_model.getCompartment(2).getVolume() # Should be the index for Nuclues
+    Vc = sbml_model.getCompartment('Cytoplasm').getVolume() 
+    Vn = sbml_model.getCompartment('Nucleus').getVolume()
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
     splist = list(model.getStateIds())
     if len(spdata)==0: # if no initial condition values are supplied, use the input file information

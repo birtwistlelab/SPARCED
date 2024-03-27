@@ -1,5 +1,5 @@
-conditionId	conditionName	k487	k489	damageDSB	flagD	num_cells
-DamageDSB_1	DNA damage perturbation at 1 nM	0	0	1	0	20
-DamageDSB_4	DNA damage perturbation at 4 nM	0	0	4	0	20
-DamageDSB_10	DNA damage perturbation at 10 nM	0	0	10	0	20
-DamageDSB_25	DNA damage perturbation at 25 nM	0	0	25	0	20
+conditionId	conditionName	k487	k489	damageDSB
+DamageDSB_1	DNA damage perturbation at 1 nM	0	0	1
+DamageDSB_4	DNA damage perturbation at 4 nM	0	0	4
+DamageDSB_10	DNA damage perturbation at 10 nM	0	0	10
+DamageDSB_25	DNA damage perturbation at 25 nM	0	0	25

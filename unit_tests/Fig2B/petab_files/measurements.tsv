@@ -1,2 +1,6 @@
 observableId	simulationConditionId	measurement	time
-ERK_iso1	average_sim	0	86400
+MAPK3ac	average_sim		86400
+MAPK3_mRNA	average_sim		86400
+MAPK1ac	average_sim		86400
+MAPK1_mRNA	average_sim		86400
+ERK_total	average_sim		86400
