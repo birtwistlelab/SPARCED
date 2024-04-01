@@ -660,9 +660,9 @@ for i in range(len(obs_names)):
 # The actual compilation step by AMICI, takes a while to complete for large models
 sbml_importer.sbml2amici(model_name,
                          os.path.join(cd,model_output_dir),
-                         verbose=False)
+                         verbose=False,
                         #  observables=observables,
-                        #  constant_parameters=constantParameters)
+                         constant_parameters=constantParameters)
 
 
 # ## The model creation is now complete! Enjoy...
