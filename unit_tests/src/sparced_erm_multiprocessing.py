@@ -26,7 +26,9 @@ from modules.RunSPARCED import RunSPARCED
 # Define the SPARCED_ERM class, all codes are internal-use only
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SPARCED_ERM:
-    def __init__(self, yaml_file: str, model: str, conditions_df: pd.DataFrame, measurement_df: pd.DataFrame, parameters_df: pd.DataFrame, sbml_file: str):
+    def __init__(self, yaml_file: str, model: str, conditions_df: pd.DataFrame,
+                  measurement_df: pd.DataFrame, parameters_df: pd.DataFrame, 
+                  sbml_file: str):
         """This class is designed to simulate the experimental replicate model.
         input:
             yaml_file: str - path to the YAML file
@@ -46,23 +48,35 @@ class SPARCED_ERM:
 
     def __call__(self, condition: pd.Series):
         """
-        Isolate the preequilibration condition if included in the measurement table.
+        Isolate the preequilibration condition if included in the measurement 
+        table.
         conditions_df: pd.DataFrame: The conditions dataframe
         measurement_df: pd.DataFrame: The measurement dataframe
         
         Returns:
         results_dict: dict: The results dictionary
         """
-        sys.stdout = open(os.devnull, "w") # REMOVE # IDK, kinda like it...
 
-        model_copy = self.model.clone() #ensures the model is reset to its original state inbetween conditions, avoiding carryover. 
+        sys.stdout = open(os.devnull, "w") 
 
-        # Set the primary concentrations for species in the model to heterogenized values
-        if 'heterogenize' in condition and not math.isnan(condition['heterogenize']): # handles int and empty (NaN) cells in the num_cells column
+        #ensures the model is reset to its original state inbetween conditions,
+        # avoiding carryover.
+        model_copy = self.model.clone()
+
+        # Set the primary concentrations for species in the model to 
+        #heterogenized values
+        if 'heterogenize' in condition and not math.isnan(
+                                                    condition['heterogenize']
+                                                    ): 
             
-            preinc_xoutS_all = SPARCED_ERM._heterogenization(self, condition['heterogenize'], model_copy)
+            preinc_xoutS_all = (
+                SPARCED_ERM._heterogenize(self, 
+                                          heterogenize=condition['heterogenize'], 
+                                          model=model_copy)
+                                            )
             
-            model_copy.setInitialStates(preinc_xoutS_all) # Set the initial states to the heterogenized values
+            # Set the initial states to the heterogenized values
+            model_copy.setInitialStates(preinc_xoutS_all) 
 
         if 'preequilibrationConditionId' in self.measurement_df.columns:
 
@@ -87,33 +101,55 @@ class SPARCED_ERM:
                                                                                     model=model_copy
                                                                                     )
         
-                # Set the next time frame to simulate
+
         simulation_timeframe = (
                                 self.measurement_df['time'][self.measurement_df['simulationConditionId']\
                                                     .isin(condition)]
-                                                    .max()/3600
+                                                    .max()
                                                         )
 
-        # Set the number of records as the number of unique timepoints
-        erm_model.setTimepoints(np.linspace(0, 30, 2))
-        
-        # RunSPARCED(flagD,th,spdata,genedata,sbml_file,model)
-        xoutS_all, xoutG_all, tout_all = RunSPARCED(
-                                                flagD=flagD,
-                                                    th=simulation_timeframe,
-                                                        spdata=species_initializations,
-                                                            genedata=[],
-                                                                sbml_file=self.sbml_file,
-                                                                    model=erm_model
-                                                                    )
 
+        # set the initial states of species in the model, before running:
+        erm_model.setInitialStates(species_initializations)
+
+        if flagD ==0:
+            # Set the number of records as the number of unique timepoints
+            erm_model.setTimepoints(np.linspace(0, 30, 2))
+
+            # RunSPARCED(flagD,th,spdata,genedata,sbml_file,model)
+            xoutS_all, xoutG_all, tout_all = RunSPARCED(
+                                                    flagD=flagD,
+                                                        th=(simulation_timeframe/3600),
+                                                            spdata=species_initializations,
+                                                                genedata=[],
+                                                                    sbml_file=self.sbml_file,
+                                                                        model=erm_model
+                                                                        )
+
+
+
+        else:
+            #Deterministic simulation (integrated-SBML)
+            import amici
+
+            # Set the number of records as the number of unique timepoints
+            erm_model.setTimepoints(np.linspace(0, simulation_timeframe, 1000))
+
+            solver = erm_model.getSolver()
+            solver.setMaxSteps = 1e10
+
+            rdata_o4a = amici.runAmiciSimulation(erm_model,solver)
+                
+
+            xoutS_all = rdata_o4a['x']
+            tout_all = rdata_o4a['t']
+            xoutG_all = []
 
         sys.stdout = sys.__stdout__ # Re-enables print statements
-        return xoutS_all, xoutG_all, tout_all
-    
+        return xoutS_all, tout_all, xoutG_all
 
 
-    def _heterogenization(self, heterogenize: int, model):
+    def _heterogenize(self, heterogenize: int, model):
         """Simulate the preincubation step.
         yaml_file: str: The path to the PEtab YAML file
         heterogenize: int: The time to heterogenize for

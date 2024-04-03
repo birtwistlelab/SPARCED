@@ -1,11 +1,8 @@
-import os
 import re
-import sys
-import importlib
 import numpy as np
 import pandas as pd
 from typing import Optional
-from petab_file_loader import PEtabFileLoader
+
 
 class ObservableCalculator:
     def __init__(self, yaml_file:str, results_dict: dict, observable_df: pd.DataFrame, measurement_df: pd.DataFrame, model: str):
@@ -37,24 +34,17 @@ class ObservableCalculator:
             for cell in self.results_dict[condition]:
                 observable_dict[condition][cell] = {} # Instantiate the cell dictionary
                 for _, observable in self.observable_df.iterrows():
-                    obs_formula = str(observable['observableFormula'])
-                    try:
+                    observable_formula = str(observable['observableFormula'])
                         # Search the obs formula for species names
-                        species = re.findall(r'\b\w+(?:\.\w+)?\*\w+(?:\.\w+)?\b', obs_formula)
+                        # species = re.findall(r'\b\w+(?:\.\w+)?\*\w+(?:\.\w+)?\b', obs_formula)
+                    species = re.findall(r'\b[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?\b', observable_formula)
+                    for species_i in species:
+                        # Construct the regex pattern to match the species name exactly
+                        pattern = r'\b{}\b'.format(re.escape(species_i))
+        #                 # Replace only the exact matches of the species name in the formula
+                        observable_formula = re.sub(pattern, f'self.results_dict[condition]["{cell}"]["xoutS"][:, species_ids.index("{species_i}")]', observable_formula)
 
-                        for species in species:
-                            # Split the species into its name and compartment
-                            species_name, species_compartment = species.split('*')
-            #                 # Construct the regex pattern to match the species name exactly
-                            pattern = r'\b{}\b'.format(re.escape(species_name))
-            #                 # Replace only the exact matches of the species name in the formula
-                            obs_formula = re.sub(pattern, f'self.results_dict[condition]["{cell}"]["xoutS"][:, species_ids.index("{species_name}")]', obs_formula)
-
-                            #I need to also isolate the parallel gene data saved in xoutG ### JRH keep that in mind
-                    except:
-                        print(f'Error in observable formula: {obs_formula}')
-                        break
-                    obs = eval(obs_formula)
+                    obs = eval(observable_formula)
 
                     observable_name = observable['observableId']
                     observable_dict[condition][cell][observable_name] = {}

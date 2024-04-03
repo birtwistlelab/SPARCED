@@ -13,6 +13,7 @@ import os
 import sys
 import glob
 import shutil
+import petab
 import pickle
 import argparse
 import importlib
@@ -28,11 +29,12 @@ sparced_root = ('/'.join(wd.split(os.path.sep)[:wd.split(os.path.sep)
 # sys.path.append(os.path.join(sparced_root, 'unit_tests/src'))
 src_dir = os.path.join(sparced_root, 'unit_tests/src')
 sys.path.append(src_dir)
-sys.path.append(os.path.join(src_dir, 'SPARCED'))
+sys.path.append(os.path.join(src_dir, 'SPARCEDo4a_v1'))
 from petab_file_loader import PEtabFileLoader
 from sparced_erm_multiprocessing import SPARCED_ERM
 from observable_calc import ObservableCalculator
-import SPARCED
+from visualization_plotting import VisualizationPlotting
+import SPARCEDo4a_v1 as SPARCED
 
 # copy the SBML model into the PEtab input files directory
 shutil.copy(os.path.join(src_dir, 'SPARCEDo4a_v1.xml'), 
@@ -111,13 +113,18 @@ class UnitTest:
                 'conditions_df': petab_files.conditions_df,
                 'measurement_df': petab_files.measurement_df,
                 'observable_df': petab_files.observable_df,
-                'parameters_df': petab_files.parameter_df
+                'parameter_df': petab_files.parameter_df
             }
+
             sbml_file = petab_files_data['sbml_file']
             conditions_df = petab_files_data['conditions_df']
             measurement_df = petab_files_data['measurement_df']
             observable_df = petab_files_data['observable_df']
-            parameters_df = petab_files_data['parameters_df']
+            parameters_df = petab_files_data['parameter_df']
+
+            if 'visualization_df' in petab_files.__dict__:
+                petab_files_data['visualization_df'] = petab_files.visualization_df
+                visualization_df = petab_files_data['visualization_df']
         else:
             petab_files_data = None
 
@@ -129,7 +136,9 @@ class UnitTest:
             conditions_df = petab_files_data['conditions_df']
             measurement_df = petab_files_data['measurement_df']
             observable_df = petab_files_data['observable_df']
-            parameters_df = petab_files_data['parameters_df']
+            parameters_df = petab_files_data['parameter_df']
+            if 'visualization_df' in petab_files_data:
+                visualization_df = petab_files_data['visualization_df']
     
 
         communicator.Barrier()
@@ -317,10 +326,47 @@ class UnitTest:
                         with open(results_path, 'wb') as f:
                             pickle.dump(observables_data, f)
 
+                        if 'visualization_df' in petab_files_data:
+                            print('Generating Unit Test Plot')
+                            fig = VisualizationPlotting(
+                                yaml_file=self.yaml_file, 
+                                results_dict=observables_data, 
+                                visualization_df=visualization_df, 
+                                observable_df=observable_df, 
+                                measurement_df=measurement_df
+                                ).dynamic_plot()
+                        
+                            # save the figure
+                            fig.savefig(
+                                os.path.join(
+                                    results_directory, 
+                                    f"{self.name}.png"
+                                    )
+                                )
+                            
+
                     else:
                         # jd.save(observables_data, results_path)
                         with open(results_path, 'wb') as f:
                             pickle.dump(observables_data, f)
+
+                        if 'visualization_df' in petab_files_data:
+                            print('Generating Unit Test Plot')
+                            fig = VisualizationPlotting(
+                                yaml_file=self.yaml_file, 
+                                results_dict=observables_data, 
+                                visualization_df=visualization_df, 
+                                observable_df=observable_df, 
+                                measurement_df=measurement_df
+                                ).dynamic_plot()
+                        
+                            # save the figure
+                            fig.savefig(
+                                os.path.join(
+                                    results_directory, 
+                                    f"{yaml_name}.png"
+                                    )
+                                )
 # ----------------------------------------------------------------------------#      
 
 
