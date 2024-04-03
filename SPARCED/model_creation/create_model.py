@@ -13,7 +13,8 @@ from antimony_utils import *
 from sbml_utils import *
 
 
-def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec,verbose):
+def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,
+                 f_rate,f_spec,verbose):
     """
     Generate Antimony and SBML models based on given data
 
@@ -67,21 +68,31 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,f_rate
     sbml_importer = amici.SbmlImporter(sbml_file_name)
     const_params = [params.getId() for params in sbml_model.getListOfParameters()]
     # Compile
+    model_output_dir = sbml_model_name
     sbml_importer.sbml2amici(sbml_model_name, model_output_dir, verbose=args.verbose)
     if verbose: print("SPARCED: Sucess compiling the model")
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--antimony',     default="SPARCED",          help="name of the antimony model")
-    parser.add_argument('-b', '--sbml',         default="SPARCED",          help="name of the SBML model")
-    parser.add_argument('-c', '--compartments', default="Compartments.txt", help="name of the compartments' file")
-    parser.add_argument('-i', '--inputdir',     default="./../data/",       help="relative path to input files directory")
-    parser.add_argument('-m', '--stoichmatrix', default="StoicMat.txt",     help="name of the stoichiometric matrix' file")
-    parser.add_argument('-o', '--outputparams', default="ParamsAll.txt",    help="name of the output parameters' file")
-    parser.add_argument('-r', '--ratelaws',     default="Ratelaws.txt",     help="name of the rate laws' file")
-    parser.add_argument('-s', '--species',      default="Species.txt",      help="name of the species' file")
-    parser.add_argument('-v', '--verbose',       action='store_true',       help="display additional details during execution")
+    parser.add_argument('-a', '--antimony',     default="SPARCED",
+                        help="name for the generated antimony model")
+    parser.add_argument('-b', '--sbml',         default="SPARCED",
+                        help="name for the generated SBML model")
+    parser.add_argument('-c', '--compartments', default="Compartments.txt",
+                        help="name of the compartments file")
+    parser.add_argument('-i', '--inputdir',     default="./../data/",
+                        help="relative path to input data files directory")
+    parser.add_argument('-m', '--stoichmatrix', default="StoicMat.txt",
+                        help="name of the stoichiometric matrix file")
+    parser.add_argument('-o', '--outputparams', default="ParamsAll.txt",
+                        help="name of the output parameters file")
+    parser.add_argument('-r', '--ratelaws',     default="Ratelaws.txt",
+                        help="name of the ratelaws file")
+    parser.add_argument('-s', '--species',      default="Species.txt",
+                        help="name of the species file")
+    parser.add_argument('-v', '--verbose',      action='store_true',
+                        help="display additional details during execution")
     return(parser.parse_args())
 
 
