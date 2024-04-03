@@ -6,40 +6,46 @@ import sys
 
 import amici
 from antimony import *
-import argparse
 import libsbml
 
-from antimony_utils import *
-from sbml_utils import *
+from utils import *
 
 
-def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,
-                 f_rate,f_spec,verbose):
+def create_model(antimony_model_name, sbml_model_name, f_compartments,
+                 f_stoichmatrix, output_dir_path, f_output_parameters,
+                 f_ratelaws, f_species, verbose):                                  
+
     """
-    Generate Antimony and SBML models based on given data
+    Generate Antimony, SBML and AMICI models based on given input data
 
-    :param antimony_model_name: name for the generated Antimony model
+    :param antimony_model_name: desired name for the generated Antimony model
     :type antimony_model_name: [str]
-    :param sbml_model_name: name for the generated SBML model
+    :param sbml_model_name: desired name for the generated SBML model
     :type sbml_model_name: [str]
-    :param f_comp: compartments & volumes file
-    :type f_comp: [str]
-    :param f_stoi: stoichiometric matric file
-    :type f_stoi: [str]
-    :param f_outp: output parameters file
-    :type f_outp: [str]
-    :param f_rate: ratelaws file
-    :param f_rate: [str]
-    :param f_spec: species file
-    :type f_spec: [str]
+    :param f_compartments: path to the compartments & volumes file
+    :type f_compartments: [str]
+    :param f_stoichmatrix: path to the stoichiometric matrix file
+    :type f_stoichmatrix: [str]
+    :param f_output_dir_path: path to the desired output directory
+    :type f_output_dir_path: [str]
+    :param f_output_parameters: path to the output parameters file
+    :type f_output_parameters: [str]
+    :param f_ratelaws: path to the ratelaws file
+    :param f_ratelaws: [str]
+    :param f_species: path to the species file
+    :type f_species: [str]
     :param verbose: verbose
     :param verbose: [bool]
-    :return: Nothing
+    :return: Nothing TODO change this
     :rtype: [void]
 
     """
-    # Create and load Antimony model
-    antimony_file_name, compartments, species = antimony_write_model(antimony_model_name,f_comp,f_stoi,f_outp,f_rate,f_spec)
+    # ------------------------------- ANTIMONY --------------------------------
+    # Create and load an Antimony model
+    antimony_file_name, compartments, species = \
+            antimony_write_model(antimony_model_name, output_dir_path,
+                                 f_compartments, f_stoichmatrix,
+                                 f_output_parameters, f_ratelaws, f_species)
     try:
         assert not loadFile(antimony_file_name) == -1
     except:
@@ -47,8 +53,9 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,
         sys.exit(0)
     else:
         if verbose: print("SPARCED: Success loading Antimony file")
-    # Convert Antimony model into SBML
-    sbml_file_name = sbml_model_name + ".xml"
+    # --------------------------------- SBML ----------------------------------
+    # Convert the newly created Antimony model into an SBML model
+    sbml_file_name = output_dir_path + sbml_model_name + ".xml"
     try:
         assert not writeSBMLFile(sbml_file_name, antimony_model_name) == 0
     except:
@@ -56,10 +63,9 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,
         sys.exit(0)
     else:
         if verbose: print("SPARCED: Success converting Antimony file to SBML")
-    # SBML: Annotation
+    # Annotate the SBML model
     sbml_annotate_model(sbml_file_name, species, compartments)
-
-    # SBML: Compilation
+    # --------------------------------- AMICI ---------------------------------
     # Import
     sys.path.insert(0, os.path.abspath(sbml_model_name))
     sbml_reader = libsbml.SBMLReader()
@@ -73,37 +79,15 @@ def create_model(antimony_model_name,sbml_model_name,f_comp,f_stoi,f_outp,
     if verbose: print("SPARCED: Sucess compiling the model")
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--antimony',     default="SPARCED",
-                        help="name for the generated antimony model")
-    parser.add_argument('-b', '--sbml',         default="SPARCED",
-                        help="name for the generated SBML model")
-    parser.add_argument('-c', '--compartments', default="Compartments.txt",
-                        help="name of the compartments file")
-    parser.add_argument('-i', '--inputdir',     default="./../data/",
-                        help="relative path to input data files directory")
-    parser.add_argument('-m', '--stoichmatrix', default="StoicMat.txt",
-                        help="name of the stoichiometric matrix file")
-    parser.add_argument('-o', '--outputparams', default="ParamsAll.txt",
-                        help="name of the output parameters file")
-    parser.add_argument('-r', '--ratelaws',     default="Ratelaws.txt",
-                        help="name of the ratelaws file")
-    parser.add_argument('-s', '--species',      default="Species.txt",
-                        help="name of the species file")
-    parser.add_argument('-v', '--verbose',      action='store_true',
-                        help="display additional details during execution")
-    return(parser.parse_args())
-
-
 if __name__ == '__main__':
     args = parse_args()
-    # Update path to files
+    # Add path of input directory to input files names
     f_compartments = args.inputdir + args.compartments
-    f_stoichmat = args.inputdir + args.stoichmatrix
+    f_stoichmatrix = args.inputdir + args.stoichmatrix
     f_output_params = args.inputdir + args.outputparams
     f_ratelaws = args.inputdir + args.ratelaws
     f_species = args.inputdir + args.species
     # Create model
-    create_model(args.antimony,args.sbml,f_compartments,f_stoichmat,
-                 f_output_params,f_ratelaws,f_species,args.verbose)
+    create_model(args.antimony, args.sbml, f_compartments, f_stoichmatrix,
+                 args.outputdir, f_output_params, f_ratelaws, f_species,
+                 args.verbose)
