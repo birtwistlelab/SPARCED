@@ -8,7 +8,8 @@ import amici
 from antimony import *
 import libsbml
 
-from utils import *
+from model_creation.utils import *
+from model_creation.utils.antimony_scripts.model_writing import antimony_write_model
 
 
 def create_model(antimony_model_name, sbml_model_name, f_compartments,
@@ -17,7 +18,10 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
 
     """
     Generate Antimony, SBML and AMICI models based on given input data
-
+    Run from parent folder (use python -m) ;
+    OR remove prefix "model_creation." from import statements
+    AND update default paths passed as input arguments
+    
     :param antimony_model_name: desired name for the generated Antimony model
     :type antimony_model_name: [str]
     :param sbml_model_name: desired name for the generated SBML model
@@ -78,16 +82,23 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
     sbml_importer.sbml2amici(sbml_model_name, model_output_dir, verbose=args.verbose)
     if verbose: print("SPARCED: Sucess compiling the model")
 
+def launch_model_creation():
+    """
+    Small routine to process parsed arguments and call create_model
+    """
+    args = parse_args()                                                         
+    # Add path of input directory to input files names                          
+    f_compartments = args.inputdir + args.compartments                          
+    f_stoichmatrix = args.inputdir + args.stoichmatrix                          
+    f_output_params = args.inputdir + args.outputparams                         
+    f_ratelaws = args.inputdir + args.ratelaws                                  
+    f_species = args.inputdir + args.species                                    
+    # Create model                                                              
+    create_model(args.antimony, args.sbml, f_compartments, f_stoichmatrix,      
+                 args.outputdir, f_output_params, f_ratelaws, f_species,        
+                 args.verbose)
+
 
 if __name__ == '__main__':
-    args = parse_args()
-    # Add path of input directory to input files names
-    f_compartments = args.inputdir + args.compartments
-    f_stoichmatrix = args.inputdir + args.stoichmatrix
-    f_output_params = args.inputdir + args.outputparams
-    f_ratelaws = args.inputdir + args.ratelaws
-    f_species = args.inputdir + args.species
-    # Create model
-    create_model(args.antimony, args.sbml, f_compartments, f_stoichmatrix,
-                 args.outputdir, f_output_params, f_ratelaws, f_species,
-                 args.verbose)
+    launch_model_creation()
+

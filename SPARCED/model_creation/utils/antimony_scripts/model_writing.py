@@ -46,7 +46,7 @@ def antimony_write_model(antimony_model_name, output_dir_path, f_compartments,
         param_names, param_vals = antimony_write_reactions(antimony_model,
                                                            f_ratelaws,
                                                            f_stoichmatrix,
-                                                           f_output_params)
+                                                           f_output_parameters)
         # Write initial conditions
         antimony_write_init_compartments(antimony_model,compartments,volumes)
         antimony_write_init_species(antimony_model,species)
