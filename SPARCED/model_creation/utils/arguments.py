@@ -19,11 +19,11 @@ def parse_args():
                         help="desired name for the generated SBML model")
     parser.add_argument('-c', '--compartments', default="Compartments.txt",
                         help="name of the compartments file")
-    parser.add_argument('-i', '--inputdir',     default="./../data/core/",
+    parser.add_argument('-i', '--inputdir',     default="./data/core/",
                         help="relative path to the input directory")
     parser.add_argument('-m', '--stoichmatrix', default="StoicMat.txt",
                         help="name of the stoichiometric matrix file")
-    parser.add_argument('-o', '--outputdir',    default="./../models/SPARCED-standard/",
+    parser.add_argument('-o', '--outputdir',    default="./models/SPARCED-standard/",
                         help="relative path to the output directory")
     parser.add_argument('-p', '--outputparams', default="out_Parameters.txt",
                         help="desired name for the output parameters file")

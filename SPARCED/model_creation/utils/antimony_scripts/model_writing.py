@@ -3,8 +3,8 @@
 
 import antimony
 
-from utils.arguments import *
-from utils.antimony_scripts.antimony_utils import *
+from model_creation.utils.arguments import parse_args
+from model_creation.utils.antimony_scripts.antimony_utils import *
 
 
 def antimony_write_model(antimony_model_name, output_dir_path, f_compartments,
