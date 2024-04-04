@@ -44,7 +44,7 @@ def antimony_terminal(f):
     constants = ['Cytoplasm', 'Extracellular', 'Nucleus', 'Mitochondrion']
     for c in constants[:-1]:
         f.write("{name}, ".format(name=c))
-    f.write("{last_name}\n\n".format(last_name=constants[-1]))
+    f.write("{last_name};\n\n".format(last_name=constants[-1]))
     # Unit definitions
     f.write("# Unit definitions:\n")
     f.write("  unit time_unit = second;\n")
@@ -80,7 +80,7 @@ def antimony_write_init_compartments(f, comp, vol):
     Returns:
         None.
     """
-    f.write("# Compartments initialization:\n")
+    f.write("# Compartment initializations:\n")
     for i in range(len(comp)):
         f.write("{name} = {volume:.6e};\n{name} has volume;\n".format(name=comp[i], volume=np.double(vol[i])))
     f.write("\n")
@@ -96,7 +96,7 @@ def antimony_write_init_reactions(f, p_names, p_vals):
     Returns:
         None.
     """
-    f.write("# Reactions' parameters initializations:\n ")
+    f.write("# Parameter initializations:\n ")
     for i, val in enumerate(p_names):
         f.write("{name} = {value:.6e};\n".format(name=val, value=np.double(p_vals[i])))
     f.write("\n")
@@ -111,7 +111,7 @@ def antimony_write_init_species(f, spec):
     Returns:
         None.
     """
-    f.write("# Species initialization:\n")
+    f.write("# Species initializations:\n")
     for i, val in enumerate(spec[1:]): # Skip header
         f.write("{name} = {concentration:.6e};\n".format(name=val[0], concentration=np.double(val[2])))
     f.write("\n")
