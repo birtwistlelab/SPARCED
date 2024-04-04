@@ -1,7 +1,7 @@
-﻿create\_model
-=============
+﻿model\_writing
+==============
 
-.. automodule:: create_model
+.. automodule:: model_writing
 
    
    
@@ -13,7 +13,7 @@
 
    .. autosummary::
    
-      create_model
+      antimony_write_model
    
    
 

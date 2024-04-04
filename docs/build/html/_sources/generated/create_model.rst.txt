@@ -14,7 +14,6 @@
    .. autosummary::
    
       create_model
-      parse_args
    
    
 

@@ -3,10 +3,20 @@ Model Creation
 
 .. autofunction:: create_model.create_model()
 
+Utilities
+=========
+
+General
+-------
+
+.. autofunction:: arguments.parse_args()
+
 Antimony
 ---------
 
-.. autofunction:: write_model.antimony_write_model()
+Model writing
+
+.. autofunction:: model_writing.antimony_write_model()
 
 Utilities
 

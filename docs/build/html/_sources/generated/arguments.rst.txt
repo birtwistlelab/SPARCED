@@ -1,7 +1,7 @@
-﻿create\_model
-=============
+﻿arguments
+=========
 
-.. automodule:: create_model
+.. automodule:: arguments
 
    
    
@@ -13,7 +13,7 @@
 
    .. autosummary::
    
-      create_model
+      parse_args
    
    
 

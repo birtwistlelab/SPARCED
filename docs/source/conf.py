@@ -12,7 +12,9 @@ import sphinx_pdj_theme
 # -- Path setup --------------------------------------------------------------
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 sys.path.insert(0, os.path.abspath('../../SPARCED/model_creation'))
-sys.path.insert(0, os.path.abspath('../../SPARCED/model_creation/antimony_utils'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/model_creation/utils'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/model_creation/utils/antimony_scripts'))
+# sys.path.insert(0, os.path.abspath('../../SPARCED/model_creation/utils/sbml'))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information

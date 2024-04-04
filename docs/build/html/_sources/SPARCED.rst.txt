@@ -8,5 +8,6 @@ Documentation for SPARCED
     :toctree: generated
 
 	create_model
-    write_model
+    arguments
+    model_writing
 	antimony_utils

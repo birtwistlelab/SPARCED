@@ -75,12 +75,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="SPARCED.html">SPARCED</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="generated/create_model.html">create_model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/write_model.html">write_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/arguments.html">arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/model_writing.html">model_writing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/antimony_utils.html">antimony_utils</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Model Creation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#utilities">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general">General</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#antimony">Antimony</a></li>
 </ul>
 </li>
@@ -132,24 +137,25 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="create_model.create_model">
 <span class="sig-prename descclassname"><span class="pre">create_model.</span></span><span class="sig-name descname"><span class="pre">create_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_model.html#create_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_model.create_model" title="Link to this definition">¶</a></dt>
-<dd><p>Generate Antimony and SBML models based on given data</p>
+<dd><p>Generate Antimony, SBML and AMICI models based on given input data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>antimony_model_name</strong> (<em>[</em><em>str</em><em>]</em>) – name for the generated Antimony model</p></li>
-<li><p><strong>sbml_model_name</strong> (<em>[</em><em>str</em><em>]</em>) – name for the generated SBML model</p></li>
-<li><p><strong>f_comp</strong> (<em>[</em><em>str</em><em>]</em>) – compartments &amp; volumes file</p></li>
-<li><p><strong>f_stoi</strong> (<em>[</em><em>str</em><em>]</em>) – stoichiometric matric file</p></li>
-<li><p><strong>f_outp</strong> (<em>[</em><em>str</em><em>]</em>) – output parameters file</p></li>
-<li><p><strong>f_rate</strong> – ratelaws file</p></li>
-<li><p><strong>f_rate</strong> – [str]</p></li>
-<li><p><strong>f_spec</strong> (<em>[</em><em>str</em><em>]</em>) – species file</p></li>
+<li><p><strong>antimony_model_name</strong> (<em>[</em><em>str</em><em>]</em>) – desired name for the generated Antimony model</p></li>
+<li><p><strong>sbml_model_name</strong> (<em>[</em><em>str</em><em>]</em>) – desired name for the generated SBML model</p></li>
+<li><p><strong>f_compartments</strong> (<em>[</em><em>str</em><em>]</em>) – path to the compartments &amp; volumes file</p></li>
+<li><p><strong>f_stoichmatrix</strong> (<em>[</em><em>str</em><em>]</em>) – path to the stoichiometric matrix file</p></li>
+<li><p><strong>f_output_dir_path</strong> (<em>[</em><em>str</em><em>]</em>) – path to the desired output directory</p></li>
+<li><p><strong>f_output_parameters</strong> (<em>[</em><em>str</em><em>]</em>) – path to the output parameters file</p></li>
+<li><p><strong>f_ratelaws</strong> – path to the ratelaws file</p></li>
+<li><p><strong>f_ratelaws</strong> – [str]</p></li>
+<li><p><strong>f_species</strong> (<em>[</em><em>str</em><em>]</em>) – path to the species file</p></li>
 <li><p><strong>verbose</strong> – verbose</p></li>
 <li><p><strong>verbose</strong> – [bool]</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Nothing</p>
+<dd class="field-even"><p>Nothing TODO change this</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>[void]</p>
@@ -157,12 +163,29 @@
 </dl>
 </dd></dl>
 
+</section>
+<section id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">¶</a></h1>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="arguments.parse_args">
+<span class="sig-prename descclassname"><span class="pre">arguments.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/arguments.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arguments.parse_args" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve and parse arguments
+:return: a namespace populated with all the attributes
+:rtype: [Namespace]</p>
+</dd></dl>
+
+</section>
 <section id="antimony">
 <h2>Antimony<a class="headerlink" href="#antimony" title="Link to this heading">¶</a></h2>
+<p>Model writing</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="write_model.antimony_write_model">
-<span class="sig-prename descclassname"><span class="pre">write_model.</span></span><span class="sig-name descname"><span class="pre">antimony_write_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/write_model.html#antimony_write_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#write_model.antimony_write_model" title="Link to this definition">¶</a></dt>
-<dd><p>Generate an Antimony file based on given data</p>
+<dt class="sig sig-object py" id="model_writing.antimony_write_model">
+<span class="sig-prename descclassname"><span class="pre">model_writing.</span></span><span class="sig-name descname"><span class="pre">antimony_write_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model_writing.html#antimony_write_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_writing.antimony_write_model" title="Link to this definition">¶</a></dt>
+<dd><p>Generate an Antimony file based on given data
+Run this function alone using the “python -m” syntax outside the “utils”
+subsubmodule</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -175,10 +198,10 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The file name of the generated Antimony model</p>
+<dd class="field-even"><p>The file name of the generated Antimony model + compartments and species</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[str]</p>
+<dd class="field-odd"><p>([str], list[str], list[str])</p>
 </dd>
 </dl>
 </dd></dl>
