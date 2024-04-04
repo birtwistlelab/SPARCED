@@ -6,10 +6,12 @@ import argparse
 
 def parse_args():
     """
-    Retrieve and parse arguments
+    Retrieve and parse arguments necessary for model creation
     :return: a namespace populated with all the attributes
     :rtype: [Namespace]
+
     """
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--antimony',     default="ant_SPARCED",
                         help="desired name for the generated antimony model")

@@ -143,10 +143,12 @@
 <a class="viewcode-back" href="../model_creation.html#arguments.parse_args">[docs]</a>
 <span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Retrieve and parse arguments</span>
+<span class="sd">    Retrieve and parse arguments necessary for model creation</span>
 <span class="sd">    :return: a namespace populated with all the attributes</span>
 <span class="sd">    :rtype: [Namespace]</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;--antimony&#39;</span><span class="p">,</span>     <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ant_SPARCED&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;desired name for the generated antimony model&quot;</span><span class="p">)</span>

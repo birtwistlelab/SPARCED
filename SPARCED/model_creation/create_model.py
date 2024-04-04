@@ -35,7 +35,7 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
     :param f_species: path to the species file
     :type f_species: [str]
     :param verbose: verbose
-    :param verbose: [bool]
+    :type verbose: [bool]
     :return: Nothing TODO change this
     :rtype: [void]
 
