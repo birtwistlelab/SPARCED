@@ -10,6 +10,7 @@ import libsbml
 
 from model_creation.utils import *
 from model_creation.utils.antimony_scripts.model_writing import antimony_write_model
+from model_creation.utils.sbml_scripts.model_annotation import sbml_annotate_model
 
 
 def create_model(antimony_model_name, sbml_model_name, f_compartments,
@@ -69,6 +70,7 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
         if verbose: print("SPARCED: Success converting Antimony file to SBML")
     # Annotate the SBML model
     sbml_annotate_model(sbml_file_name, species, compartments)
+    sys.exit(2)
     # --------------------------------- AMICI ---------------------------------
     # Import
     sys.path.insert(0, os.path.abspath(sbml_model_name))
@@ -79,6 +81,7 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
     const_params = [params.getId() for params in sbml_model.getListOfParameters()]
     # Compile
     model_output_dir = sbml_model_name
+    # Need to add constant parameters and observable's script here
     sbml_importer.sbml2amici(sbml_model_name, model_output_dir, verbose=args.verbose)
     if verbose: print("SPARCED: Sucess compiling the model")
 

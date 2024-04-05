@@ -3,7 +3,7 @@
 
 import libsbml
 
-import sbml_utils
+from model_creation.utils.sbml_scripts.sbml_utils import *
 
 
 def sbml_annotate_model(sbml_file_name, species, compartments):
@@ -12,7 +12,7 @@ def sbml_annotate_model(sbml_file_name, species, compartments):
     sbml_doc = sbml_reader.readSBML(sbml_file_name)
     sbml_model = sbml_doc.getModel()
     # Set species annotations
-    sbml_utils.write_species_annotations(sbml_model, species)
+    write_species_annotations(sbml_model, species)
     # Set compartment annotations
     # write_compartments_annotations(sbml_model, compartments)
     # Export the annotated SBML file
