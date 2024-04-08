@@ -31,7 +31,7 @@ def antimony_write_model(antimony_model_name, output_dir_path, f_compartments,
     :rtype: ([str], list[str], list[str])
     
     """
-    antimony_file = output_dir_path + antimony_model_name + ".txt"
+    antimony_file = output_dir_path + "ant_" + antimony_model_name + ".txt"
 
     with open(antimony_file,"w") as antimony_model:
         # Write file's header

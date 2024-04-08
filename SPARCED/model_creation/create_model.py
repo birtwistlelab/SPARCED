@@ -60,7 +60,7 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
         if verbose: print("SPARCED: Success loading Antimony file")
     # --------------------------------- SBML ----------------------------------
     # Convert the newly created Antimony model into an SBML model
-    sbml_file_name = output_dir_path + sbml_model_name + ".xml"
+    sbml_file_name = output_dir_path + "sbml_" + sbml_model_name + ".xml"
     try:
         assert not writeSBMLFile(sbml_file_name, antimony_model_name) == 0
     except:

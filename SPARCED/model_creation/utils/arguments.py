@@ -13,9 +13,9 @@ def parse_args():
     """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--antimony',     default="ant_SPARCED",
+    parser.add_argument('-a', '--antimony',     default="SPARCED",
                         help="desired name for the generated antimony model")
-    parser.add_argument('-b', '--sbml',         default="sbml_SPARCED",
+    parser.add_argument('-b', '--sbml',         default="SPARCED",
                         help="desired name for the generated SBML model")
     parser.add_argument('-c', '--compartments', default="Compartments.txt",
                         help="name of the compartments file")
