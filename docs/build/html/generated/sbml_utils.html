@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>model_writing &mdash; SPARCED 00.00.01 documentation</title>
+  <title>sbml_utils &mdash; SPARCED 00.00.01 documentation</title>
   
 
   
@@ -34,6 +34,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 00.00.01 documentation" href="../index.html"/>
+        <link rel="up" title="SPARCED" href="../SPARCED.html"/>
+        <link rel="next" title="Model Creation" href="../model_creation.html"/>
+        <link rel="prev" title="antimony_utils" href="antimony_utils.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -71,17 +74,14 @@
 	
           
           
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="arguments.html">arguments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="antimony_utils.html">antimony_utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sbml_utils.html">sbml_utils</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">sbml_utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../model_creation.html#utilities">Utilities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../model_creation.html#general">General</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model_creation.html#antimony">Antimony</a></li>
@@ -132,13 +132,16 @@
 	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
 	  </dark-mode-toggle>
 	</div>
-  <section id="module-model_writing">
-<span id="model-writing"></span><h1>model_writing<a class="headerlink" href="#module-model_writing" title="Link to this heading">¶</a></h1>
+  <section id="module-sbml_utils">
+<span id="sbml-utils"></span><h1>sbml_utils<a class="headerlink" href="#module-sbml_utils" title="Link to this heading">¶</a></h1>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../model_creation.html#model_writing.antimony_write_model" title="model_writing.antimony_write_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_model</span></code></a>(antimony_model_name, ...)</p></td>
-<td><p>Generate an Antimony file based on given data Run this function alone using the &quot;python -m&quot; syntax outside the &quot;utils&quot; subsubmodule :param antimony_model_name: name for the generated antimony model :type antimony_model_name: [str] :param f_compartments: compartments &amp; volumes file :type f_compartments: [str] :param f_stoichmat: stoichiometric matrix file :type f_stoichmat: [str] :param f_output_params: output parameters file :type f_output_params: [str] :param f_ratelaws: ratelaws file :type f_ratelaws: [str] :param f_species: species file :param is_SPARCED: activate hard-coded behaviors of SPARCED !type is_SPARCED: [bool] :type f_species: [str] :return: The file name of the generated Antimony model + compartments and species :rtype: ([str], list[str], list[str])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_compartments_annotations</span></code>(f, comp)</p></td>
+<td><p>Set compartments annotations using the last column of the compartments input file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_species_annotations</span></code>(f, spec)</p></td>
+<td><p>Set species annotations using the last column of the species input file</p></td>
 </tr>
 </tbody>
 </table>
@@ -147,6 +150,15 @@
 
 	    </div>
             <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../model_creation.html" class="btn btn-neutral float-right" title="Model Creation">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="antimony_utils.html" class="btn btn-neutral" title="antimony_utils"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

@@ -33,7 +33,7 @@ def parse_args():
                         help="name of the species file")
     parser.add_argument('-v', '--verbose',      action='store_true',
                         help="display additional details during execution")
-    parser.add_argument('-w', '--wild'          action='store_true',
+    parser.add_argument('-w', '--wild',         action='store_true',
                         help="running wild (without SPARCED hard-coded values/behaviors")
     return(parser.parse_args())
 

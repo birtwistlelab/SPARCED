@@ -73,7 +73,7 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
              .format(model_name = sbml_model_name))
         sys.exit(0)
     else:
-        if verbose: print("{model_name}: Success converting Antimony file to SBML")
+        if verbose: print("{model_name}: Success converting Antimony file to SBML"
                          .format(model_name = sbml_model_name))
     # Annotate the SBML model
     sbml_annotate_model(sbml_file_name, species, compartments)
@@ -98,7 +98,7 @@ def launch_model_creation():
     """
     args = parse_args()
     # Process arguments
-    is_SPARCED = !args.wild # if it's not wild then it's SPARCED
+    is_SPARCED = not args.wild  # if it's not wild then it's SPARCED
     # Add path of input directory to input files names                          
     f_compartments = args.inputdir + args.compartments                          
     f_stoichmatrix = args.inputdir + args.stoichmatrix                          

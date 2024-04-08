@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>model_writing &mdash; SPARCED 00.00.01 documentation</title>
+  <title>model_annotation &mdash; SPARCED 00.00.01 documentation</title>
   
 
   
@@ -34,6 +34,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 00.00.01 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -73,9 +74,9 @@
           
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="arguments.html">arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="antimony_utils.html">antimony_utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sbml_utils.html">sbml_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/arguments.html">arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/sbml_utils.html">sbml_utils</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
@@ -132,18 +133,33 @@
 	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
 	  </dark-mode-toggle>
 	</div>
-  <section id="module-model_writing">
-<span id="model-writing"></span><h1>model_writing<a class="headerlink" href="#module-model_writing" title="Link to this heading">¶</a></h1>
-<p class="rubric">Functions</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../model_creation.html#model_writing.antimony_write_model" title="model_writing.antimony_write_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_model</span></code></a>(antimony_model_name, ...)</p></td>
-<td><p>Generate an Antimony file based on given data Run this function alone using the &quot;python -m&quot; syntax outside the &quot;utils&quot; subsubmodule :param antimony_model_name: name for the generated antimony model :type antimony_model_name: [str] :param f_compartments: compartments &amp; volumes file :type f_compartments: [str] :param f_stoichmat: stoichiometric matrix file :type f_stoichmat: [str] :param f_output_params: output parameters file :type f_output_params: [str] :param f_ratelaws: ratelaws file :type f_ratelaws: [str] :param f_species: species file :param is_SPARCED: activate hard-coded behaviors of SPARCED !type is_SPARCED: [bool] :type f_species: [str] :return: The file name of the generated Antimony model + compartments and species :rtype: ([str], list[str], list[str])</p></td>
-</tr>
-</tbody>
-</table>
-</section>
+  <h1>Source code for model_annotation</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">libsbml</span>
+
+<span class="kn">from</span> <span class="nn">model_creation.utils.sbml_scripts.sbml_utils</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="sbml_annotate_model">
+<a class="viewcode-back" href="../model_creation.html#model_annotation.sbml_annotate_model">[docs]</a>
+<span class="k">def</span> <span class="nf">sbml_annotate_model</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">compartments</span><span class="p">):</span>
+    <span class="c1"># Import SBML file</span>
+    <span class="n">sbml_reader</span> <span class="o">=</span> <span class="n">libsbml</span><span class="o">.</span><span class="n">SBMLReader</span><span class="p">()</span>
+    <span class="n">sbml_doc</span> <span class="o">=</span> <span class="n">sbml_reader</span><span class="o">.</span><span class="n">readSBML</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">)</span>
+    <span class="n">sbml_model</span> <span class="o">=</span> <span class="n">sbml_doc</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span>
+    <span class="c1"># Set species annotations</span>
+    <span class="n">write_species_annotations</span><span class="p">(</span><span class="n">sbml_model</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
+    <span class="c1"># Set compartment annotations</span>
+    <span class="c1"># TODO: try to fix this function</span>
+    <span class="c1"># write_compartments_annotations(sbml_model, compartments)</span>
+    <span class="c1"># Export the annotated SBML file</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">libsbml</span><span class="o">.</span><span class="n">SBMLWriter</span><span class="p">()</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">writeSBML</span><span class="p">(</span><span class="n">sbml_doc</span><span class="p">,</span> <span class="n">sbml_file_name</span><span class="p">)</span></div>
+
+
+</pre></div>
 
 	    </div>
             <footer>

@@ -8,13 +8,12 @@ from model_creation.utils.antimony_scripts.antimony_utils import *
 
 
 def antimony_write_model(antimony_model_name, output_dir_path, f_compartments,
-                         f_szatoichmatrix, f_output_parameters, f_ratelaws,
+                         f_stoichmatrix, f_output_parameters, f_ratelaws,
                          f_species, is_SPARCED):
     """
     Generate an Antimony file based on given data
     Run this function alone using the "python -m" syntax outside the "utils"
     subsubmodule
-
     :param antimony_model_name: name for the generated antimony model
     :type antimony_model_name: [str]
     :param f_compartments: compartments & volumes file

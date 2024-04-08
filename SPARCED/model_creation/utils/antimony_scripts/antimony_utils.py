@@ -87,8 +87,8 @@ def antimony_write_init_compartments(f, comp, vol):
     f.write("\n")
 
 def antimony_write_init_reactions(f, p_names, p_vals):
-    ""
-    "Write reactions' parameters' initial conditions in the given Antimony file
+    """
+    Write reactions' parameters' initial conditions in the given Antimony file
 
     :param f: the Antimony file to write in as an open (w) file
     :param p_names: the parameters names

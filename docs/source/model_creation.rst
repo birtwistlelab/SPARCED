@@ -26,3 +26,25 @@ Utilities
 
 .. autofunction:: antimony_utils.antimony_write_compartments()
 
+.. autofunction:: antimony_utils.antimony_write_init_compartments()
+
+.. autofunction:: antimony_utils.antimony_write_init_reactions()
+
+.. autofunction:: antimony_utils.antimony_write_init_species()
+
+.. autofunction:: antimony_utils.antimony_write_reactions()
+
+.. autofunction:: antimony_utils.antimony_write_species()
+
+SBML
+----
+
+Model annotation
+
+.. autofunction:: model_annotation.sbml_annotate_model()
+
+Utilities
+
+AMICI
+-----
+

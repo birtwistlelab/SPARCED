@@ -14,6 +14,7 @@
    .. autosummary::
    
       create_model
+      launch_model_creation
    
    
 

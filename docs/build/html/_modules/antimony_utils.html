@@ -74,19 +74,17 @@
           
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../generated/create_model.html">create_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/arguments.html">arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generated/model_writing.html">model_writing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/sbml_utils.html">sbml_utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../model_creation.html#utilities">Utilities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../model_creation.html#general">General</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model_creation.html#antimony">Antimony</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#sbml">SBML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#amici">AMICI</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +182,7 @@
     <span class="n">constants</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Cytoplasm&#39;</span><span class="p">,</span> <span class="s1">&#39;Extracellular&#39;</span><span class="p">,</span> <span class="s1">&#39;Nucleus&#39;</span><span class="p">,</span> <span class="s1">&#39;Mitochondrion&#39;</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">constants</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">, &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="p">))</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{last_name}</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">last_name</span><span class="o">=</span><span class="n">constants</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{last_name}</span><span class="s2">;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">last_name</span><span class="o">=</span><span class="n">constants</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
     <span class="c1"># Unit definitions</span>
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Unit definitions:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  unit time_unit = second;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -213,40 +211,48 @@
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="antimony_write_init_compartments">
+<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_init_compartments">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_init_compartments</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write compartments&#39; initial conditions in the given Antimony file</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        f: the Antimony file to write in as an open (w) file</span>
-<span class="sd">        comp: the compartments&#39; names as a list of strings</span>
-<span class="sd">        vol: the compartments&#39; volumes as a list of numericals</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        None.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write compartments initial conditions in the given Antimony file</span>
+<span class="sd">    </span>
+<span class="sd">    :param f: name of the Antimony file to write in as an open (w) file</span>
+<span class="sd">    :param comp: the compartments names</span>
+<span class="sd">    :type comp: ([str])</span>
+<span class="sd">    :param vol: the compartments volumes</span>
+<span class="sd">    :type vol: ([numericals])</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: [void]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Compartments initialization:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Compartment initializations:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">comp</span><span class="p">)):</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2"> = </span><span class="si">{volume:.6e}</span><span class="s2">;</span><span class="se">\n</span><span class="si">{name}</span><span class="s2"> has volume;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">comp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">volume</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">(</span><span class="n">vol</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 
 <span class="k">def</span> <span class="nf">antimony_write_init_reactions</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">p_names</span><span class="p">,</span> <span class="n">p_vals</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write reactions&#39; parameters&#39; initial conditions in the given Antimony file</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write reactions&#39; parameters&#39; initial conditions in the given Antimony file</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        f: the Antimony file to write in as an open (w) file</span>
-<span class="sd">        p_names: the parameters&#39; names as a list of strings</span>
-<span class="sd">        p_vals: the parameters&#39; values as a list of numericals</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        None.</span>
+<span class="sd">    :param f: the Antimony file to write in as an open (w) file</span>
+<span class="sd">    :param p_names: the parameters names</span>
+<span class="sd">    :type p_names:  ([string])</span>
+<span class="sd">    :param p_vals: the parameters values</span>
+<span class="sd">    :type p_vals: ([numericals])</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: [void]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Reactions&#39; parameters initializations:</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Parameter initializations:</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p_names</span><span class="p">):</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2"> = </span><span class="si">{value:.6e}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">(</span><span class="n">p_vals</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
+<div class="viewcode-block" id="antimony_write_init_species">
+<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_init_species">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_init_species</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write species&#39; initial concentrations in the given Antimony file</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write species&#39; initial concentrations in the given Antimony file</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        f: the Antimony file to write in as an open (w) file</span>
@@ -255,11 +261,14 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Species initialization:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Species initializations:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span> <span class="c1"># Skip header</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2"> = </span><span class="si">{concentration:.6e}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">concentration</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="antimony_write_reactions">
+<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_reactions">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_reactions</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">f_rl</span><span class="p">,</span> <span class="n">f_sm</span><span class="p">,</span> <span class="n">f_outp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write reactions in the given Antimony file</span>
 <span class="sd">    WARNING: This function contains a massive copy/paste from some older code</span>
@@ -357,8 +366,11 @@
     <span class="n">params_all</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">f_outp</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># ========== END OF COPY/PASTE ==========</span>
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">((</span><span class="n">paramnames</span><span class="p">,</span> <span class="n">paramvals</span><span class="p">))</span>
+    <span class="k">return</span><span class="p">((</span><span class="n">paramnames</span><span class="p">,</span> <span class="n">paramvals</span><span class="p">))</span></div>
 
+
+<div class="viewcode-block" id="antimony_write_species">
+<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_species">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_species</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write species&#39; names and compartments in the given Antimony file</span>
 
@@ -371,7 +383,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span> <span class="c1"># Skip header row</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Species </span><span class="si">{name}</span><span class="s2"> in </span><span class="si">{compartment}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">compartment</span><span class="o">=</span><span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 </pre></div>
 
 	    </div>
