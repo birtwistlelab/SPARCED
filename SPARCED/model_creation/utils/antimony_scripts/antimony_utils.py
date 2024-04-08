@@ -70,15 +70,16 @@ def antimony_write_compartments(f, comp):
     f.write("\n\n")
 
 def antimony_write_init_compartments(f, comp, vol):
-    """Write compartments' initial conditions in the given Antimony file
-
-    Args:
-        f: the Antimony file to write in as an open (w) file
-        comp: the compartments' names as a list of strings
-        vol: the compartments' volumes as a list of numericals
-
-    Returns:
-        None.
+    """
+    Write compartments initial conditions in the given Antimony file
+    
+    :param f: name of the Antimony file to write in as an open (w) file
+    :param comp: the compartments names
+    :type comp: ([str])
+    :param vol: the compartments volumes
+    :type vol: ([numericals])
+    :return: None
+    :rtype: [void]
     """
     f.write("# Compartment initializations:\n")
     for i in range(len(comp)):
@@ -86,15 +87,16 @@ def antimony_write_init_compartments(f, comp, vol):
     f.write("\n")
 
 def antimony_write_init_reactions(f, p_names, p_vals):
-    """Write reactions' parameters' initial conditions in the given Antimony file
+    ""
+    "Write reactions' parameters' initial conditions in the given Antimony file
 
-    Args:
-        f: the Antimony file to write in as an open (w) file
-        p_names: the parameters' names as a list of strings
-        p_vals: the parameters' values as a list of numericals
-
-    Returns:
-        None.
+    :param f: the Antimony file to write in as an open (w) file
+    :param p_names: the parameters names
+    :type p_names:  ([string])
+    :param p_vals: the parameters values
+    :type p_vals: ([numericals])
+    :return: None
+    :rtype: [void]
     """
     f.write("# Parameter initializations:\n ")
     for i, val in enumerate(p_names):
@@ -102,7 +104,8 @@ def antimony_write_init_reactions(f, p_names, p_vals):
     f.write("\n")
 
 def antimony_write_init_species(f, spec):
-    """Write species' initial concentrations in the given Antimony file
+    """
+    Write species' initial concentrations in the given Antimony file
 
     Args:
         f: the Antimony file to write in as an open (w) file

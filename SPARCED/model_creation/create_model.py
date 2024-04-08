@@ -15,7 +15,7 @@ from model_creation.utils.sbml_scripts.model_annotation import sbml_annotate_mod
 
 def create_model(antimony_model_name, sbml_model_name, f_compartments,
                  f_stoichmatrix, output_dir_path, f_output_parameters,
-                 f_ratelaws, f_species, verbose):                                  
+                 f_ratelaws, f_species, verbose, is_SPARCED):                                  
 
     """
     Generate Antimony, SBML and AMICI models based on given input data
@@ -41,6 +41,8 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
     :type f_species: [str]
     :param verbose: verbose
     :type verbose: [bool]
+    :param is_SPARCED: activate hard-coded behaviors for SPARCED
+    :type is_SPARCED: [bool]
     :return: Nothing TODO change this
     :rtype: [void]
 
@@ -50,34 +52,39 @@ def create_model(antimony_model_name, sbml_model_name, f_compartments,
     antimony_file_name, compartments, species = \
             antimony_write_model(antimony_model_name, output_dir_path,
                                  f_compartments, f_stoichmatrix,
-                                 f_output_parameters, f_ratelaws, f_species)
+                                 f_output_parameters, f_ratelaws, f_species,
+                                 is_SPARCED)
     try:
         assert not loadFile(antimony_file_name) == -1
     except:
-        print("SPARCED: Failed to load Antimony file")
+        print("{model_name}: Failed to load Antimony file"
+             .format(model_name = antimony_model_name))
         sys.exit(0)
     else:
-        if verbose: print("SPARCED: Success loading Antimony file")
+        if verbose: print("{model_name}: Success loading Antimony file"
+                         .format(model_name = antimony_model_name))
     # --------------------------------- SBML ----------------------------------
     # Convert the newly created Antimony model into an SBML model
     sbml_file_name = output_dir_path + "sbml_" + sbml_model_name + ".xml"
     try:
         assert not writeSBMLFile(sbml_file_name, antimony_model_name) == 0
     except:
-        print("SPARCED: Failed to convert Antimony file to SBML")
+        print("{model_name}: Failed to convert Antimony file to SBML"
+             .format(model_name = sbml_model_name))
         sys.exit(0)
     else:
-        if verbose: print("SPARCED: Success converting Antimony file to SBML")
+        if verbose: print("{model_name}: Success converting Antimony file to SBML")
+                         .format(model_name = sbml_model_name))
     # Annotate the SBML model
     sbml_annotate_model(sbml_file_name, species, compartments)
-    sys.exit(2)
     # --------------------------------- AMICI ---------------------------------
     # Import
-    sys.path.insert(0, os.path.abspath(sbml_model_name))
+    # REMOVE sys.path.insert(0, os.path.abspath(output_dir_path))
     sbml_reader = libsbml.SBMLReader()
     sbml_doc = sbml_reader.readSBML(sbml_file_name)
     sbml_model = sbml_doc.getModel()
     sbml_importer = amici.SbmlImporter(sbml_file_name)
+    # Set all the rate parameters as constant (faster compilation)
     const_params = [params.getId() for params in sbml_model.getListOfParameters()]
     # Compile
     model_output_dir = sbml_model_name
@@ -89,7 +96,9 @@ def launch_model_creation():
     """
     Small routine to process parsed arguments and call create_model
     """
-    args = parse_args()                                                         
+    args = parse_args()
+    # Process arguments
+    is_SPARCED = !args.wild # if it's not wild then it's SPARCED
     # Add path of input directory to input files names                          
     f_compartments = args.inputdir + args.compartments                          
     f_stoichmatrix = args.inputdir + args.stoichmatrix                          
@@ -99,7 +108,7 @@ def launch_model_creation():
     # Create model                                                              
     create_model(args.antimony, args.sbml, f_compartments, f_stoichmatrix,      
                  args.outputdir, f_output_params, f_ratelaws, f_species,        
-                 args.verbose)
+                 args.verbose, is_SPARCED)
 
 
 if __name__ == '__main__':

@@ -8,8 +8,8 @@ from model_creation.utils.antimony_scripts.antimony_utils import *
 
 
 def antimony_write_model(antimony_model_name, output_dir_path, f_compartments,
-                         f_stoichmatrix, f_output_parameters, f_ratelaws,
-                         f_species):
+                         f_szatoichmatrix, f_output_parameters, f_ratelaws,
+                         f_species, is_SPARCED):
     """
     Generate an Antimony file based on given data
     Run this function alone using the "python -m" syntax outside the "utils"
@@ -26,6 +26,8 @@ def antimony_write_model(antimony_model_name, output_dir_path, f_compartments,
     :param f_ratelaws: ratelaws file
     :type f_ratelaws: [str]
     :param f_species: species file
+    :param is_SPARCED: activate hard-coded behaviors of SPARCED
+    !type is_SPARCED: [bool]
     :type f_species: [str]
     :return: The file name of the generated Antimony model + compartments and species
     :rtype: ([str], list[str], list[str])
@@ -35,9 +37,10 @@ def antimony_write_model(antimony_model_name, output_dir_path, f_compartments,
 
     with open(antimony_file,"w") as antimony_model:
         # Write file's header
-        antimony_model.write("# PanCancer Model by Birtwistle Lab\n")
+        if (is_SPARCED):
+            antimony_model.write("# PanCancer Model by Birtwistle Lab\n")
         antimony_model.write("model {antimony}()\n\n"
-                             .format(antimony=antimony_model_name))
+                            .format(antimony=antimony_model_name))
         # Write compartments, species and reactions
         compartments, volumes, species = antimony_init(f_compartments,
                                                        f_species)
