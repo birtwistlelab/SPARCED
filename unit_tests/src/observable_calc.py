@@ -81,8 +81,8 @@ class ObservableCalculator:
 
         # Group by observableId and simulationConditionId
         if 'preequilibrationConditionId' in self.measurement_df.columns:
-            # grouped_data = self.measurement_df[self.measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
-            grouped_data = self.measurement_df.dropna(subset=['preequilibrationConditionId']).groupby(['observableId', 'simulationConditionId'])
+            grouped_data = self.measurement_df[self.measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
+            # grouped_data = self.measurement_df.dropna(subset=['preequilibrationConditionId']).groupby(['observableId', 'simulationConditionId'])
 
         else:
             grouped_data = self.measurement_df.groupby(['observableId', 'simulationConditionId'])
@@ -92,13 +92,14 @@ class ObservableCalculator:
             print('No experimental data to compare to')
             return observable_dict
 
+        # print(grouped_data)
+
         for (observable, condition), condition_data in grouped_data:
-            # print(condition_data)
-            # print(observable, condition)
+            for cell in result_dict[condition]:
+                result_dict[condition][cell][f'experiment {observable}'] = {}
             for i in range(0, self._sum_unique_dict_entries()[condition]):
-                result_dict[condition][f'cell {i}'][observable]['experiment time'] = condition_data['time'].values
-                result_dict[condition][f'cell {i}'][observable]['experiment measurement'] = condition_data['measurement'].values
-                # print(f'Added experimental data for {observable} in condition {condition}')
+                result_dict[condition][f'cell {i}'][f'experiment {observable}']['toutS'] = condition_data['time'].values
+                result_dict[condition][f'cell {i}'][f'experiment {observable}']['xoutS'] = condition_data['measurement'].values
         return result_dict
 
 
@@ -125,7 +126,7 @@ class CellDeathMetrics:
                 dead_simulation = np.array(self.data[condition][cell][self.observable_name]['toutS']\
                                            [self.data[condition][cell][self.observable_name]['xoutS'] > 100.0])
                 if dead_simulation.size > 0:
-                    dead_simulation_times = dead_simulation[0]/3600             
+                    dead_simulation_times = dead_simulation[0]             
                     time_of_death[condition].extend(dead_simulation_times.flatten().tolist())
                 else:
                     time_of_death[condition].append(None)

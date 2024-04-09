@@ -194,17 +194,6 @@ class UnitTest:
 
     # The ranks will iterate through each task, then send results to the root
         start_cell, end_cell = assign_tasks(rank, len(list_of_jobs), size)
-
-        # I need a list of every rank's tasks, but only on root, and excluding root
-        #this is so the later while loop knows how long to recieve results. 
-        if rank == 0:
-            total_nonroot_tasks = []
-            for task in range(1, size):
-                start_cell_i, end_cell_i = assign_tasks(task, len(list_of_jobs), size)
-                total_nonroot_tasks.append(len(range(start_cell_i, end_cell_i)))
-            total_nonroot_tasks = sum(total_nonroot_tasks)
-            print(f'{total_nonroot_tasks} total nonroot tasks')
-
         print(f' Rank {rank} has {end_cell - start_cell} tasks')
         for i in range(start_cell, end_cell):
             condition_name = list_of_jobs[i].split('+')[0]
@@ -213,12 +202,12 @@ class UnitTest:
                 cell = list_of_jobs[i].split('+')[1]
                 results_dict[condition_name][f'cell {cell}'] = {}
 
-        # communicator.Barrier()
         for i in range(start_cell, end_cell):
             print(f'Rank {rank} is working on task {i}') 
             current_task = list_of_jobs[i]
             condition_name = current_task.split('+')[0]
             cell = current_task.split('+')[1]
+
             #without the [0] it retruns list[Series] instead of Series
             condition = ([
                 condition for condition in filtered_conditions if 
@@ -236,36 +225,31 @@ class UnitTest:
                                     .__call__(condition)
                                     )
             
+            
             results_dict[condition_name][f'cell {cell}']['xoutS'] = xoutS_all
             results_dict[condition_name][f'cell {cell}']['toutS'] = tout_all
 
             if xoutG_all != []:
                 results_dict[condition_name][f'cell {cell}']['xoutG'] = xoutG_all
+        
+        if rank > 0:
+            results_dict_i = results_dict
+            communicator.send(results_dict_i, dest=0)
+            print(f'Rank {rank} sent results to root')
 
-            if rank != 0:
-                results_dict_i = results_dict
-                communicator.send(results_dict_i, dest=0, tag=i)
-                print(f'Rank {rank} sent results to root')
+        # if root; receive the results from all other ranks
+        if rank == 0: 
+            if size > 1:
+                unused_ranks = (
+                    size - len(list_of_jobs) if size > len(list_of_jobs) 
+                    else 0
+                    )
+                
+                for i in range(1, size - unused_ranks):
+                    print('Rank 0 is receiving results from rank', i)
+                    results_dict_i = communicator.recv(source=i)
+                    print('Rank 0 received results from rank', i)
 
-        # communicator.Barrier()
-
-                # if root; receive the results from all other ranks
-            if rank == 0: 
-                if size > 1:
-                    unused_ranks = (
-                        size - len(list_of_jobs) if size > len(list_of_jobs) 
-                        else 0
-                        )
-                else:
-                    unused_ranks = 0    
-                    
-                completed_tasks = 0
-                while completed_tasks < total_nonroot_tasks:
-
-                    results_dict_i = communicator.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG)
-                    i = MPI.Status.Get_tag(MPI.Status())
-
-                    # print(f'Rank 0 recieved rank {i} results {results_dict_i.keys()}')
                     cell = list_of_jobs[i].split('_')[1]
 
                     for condition in results_dict_i:
@@ -277,96 +261,88 @@ class UnitTest:
                     
                     for condition in results_dict_i:
                         for cell in results_dict_i[condition]:
-                            if 'xoutS' not in results_dict_i[condition][cell]:
-                                pass
-                            else:
-                                results_dict[condition][cell]['xoutS'] = (
-                                    results_dict_i[condition][cell]['xoutS']
-                                    )
-                                results_dict[condition][cell]['toutS'] = (
-                                    results_dict_i[condition][cell]['toutS']
-                                    )
-                                if 'xoutG' in results_dict_i[condition][cell]:
-                                    results_dict[condition][cell]['xoutG'] = (
-                                        results_dict_i[condition][cell]['xoutG']
-                                        )
-                    print(f'catalogued results from rank {i} results_dict {results_dict.keys()}')
-
-                    completed_tasks += 1
-
-        if rank == 0:                    
-            # Create a results directory adjacent to scripts directory
-            yaml_name = os.path.basename(self.yaml_file).split('.')[0]
-            results_directory = os.path.join(
-                                os.path.dirname(os.getcwd()), 
-                                'results'
+                            results_dict[condition][cell]['xoutS'] = (
+                                results_dict_i[condition][cell]['xoutS']
                                 )
-            
-            if not os.path.exists(results_directory): 
-                os.makedirs(results_directory)
-
-            # Final output is saved in pickle format
-            results_path = os.path.join(
-                            results_directory, 
-                            f"{yaml_name}.pkl"
-                            )
-
-            # This opts out of the observable calculation, saving all 
-            # gene/time/species data
-            if self.observable == 0: 
-                if self.name is not None:
-                    results_path = os.path.join(
-                                    results_directory, 
-                                    f"{self.name}.pkl"
-                                    )
-                    with open(results_path, 'wb') as f:
-                        pickle.dump(results_dict, f)                 
-                else:
-                    with open(results_path, 'wb') as f:
-                        pickle.dump(results_dict, f)
-
-            else: 
-                print("Calculating observable")
-                # Instantiate the observable calculator
-                observable_calc = ObservableCalculator(
-                                        yaml_file=self.yaml_file, 
-                                        results_dict=results_dict, 
-                                        observable_df=observable_df,
-                                        measurement_df=measurement_df,
-                                        model=model
-                                        )
-                # Return the observable data                       
-                observables_data = observable_calc.__call__()
-                # Add the experimental data to the observable dictionary
-                observables_data = (observable_calc
-                                    ._add_experimental_data(
-                    observable_dict=observables_data)
+                            results_dict[condition][cell]['toutS'] = (
+                                results_dict_i[condition][cell]['toutS']
                                 )
-                if self.name is not None:
-                    results_path = (os.path.join(
-                                    results_directory, 
-                                    f"{self.name}.pkl")
+                            if 'xoutG' in results_dict_i[condition][cell]:
+                                results_dict[condition][cell]['xoutG'] = (
+                                    results_dict_i[condition][cell]['xoutG']
                                     )
-                    with open(results_path, 'wb') as f:
-                        pickle.dump(observables_data, f)
+                # Create a results directory adjacent to scripts directory
+                yaml_name = os.path.basename(self.yaml_file).split('.')[0]
+                results_directory = os.path.join(
+                                    os.path.dirname(os.getcwd()), 
+                                    'results'
+                                    )
+                
+                if not os.path.exists(results_directory): 
+                    os.makedirs(results_directory)
 
-                    if 'visualization_df' in petab_files_data:
-                        print('Generating Unit Test Plot')
-                        fig = VisualizationPlotting(
-                            yaml_file=self.yaml_file, 
-                            results_dict=observables_data, 
-                            visualization_df=visualization_df, 
-                            observable_df=observable_df, 
-                            measurement_df=measurement_df
-                            ).dynamic_plot()
-                    
-                        # save the figure
-                        fig.savefig(
-                            os.path.join(
+                # Final output is saved in pickle format
+                results_path = os.path.join(
                                 results_directory, 
-                                f"{self.name}.png"
+                                f"{yaml_name}.pkl"
                                 )
-                            )
+
+                # This opts out of the observable calculation, saving all 
+                # gene/time/species data
+                if self.observable == 0: 
+                    if self.name is not None:
+                        results_path = os.path.join(
+                                        results_directory, 
+                                        f"{self.name}.pkl"
+                                        )
+                        with open(results_path, 'wb') as f:
+                            pickle.dump(results_dict, f)                 
+                    else:
+                        with open(results_path, 'wb') as f:
+                            pickle.dump(results_dict, f)
+
+                else: 
+                    print("Calculating observable")
+                    # Instantiate the observable calculator
+                    observable_calc = ObservableCalculator(
+                                            yaml_file=self.yaml_file, 
+                                            results_dict=results_dict, 
+                                            observable_df=observable_df,
+                                            measurement_df=measurement_df,
+                                            model=model
+                                            )
+                    # Return the observable data                       
+                    observables_data = observable_calc.__call__()
+                    # Add the experimental data to the observable dictionary
+                    observables_data = (observable_calc
+                                        ._add_experimental_data(
+                        observable_dict=observables_data)
+                                    )
+                    if self.name is not None:
+                        results_path = (os.path.join(
+                                        results_directory, 
+                                        f"{self.name}.pkl")
+                                        )
+                        with open(results_path, 'wb') as f:
+                            pickle.dump(observables_data, f)
+
+                        if 'visualization_df' in petab_files_data:
+                            print('Generating Unit Test Plot')
+                            fig = VisualizationPlotting(
+                                yaml_file=self.yaml_file, 
+                                results_dict=observables_data, 
+                                visualization_df=visualization_df, 
+                                observable_df=observable_df, 
+                                measurement_df=measurement_df
+                                ).dynamic_plot()
+                        
+                            # save the figure
+                            fig.savefig(
+                                os.path.join(
+                                    results_directory, 
+                                    f"{self.name}.png"
+                                    )
+                                )
                             
 
                     else:
