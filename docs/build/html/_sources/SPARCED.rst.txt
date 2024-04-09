@@ -11,4 +11,5 @@ Documentation for SPARCED
     arguments
     model_writing
 	antimony_utils
+    model_annotation
     sbml_utils

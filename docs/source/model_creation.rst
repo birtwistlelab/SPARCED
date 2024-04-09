@@ -45,6 +45,10 @@ Model annotation
 
 Utilities
 
+.. autofunction:: sbml_utils.write_compartments_annotations()
+
+.. autofunction:: sbml_utils.write_species_annotations()
+
 AMICI
 -----
 
