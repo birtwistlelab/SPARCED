@@ -26,7 +26,7 @@ def antimony_init(f_cv, f_s):
         vol.append(row[1])
     # Species
     spec = np.array([np.array(line.strip().split("\t")) for line in open(f_s)], dtype="object")
-    return((comp, vol, spec))
+    return((comp, vol, spec, sheet))
 
 def antimony_terminal(f):
     """

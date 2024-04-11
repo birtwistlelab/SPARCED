@@ -47,7 +47,7 @@ def create_model(f_observables, model_name, f_compartments, f_stoichmatrix,
     """
     # ------------------------------- ANTIMONY --------------------------------
     # Create and load an Antimony model
-    antimony_file_name, compartments, species = \
+    antimony_file_name, compartments, species, compartments_full = \
             antimony_write_model(model_name, output_dir_path, f_compartments,
                                  f_stoichmatrix, f_output_parameters,
                                  f_ratelaws, f_species, is_SPARCED)
@@ -72,7 +72,7 @@ def create_model(f_observables, model_name, f_compartments, f_stoichmatrix,
         if verbose: print("{name}: Success converting Antimony file to SBML"
                          .format(name=model_name))
     # Annotate the SBML model
-    sbml_annotate_model(sbml_file_name, species, compartments)
+    sbml_annotate_model(sbml_file_name, species, compartments_full)
     # --------------------------------- AMICI ---------------------------------
     # Import
     sbml_reader = libsbml.SBMLReader()
@@ -83,10 +83,11 @@ def create_model(f_observables, model_name, f_compartments, f_stoichmatrix,
     const_params = [params.getId() \
                     for params in sbml_model.getListOfParameters()]
     # Create Observables
-    # observables = define_observables(f_observables, compartments, species) 
+    # observables = define_observables(f_observables, compartments_full, species) 
     # Compile
     model_output_dir = output_dir_path + "amici_" + model_name
-    # TODO: add observables and constantParameters
+    # TODO: add observables and constant parameters (currently broken also in
+    # the original script actually)
     sbml_importer.sbml2amici(model_name, model_output_dir, verbose=verbose)
     if verbose: print("{name}: Sucess compiling the model"
                      .format(name=model_name))

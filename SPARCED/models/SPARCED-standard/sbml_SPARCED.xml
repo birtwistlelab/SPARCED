@@ -25,10 +25,18 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="Cytoplasm" spatialDimensions="3" size="5.25e-12" units="volume" constant="true"/>
-      <compartment id="Extracellular" spatialDimensions="3" size="5e-05" units="volume" constant="true"/>
-      <compartment id="Nucleus" spatialDimensions="3" size="1.75e-12" units="volume" constant="true"/>
-      <compartment id="Mitochondrion" spatialDimensions="3" size="3.675e-13" units="volume" constant="true"/>
+      <compartment id="Cytoplasm" spatialDimensions="3" size="5.25e-12" units="volume" constant="true">
+        <annotation>GO:0005737</annotation>
+      </compartment>
+      <compartment id="Extracellular" spatialDimensions="3" size="5e-05" units="volume" constant="true">
+        <annotation>GO:0005576</annotation>
+      </compartment>
+      <compartment id="Nucleus" spatialDimensions="3" size="1.75e-12" units="volume" constant="true">
+        <annotation>GO:0005634</annotation>
+      </compartment>
+      <compartment id="Mitochondrion" spatialDimensions="3" size="3.675e-13" units="volume" constant="true">
+        <annotation>GO:0005739</annotation>
+      </compartment>
     </listOfCompartments>
     <listOfSpecies>
       <species id="Ribosome" compartment="Cytoplasm" initialConcentration="1900" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false">

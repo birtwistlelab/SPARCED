@@ -40,8 +40,8 @@ def antimony_write_model(model_name, output_dir_path, f_compartments,
         antimony_model.write("model {antimony}()\n\n"
                             .format(antimony=model_name))
         # Write compartments, species and reactions
-        compartments, volumes, species = antimony_init(f_compartments,
-                                                       f_species)
+        compartments, volumes, species, sheet = antimony_init(f_compartments,
+                                                              f_species)
         antimony_write_compartments(antimony_model,compartments)
         antimony_write_species(antimony_model,species)
         param_names, param_vals = antimony_write_reactions(antimony_model,
@@ -55,8 +55,8 @@ def antimony_write_model(model_name, output_dir_path, f_compartments,
         antimony_write_init_reactions(antimony_model,param_names,param_vals)
         # Write other declarations and unit definitions
         antimony_terminal(antimony_model)
-        antimony_model.write("\nend")
-    return(antimony_file, compartments, species)
+        antimony_model.write("\nend") 
+    return(antimony_file, compartments, species, sheet)
 
 
 if __name__ == '__main__':
