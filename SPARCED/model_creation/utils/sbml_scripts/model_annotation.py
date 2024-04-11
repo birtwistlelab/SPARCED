@@ -14,7 +14,7 @@ def sbml_annotate_model(sbml_file_name, species, compartments):
     # Set species annotations
     write_species_annotations(sbml_model, species)
     # Set compartment annotations
-    # TODO: try to fix this function
+    # TODO: fix this function
     # write_compartments_annotations(sbml_model, compartments)
     # Export the annotated SBML file
     writer = libsbml.SBMLWriter()
