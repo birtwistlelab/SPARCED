@@ -11,8 +11,7 @@ def antimony_write_model(model_name, output_dir_path, f_compartments,
                          f_stoichmatrix, f_output_parameters, f_ratelaws,
                          f_species, is_SPARCED):
     """
-    Generate an Antimony file based on given data
-    
+    Generate an Antimony file based on given data    
     :param model_name: name for the generated antimony model
     :type model_name: [str]
     :param f_compartments: compartments & volumes file

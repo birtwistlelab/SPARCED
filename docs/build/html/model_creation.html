@@ -141,15 +141,12 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="create_model.create_model">
 <span class="sig-prename descclassname"><span class="pre">create_model.</span></span><span class="sig-name descname"><span class="pre">create_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_model.html#create_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_model.create_model" title="Link to this definition">¶</a></dt>
-<dd><p>Generate Antimony, SBML and AMICI models based on given input data
-Run from parent folder (use python -m) ;
-OR remove prefix “model_creation.” from import statements
-AND update default paths passed as input arguments</p>
+<dd><p>Generate Antimony, SBML and AMICI models based on given input data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>antimony_model_name</strong> (<em>[</em><em>str</em><em>]</em>) – desired name for the generated Antimony model</p></li>
-<li><p><strong>sbml_model_name</strong> (<em>[</em><em>str</em><em>]</em>) – desired name for the generated SBML model</p></li>
+<li><p><strong>f_observables</strong> (<em>[</em><em>str</em><em>]</em>) – path to the observables file</p></li>
+<li><p><strong>model_name</strong> (<em>[</em><em>str</em><em>]</em>) – desired name for the generated Antimony, SBML and AMICI models</p></li>
 <li><p><strong>f_compartments</strong> (<em>[</em><em>str</em><em>]</em>) – path to the compartments &amp; volumes file</p></li>
 <li><p><strong>f_stoichmatrix</strong> (<em>[</em><em>str</em><em>]</em>) – path to the stoichiometric matrix file</p></li>
 <li><p><strong>f_output_dir_path</strong> (<em>[</em><em>str</em><em>]</em>) – path to the desired output directory</p></li>
@@ -191,10 +188,8 @@ AND update default paths passed as input arguments</p>
 <dt class="sig sig-object py" id="model_writing.antimony_write_model">
 <span class="sig-prename descclassname"><span class="pre">model_writing.</span></span><span class="sig-name descname"><span class="pre">antimony_write_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model_writing.html#antimony_write_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_writing.antimony_write_model" title="Link to this definition">¶</a></dt>
 <dd><p>Generate an Antimony file based on given data
-Run this function alone using the “python -m” syntax outside the “utils”
-subsubmodule
-:param antimony_model_name: name for the generated antimony model
-:type antimony_model_name: [str]
+:param model_name: name for the generated antimony model
+:type model_name: [str]
 :param f_compartments: compartments &amp; volumes file
 :type f_compartments: [str]
 :param f_stoichmat: stoichiometric matrix file

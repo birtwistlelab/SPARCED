@@ -74,8 +74,11 @@
           
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../generated/create_model.html">create_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/arguments.html">arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/model_writing.html">model_writing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/model_annotation.html">model_annotation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/sbml_utils.html">sbml_utils</a></li>
 </ul>
 </li>
@@ -145,15 +148,13 @@
 
 <div class="viewcode-block" id="antimony_write_model">
 <a class="viewcode-back" href="../model_creation.html#model_writing.antimony_write_model">[docs]</a>
-<span class="k">def</span> <span class="nf">antimony_write_model</span><span class="p">(</span><span class="n">antimony_model_name</span><span class="p">,</span> <span class="n">output_dir_path</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">antimony_write_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">output_dir_path</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">,</span>
                          <span class="n">f_stoichmatrix</span><span class="p">,</span> <span class="n">f_output_parameters</span><span class="p">,</span> <span class="n">f_ratelaws</span><span class="p">,</span>
                          <span class="n">f_species</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate an Antimony file based on given data</span>
-<span class="sd">    Run this function alone using the &quot;python -m&quot; syntax outside the &quot;utils&quot;</span>
-<span class="sd">    subsubmodule</span>
-<span class="sd">    :param antimony_model_name: name for the generated antimony model</span>
-<span class="sd">    :type antimony_model_name: [str]</span>
+<span class="sd">    Generate an Antimony file based on given data    </span>
+<span class="sd">    :param model_name: name for the generated antimony model</span>
+<span class="sd">    :type model_name: [str]</span>
 <span class="sd">    :param f_compartments: compartments &amp; volumes file</span>
 <span class="sd">    :type f_compartments: [str]</span>
 <span class="sd">    :param f_stoichmat: stoichiometric matrix file</span>
@@ -170,17 +171,17 @@
 <span class="sd">    :rtype: ([str], list[str], list[str])</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">antimony_file</span> <span class="o">=</span> <span class="n">output_dir_path</span> <span class="o">+</span> <span class="s2">&quot;ant_&quot;</span> <span class="o">+</span> <span class="n">antimony_model_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+    <span class="n">antimony_file</span> <span class="o">=</span> <span class="n">output_dir_path</span> <span class="o">+</span> <span class="s2">&quot;ant_&quot;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">antimony_file</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">antimony_model</span><span class="p">:</span>
         <span class="c1"># Write file&#39;s header</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">is_SPARCED</span><span class="p">):</span>
             <span class="n">antimony_model</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# PanCancer Model by Birtwistle Lab</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">antimony_model</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;model </span><span class="si">{antimony}</span><span class="s2">()</span><span class="se">\n\n</span><span class="s2">&quot;</span>
-                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">antimony</span><span class="o">=</span><span class="n">antimony_model_name</span><span class="p">))</span>
+                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">antimony</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
         <span class="c1"># Write compartments, species and reactions</span>
-        <span class="n">compartments</span><span class="p">,</span> <span class="n">volumes</span><span class="p">,</span> <span class="n">species</span> <span class="o">=</span> <span class="n">antimony_init</span><span class="p">(</span><span class="n">f_compartments</span><span class="p">,</span>
-                                                       <span class="n">f_species</span><span class="p">)</span>
+        <span class="n">compartments</span><span class="p">,</span> <span class="n">volumes</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">sheet</span> <span class="o">=</span> <span class="n">antimony_init</span><span class="p">(</span><span class="n">f_compartments</span><span class="p">,</span>
+                                                              <span class="n">f_species</span><span class="p">)</span>
         <span class="n">antimony_write_compartments</span><span class="p">(</span><span class="n">antimony_model</span><span class="p">,</span><span class="n">compartments</span><span class="p">)</span>
         <span class="n">antimony_write_species</span><span class="p">(</span><span class="n">antimony_model</span><span class="p">,</span><span class="n">species</span><span class="p">)</span>
         <span class="n">param_names</span><span class="p">,</span> <span class="n">param_vals</span> <span class="o">=</span> <span class="n">antimony_write_reactions</span><span class="p">(</span><span class="n">antimony_model</span><span class="p">,</span>
@@ -194,8 +195,8 @@
         <span class="n">antimony_write_init_reactions</span><span class="p">(</span><span class="n">antimony_model</span><span class="p">,</span><span class="n">param_names</span><span class="p">,</span><span class="n">param_vals</span><span class="p">)</span>
         <span class="c1"># Write other declarations and unit definitions</span>
         <span class="n">antimony_terminal</span><span class="p">(</span><span class="n">antimony_model</span><span class="p">)</span>
-        <span class="n">antimony_model</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">end&quot;</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">antimony_file</span><span class="p">,</span> <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span></div>
+        <span class="n">antimony_model</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">end&quot;</span><span class="p">)</span> 
+    <span class="k">return</span><span class="p">(</span><span class="n">antimony_file</span><span class="p">,</span> <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">sheet</span><span class="p">)</span></div>
 
 
 
@@ -208,7 +209,7 @@
     <span class="n">f_ratelaws</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">ratelaws</span>
     <span class="n">f_species</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">species</span>
     <span class="c1"># Write model</span>
-    <span class="n">antimony_write_model</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">antimony</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">,</span>
+    <span class="n">antimony_write_model</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">,</span>
                          <span class="n">f_stoichmatrix</span><span class="p">,</span> <span class="n">f_output_params</span><span class="p">,</span> <span class="n">f_ratelaws</span><span class="p">,</span> <span class="n">f_species</span><span class="p">)</span>
 </pre></div>
 

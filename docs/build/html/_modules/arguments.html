@@ -74,12 +74,18 @@
           
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../generated/create_model.html">create_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/arguments.html">arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/model_writing.html">model_writing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/model_annotation.html">model_annotation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/sbml_utils.html">sbml_utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../model_creation.html#utilities">Utilities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../model_creation.html#general">General</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model_creation.html#antimony">Antimony</a></li>
@@ -148,16 +154,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;--antimony&#39;</span><span class="p">,</span>     <span class="n">default</span><span class="o">=</span><span class="s2">&quot;SPARCED&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;desired name for the generated antimony model&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="s1">&#39;--sbml&#39;</span><span class="p">,</span>         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;SPARCED&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;desired name for the generated SBML and AMICI models&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="s1">&#39;--observables&#39;</span><span class="p">,</span>  <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Observables.txt&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;name of the observables file&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--compartments&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Compartments.txt&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;name of the compartments file&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;--inputdir&#39;</span><span class="p">,</span>     <span class="n">default</span><span class="o">=</span><span class="s2">&quot;./data/core/&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;relative path to the input directory&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;--stoichmatrix&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;StoicMat.txt&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;name of the stoichiometric matrix file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="s1">&#39;--name&#39;</span><span class="p">,</span>         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;SPARCED&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;desired name for the generated antimony, SBML and AMICI models&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--outputdir&#39;</span><span class="p">,</span>    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;./models/SPARCED-standard/&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;relative path to the output directory&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--outputparams&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;out_Parameters.txt&quot;</span><span class="p">,</span>

@@ -74,8 +74,11 @@
           
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../generated/create_model.html">create_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/arguments.html">arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/model_writing.html">model_writing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/model_annotation.html">model_annotation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/sbml_utils.html">sbml_utils</a></li>
 </ul>
 </li>
@@ -152,8 +155,7 @@
     <span class="c1"># Set species annotations</span>
     <span class="n">write_species_annotations</span><span class="p">(</span><span class="n">sbml_model</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
     <span class="c1"># Set compartment annotations</span>
-    <span class="c1"># TODO: try to fix this function</span>
-    <span class="c1"># write_compartments_annotations(sbml_model, compartments)</span>
+    <span class="n">write_compartments_annotations</span><span class="p">(</span><span class="n">sbml_model</span><span class="p">,</span> <span class="n">compartments</span><span class="p">)</span>
     <span class="c1"># Export the annotated SBML file</span>
     <span class="n">writer</span> <span class="o">=</span> <span class="n">libsbml</span><span class="o">.</span><span class="n">SBMLWriter</span><span class="p">()</span>
     <span class="n">writer</span><span class="o">.</span><span class="n">writeSBML</span><span class="p">(</span><span class="n">sbml_doc</span><span class="p">,</span> <span class="n">sbml_file_name</span><span class="p">)</span></div>
