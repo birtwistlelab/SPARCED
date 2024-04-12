@@ -8,6 +8,7 @@ Contents Table
    about
    installation
    tutorials/summary
+   papers/summary
    reference/summary
    license
 
