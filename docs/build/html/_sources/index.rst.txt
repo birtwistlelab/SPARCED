@@ -8,7 +8,7 @@ Welcome to SPARCED's documentation!
 
 .. toctree::
    SPARCED
-   model_creation
+   compilation
 
 .. toctree::
     :maxdepth: 4

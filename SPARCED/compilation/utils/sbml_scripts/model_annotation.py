@@ -3,7 +3,7 @@
 
 import libsbml
 
-from model_creation.utils.sbml_scripts.sbml_utils import *
+from compilation.utils.sbml_scripts.sbml_utils import *
 
 
 def sbml_annotate_model(sbml_file_name, species, compartments):

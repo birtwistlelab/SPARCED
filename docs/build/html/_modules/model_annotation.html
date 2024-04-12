@@ -74,23 +74,20 @@
           
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../generated/create_model.html">create_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/arguments.html">arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generated/model_writing.html">model_writing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generated/model_annotation.html">model_annotation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/sbml_utils.html">sbml_utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compilation.html">Model Creation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html#utilities">Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#general">General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#antimony">Antimony</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#sbml">SBML</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#amici">AMICI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compilation.html#utilities">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#antimony">Antimony</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#sbml">SBML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#amici">AMICI</a></li>
 </ul>
 </li>
 </ul>
@@ -142,11 +139,11 @@
 
 <span class="kn">import</span> <span class="nn">libsbml</span>
 
-<span class="kn">from</span> <span class="nn">model_creation.utils.sbml_scripts.sbml_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">compilation.utils.sbml_scripts.sbml_utils</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <div class="viewcode-block" id="sbml_annotate_model">
-<a class="viewcode-back" href="../model_creation.html#model_annotation.sbml_annotate_model">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#model_annotation.sbml_annotate_model">[docs]</a>
 <span class="k">def</span> <span class="nf">sbml_annotate_model</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">compartments</span><span class="p">):</span>
     <span class="c1"># Import SBML file</span>
     <span class="n">sbml_reader</span> <span class="o">=</span> <span class="n">libsbml</span><span class="o">.</span><span class="n">SBMLReader</span><span class="p">()</span>

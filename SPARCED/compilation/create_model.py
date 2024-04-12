@@ -8,10 +8,10 @@ import amici
 from antimony import *
 import libsbml
 
-from model_creation.utils import *
-from model_creation.utils.amici_scripts.amici_utils import define_observables
-from model_creation.utils.antimony_scripts.model_writing import antimony_write_model
-from model_creation.utils.sbml_scripts.model_annotation import sbml_annotate_model
+from compilation.utils import *
+from compilation.utils.amici_scripts.amici_utils import define_observables
+from compilation.utils.antimony_scripts.model_writing import antimony_write_model
+from compilation.utils.sbml_scripts.model_annotation import sbml_annotate_model
 
 
 def create_model(f_observables, model_name, f_compartments, f_stoichmatrix,

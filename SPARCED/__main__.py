@@ -4,8 +4,8 @@
 # This script is an example of how to build and run the SPARCED model.
 
 # Model creation
-from model_creation.utils import *
-from model_creation.create_model import *
+from compilation.utils import *
+from compilation.create_model import *
 
 
 # First step is to build the model.

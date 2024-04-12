@@ -74,23 +74,17 @@
           
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../generated/create_model.html">create_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/arguments.html">arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generated/model_writing.html">model_writing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generated/model_annotation.html">model_annotation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/sbml_utils.html">sbml_utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html#utilities">Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#general">General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#antimony">Antimony</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#sbml">SBML</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#amici">AMICI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compilation.html">Model Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compilation.html#utilities">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#antimony">Antimony</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#sbml">SBML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#amici">AMICI</a></li>
 </ul>
 </li>
 </ul>
@@ -145,7 +139,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 
 <div class="viewcode-block" id="antimony_init">
-<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_init">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#antimony_utils.antimony_init">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_init</span><span class="p">(</span><span class="n">f_cv</span><span class="p">,</span> <span class="n">f_s</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load compartments, volumes and species from data files</span>
@@ -171,7 +165,7 @@
 
 
 <div class="viewcode-block" id="antimony_terminal">
-<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_terminal">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#antimony_utils.antimony_terminal">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_terminal</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write constant variables and unit definitions in a given Antimony file</span>
@@ -198,7 +192,7 @@
 
 
 <div class="viewcode-block" id="antimony_write_compartments">
-<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_compartments">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#antimony_utils.antimony_write_compartments">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_compartments</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">comp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write compartments names in a given Antimony file</span>
@@ -218,7 +212,7 @@
 
 
 <div class="viewcode-block" id="antimony_write_init_compartments">
-<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_init_compartments">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#antimony_utils.antimony_write_init_compartments">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_init_compartments</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write compartments initial conditions in the given Antimony file</span>
@@ -238,7 +232,7 @@
 
 
 <div class="viewcode-block" id="antimony_write_init_reactions">
-<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_init_reactions">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#antimony_utils.antimony_write_init_reactions">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_init_reactions</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">p_names</span><span class="p">,</span> <span class="n">p_vals</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write reactions&#39; parameters&#39; initial conditions in the given Antimony file</span>
@@ -258,7 +252,7 @@
 
 
 <div class="viewcode-block" id="antimony_write_init_species">
-<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_init_species">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#antimony_utils.antimony_write_init_species">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_init_species</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write species&#39; initial concentrations in the given Antimony file</span>
@@ -277,7 +271,7 @@
 
 
 <div class="viewcode-block" id="antimony_write_reactions">
-<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_reactions">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#antimony_utils.antimony_write_reactions">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_reactions</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">f_rl</span><span class="p">,</span> <span class="n">f_sm</span><span class="p">,</span> <span class="n">f_outp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write reactions in the given Antimony file</span>
 <span class="sd">    WARNING: This function contains a massive copy/paste from some older code</span>
@@ -379,7 +373,7 @@
 
 
 <div class="viewcode-block" id="antimony_write_species">
-<a class="viewcode-back" href="../model_creation.html#antimony_utils.antimony_write_species">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#antimony_utils.antimony_write_species">[docs]</a>
 <span class="k">def</span> <span class="nf">antimony_write_species</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write species&#39; names and compartments in the given Antimony file</span>
 

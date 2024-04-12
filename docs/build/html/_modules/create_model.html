@@ -74,23 +74,20 @@
           
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../SPARCED.html">SPARCED</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../generated/create_model.html">create_model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/arguments.html">arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generated/model_writing.html">model_writing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/antimony_utils.html">antimony_utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generated/model_annotation.html">model_annotation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generated/sbml_utils.html">sbml_utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html">Model Creation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compilation.html">Model Creation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#create_model.create_model"><code class="docutils literal notranslate"><span class="pre">create_model()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../model_creation.html#utilities">Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#general">General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#antimony">Antimony</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#sbml">SBML</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_creation.html#amici">AMICI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compilation.html#utilities">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#antimony">Antimony</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#sbml">SBML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compilation.html#amici">AMICI</a></li>
 </ul>
 </li>
 </ul>
@@ -147,14 +144,14 @@
 <span class="kn">from</span> <span class="nn">antimony</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">libsbml</span>
 
-<span class="kn">from</span> <span class="nn">model_creation.utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">model_creation.utils.amici_scripts.amici_utils</span> <span class="kn">import</span> <span class="n">define_observables</span>
-<span class="kn">from</span> <span class="nn">model_creation.utils.antimony_scripts.model_writing</span> <span class="kn">import</span> <span class="n">antimony_write_model</span>
-<span class="kn">from</span> <span class="nn">model_creation.utils.sbml_scripts.model_annotation</span> <span class="kn">import</span> <span class="n">sbml_annotate_model</span>
+<span class="kn">from</span> <span class="nn">compilation.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">compilation.utils.amici_scripts.amici_utils</span> <span class="kn">import</span> <span class="n">define_observables</span>
+<span class="kn">from</span> <span class="nn">compilation.utils.antimony_scripts.model_writing</span> <span class="kn">import</span> <span class="n">antimony_write_model</span>
+<span class="kn">from</span> <span class="nn">compilation.utils.sbml_scripts.model_annotation</span> <span class="kn">import</span> <span class="n">sbml_annotate_model</span>
 
 
 <div class="viewcode-block" id="create_model">
-<a class="viewcode-back" href="../model_creation.html#create_model.create_model">[docs]</a>
+<a class="viewcode-back" href="../compilation.html#create_model.create_model">[docs]</a>
 <span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span><span class="n">f_observables</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">,</span> <span class="n">f_stoichmatrix</span><span class="p">,</span>
                  <span class="n">output_dir_path</span><span class="p">,</span> <span class="n">f_output_parameters</span><span class="p">,</span> <span class="n">f_ratelaws</span><span class="p">,</span> <span class="n">f_species</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">):</span>
