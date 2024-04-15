@@ -6,7 +6,7 @@ Contents Table
    :glob:
 
    about
-   installation
+   installation-guide
    tutorials/summary
    papers/summary
    reference/summary

@@ -30,12 +30,17 @@ release = '00.00.01'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'myst_parser',              # Use markdown in documentation
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode'
 ]
 autosummary_generate = True
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md' : 'markdown'
+}
 
 templates_path = ['_templates']
 exclude_patterns = []
