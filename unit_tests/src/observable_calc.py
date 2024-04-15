@@ -161,11 +161,15 @@ class CellDeathMetrics:
 
         return dead_cells
     
-    def alive_ratio(self):
+    def alive_ratio(self, percent:Optional[bool] = False):
         """Returns the ratio of alive cells, should be proceeded by collect_the_dead function
         
         output: dictionary containing the ratio of alive cells for each condition"""
 
         death_ratio = self.death_ratio()
-        alive_ratio = [(1 - x)*100 for x in death_ratio.values()]
-        return alive_ratio
+        if percent == True:
+            alive_ratio = [(1 - x)*100 for x in death_ratio.values()]
+        else:
+            alive_ratio = [(1 - x) for x in death_ratio.values()]
+        # alive_ratio = [(1 - x)*100 for x in death_ratio.values()]
+        return alive_ratio 

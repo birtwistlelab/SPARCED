@@ -29,8 +29,7 @@ def create_directories(name, custom_input_files: Optional[int] = None):
         os.mkdir('scripts')
 
     # Copy create and run model files into the new directory
-    shutil.copy(cd + '/src/runModel_unitTest.py', os.path.join(os.getcwd(), 'scripts/runModel_unitTest.py'))
-    shutil.copy(cd + '/src/createModel_unitTest.py', os.path.join(os.getcwd(), 'scripts/createModel_unitTest.py'))
+    shutil.copy(cd + '/src/run_unit_test.py', os.path.join(os.getcwd(), 'scripts/run_unit_test.py'))
     
     #If user defines preference Copy 'input_files' directory and its contents into the new directory
     if custom_input_files == 1:
@@ -40,7 +39,7 @@ def create_directories(name, custom_input_files: Optional[int] = None):
     os.makedirs(os.path.join(os.getcwd(), 'petab_files'))
 
     # Create 4 files ('file1.txt' through 'file4.txt') within 'petab_files' directory
-    petab_file_names = ['conditions', 'observables', 'parameters', 'measurements']
+    petab_file_names = ['conditions', 'observables', 'parameters', 'measurements', 'model_specifications', 'visualization']
     for file in petab_file_names:
         filename = f'{file}.tsv'
         filepath = os.path.join(name, 'petab_files', filename)
@@ -62,17 +61,12 @@ def create_directories(name, custom_input_files: Optional[int] = None):
         - observables.tsv
       sbml_files:
         - SPARCED.xml
+      model_specifications:
+        - model_specifications.tsv
+      visualization_files:
+        - visualization.tsv
     """)
         
 
-# if __name__ == "__main__":
-#     # Set up command-line argument parser
-#     parser = argparse.ArgumentParser(description="Create directories and files.")
-#     parser.add_argument("--name", required=True, help="Name of the new directory")
-
-#     # Parse command-line arguments
-#     args = parser.parse_args()
-
-#     # Call the function to perform the specified tasks
 create_directories(args.name, args.custom_input_files)
 

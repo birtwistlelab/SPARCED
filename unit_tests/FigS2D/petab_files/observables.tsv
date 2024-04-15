@@ -1,2 +1,2 @@
 observableId	observableFormula	noiseFormula
-Ribosome_total	Ribosome*1.0	1
+Ribosome_total	Ribosome / (1.0E9/(5.25E-12 * 6.023E+23))	1

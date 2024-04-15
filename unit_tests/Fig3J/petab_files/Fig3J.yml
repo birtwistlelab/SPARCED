@@ -10,6 +10,6 @@ problems:
     observable_files:
     - observables.tsv
     sbml_files:
-    - SPARCED.xml
+    - SPARCEDo4a_v1.xml
 
     

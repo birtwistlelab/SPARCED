@@ -215,27 +215,23 @@ class RunUnitTest:
             if xoutG != []:
                 rank_results['xoutG'] = xoutG
 
-
+            print(f'Rank {rank} sending')
            
             rank_results['xoutS'], rank_results['toutS'] = utm._results_size_checker(
                                                                 rank_results['xoutS'], 
                                                                 rank_results['toutS']
                                                                                     )
             
-
+            communicator.isend(rank_results, dest=0, tag=round_i)
+            # request.wait()
+            print(f'Rank {rank} sent')
             if rank == 0:
-                results[condition_id][f'cell {cell}']['xoutS'] = rank_results['xoutS']
-                results[condition_id][f'cell {cell}']['toutS'] = rank_results['toutS']
-                if xoutG != []:
-                    results[condition_id][f'cell {cell}']['xoutG'] = rank_results['xoutG']
-                    print('rank 0 catalogued')
-
-                tasks_this_round = utm._tasks_this_round(size, total_jobs, round_i) - 1
-                print(f'tasks this round: {tasks_this_round + 1}')
+                tasks_this_round = utm._tasks_this_round(size, total_jobs, round_i)
+                print(f'tasks this round: {tasks_this_round}')
                 completed_tasks = 0
                 while completed_tasks < tasks_this_round:
                     print('receiving')
-                    rank_results = communicator.recv(source=MPI.ANY_SOURCE, tag = MPI.ANY_TAG)
+                    rank_results = communicator.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG)
                     print(f'received results')
                     condition_id = rank_results['condition_name']
                     cell = rank_results['cell']
@@ -246,15 +242,9 @@ class RunUnitTest:
                     completed_tasks += 1
                     print(f'completed tasks: {completed_tasks}')
                     if completed_tasks == tasks_this_round:
-                        print('breaking')
                         break
-            
-            else:
-                print(f'Rank {rank} sending')
-                communicator.send(rank_results, dest=0, tag=round_i)
-                print(f'Rank {rank} sent')
 
-            # communicator.Barrier()
+            communicator.Barrier()
 
         #------------------------Observable Calculation-----------------------#
         if rank == 0:

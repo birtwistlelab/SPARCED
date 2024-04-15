@@ -3,11 +3,15 @@ parameter_file: parameters.tsv
 problems: 
   - condition_files: 
     - conditions.tsv
+    model_specification_files:
+    - model_specifications.tsv
     measurement_files:
     - measurements.tsv
     observable_files:
     - observables.tsv
     sbml_files:
-    - SPARCED.xml
+    - SPARCEDo4a_v1.xml
+    visualization_files:
+    - visualizations.tsv
 
     

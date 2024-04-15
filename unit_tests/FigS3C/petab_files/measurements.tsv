@@ -1,99 +1,99 @@
 observableId	simulationConditionId	measurement	time
-ppERK_total	EGF_0.001	0	10800
-ppERK_total	EGF_0.01	0	10800
-ppERK_total	EGF_0.1	0	10800
-ppERK_total	EGF_1	0	10800
-ppERK_total	EGF_10	0	10800
-ppERK_total	EGF_100	0	10800
-ppERK_total	EGF_1000	0	10800
-ppERK_total	H_0.001	0	10800
-ppERK_total	H_0.01	0	10800
-ppERK_total	H_0.1	0	10800
-ppERK_total	H_1	0	10800
-ppERK_total	H_10	0	10800
-ppERK_total	H_100	0	10800
-ppERK_total	H_1000	0	10800
-ppERK_total	HGF_0.001	0	10800
-ppERK_total	HGF_0.01	0	10800
-ppERK_total	HGF_0.1	0	10800
-ppERK_total	HGF_1	0	10800
-ppERK_total	HGF_10	0	10800
-ppERK_total	HGF_100	0	10800
-ppERK_total	HGF_1000	0	10800
-ppERK_total	P_0.001	0	10800
-ppERK_total	P_0.01	0	10800
-ppERK_total	P_0.1	0	10800
-ppERK_total	P_1	0	10800
-ppERK_total	P_10	0	10800
-ppERK_total	P_100	0	10800
-ppERK_total	P_1000	0	10800
-ppERK_total	F_0.001	0	10800
-ppERK_total	F_0.01	0	10800
-ppERK_total	F_0.1	0	10800
-ppERK_total	F_1	0	10800
-ppERK_total	F_10	0	10800
-ppERK_total	F_100	0	10800
-ppERK_total	F_1000	0	10800
-ppERK_total	I_0.001	0	10800
-ppERK_total	I_0.01	0	10800
-ppERK_total	I_0.1	0	10800
-ppERK_total	I_1	0	10800
-ppERK_total	I_10	0	10800
-ppERK_total	I_100	0	10800
-ppERK_total	I_1000	0	10800
-ppERK_total	INS_0.001	0	10800
-ppERK_total	INS_0.01	0	10800
-ppERK_total	INS_0.1	0	10800
-ppERK_total	INS_1	0	10800
-ppERK_total	INS_10	0	10800
-ppERK_total	INS_100	0	10800
-ppERK_total	INS_1000	0	10800
-ppAKT_total	EGF_0.001	0	10800
-ppAKT_total	EGF_0.01	0	10800
-ppAKT_total	EGF_0.1	0	10800
-ppAKT_total	EGF_1	0	10800
-ppAKT_total	EGF_10	0	10800
-ppAKT_total	EGF_100	0	10800
-ppAKT_total	EGF_1000	0	10800
-ppAKT_total	H_0.001	0	10800
-ppAKT_total	H_0.01	0	10800
-ppAKT_total	H_0.1	0	10800
-ppAKT_total	H_1	0	10800
-ppAKT_total	H_10	0	10800
-ppAKT_total	H_100	0	10800
-ppAKT_total	H_1000	0	10800
-ppAKT_total	HGF_0.001	0	10800
-ppAKT_total	HGF_0.01	0	10800
-ppAKT_total	HGF_0.1	0	10800
-ppAKT_total	HGF_1	0	10800
-ppAKT_total	HGF_10	0	10800
-ppAKT_total	HGF_100	0	10800
-ppAKT_total	HGF_1000	0	10800
-ppAKT_total	P_0.001	0	10800
-ppAKT_total	P_0.01	0	10800
-ppAKT_total	P_0.1	0	10800
-ppAKT_total	P_1	0	10800
-ppAKT_total	P_10	0	10800
-ppAKT_total	P_100	0	10800
-ppAKT_total	P_1000	0	10800
-ppAKT_total	F_0.001	0	10800
-ppAKT_total	F_0.01	0	10800
-ppAKT_total	F_0.1	0	10800
-ppAKT_total	F_1	0	10800
-ppAKT_total	F_10	0	10800
-ppAKT_total	F_100	0	10800
-ppAKT_total	F_1000	0	10800
-ppAKT_total	I_0.001	0	10800
-ppAKT_total	I_0.01	0	10800
-ppAKT_total	I_0.1	0	10800
-ppAKT_total	I_1	0	10800
-ppAKT_total	I_10	0	10800
-ppAKT_total	I_100	0	10800
-ppAKT_total	I_1000	0	10800
-ppAKT_total	INS_0.001	0	10800
-ppAKT_total	INS_0.01	0	10800
-ppAKT_total	INS_0.1	0	10800
-ppAKT_total	INS_1	0	10800
-ppAKT_total	INS_10	0	10800
-ppAKT_total	INS_100	0	10800
-ppAKT_total	INS_1000	0	10800
+ppERK_total	EGF_0.001		10800
+ppERK_total	EGF_0.01		10800
+ppERK_total	EGF_0.1		10800
+ppERK_total	EGF_1		10800
+ppERK_total	EGF_10		10800
+ppERK_total	EGF_100		10800
+ppERK_total	EGF_1000		10800
+ppERK_total	H_0.001		10800
+ppERK_total	H_0.01		10800
+ppERK_total	H_0.1		10800
+ppERK_total	H_1		10800
+ppERK_total	H_10		10800
+ppERK_total	H_100		10800
+ppERK_total	H_1000		10800
+ppERK_total	HGF_0.001		10800
+ppERK_total	HGF_0.01		10800
+ppERK_total	HGF_0.1		10800
+ppERK_total	HGF_1		10800
+ppERK_total	HGF_10		10800
+ppERK_total	HGF_100		10800
+ppERK_total	HGF_1000		10800
+ppERK_total	P_0.001		10800
+ppERK_total	P_0.01		10800
+ppERK_total	P_0.1		10800
+ppERK_total	P_1		10800
+ppERK_total	P_10		10800
+ppERK_total	P_100		10800
+ppERK_total	P_1000		10800
+ppERK_total	F_0.001		10800
+ppERK_total	F_0.01		10800
+ppERK_total	F_0.1		10800
+ppERK_total	F_1		10800
+ppERK_total	F_10		10800
+ppERK_total	F_100		10800
+ppERK_total	F_1000		10800
+ppERK_total	I_0.001		10800
+ppERK_total	I_0.01		10800
+ppERK_total	I_0.1		10800
+ppERK_total	I_1		10800
+ppERK_total	I_10		10800
+ppERK_total	I_100		10800
+ppERK_total	I_1000		10800
+ppERK_total	INS_0.001		10800
+ppERK_total	INS_0.01		10800
+ppERK_total	INS_0.1		10800
+ppERK_total	INS_1		10800
+ppERK_total	INS_10		10800
+ppERK_total	INS_100		10800
+ppERK_total	INS_1000		10800
+ppAKT_total	EGF_0.001		10800
+ppAKT_total	EGF_0.01		10800
+ppAKT_total	EGF_0.1		10800
+ppAKT_total	EGF_1		10800
+ppAKT_total	EGF_10		10800
+ppAKT_total	EGF_100		10800
+ppAKT_total	EGF_1000		10800
+ppAKT_total	H_0.001		10800
+ppAKT_total	H_0.01		10800
+ppAKT_total	H_0.1		10800
+ppAKT_total	H_1		10800
+ppAKT_total	H_10		10800
+ppAKT_total	H_100		10800
+ppAKT_total	H_1000		10800
+ppAKT_total	HGF_0.001		10800
+ppAKT_total	HGF_0.01		10800
+ppAKT_total	HGF_0.1		10800
+ppAKT_total	HGF_1		10800
+ppAKT_total	HGF_10		10800
+ppAKT_total	HGF_100		10800
+ppAKT_total	HGF_1000		10800
+ppAKT_total	P_0.001		10800
+ppAKT_total	P_0.01		10800
+ppAKT_total	P_0.1		10800
+ppAKT_total	P_1		10800
+ppAKT_total	P_10		10800
+ppAKT_total	P_100		10800
+ppAKT_total	P_1000		10800
+ppAKT_total	F_0.001		10800
+ppAKT_total	F_0.01		10800
+ppAKT_total	F_0.1		10800
+ppAKT_total	F_1		10800
+ppAKT_total	F_10		10800
+ppAKT_total	F_100		10800
+ppAKT_total	F_1000		10800
+ppAKT_total	I_0.001		10800
+ppAKT_total	I_0.01		10800
+ppAKT_total	I_0.1		10800
+ppAKT_total	I_1		10800
+ppAKT_total	I_10		10800
+ppAKT_total	I_100		10800
+ppAKT_total	I_1000		10800
+ppAKT_total	INS_0.001		10800
+ppAKT_total	INS_0.01		10800
+ppAKT_total	INS_0.1		10800
+ppAKT_total	INS_1		10800
+ppAKT_total	INS_10		10800
+ppAKT_total	INS_100		10800
+ppAKT_total	INS_1000		10800

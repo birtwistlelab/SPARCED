@@ -26,10 +26,6 @@ class PEtabFileLoader:
 
         yaml_directory = os.path.join(os.path.dirname(self.yaml_file))
         
-        # copy the SBML model into the PEtab input files directory
-        if not os.path.exists(os.path.join(yaml_directory, 'SPARCED.xml')):
-            shutil.copy(os.path.join(os.getcwd(), 'SPARCED.xml'), os.path.join(os.path.dirname(self.yaml_file), 'SPARCED.xml'))
-
         with open(self.yaml_file, 'r') as file:
             yaml_dict = yaml.safe_load(file)
 

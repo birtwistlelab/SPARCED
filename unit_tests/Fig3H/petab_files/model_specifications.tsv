@@ -1,9 +1,9 @@
-conditionId	flagD	num_cells
-serum_fed_equilibrium	0	1
-L_0p0385	0	20
-L_0p1925	0	20
-L_0p385	0	20
-L_1p925	0	20
-L_3p85	0	20
-L_19p25	0	20
-L38p5	0	20
+conditionId	flagD	num_cells	heterogenize
+serum_fed_equilibrium	0	1	30
+L_0p0385	0	20	30
+L_0p1925	0	20	30
+L_0p385	0	20	30
+L_1p925	0	20	30
+L_3p85	0	20	30
+L_19p25	0	20	30
+L38p5	0	20	30

@@ -1,2 +1,2 @@
-conditionId	conditionName	flagD	E	H	HGF	P	F	I	INS
-Ribosome_mpc	Ribosome total concentration (mpc) over time. 	1	100	100	100	100	100	100	100
+conditionId	conditionName	E	H	HGF	P	F	I	INS
+Ribosome_mpc	"Ribosome total concentration (mpc) over time. "	100	100	100	100	100	100	100

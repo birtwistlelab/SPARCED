@@ -1,6 +1,6 @@
-observableId	simulationConditionId	measurement	time
-MAPK3ac	average_sim		86400
-MAPK3_mRNA	average_sim		86400
-MAPK1ac	average_sim		86400
-MAPK1_mRNA	average_sim		86400
-ERK_total	average_sim		86400
+observableId	simulationConditionId	measurement	time	datasetId
+MAPK3ac	average_sim		86400	Fig2B
+MAPK3_mRNA	average_sim		86400	Fig2B
+MAPK1ac	average_sim		86400	Fig2B
+MAPK1_mRNA	average_sim		86400	Fig2B
+ERK_total	average_sim		86400	Fig2B
