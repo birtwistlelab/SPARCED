@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.abspath('../../SPARCED/compilation/utils/sbml_scripts
 project = 'SPARCED'
 copyright = '2024, The Birtwistle Lab'
 author = 'The Birtwistle Lab'
-release = '00.00.01'
+release = '1.4.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
