@@ -153,7 +153,7 @@ pip install -Iv antimony==2.12.0.1 # WARNING: antimony >= 2.13.0 doesn't work wi
 ### The Amici Package
 ```bash
 sudo apt install libatlas-base-dev swig
-pip install amici
+pip install amici==0.11.12 # WARNING: newer versions don't work with SPARCED
 ```
 You might get an error about the CBLAS library (this happens mostly on
 Palmetto), to fix it run:
