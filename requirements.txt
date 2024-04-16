@@ -1,5 +1,7 @@
-amici==0.23.1
+amici==0.11.12
 antimony==2.12.0.1
+matplotlib==3.8.0
+numpy==1.26.4
 pandas==2.2.1
-ply==3.11
-python-libsbml==5.20.2
+python-libsbml==5.18.0
+scipy==1.12.0
