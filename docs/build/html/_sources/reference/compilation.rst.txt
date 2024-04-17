@@ -25,6 +25,7 @@ Utilities
 
 .. autofunction:: amici_utils.define_observables()
 
+.. autofunction:: amici_utils.extract_amici_model_name()
 
 Antimony
 -------------------------------------------------------------------------------

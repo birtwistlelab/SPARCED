@@ -183,14 +183,56 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="model_compilation.compile_sbml_to_amici">
 <span class="sig-prename descclassname"><span class="pre">model_compilation.</span></span><span class="sig-name descname"><span class="pre">compile_sbml_to_amici</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_compilation.html#compile_sbml_to_amici"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_compilation.compile_sbml_to_amici" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Compile the given SBML model into an AMICI model</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Passing observables and constant parameters to the importer is
+currently broken, in the original script too.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sbml_file_name</strong> – The SBML file path.</p></li>
+<li><p><strong>model_output_dir</strong> – Output directory path for the generated AMICI model.</p></li>
+<li><p><strong>f_observables</strong> – The observables input file path.</p></li>
+<li><p><strong>compartments</strong> – Content of the compartments input file.</p></li>
+<li><p><strong>species</strong> – Content of the species input file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <p>Utilities</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="amici_utils.define_observables">
 <span class="sig-prename descclassname"><span class="pre">amici_utils.</span></span><span class="sig-name descname"><span class="pre">define_observables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/amici_utils.html#define_observables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#amici_utils.define_observables" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create observables for the AMICI model
-This function is an adapted copy/paste from the Jupyter Notebook</p>
+<dd><p>Create observables for the AMICI model</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function is an adapted copy/paste from the Jupyter Notebook</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="amici_utils.extract_amici_model_name">
+<span class="sig-prename descclassname"><span class="pre">amici_utils.</span></span><span class="sig-name descname"><span class="pre">extract_amici_model_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/amici_utils.html#extract_amici_model_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#amici_utils.extract_amici_model_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the model name from the given AMICI output directory path</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The model name is considered to be preceded by the last “<a class="reference internal" href="#amici">amici</a>” prefix
+found in the file path string.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>output_dir_path</strong> – The AMICI output directory path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The extracted model name.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

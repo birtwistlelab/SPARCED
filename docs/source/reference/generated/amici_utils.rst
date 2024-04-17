@@ -14,6 +14,7 @@
    .. autosummary::
    
       define_observables
+      extract_amici_model_name
    
    
 

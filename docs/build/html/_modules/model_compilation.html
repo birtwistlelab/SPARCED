@@ -134,22 +134,45 @@
 
 <span class="kn">import</span> <span class="nn">amici</span>
 <span class="kn">import</span> <span class="nn">libsbml</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">compilation.utils.amici_scripts.amici_utils</span> <span class="kn">import</span> <span class="o">*</span>
 
 
-<div class="viewcode-block" id="compile_sbml_to_amici"><a class="viewcode-back" href="../reference/compilation.html#model_compilation.compile_sbml_to_amici">[docs]</a><span class="k">def</span> <span class="nf">compile_sbml_to_amici</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+<div class="viewcode-block" id="compile_sbml_to_amici"><a class="viewcode-back" href="../reference/compilation.html#model_compilation.compile_sbml_to_amici">[docs]</a><span class="k">def</span> <span class="nf">compile_sbml_to_amici</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                          <span class="n">f_observables</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">compartments</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                          <span class="n">species</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compile the given SBML model into an AMICI model</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">        Passing observables and constant parameters to the importer is</span>
+<span class="sd">        currently broken, in the original script too.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        sbml_file_name: The SBML file path.</span>
+<span class="sd">        model_output_dir: Output directory path for the generated AMICI model.</span>
+<span class="sd">        f_observables: The observables input file path.</span>
+<span class="sd">        compartments: Content of the compartments input file.</span>
+<span class="sd">        species: Content of the species input file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Import SBML file</span>
     <span class="n">sbml_reader</span> <span class="o">=</span> <span class="n">libsbml</span><span class="o">.</span><span class="n">SBMLReader</span><span class="p">()</span>
     <span class="n">sbml_doc</span> <span class="o">=</span> <span class="n">sbml_reader</span><span class="o">.</span><span class="n">readSBML</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">)</span>
     <span class="n">sbml_model</span> <span class="o">=</span> <span class="n">sbml_doc</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span>
-    <span class="n">sbml_importer</span> <span class="o">=</span> <span class="n">amici</span><span class="o">.</span><span class="n">SbmlImporter</span><span class="p">(</span><span class="n">sbml_file</span><span class="p">)</span>
-    <span class="c1"># Set all the parameters as constant</span>
-    <span class="n">constant_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">params</span><span class="o">.</span><span class="n">getId</span><span class="p">()</span> <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">sbml_model</span><span class="o">.</span><span class="n">getListOfParameters</span><span class="p">()]</span>
-    <span class="c1"># Set observables</span>
-    <span class="c1"># TODO</span>
+    <span class="n">sbml_importer</span> <span class="o">=</span> <span class="n">amici</span><span class="o">.</span><span class="n">SbmlImporter</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">)</span>
+    <span class="c1"># Set all the rate parameters as constant (faster compilation)</span>
+    <span class="n">constant_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">parameters</span><span class="o">.</span><span class="n">getId</span><span class="p">()</span> \
+                           <span class="k">for</span> <span class="n">parameters</span> <span class="ow">in</span> <span class="n">sbml_model</span><span class="o">.</span><span class="n">getListOfParameters</span><span class="p">()]</span>
+    <span class="c1"># Create observables</span>
+    <span class="c1"># observables = define_observables(f_observables, compartments, species)</span>
     <span class="c1"># Compile</span>
-    <span class="n">model_output_dir</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;amici_&quot;</span> <span class="o">+</span> <span class="n">model_name</span>
-    <span class="n">sbml_importer</span><span class="o">.</span><span class="n">sbml2amici</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">model_output_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-                             <span class="n">observables</span><span class="o">=</span><span class="n">observables</span><span class="p">,</span> <span class="n">constantParameters</span><span class="o">=</span><span class="n">constant_parameters</span><span class="p">)</span></div>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="n">extract_amici_model_name</span><span class="p">(</span><span class="n">model_output_dir</span><span class="p">)</span>
+    <span class="n">sbml_importer</span><span class="o">.</span><span class="n">sbml2amici</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">model_output_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+            <span class="c1"># observables=observables, constantParameters=constant_parameters)</span>
 
 </pre></div>
 

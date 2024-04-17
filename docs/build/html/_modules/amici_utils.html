@@ -137,9 +137,10 @@
 
 
 <div class="viewcode-block" id="define_observables"><a class="viewcode-back" href="../reference/compilation.html#amici_utils.define_observables">[docs]</a><span class="k">def</span> <span class="nf">define_observables</span><span class="p">(</span><span class="n">f_observables</span><span class="p">,</span> <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create observables for the AMICI model</span>
-<span class="sd">    This function is an adapted copy/paste from the Jupyter Notebook</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create observables for the AMICI model</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">        This function is an adapted copy/paste from the Jupyter Notebook</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">obs_mat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f_observables</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -176,6 +177,31 @@
         <span class="n">observables</span><span class="p">[</span><span class="n">observables_names</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="s1">&#39;formula&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formula_obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     
     <span class="k">return</span><span class="p">(</span><span class="n">observables</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="extract_amici_model_name"><a class="viewcode-back" href="../reference/compilation.html#amici_utils.extract_amici_model_name">[docs]</a><span class="k">def</span> <span class="nf">extract_amici_model_name</span><span class="p">(</span><span class="n">output_dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the model name from the given AMICI output directory path</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The model name is considered to be preceded by the last &quot;amici_&quot; prefix</span>
+<span class="sd">        found in the file path string.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        output_dir_path: The AMICI output directory path.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The extracted model name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sub_file_name</span> <span class="o">=</span> <span class="n">output_dir_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;amici_&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_file_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: AMICI model name could not be extracted.</span><span class="se">\n</span><span class="s2"> Please make </span><span class="se">\</span>
+<span class="s2">               sure you passed all the required arguments. Current value for </span><span class="se">\</span>
+<span class="s2">               the output directory name is: </span><span class="si">{name}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">output_dir_path</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="n">sub_file_name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">sub_file_name</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span></div>
 
 </pre></div>
 

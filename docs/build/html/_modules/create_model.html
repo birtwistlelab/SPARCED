@@ -204,23 +204,13 @@
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Success converting Antimony file to SBML&quot;</span>
                          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
     <span class="c1"># Annotate the SBML model</span>
-    <span class="n">sbml_annotate_model</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">compartments</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_SPARCED</span><span class="p">:</span>
+        <span class="n">sbml_annotate_model</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">compartments</span><span class="p">)</span>
     <span class="c1"># --------------------------------- AMICI ---------------------------------</span>
-    <span class="c1"># Import</span>
-    <span class="n">sbml_reader</span> <span class="o">=</span> <span class="n">libsbml</span><span class="o">.</span><span class="n">SBMLReader</span><span class="p">()</span>
-    <span class="n">sbml_doc</span> <span class="o">=</span> <span class="n">sbml_reader</span><span class="o">.</span><span class="n">readSBML</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">)</span>
-    <span class="n">sbml_model</span> <span class="o">=</span> <span class="n">sbml_doc</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span>
-    <span class="n">sbml_importer</span> <span class="o">=</span> <span class="n">amici</span><span class="o">.</span><span class="n">SbmlImporter</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">)</span>
-    <span class="c1"># Set all the rate parameters as constant (faster compilation)</span>
-    <span class="n">const_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">params</span><span class="o">.</span><span class="n">getId</span><span class="p">()</span> \
-                    <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">sbml_model</span><span class="o">.</span><span class="n">getListOfParameters</span><span class="p">()]</span>
-    <span class="c1"># Create Observables</span>
-    <span class="c1"># observables = define_observables(f_observables, compartments, species) </span>
-    <span class="c1"># Compile</span>
+    <span class="c1"># Compile the SBML model into an AMICI model</span>
     <span class="n">model_output_dir</span> <span class="o">=</span> <span class="n">output_dir_path</span> <span class="o">+</span> <span class="s2">&quot;amici_&quot;</span> <span class="o">+</span> <span class="n">model_name</span>
-    <span class="c1"># TODO: add observables and constant parameters (currently broken also in</span>
-    <span class="c1"># the original script actually)</span>
-    <span class="n">sbml_importer</span><span class="o">.</span><span class="n">sbml2amici</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">model_output_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="n">compile_sbml_to_amici</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">model_output_dir</span><span class="p">,</span> <span class="n">f_observables</span><span class="p">,</span>
+                          <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Sucess compiling the model&quot;</span>
                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span></div>
 
