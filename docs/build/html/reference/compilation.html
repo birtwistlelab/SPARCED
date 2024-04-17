@@ -442,19 +442,66 @@ Species concentrations should be located on the third column of the array.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="model_annotation.sbml_annotate_model">
 <span class="sig-prename descclassname"><span class="pre">model_annotation.</span></span><span class="sig-name descname"><span class="pre">sbml_annotate_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_annotation.html#sbml_annotate_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_annotation.sbml_annotate_model" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Annotate species and compartments of the given SBML model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sbml_file_name</strong> – The SBML file path.</p></li>
+<li><p><strong>species</strong> – Content of the species input file.</p></li>
+<li><p><strong>compartments</strong> – Content of the compartments input file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <p>Utilities</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="sbml_utils.write_compartments_annotations">
 <span class="sig-prename descclassname"><span class="pre">sbml_utils.</span></span><span class="sig-name descname"><span class="pre">write_compartments_annotations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sbml_utils.html#write_compartments_annotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sbml_utils.write_compartments_annotations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set compartments annotations using the last column of the compartments input file</p>
+<dd><p>Set compartments annotations in the given SBML file</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The first row is considered as a header, and hence it is skipped.
+Compartment names should be located on the first column of the array.
+Annotations should be located on the third column of the array.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f_sbml</strong> – The loaded SBML file.</p></li>
+<li><p><strong>compartments</strong> – Content of the compartments input file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sbml_utils.write_species_annotations">
 <span class="sig-prename descclassname"><span class="pre">sbml_utils.</span></span><span class="sig-name descname"><span class="pre">write_species_annotations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sbml_utils.html#write_species_annotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sbml_utils.write_species_annotations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set species annotations using the last column of the species input file</p>
+<dd><p>Set species annotations in the given SBML file</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The first row is considered as a header, and hence it is skipped.
+Annotations should be located between the 4th and the last column of
+the array.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f_sbml</strong> – The loaded SBML file.</p></li>
+<li><p><strong>species</strong> – Content of the species input file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
