@@ -6,3 +6,6 @@ SPARCED repository.
 The main goal is to be able to replicate it into the SPARCED-standard model,
 and then delete this legacy one.
 
+  - Antimony: replicate approved.
+  - SBML: replicated approved.
+  - AMICI: differences to investigate.
