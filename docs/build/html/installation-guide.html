@@ -131,7 +131,7 @@
 	  </dark-mode-toggle>
 	</div>
   <section id="the-sparced-installation-guide-for-absolute-beginners">
-<h1>The SPARCED Installation Guide for Absolute Beginners<a class="headerlink" href="#the-sparced-installation-guide-for-absolute-beginners" title="Link to this heading">¶</a></h1>
+<h1>The SPARCED Installation Guide for Absolute Beginners<a class="headerlink" href="#the-sparced-installation-guide-for-absolute-beginners" title="Permalink to this heading">¶</a></h1>
 <hr class="docutils" />
 <p><em>Written by Aurore Amrit</em></p>
 <p>Hi! 🌄</p>
@@ -140,7 +140,7 @@ Ubuntu, then you are at the right place!
 This is a document I wrote as a summer intern at the Birtwistle lab to make the
 process easier for newcomers like me 🙂</p>
 <section id="environment">
-<h2>Environment<a class="headerlink" href="#environment" title="Link to this heading">¶</a></h2>
+<h2>Environment<a class="headerlink" href="#environment" title="Permalink to this heading">¶</a></h2>
 <p>I am running an <strong>Ubuntu 22.04 LTS</strong> virtual machine on <strong>VirtualBox</strong>.
 This guide should work even if you are using another hypervisor than VirtualBox
 or that you are running Ubuntu directly on your computer.
@@ -159,7 +159,7 @@ entering a command in your terminal, just press <code class="docutils literal no
 fills in correctly.</p>
 </section>
 <section id="virtualbox-guest-additions">
-<h2>VirtualBox Guest Additions<a class="headerlink" href="#virtualbox-guest-additions" title="Link to this heading">¶</a></h2>
+<h2>VirtualBox Guest Additions<a class="headerlink" href="#virtualbox-guest-additions" title="Permalink to this heading">¶</a></h2>
 <p><em>If you are not using VirtualBox, skip this section.</em></p>
 <p>In the menu at the top of the virtual machine you are running, go to
 <em>Devices</em>&gt;<em>Insert Guest Additions CD image</em>, then in your terminal run:</p>
@@ -172,7 +172,7 @@ sudo<span class="w"> </span>./VBoxLinuxAdditions.run
 <p>You will need to restart the VM after that. Don’t forget to eject the CD! 😉</p>
 </section>
 <section id="openmpi">
-<h2>OpenMPI<a class="headerlink" href="#openmpi" title="Link to this heading">¶</a></h2>
+<h2>OpenMPI<a class="headerlink" href="#openmpi" title="Permalink to this heading">¶</a></h2>
 <p><em>If you are not going to use parallel computation on your computer,
 skip this section.</em></p>
 <p>If you want to run some parallel code on your computer (for example to debug on
@@ -204,9 +204,9 @@ make<span class="w"> </span>install
 fix it without having to reinstall everything, please notify me! 🙏</p>
 </section>
 <section id="git-github-ssh">
-<h2>Git, GitHub &amp; SSH<a class="headerlink" href="#git-github-ssh" title="Link to this heading">¶</a></h2>
+<h2>Git, GitHub &amp; SSH<a class="headerlink" href="#git-github-ssh" title="Permalink to this heading">¶</a></h2>
 <section id="git">
-<h3>Git<a class="headerlink" href="#git" title="Link to this heading">¶</a></h3>
+<h3>Git<a class="headerlink" href="#git" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git-all
 </pre></div>
 </div>
@@ -217,7 +217,7 @@ git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"
 </div>
 </section>
 <section id="ssh-for-github">
-<h3>SSH for GitHub<a class="headerlink" href="#ssh-for-github" title="Link to this heading">¶</a></h3>
+<h3>SSH for GitHub<a class="headerlink" href="#ssh-for-github" title="Permalink to this heading">¶</a></h3>
 <p>I assume that you already have an account on <a class="reference external" href="https://github.com/">GitHub</a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;{email}&quot;</span><span class="w"> </span><span class="c1"># with {email} being your email for GitHub</span>
 <span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
@@ -238,7 +238,7 @@ save the key.</p>
 </section>
 </section>
 <section id="anaconda">
-<h2>Anaconda<a class="headerlink" href="#anaconda" title="Link to this heading">¶</a></h2>
+<h2>Anaconda<a class="headerlink" href="#anaconda" title="Permalink to this heading">¶</a></h2>
 <p>Download the
 <a class="reference external" href="https://www.anaconda.com/products/distribution#linux">Anaconda installer for Linux</a>,
 then run the following commands in your terminal:</p>
@@ -264,7 +264,7 @@ the terminal. If you want to disable this behavior, enter:</p>
 </pre></div>
 </div>
 <section id="id1">
-<h3>Environment<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h3>Environment<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
 <p>Create a new Anaconda environment using the following commands:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>sparced<span class="w"> </span><span class="c1"># Creates an environment named &quot;sparced&quot;</span>
 <span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>sparced<span class="w"> </span><span class="c1"># Activates the &quot;sparced&quot; environment</span>
@@ -274,7 +274,7 @@ the terminal. If you want to disable this behavior, enter:</p>
 “sparced” environment each time you reopen your terminal.</p>
 </section>
 <section id="python-packages">
-<h3>Python Packages<a class="headerlink" href="#python-packages" title="Link to this heading">¶</a></h3>
+<h3>Python Packages<a class="headerlink" href="#python-packages" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>matplotlib<span class="w"> </span>pandas<span class="w"> </span>scipy
 pip<span class="w"> </span>install<span class="w"> </span>python-libsbml
 pip<span class="w"> </span>install<span class="w"> </span>-Iv<span class="w"> </span><span class="nv">antimony</span><span class="o">==</span><span class="m">2</span>.12.0.1<span class="w"> </span><span class="c1"># WARNING: antimony &gt;= 2.13.0 doesn&#39;t work with SPARCED</span>
@@ -282,7 +282,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-Iv<span class="w"> </
 </div>
 </section>
 <section id="the-amici-package">
-<h3>The Amici Package<a class="headerlink" href="#the-amici-package" title="Link to this heading">¶</a></h3>
+<h3>The Amici Package<a class="headerlink" href="#the-amici-package" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libatlas-base-dev<span class="w"> </span>swig
 pip<span class="w"> </span>install<span class="w"> </span><span class="nv">amici</span><span class="o">==</span><span class="m">0</span>.11.12<span class="w"> </span><span class="c1"># WARNING: newer versions don&#39;t work with SPARCED</span>
 </pre></div>
@@ -295,7 +295,7 @@ Palmetto), to fix it run:</p>
 </div>
 </section>
 <section id="the-mpi4py-package">
-<h3>The mpi4py Package<a class="headerlink" href="#the-mpi4py-package" title="Link to this heading">¶</a></h3>
+<h3>The mpi4py Package<a class="headerlink" href="#the-mpi4py-package" title="Permalink to this heading">¶</a></h3>
 <p><em>If you are not going to use parallel computation, skip this section.</em></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>remove<span class="w"> </span>compilers<span class="w"> </span><span class="c1"># if the compilers package is missing then don&#39;t install it!</span>
 conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>forge<span class="w"> </span>mpi4py<span class="w"> </span><span class="c1"># if you encounter any dependency version failure, try downgrading to Python 3.11 by typing &#39;conda install python=3.11&#39;</span>
@@ -306,12 +306,12 @@ python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </sp
 </section>
 </section>
 <section id="todo-docker">
-<h2>TODO: Docker<a class="headerlink" href="#todo-docker" title="Link to this heading">¶</a></h2>
+<h2>TODO: Docker<a class="headerlink" href="#todo-docker" title="Permalink to this heading">¶</a></h2>
 <p><em>If you are not going to run SPARCED inside the official Jupyter Notebook
 container, skip this section.</em></p>
 </section>
 <section id="sparced">
-<h2>SPARCED 🎆<a class="headerlink" href="#sparced" title="Link to this heading">¶</a></h2>
+<h2>SPARCED 🎆<a class="headerlink" href="#sparced" title="Permalink to this heading">¶</a></h2>
 <p>This is only a setup suggestion:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/Documents
 mkdir<span class="w"> </span>birtwistle-lab<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>birtwistle-lab
@@ -322,7 +322,7 @@ git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="
 </div>
 </section>
 <section id="clean">
-<h2>Clean<a class="headerlink" href="#clean" title="Link to this heading">¶</a></h2>
+<h2>Clean<a class="headerlink" href="#clean" title="Permalink to this heading">¶</a></h2>
 <p>Remove all unused packages that were installed by dependencies during the setup:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>autoremove
 </pre></div>
@@ -372,10 +372,16 @@ git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="
     <script type="text/javascript" src="_static/documentation_options.js">
 
     </script>
-    <script type="text/javascript" src="_static/doctools.js">
+    <script type="text/javascript" src="_static/jquery.js">
 
     </script>
-    <script type="text/javascript" src="_static/sphinx_highlight.js">
+    <script type="text/javascript" src="_static/underscore.js">
+
+    </script>
+    <script type="text/javascript" src="_static/_sphinx_javascript_frameworks_compat.js">
+
+    </script>
+    <script type="text/javascript" src="_static/doctools.js">
 
     </script>
 

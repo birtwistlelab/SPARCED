@@ -11,10 +11,8 @@ import re
 def antimony_write_compartments_IC(f_antimony: IO[str], compartments: np.ndarray) -> None:
     """ Write compartments initial conditions in the given Antimony file
 
-    Warning:
+    Note:
         The first row is considered as a header, and hence it is skipped.
-    
-    Notes:
         Names should be located on the first column of the array.
         Volumes should be located on the second column of the array.
 
@@ -35,8 +33,8 @@ def antimony_write_compartments_IC(f_antimony: IO[str], compartments: np.ndarray
 def antimony_write_reactions_IC(f_antimony: IO[str], p_names: np.ndarray, p_vals: np.ndarray) -> None:
     """Write reactions parameters initial conditions in the given Antimony file
 
-    Todo:
-        Use only one array for the parameters instead of taking the risk to
+    Warning:
+        TODO use only one array for the parameters instead of taking the risk to
         separate names from values.
 
     Arguments:
@@ -57,10 +55,8 @@ def antimony_write_reactions_IC(f_antimony: IO[str], p_names: np.ndarray, p_vals
 def antimony_write_species_IC(f_antimony: IO[str], species: np.ndarray) -> None:
     """Write species initial concentrations in the given Antimony file
 
-    Warning:
+    Note:
         The first row is considered as a header, and hence it is skipped.
-
-    Notes:
         Species names should be located on the first column of the array.
         Species concentrations should be located on the third column of the array.
 

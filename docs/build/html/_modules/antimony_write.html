@@ -1,0 +1,389 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="" lang="" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="">
+    <link rel="icon" type="image/x-icon" href="">
+
+  
+  <title>antimony_write &mdash; SPARCED 1.4.0 documentation</title>
+  
+
+  
+
+  
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+
+
+  <link rel="stylesheet" href="../_static/css/img.css" type="text/css"/>
+  
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/pdj.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="../_static/css/darker.css" type="text/css" media="(prefers-color-scheme: dark)"/>
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="module" src="https://googlechromelabs.github.io/dark-mode-toggle/src/dark-mode-toggle.mjs"></script>
+
+  </head>
+
+  <body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+	
+        <a href="../index.html" class="fa fa-home"> SPARCED </a>
+	
+	
+        <div role="search">
+	  
+	  <form id ="rtd-search-form" class="wy-form"
+		action="../search.html" method="get">
+	    <input type="text" name="q" placeholder="Search docs" />
+	    <input type="hidden" name="check_keywords" value="yes" />
+	    <input type="hidden" name="area" value="default" />
+	  </form>
+	  
+	</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+
+      </div>
+      &nbsp;
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      <nav class="wy-nav-top" id="barra-mobile" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">SPARCED </a>
+      </nav>
+
+      <div class="wy-nav-content">
+	<div class="fundo-claro">
+	</div>
+	<div class="fundo-escuro">
+	</div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+	    
+	    <!-- <ul class="wy-breadcrumbs"> -->
+	    <!--   <li><a href="#">Docs</a> &raquo;</li> -->
+
+	    <!--   <li>Features</li> -->
+	    <!--   <li class="wy-breadcrumbs-aside"> -->
+
+	    <!-- 	<a href="_sources/index.txt" rel="nofollow"> View page source</a> -->
+
+	    <!--   </li> -->
+	    <!-- </ul> -->
+	    <!-- <hr/> -->
+	  </div>
+          <div role="main" class="">
+
+	    <div id="content" class="hfeed entry-container hentry">
+      	<div id="dark-mode-toggle-container">
+	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
+	  </dark-mode-toggle>
+	</div>
+  <h1>Source code for antimony_write</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">IO</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">compilation.utils.antimony_scripts.antimony_utils</span> <span class="kn">import</span> <span class="n">load_input_data_file</span>
+
+
+<div class="viewcode-block" id="antimony_write_constant_variables"><a class="viewcode-back" href="../reference/compilation.html#antimony_write.antimony_write_constant_variables">[docs]</a><span class="k">def</span> <span class="nf">antimony_write_constant_variables</span><span class="p">(</span><span class="n">f_antimony</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">constants</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write constant variables in the given Antimony file</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        f_antimony: The open Antimony file.</span>
+<span class="sd">        constants: The constant variables to declare.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Other declarations:</span><span class="se">\n</span><span class="s2">const &quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">const_var</span> <span class="ow">in</span> <span class="n">constants</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">, &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">const_var</span><span class="p">))</span>
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{last_name}</span><span class="s2">;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">last_name</span><span class="o">=</span><span class="n">constants</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="antimony_write_compartments_names"><a class="viewcode-back" href="../reference/compilation.html#antimony_write.antimony_write_compartments_names">[docs]</a><span class="k">def</span> <span class="nf">antimony_write_compartments_names</span><span class="p">(</span><span class="n">f_antimony</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">compartments</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write compartments names in the given Antimony file</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The first row is considered as a header, and hence it is skipped.</span>
+<span class="sd">        Names should be located on the first column of the array.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        f_antimony: The open Antimony file.</span>
+<span class="sd">        compartments: Content of the input compartments file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Compartments:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">compartments</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Compartment </span><span class="si">{name}</span><span class="s2">; &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="antimony_write_reactions"><a class="viewcode-back" href="../reference/compilation.html#antimony_write.antimony_write_reactions">[docs]</a><span class="k">def</span> <span class="nf">antimony_write_reactions</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">f_ratelaws</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_stoichmat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_outp</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write reactions in the given Antimony file</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">        This function contains a massive copy/paste from some older code.</span>
+<span class="sd">        TODO Clean function and remove hard-coded values.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        f: The open Antimony file.</span>
+<span class="sd">        f_ratelaws: The ratelaws file path.</span>
+<span class="sd">        f_stoichmat: The stoichiometric matrix file path.</span>
+<span class="sd">        f_outp: The output parameters file path.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A typle with the parameters&#39; names list and the parameters&#39; values list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Reactions:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">stoic_sheet</span> <span class="o">=</span> <span class="n">load_input_data_file</span><span class="p">(</span><span class="n">f_stoichmat</span><span class="p">)</span>
+    <span class="n">ratelaw_sheet</span> <span class="o">=</span> <span class="n">load_input_data_file</span><span class="p">(</span><span class="n">f_ratelaws</span><span class="p">)</span>
+    <span class="n">ratelaw_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ratelaw_sheet</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+    <span class="c1"># ========== COPY/PASTE ==========</span>
+    <span class="c1">#gets first column minus blank space at the beginning, adds to stoic data list</span>
+    <span class="n">stoic_columnnames</span> <span class="o">=</span> <span class="n">stoic_sheet</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">stoic_rownames</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stoic_sheet</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+    <span class="n">stoic_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stoic_sheet</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
+    <span class="c1"># builds the important ratelaw+stoic lines into the txt file </span>
+    <span class="n">paramnames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">paramvals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">paramrxns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">paramidxs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">rowNum</span><span class="p">,</span> <span class="n">ratelaw</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ratelaw_data</span><span class="p">):</span>
+        <span class="n">reactants</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">products</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">formula</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">rowNum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;*&quot;</span>
+    
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stoic_rowname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stoic_rownames</span><span class="p">):</span>
+            <span class="n">stoic_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">stoic_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">rowNum</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">stoic_value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">stoic_value</span><span class="o">*-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">reactants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stoic_rowname</span><span class="p">)</span>
+                    <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="o">+</span><span class="n">stoic_rowname</span><span class="o">+</span><span class="s2">&quot;*&quot;</span>
+            <span class="k">elif</span> <span class="n">stoic_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">stoic_value</span><span class="p">):</span>
+                    <span class="n">products</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stoic_rowname</span><span class="p">)</span>
+    
+        <span class="k">if</span> <span class="s2">&quot;k&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ratelaw</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># the mass-action formula</span>
+            <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1">#the parameter</span>
+            <span class="n">paramnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">rowNum</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">paramvals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">(</span><span class="n">ratelaw</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">paramrxns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ratelaw_sheet</span><span class="p">[</span><span class="n">rowNum</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">paramidxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># specific formula (non-mass-action)</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">ratelaw</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">ratelaw</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="nb">float</span><span class="p">)</span> <span class="c1"># parameters</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">params</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">paramnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">rowNum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+                <span class="n">paramvals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">ratelaw</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">paramrxns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ratelaw_sheet</span><span class="p">[</span><span class="n">rowNum</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">paramidxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                <span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;k\D*\d*&#39;</span>
+                <span class="n">compiled</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+                <span class="n">matches</span> <span class="o">=</span> <span class="n">compiled</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">ematch</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+                    <span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ematch</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span><span class="n">paramnames</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">q</span><span class="p">,</span><span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+                    <span class="n">paramnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">rowNum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+                    <span class="n">paramvals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">ratelaw</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="n">paramrxns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ratelaw_sheet</span><span class="p">[</span><span class="n">rowNum</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">paramidxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+                    <span class="n">pattern1</span> <span class="o">=</span> <span class="s1">&#39;k(\D*)\d*&#39;</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                    <span class="n">compiled1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern1</span><span class="p">)</span>
+                    <span class="n">matches1</span> <span class="o">=</span> <span class="n">compiled1</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">ematch</span> <span class="ow">in</span> <span class="n">matches1</span><span class="p">:</span>
+                        <span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ematch</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span><span class="n">paramnames</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">j</span> <span class="o">+=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">ratelaw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Cytoplasm&#39;</span><span class="p">:</span>
+            <span class="n">valcomp</span> <span class="o">=</span> <span class="mf">5.25e-12</span>
+        <span class="k">elif</span> <span class="n">ratelaw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Extracellular&#39;</span><span class="p">:</span>
+            <span class="n">valcomp</span> <span class="o">=</span> <span class="mf">5.00e-5</span>
+        <span class="k">elif</span> <span class="n">ratelaw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Nucleus&#39;</span><span class="p">:</span>
+            <span class="n">valcomp</span> <span class="o">=</span> <span class="mf">1.75e-12</span>
+        <span class="k">elif</span> <span class="n">ratelaw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Mitochondrion&#39;</span><span class="p">:</span>
+            <span class="n">valcomp</span> <span class="o">=</span> <span class="mf">3.675e-13</span>
+        <span class="c1">#don&#39;t include reactions without products or reactants</span>
+        <span class="k">if</span> <span class="n">products</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">and</span> <span class="n">reactants</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2"> =&gt; </span><span class="si">%s</span><span class="s2">; (</span><span class="si">%s</span><span class="s2">)*</span><span class="si">%.6e</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stoic_columnnames</span><span class="p">[</span><span class="n">rowNum</span><span class="p">],</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">reactants</span><span class="p">),</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">products</span><span class="p">),</span> <span class="n">formula</span><span class="p">,</span> <span class="n">valcomp</span><span class="p">))</span>
+    
+    <span class="c1"># Export parameters for each reaction, with corresponding order within the ratelaw and its value</span>
+    <span class="n">params_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">paramvals</span><span class="p">,</span><span class="s1">&#39;rxn&#39;</span><span class="p">:</span><span class="n">paramrxns</span><span class="p">,</span><span class="s1">&#39;idx&#39;</span><span class="p">:</span><span class="n">paramidxs</span><span class="p">},</span><span class="n">index</span><span class="o">=</span><span class="n">paramnames</span><span class="p">)</span>
+    <span class="n">params_all</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">f_outp</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># ========== END OF COPY/PASTE ==========</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">((</span><span class="n">paramnames</span><span class="p">,</span> <span class="n">paramvals</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="antimony_write_species_names"><a class="viewcode-back" href="../reference/compilation.html#antimony_write.antimony_write_species_names">[docs]</a><span class="k">def</span> <span class="nf">antimony_write_species_names</span><span class="p">(</span><span class="n">f_antimony</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">species</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write species names and affiliated compartments in the given Antimony file</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The first row is considered as a header, and hence it is skipped.</span>
+<span class="sd">        Species names should be located on the first column of the array.</span>
+<span class="sd">        Species compartments should be located on the second column of the array.</span>
+
+<span class="sd">    Argurments:</span>
+<span class="sd">        f_antimony: The open Antimony file.</span>
+<span class="sd">        species: Content of the input species file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Species:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">species</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+         <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Species </span><span class="si">{name}</span><span class="s2"> in </span><span class="si">{compartment}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">compartment</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="antimony_write_unit_definitions"><a class="viewcode-back" href="../reference/compilation.html#antimony_write.antimony_write_unit_definitions">[docs]</a><span class="k">def</span> <span class="nf">antimony_write_unit_definitions</span><span class="p">(</span><span class="n">f_antimony</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write unit definitions in the given Antimony file</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">        This function contains hard-coded values</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        f_antimony: The open Antimony file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# Unit definitions:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  unit time_unit = second;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  unit volume = litre;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  unit substance = 1e-9 mole;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f_antimony</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  unit nM = 1e-9 mole / litre;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+	    </div>
+            <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2024, The Birtwistle Lab.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/jucacrispim/sphinx_pdj_theme">theme</a> provided by <a href="https://poraodojuca.dev">Porão do Juca</a>.
+
+</footer>
+	</div>
+	</div>
+	  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.4.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/underscore.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/doctools.js">
+
+    </script>
+
+  
+
+   <script type="text/javascript"
+           src="../_static/js/theme.js"></script>
+
+   <script type="text/javascript"
+           src="../_static/js/pdj.js"></script>
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  </body>
+</html>

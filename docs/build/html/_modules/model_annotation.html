@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>model_annotation &mdash; SPARCED 00.00.01 documentation</title>
+  <title>model_annotation &mdash; SPARCED 1.4.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="SPARCED 00.00.01 documentation" href="../index.html"/>
+    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -77,8 +77,10 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
 </ul>
@@ -135,9 +137,7 @@
 <span class="kn">from</span> <span class="nn">compilation.utils.sbml_scripts.sbml_utils</span> <span class="kn">import</span> <span class="o">*</span>
 
 
-<div class="viewcode-block" id="sbml_annotate_model">
-<a class="viewcode-back" href="../reference/compilation.html#model_annotation.sbml_annotate_model">[docs]</a>
-<span class="k">def</span> <span class="nf">sbml_annotate_model</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">compartments</span><span class="p">):</span>
+<div class="viewcode-block" id="sbml_annotate_model"><a class="viewcode-back" href="../reference/compilation.html#model_annotation.sbml_annotate_model">[docs]</a><span class="k">def</span> <span class="nf">sbml_annotate_model</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">compartments</span><span class="p">):</span>
     <span class="c1"># Import SBML file</span>
     <span class="n">sbml_reader</span> <span class="o">=</span> <span class="n">libsbml</span><span class="o">.</span><span class="n">SBMLReader</span><span class="p">()</span>
     <span class="n">sbml_doc</span> <span class="o">=</span> <span class="n">sbml_reader</span><span class="o">.</span><span class="n">readSBML</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">)</span>
@@ -149,7 +149,6 @@
     <span class="c1"># Export the annotated SBML file</span>
     <span class="n">writer</span> <span class="o">=</span> <span class="n">libsbml</span><span class="o">.</span><span class="n">SBMLWriter</span><span class="p">()</span>
     <span class="n">writer</span><span class="o">.</span><span class="n">writeSBML</span><span class="p">(</span><span class="n">sbml_doc</span><span class="p">,</span> <span class="n">sbml_file_name</span><span class="p">)</span></div>
-
 
 </pre></div>
 
@@ -175,7 +174,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'00.00.01',
+            VERSION:'1.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
@@ -184,10 +183,16 @@
     <script type="text/javascript" src="../_static/documentation_options.js">
 
     </script>
-    <script type="text/javascript" src="../_static/doctools.js">
+    <script type="text/javascript" src="../_static/jquery.js">
 
     </script>
-    <script type="text/javascript" src="../_static/sphinx_highlight.js">
+    <script type="text/javascript" src="../_static/underscore.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/doctools.js">
 
     </script>
 

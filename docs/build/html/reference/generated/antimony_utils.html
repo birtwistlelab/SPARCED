@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="SPARCED 1.4.0 documentation" href="../../index.html"/>
         <link rel="up" title="Reference" href="../summary.html"/>
-        <link rel="next" title="model_annotation" href="model_annotation.html"/>
-        <link rel="prev" title="model_writing" href="model_writing.html"/>
+        <link rel="next" title="antimony_write" href="antimony_write.html"/>
+        <link rel="prev" title="model_compilation" href="model_compilation.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -131,33 +131,15 @@
 	  </dark-mode-toggle>
 	</div>
   <section id="module-antimony_utils">
-<span id="antimony-utils"></span><h1>antimony_utils<a class="headerlink" href="#module-antimony_utils" title="Link to this heading">¶</a></h1>
+<span id="antimony-utils"></span><h1>antimony_utils<a class="headerlink" href="#module-antimony_utils" title="Permalink to this heading">¶</a></h1>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.antimony_init" title="antimony_utils.antimony_init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_init</span></code></a>(f_cv, f_s)</p></td>
-<td><p>Load compartments, volumes and species from data files</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.extract_antimony_model_name" title="antimony_utils.extract_antimony_model_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_antimony_model_name</span></code></a>(f_antimony)</p></td>
+<td><p>Extract the model name from the given Antimony file path</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.antimony_terminal" title="antimony_utils.antimony_terminal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_terminal</span></code></a>(f)</p></td>
-<td><p>Write constant variables and unit definitions in a given Antimony file WARNING: This function contains hard-coded values</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.antimony_write_compartments" title="antimony_utils.antimony_write_compartments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_compartments</span></code></a>(f, comp)</p></td>
-<td><p>Write compartments names in a given Antimony file</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.antimony_write_init_compartments" title="antimony_utils.antimony_write_init_compartments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_init_compartments</span></code></a>(f, comp, vol)</p></td>
-<td><p>Write compartments initial conditions in the given Antimony file</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.antimony_write_init_reactions" title="antimony_utils.antimony_write_init_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_init_reactions</span></code></a>(f, p_names, p_vals)</p></td>
-<td><p>Write reactions' parameters' initial conditions in the given Antimony file</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.antimony_write_init_species" title="antimony_utils.antimony_write_init_species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_init_species</span></code></a>(f, spec)</p></td>
-<td><p>Write species' initial concentrations in the given Antimony file</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.antimony_write_reactions" title="antimony_utils.antimony_write_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_reactions</span></code></a>(f, f_rl, f_sm, f_outp)</p></td>
-<td><p>Write reactions in the given Antimony file WARNING: This function contains a massive copy/paste from some older code</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.antimony_write_species" title="antimony_utils.antimony_write_species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">antimony_write_species</span></code></a>(f, spec)</p></td>
-<td><p>Write species' names and compartments in the given Antimony file</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../compilation.html#antimony_utils.load_input_data_file" title="antimony_utils.load_input_data_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_input_data_file</span></code></a>(f_input)</p></td>
+<td><p>Load the given input data file</p></td>
 </tr>
 </tbody>
 </table>
@@ -169,10 +151,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="model_annotation.html" class="btn btn-neutral float-right" title="model_annotation">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="antimony_write.html" class="btn btn-neutral float-right" title="antimony_write">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="model_writing.html" class="btn btn-neutral" title="model_writing"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="model_compilation.html" class="btn btn-neutral" title="model_compilation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -204,10 +186,16 @@
     <script type="text/javascript" src="../../_static/documentation_options.js">
 
     </script>
-    <script type="text/javascript" src="../../_static/doctools.js">
+    <script type="text/javascript" src="../../_static/jquery.js">
 
     </script>
-    <script type="text/javascript" src="../../_static/sphinx_highlight.js">
+    <script type="text/javascript" src="../../_static/underscore.js">
+
+    </script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js">
+
+    </script>
+    <script type="text/javascript" src="../../_static/doctools.js">
 
     </script>
 

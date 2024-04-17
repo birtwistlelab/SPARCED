@@ -13,14 +13,8 @@
 
    .. autosummary::
    
-      antimony_init
-      antimony_terminal
-      antimony_write_compartments
-      antimony_write_init_compartments
-      antimony_write_init_reactions
-      antimony_write_init_species
-      antimony_write_reactions
-      antimony_write_species
+      extract_antimony_model_name
+      load_input_data_file
    
    
 

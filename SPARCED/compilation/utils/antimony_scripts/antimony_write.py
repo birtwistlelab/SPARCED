@@ -14,7 +14,7 @@ def antimony_write_constant_variables(f_antimony: IO[str], constants: np.ndarray
     """Write constant variables in the given Antimony file
 
     Arguments:
-        f_antomony: The open Antimony file.
+        f_antimony: The open Antimony file.
         constants: The constant variables to declare.
 
     Returns:
@@ -29,10 +29,8 @@ def antimony_write_constant_variables(f_antimony: IO[str], constants: np.ndarray
 def antimony_write_compartments_names(f_antimony: IO[str], compartments: np.ndarray) -> None:
     """Write compartments names in the given Antimony file
 
-    Warning:
-        The first row is considered as a header, and hence it is skipped.
-
     Note:
+        The first row is considered as a header, and hence it is skipped.
         Names should be located on the first column of the array.
 
     Arguments:
@@ -53,8 +51,7 @@ def antimony_write_reactions(f: IO[str], f_ratelaws: str, f_stoichmat: str, f_ou
 
     Warning:
         This function contains a massive copy/paste from some older code.
-    Todo:
-        Clean function and remove hard-coded values.
+        TODO Clean function and remove hard-coded values.
 
     Arguments:
         f: The open Antimony file.
@@ -156,10 +153,8 @@ def antimony_write_reactions(f: IO[str], f_ratelaws: str, f_stoichmat: str, f_ou
 def antimony_write_species_names(f_antimony: IO[str], species: np.ndarray) -> None:
     """Write species names and affiliated compartments in the given Antimony file
 
-    Warning:
+    Note:
         The first row is considered as a header, and hence it is skipped.
-
-    Notes:
         Species names should be located on the first column of the array.
         Species compartments should be located on the second column of the array.
 

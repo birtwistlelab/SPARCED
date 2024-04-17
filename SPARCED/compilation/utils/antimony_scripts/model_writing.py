@@ -13,7 +13,6 @@ def antimony_write_model(f_antimony: str, f_compartments: str,
                          f_stoichmatrix: str, f_output_parameters: str,
                          f_ratelaws: str, f_species: str, is_SPARCED: bool) \
                          -> tuple[np.ndarray, np.ndarray]:
-
     """Generate an Antimony file
 
     Provided an empty Antimony file and some SPARCED formatted data on
@@ -21,7 +20,8 @@ def antimony_write_model(f_antimony: str, f_compartments: str,
     content of the Antimony file.
 
     Note:
-    This process also creates a parameters file as an output.
+        This process also creates a parameters file as an output.
+
     Arguments:
         f_antimony: The name of the empty Antimony file to write in.
         f_compartments: The name of the input compartments file.
@@ -30,6 +30,7 @@ def antimony_write_model(f_antimony: str, f_compartments: str,
         f_ratelaws: The name of the input ratelaws file.
         f_species: The name of the input species file.
         is_SPARCED: A flag to raise SPARCED specific behavior or not.
+
     Returns:
         The contents of the compartments and species files.
     """
