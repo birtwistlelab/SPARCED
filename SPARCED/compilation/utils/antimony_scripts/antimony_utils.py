@@ -5,229 +5,45 @@ import numpy as np
 import pandas as pd
 import re
 
-def antimony_init(f_cv, f_s):
-    """
-    Load compartments, volumes and species from data files
 
-    :param f_cv: name of the compartments & volumes file
-    :type f_cv: [str]
-    :param f_s: name of the species file
-    :type f_s: [str]
-    :return: A tuple of the compartments, volumes and species lists
-    :rtype: (list[str],list[str],list[str])
-    
-    """
-    # Compartments and Volumes
-    comp = []
-    vol = []
-    sheet = np.array([np.array(line.strip().split("\t")) for line in open(f_cv)])
-    for row in sheet[1:]: # Skip header row
-        comp.append(row[0])
-        vol.append(row[1])
-    # Species
-    spec = np.array([np.array(line.strip().split("\t")) for line in open(f_s)], dtype="object")
-    return((comp, vol, spec, sheet))
+def extract_antimony_model_name(f_antimony: str) -> str:
+    """Extract the model name from the given Antimony file path
 
-def antimony_terminal(f):
-    """
-    Write constant variables and unit definitions in a given Antimony file
-    WARNING: This function contains hard-coded values
+    Note:
+        The model name is considered to be preceded by the last "ant_" prefix
+        found and followed by the first dot "." found in the file path string.
 
-    :param f: the Antimony file to write in
-    :type f: [open (w) file]
-    :return: None
-    :rtype: [void]
-
-    """
-    # Constant variables
-    f.write("# Other declarations:\nconst ")
-    constants = ['Cytoplasm', 'Extracellular', 'Nucleus', 'Mitochondrion']
-    for c in constants[:-1]:
-        f.write("{name}, ".format(name=c))
-    f.write("{last_name};\n\n".format(last_name=constants[-1]))
-    # Unit definitions
-    f.write("# Unit definitions:\n")
-    f.write("  unit time_unit = second;\n")
-    f.write("  unit volume = litre;\n")
-    f.write("  unit substance = 1e-9 mole;\n")
-    f.write("  unit nM = 1e-9 mole / litre;\n\n")
-
-def antimony_write_compartments(f, comp):
-    """
-    Write compartments names in a given Antimony file
-
-    :param f: the Antimony file to write in
-    :type f: [open(w) file]
-    :param comp: the compartments names to write
-    :type comp: list[str]
-    :return: None
-    :rtype: [void]
-
-    """
-    f.write("# Compartments and Species:\n")
-    for i in range(len(comp)):
-        f.write("Compartment {comp_name}; ".format(comp_name=comp[i]))
-    f.write("\n\n")
-
-def antimony_write_init_compartments(f, comp, vol):
-    """
-    Write compartments initial conditions in the given Antimony file
-    
-    :param f: name of the Antimony file to write in as an open (w) file
-    :param comp: the compartments names
-    :type comp: ([str])
-    :param vol: the compartments volumes
-    :type vol: ([numericals])
-    :return: None
-    :rtype: [void]
-    """
-    f.write("# Compartment initializations:\n")
-    for i in range(len(comp)):
-        f.write("{name} = {volume:.6e};\n{name} has volume;\n".format(name=comp[i], volume=np.double(vol[i])))
-    f.write("\n")
-
-def antimony_write_init_reactions(f, p_names, p_vals):
-    """
-    Write reactions' parameters' initial conditions in the given Antimony file
-
-    :param f: the Antimony file to write in as an open (w) file
-    :param p_names: the parameters names
-    :type p_names:  ([string])
-    :param p_vals: the parameters values
-    :type p_vals: ([numericals])
-    :return: None
-    :rtype: [void]
-    """
-    f.write("# Parameter initializations:\n ")
-    for i, val in enumerate(p_names):
-        f.write("{name} = {value:.6e};\n".format(name=val, value=np.double(p_vals[i])))
-    f.write("\n")
-
-def antimony_write_init_species(f, spec):
-    """
-    Write species' initial concentrations in the given Antimony file
-
-    Args:
-        f: the Antimony file to write in as an open (w) file
-        spec: the species' names and concentrations as a Numpy array
+    Arguments:
+        f_antimony: The name of the Antimony file.
 
     Returns:
-        None.
+        The extracted model name.
     """
-    f.write("# Species initializations:\n")
-    for i, val in enumerate(spec[1:]): # Skip header
-        f.write("{name} = {concentration:.6e};\n".format(name=val[0], concentration=np.double(val[2])))
-    f.write("\n")
 
-def antimony_write_reactions(f, f_rl, f_sm, f_outp):
-    """Write reactions in the given Antimony file
-    WARNING: This function contains a massive copy/paste from some older code
+    sub_file_name = f_antimony.split("ant_")
+    try:
+        assert len(sub_file_name) > 0
+    except:
+        print("ERROR: Antimony model name could not be extracted.\n Please make \
+               sure you passed all the required arguments. Current value for \
+               the file name is: {name}.\n".format(name=f_antimony))
+        sys.exit(0)
+    model_name = sub_file_name[len(sub_file_name)-1].split(".")[0]
+    return(model_name)
 
-    Args:
-        f: the Antimony file to write in as an open (w) file
-        f_rl: the name of the ratelaws file as a string
-        f_sm: the name of the stoichiometric matrix file as a string
-        f_outp: the name of the output parameters file as a string
+def load_input_data_file(f_input: str) -> np.ndarray:
+    """Load the given input data file 
+
+    Load an input data file structured as tab separated.
+
+    Arguments:
+        f_input: The input data file.
 
     Returns:
-        A typle with the parameters' names list and the parameters' values list.
+        A numpy array containing the data.
     """
-    f.write("# Reactions:\n")
-    stoic_sheet = np.array([np.array(line.strip().split("\t")) for line in open(f_sm)], dtype="object")
-    ratelaw_sheet = np.array([np.array(line.strip().split("\t")) for line in open(f_rl)], dtype="object")
-    ratelaw_data = np.array([line[1:] for line in ratelaw_sheet[1:]], dtype="object")
-    # ========== COPY/PASTE ==========
-    #gets first column minus blank space at the beginning, adds to stoic data list
-    stoic_columnnames = stoic_sheet[0]
-    stoic_rownames = [line[0] for line in stoic_sheet[1:]]
-    stoic_data = np.array([line[1:] for line in stoic_sheet[1:]])
-    # builds the important ratelaw+stoic lines into the txt file 
-    paramnames = []
-    paramvals = []
-    paramrxns = []
-    paramidxs = []
-    for rowNum, ratelaw in enumerate(ratelaw_data):
-        reactants = []
-        products = []
-        formula="k"+str(rowNum+1)+"*"
-    
-        for i, stoic_rowname in enumerate(stoic_rownames):
-            stoic_value = int(stoic_data[i][rowNum])
-            if stoic_value < 0:
-                for j in range(0,stoic_value*-1):
-                    reactants.append(stoic_rowname)
-                    formula=formula+stoic_rowname+"*"
-            elif stoic_value > 0:
-                for j in range(0,stoic_value):
-                    products.append(stoic_rowname)
-    
-        if "k" not in ratelaw[1]:
-            # the mass-action formula
-            formula=formula[:-1]
-            #the parameter
-            paramnames.append("k"+str(rowNum+1))
-            paramvals.append(np.double(ratelaw[1]))
-            paramrxns.append(ratelaw_sheet[rowNum+1][0])
-            paramidxs.append(int(0))
-        else:
-            # specific formula (non-mass-action)
-            formula = ratelaw[1]
-            j = 1
-            params = np.genfromtxt(ratelaw[2:], float) # parameters
-            params = params[~np.isnan(params)]
-            if len(params) == 1:
-                paramnames.append("k"+str(rowNum+1)+"_"+str(j))
-                paramvals.append(float(ratelaw[j+1]))
-                paramrxns.append(ratelaw_sheet[rowNum+1][0])
-                paramidxs.append(int(0))
-                pattern = 'k\D*\d*'
-                compiled = re.compile(pattern)
-                matches = compiled.finditer(formula)
-                for ematch in matches:
-                    formula = formula.replace(ematch.group(),paramnames[-1])
-            else:
-                for q,p in enumerate(params):
-                    paramnames.append("k"+str(rowNum+1)+"_"+str(j))
-                    paramvals.append(float(ratelaw[j+1]))
-                    paramrxns.append(ratelaw_sheet[rowNum+1][0])
-                    paramidxs.append(q)
-                    pattern1 = 'k(\D*)\d*'+'_'+str(j)
-                    compiled1 = re.compile(pattern1)
-                    matches1 = compiled1.finditer(formula)
-                    for ematch in matches1:
-                        formula = formula.replace(ematch.group(),paramnames[-1])
-                    j +=1
-        if ratelaw[0] == 'Cytoplasm':
-            valcomp = 5.25e-12
-        elif ratelaw[0] == 'Extracellular':
-            valcomp = 5.00e-5
-        elif ratelaw[0] == 'Nucleus':
-            valcomp = 1.75e-12
-        elif ratelaw[0] == 'Mitochondrion':
-            valcomp = 3.675e-13
-        #don't include reactions without products or reactants
-        if products == [] and reactants == []:
-            pass
-        else:
-            f.write("  %s: %s => %s; (%s)*%.6e;\n" % (stoic_columnnames[rowNum], " + ".join(reactants), " + ".join(products), formula, valcomp))
-    
-    # Export parameters for each reaction, with corresponding order within the ratelaw and its value
-    params_all = pd.DataFrame({'value':paramvals,'rxn':paramrxns,'idx':paramidxs},index=paramnames)
-    params_all.to_csv(f_outp,sep='\t',header=True, index=True)
-    # ========== END OF COPY/PASTE ==========
-    f.write("\n")
-    return((paramnames, paramvals))
 
-def antimony_write_species(f, spec):
-    """Write species' names and compartments in the given Antimony file
+    data = np.array([np.array(line.strip().split("\t"))
+                    for line in open(f_input)], dtype="object")
+    return(data)
 
-    Args:
-        f: the Antimony file to write in as an open (w) file
-        spec: the species' names and concentrations as a list of Numpy array
-
-    Returns:
-        None.
-    """
-    for i, val in enumerate(spec[1:]): # Skip header row
-        f.write("Species {name} in {compartment};\n".format(name=val[0], compartment=val[1]))
-    f.write("\n")

@@ -14,9 +14,10 @@ from compilation.utils.antimony_scripts.model_writing import antimony_write_mode
 from compilation.utils.sbml_scripts.model_annotation import sbml_annotate_model
 
 
-def create_model(f_observables, model_name, f_compartments, f_stoichmatrix,
-                 output_dir_path, f_output_parameters, f_ratelaws, f_species,
-                 verbose, is_SPARCED):
+def create_model(f_observables: str, model_name: str, f_compartments: str,
+                 f_stoichmatrix: str, output_dir_path: str,
+                 f_output_parameters: str, f_ratelaws: str, f_species: str,
+                 verbose: bool, is_SPARCED: bool) -> None:
 
     """
     Generate Antimony, SBML and AMICI models based on given input data
@@ -47,10 +48,10 @@ def create_model(f_observables, model_name, f_compartments, f_stoichmatrix,
     """
     # ------------------------------- ANTIMONY --------------------------------
     # Create and load an Antimony model
-    antimony_file_name, compartments, species, compartments_full = \
-            antimony_write_model(model_name, output_dir_path, f_compartments,
-                                 f_stoichmatrix, f_output_parameters,
-                                 f_ratelaws, f_species, is_SPARCED)
+    antimony_file_name = output_dir_path + "ant_" + model_name + ".txt"
+    compartments, species = antimony_write_model(antimony_file_name,
+                            f_compartments, f_stoichmatrix, f_output_parameters,
+                            f_ratelaws, f_species, is_SPARCED)
     try:
         assert not loadFile(antimony_file_name) == -1
     except:
@@ -72,7 +73,7 @@ def create_model(f_observables, model_name, f_compartments, f_stoichmatrix,
         if verbose: print("{name}: Success converting Antimony file to SBML"
                          .format(name=model_name))
     # Annotate the SBML model
-    sbml_annotate_model(sbml_file_name, species, compartments_full)
+    sbml_annotate_model(sbml_file_name, species, compartments)
     # --------------------------------- AMICI ---------------------------------
     # Import
     sbml_reader = libsbml.SBMLReader()
@@ -83,7 +84,7 @@ def create_model(f_observables, model_name, f_compartments, f_stoichmatrix,
     const_params = [params.getId() \
                     for params in sbml_model.getListOfParameters()]
     # Create Observables
-    # observables = define_observables(f_observables, compartments_full, species) 
+    # observables = define_observables(f_observables, compartments, species) 
     # Compile
     model_output_dir = output_dir_path + "amici_" + model_name
     # TODO: add observables and constant parameters (currently broken also in

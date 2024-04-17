@@ -2,70 +2,75 @@
 # -*- coding: utf-8 -*-
 
 import antimony
+import numpy as np
 
 from compilation.utils.arguments import parse_args
 from compilation.utils.antimony_scripts.antimony_utils import *
+from compilation.utils.antimony_scripts.antimony_write import *
+from compilation.utils.antimony_scripts.antimony_write_IC import *
 
+def antimony_write_model(f_antimony: str, f_compartments: str,
+                         f_stoichmatrix: str, f_output_parameters: str,
+                         f_ratelaws: str, f_species: str, is_SPARCED: bool) \
+                         -> tuple[np.ndarray, np.ndarray]:
 
-def antimony_write_model(model_name, output_dir_path, f_compartments,
-                         f_stoichmatrix, f_output_parameters, f_ratelaws,
-                         f_species, is_SPARCED):
+    """Generate an Antimony file
+
+    Provided an empty Antimony file and some SPARCED formatted data on
+    compartments, stoichiometric matrix, ratelaws, and species, generate the
+    content of the Antimony file.
+
+    Note:
+    This process also creates a parameters file as an output.
+    Arguments:
+        f_antimony: The name of the empty Antimony file to write in.
+        f_compartments: The name of the input compartments file.
+        f_stoichmatrix: The name of the input schiochiometric matrix file.
+        f_output_parameters: The name of the output parameters file.
+        f_ratelaws: The name of the input ratelaws file.
+        f_species: The name of the input species file.
+        is_SPARCED: A flag to raise SPARCED specific behavior or not.
+    Returns:
+        The contents of the compartments and species files.
     """
-    Generate an Antimony file based on given data    
-    :param model_name: name for the generated antimony model
-    :type model_name: [str]
-    :param f_compartments: compartments & volumes file
-    :type f_compartments: [str]
-    :param f_stoichmat: stoichiometric matrix file
-    :type f_stoichmat: [str]
-    :param f_output_params: output parameters file
-    :type f_output_params: [str]
-    :param f_ratelaws: ratelaws file
-    :type f_ratelaws: [str]
-    :param f_species: species file
-    :param is_SPARCED: activate hard-coded behaviors of SPARCED
-    !type is_SPARCED: [bool]
-    :type f_species: [str]
-    :return: The file name of the generated Antimony model + compartments and species
-    :rtype: ([str], list[str], list[str])
-    
-    """
-    antimony_file = output_dir_path + "ant_" + model_name + ".txt"
 
-    with open(antimony_file,"w") as antimony_model:
-        # Write file's header
+    with open(f_antimony,"w") as f:
+        # Header
         if (is_SPARCED):
-            antimony_model.write("# PanCancer Model by Birtwistle Lab\n")
-        antimony_model.write("model {antimony}()\n\n"
-                            .format(antimony=model_name))
-        # Write compartments, species and reactions
-        compartments, volumes, species, sheet = antimony_init(f_compartments,
-                                                              f_species)
-        antimony_write_compartments(antimony_model,compartments)
-        antimony_write_species(antimony_model,species)
-        param_names, param_vals = antimony_write_reactions(antimony_model,
-                                                           f_ratelaws,
-                                                           f_stoichmatrix,
-                                                           f_output_parameters)
-        # Write initial conditions
-        antimony_write_init_compartments(antimony_model,compartments,volumes)
-        antimony_write_init_species(antimony_model,species)
-        # Write reaction parameters
-        antimony_write_init_reactions(antimony_model,param_names,param_vals)
-        # Write other declarations and unit definitions
-        antimony_terminal(antimony_model)
-        antimony_model.write("\nend") 
-    return(antimony_file, compartments, species, sheet)
+            f.write("# PanCancer Model by Birtwistle Lab\n")
+        model_name = extract_antimony_model_name(f_antimony)
+        f.write("model {antimony}()\n\n".format(antimony=model_name))
+        # Compartments
+        compartments = load_input_data_file(f_compartments)
+        antimony_write_compartments_names(f, compartments)
+        # Species
+        species = load_input_data_file(f_species)
+        antimony_write_species_names(f, species)
+        # Reactions
+        param_names, param_vals = antimony_write_reactions(f, f_ratelaws,
+                                  f_stoichmatrix, f_output_parameters)
+        # Initial conditions
+        antimony_write_compartments_IC(f, compartments)
+        antimony_write_species_IC(f, species)
+        antimony_write_reactions_IC(f, param_names, param_vals)
+        # Declare compartments as constant variables
+        if (is_SPARCED):
+            antimony_write_constant_variables(f, compartments[:,0][1:])
+        # Unit definitions
+        antimony_write_unit_definitions(f)
+        f.write("\nend") 
+    return(compartments, species)
 
 
 if __name__ == '__main__':
     args = parse_args()
     # Add path of input directory to input files names
+    antimony_model_name = args.outputdir + "ant_" + args.name + ".txt"
     f_compartments = args.inputdir + args.compartments
     f_stoichmatrix = args.inputdir + args.stoichmatrix
     f_output_params = args.inputdir + args.outputparams
     f_ratelaws = args.inputdir + args.ratelaws
     f_species = args.inputdir + args.species
     # Write model
-    antimony_write_model(args.name, args.outputdir, f_compartments,
-                         f_stoichmatrix, f_output_params, f_ratelaws, f_species)
+    antimony_write_model(antimony_model_name, f_compartments, f_stoichmatrix,
+                         f_output_params, f_ratelaws, f_species)

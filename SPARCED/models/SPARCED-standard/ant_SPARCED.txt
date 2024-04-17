@@ -1,9 +1,9 @@
 # PanCancer Model by Birtwistle Lab
 model SPARCED()
 
-# Compartments and Species:
+# Compartments:
 Compartment Cytoplasm; Compartment Extracellular; Compartment Nucleus; Compartment Mitochondrion; 
-
+# Species:
 Species Ribosome in Cytoplasm;
 Species p53inac in Nucleus;
 Species p53ac in Nucleus;
@@ -3355,7 +3355,7 @@ Species m_INS in Cytoplasm;
   vPd88: MEKi_ppMEK => ; (k2437*MEKi_ppMEK)*5.250000e-12;
   vPd89: AKTi_AKT => ; (k2438*AKTi_AKT)*5.250000e-12;
 
-# Compartment initializations:
+# Compartments initialization:
 Cytoplasm = 5.250000e-12;
 Cytoplasm has volume;
 Extracellular = 5.000000e-05;
@@ -3365,7 +3365,7 @@ Nucleus has volume;
 Mitochondrion = 3.675000e-13;
 Mitochondrion has volume;
 
-# Species initializations:
+# Species initialization:
 Ribosome = 1.900000e+03;
 p53inac = 2.970000e+02;
 p53ac = 6.250000e+00;
@@ -4281,7 +4281,7 @@ m_MGMT = 1.580000e-03;
 m_INSR = 1.900000e-03;
 m_INS = 0.000000e+00;
 
-# Parameter initializations:
+# Parameters initialization:
  k1_1 = 4.200500e-03;
 k1_2 = 4.000000e-02;
 k1_3 = 5.000000e+00;
