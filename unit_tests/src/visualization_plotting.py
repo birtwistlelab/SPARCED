@@ -117,6 +117,8 @@ class VisualizationPlotting:
             axes[row, col].set_xscale(xScale)
             axes[row, col].set_yscale(yScale)
             axes[row, col].set_title(visualization_df['plotName'][i], weight='bold')
+            axes[row, col].set_xlim(0, 5)
+            axes[row, col].set_ylim(0, 150)
 
         # Remove unused subplots
         for i in range(len(unique_plots), num_rows * num_cols):
@@ -141,7 +143,8 @@ class VisualizationPlotting:
 
         # Create a legend using unique handles and labels
         # fig.legend(unique_lines, unique_labels, loc='lower right', bbox_to_anchor=(1.05, 1), frameon=False)
-        fig.legend(unique_lines, unique_labels, loc='upper right', frameon=False)
+        fig.legend(unique_lines, unique_labels, frameon=False)
+        
 
         # # Adjust layout
         plt.tight_layout()

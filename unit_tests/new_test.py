@@ -60,7 +60,7 @@ def create_directories(name, custom_input_files: Optional[int] = None):
       observable_files:
         - observables.tsv
       sbml_files:
-        - SPARCED.xml
+        - SPARCEDo4a_v1.xml
       model_specifications:
         - model_specifications.tsv
       visualization_files:

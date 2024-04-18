@@ -78,21 +78,20 @@ class ObservableCalculator:
         """
 
         result_dict = observable_dict
-
-        # Group by observableId and simulationConditionId
         if 'preequilibrationConditionId' in self.measurement_df.columns:
-            grouped_data = self.measurement_df[self.measurement_df['preequilibrationConditionId'].isna()].groupby(['observableId', 'simulationConditionId'])
-            # grouped_data = self.measurement_df.dropna(subset=['preequilibrationConditionId']).groupby(['observableId', 'simulationConditionId'])
+            no_preequilibrations_df = (self.measurement_df.drop(
+                self.measurement_df[self.measurement_df['simulationConditionId'] == self.measurement_df['preequilibrationConditionId']].index))
 
+            # Group by observableId and simulationConditionId
+            grouped_data = no_preequilibrations_df.groupby(['observableId', 'simulationConditionId'])
         else:
             grouped_data = self.measurement_df.groupby(['observableId', 'simulationConditionId'])
+            
         # look for experimental data in the measurements file by exculding all NaN values in measurement_df['measurement']
         # if all values are NaN, then there is no experimental data to compare to
         if self.measurement_df['measurement'].isna().all():
             print('No experimental data to compare to')
             return observable_dict
-
-        # print(grouped_data)
 
         for (observable, condition), condition_data in grouped_data:
             for cell in result_dict[condition]:
@@ -129,7 +128,7 @@ class CellDeathMetrics:
                     dead_simulation_times = dead_simulation[0]             
                     time_of_death[condition].extend(dead_simulation_times.flatten().tolist())
                 else:
-                    time_of_death[condition].append(None)
+                    time_of_death[condition].append(np.nan)
         return time_of_death
     
     def average_time_to_death(self):   
@@ -153,7 +152,7 @@ class CellDeathMetrics:
         for condition, cell_times in self.time_to_death().items():
             dead_cells[condition] = 0
             total_cells = len(self.data[condition])
-            dead_cells[condition] += sum(1 for time in cell_times if time is not None)
+            dead_cells[condition] += sum(1 for time in cell_times if time is not np.nan)
             # dead_cells[condition] = [dead_cells[condition] * (1 / total_cells) if total_cells !=0 else None for condition in dead_cells]
             dead_cells[condition] = dead_cells[condition] / total_cells if total_cells != 0 else None
             if percent:
