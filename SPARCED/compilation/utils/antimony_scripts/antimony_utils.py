@@ -31,19 +31,3 @@ def extract_antimony_model_name(f_antimony: str) -> str:
     model_name = sub_file_name[len(sub_file_name)-1].split(".")[0]
     return(model_name)
 
-def load_input_data_file(f_input: str) -> np.ndarray:
-    """Load the given input data file 
-
-    Load an input data file structured as tab separated.
-
-    Arguments:
-        f_input: The input data file.
-
-    Returns:
-        A numpy array containing the data.
-    """
-
-    data = np.array([np.array(line.strip().split("\t"))
-                    for line in open(f_input)], dtype="object")
-    return(data)
-

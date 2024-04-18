@@ -4,7 +4,8 @@
 import antimony
 import numpy as np
 
-from arguments import parse_args
+from utils.arguments import parse_args
+from utils.data_handling import load_input_data_file
 from compilation.utils.antimony_scripts.antimony_utils import *
 from compilation.utils.antimony_scripts.antimony_write import *
 from compilation.utils.antimony_scripts.antimony_write_IC import *

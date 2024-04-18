@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import re
 
-from compilation.utils.antimony_scripts.antimony_utils import load_input_data_file
+from utils.data_handling import load_input_data_file
 
 
 def antimony_write_constant_variables(f_antimony: IO[str], constants: np.ndarray) -> None:

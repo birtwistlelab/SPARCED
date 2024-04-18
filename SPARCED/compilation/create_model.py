@@ -8,8 +8,8 @@ import amici
 from antimony import *
 import libsbml
 
-from arguments import parse_args
-from compilation.utils.amici_scripts.amici_utils import define_observables
+from utils.arguments import parse_args
+from compilation.utils.amici_script.model_compilation import compile_sbml_to_amici
 from compilation.utils.antimony_scripts.model_writing import antimony_write_model
 from compilation.utils.sbml_scripts.model_annotation import sbml_annotate_model
 
