@@ -921,6 +921,15 @@ model SPARCED()
 
 
   # Reactions:
+
+
+  # Reactions:
+
+
+  # Reactions:
+
+
+  # Reactions:
   vbR:  => Ribosome; (k1_1+(k1_2*((pS6K^k1_3)/((k1_4^k1_3)+(pS6K^k1_3)))))*5.250000e-12;
   vdR: Ribosome => ; (k2*Ribosome)*5.250000e-12;
   vTL1:  => p53inac; (k3_1*m_TP53*(EIF4E/(k3_2+EIF4E)))*1.750000e-12;
