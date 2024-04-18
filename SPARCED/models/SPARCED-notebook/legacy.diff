@@ -1,10 +1,2 @@
-Only in SPARCED-notebook/SPARCED/build: temp.linux-x86_64-cpython-312
-Files SPARCED-notebook/SPARCED/dtcldp.h and SPARCED-legacy/SPARCED/dtcldp.h differ
-Files SPARCED-notebook/SPARCED/dwdp.h and SPARCED-legacy/SPARCED/dwdp.h differ
-Files SPARCED-notebook/SPARCED/dxdotdp_explicit.h and SPARCED-legacy/SPARCED/dxdotdp_explicit.h differ
-Files SPARCED-notebook/SPARCED/dxdotdx_explicit.h and SPARCED-legacy/SPARCED/dxdotdx_explicit.h differ
-Files SPARCED-notebook/SPARCED/h.h and SPARCED-legacy/SPARCED/h.h differ
-Files SPARCED-notebook/SPARCED/p.h and SPARCED-legacy/SPARCED/p.h differ
-Only in SPARCED-notebook/SPARCED/SPARCED: _SPARCED.cpython-312-x86_64-linux-gnu.so
 Files SPARCED-notebook/SPARCED/SPARCED/SPARCED.py and SPARCED-legacy/SPARCED/SPARCED/SPARCED.py differ
 Files SPARCED-notebook/SPARCED/swig/SPARCED_wrap.cpp and SPARCED-legacy/SPARCED/swig/SPARCED_wrap.cpp differ
