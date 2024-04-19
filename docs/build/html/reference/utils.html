@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>Model Simulation &mdash; SPARCED 1.4.0 documentation</title>
+  <title>General Utilities &mdash; SPARCED 1.4.0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
         <link rel="up" title="Reference" href="summary.html"/>
-        <link rel="next" title="License" href="../license.html"/>
-        <link rel="prev" title="Model Creation" href="compilation.html"/>
+        <link rel="next" title="Model Creation" href="compilation.html"/>
+        <link rel="prev" title="Reference" href="summary.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -130,8 +130,40 @@
 	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
 	  </dark-mode-toggle>
 	</div>
-  <section id="model-simulation">
-<h1>Model Simulation<a class="headerlink" href="#model-simulation" title="Permalink to this heading">¶</a></h1>
+  <section id="general-utilities">
+<h1>General Utilities<a class="headerlink" href="#general-utilities" title="Permalink to this heading">¶</a></h1>
+<section id="arguments">
+<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="arguments.parse_args">
+<span class="sig-prename descclassname"><span class="pre">arguments.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arguments.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arguments.parse_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve and parse arguments necessary for model creation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A namespace populated with all the attributes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="data-handling">
+<h2>Data handling<a class="headerlink" href="#data-handling" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="data_handling.load_input_data_file">
+<span class="sig-prename descclassname"><span class="pre">data_handling.</span></span><span class="sig-name descname"><span class="pre">load_input_data_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/data_handling.html#load_input_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data_handling.load_input_data_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the given input data file</p>
+<p>Load an input data file structured as tab separated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f_input</strong> – The input data file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array containing the data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -140,10 +172,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../license.html" class="btn btn-neutral float-right" title="License">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="compilation.html" class="btn btn-neutral float-right" title="Model Creation">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="compilation.html" class="btn btn-neutral" title="Model Creation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="summary.html" class="btn btn-neutral" title="Reference"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

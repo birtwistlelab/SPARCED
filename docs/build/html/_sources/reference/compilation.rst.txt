@@ -9,10 +9,6 @@ Main function for model creation
 
 .. autofunction:: create_model.create_model()
 
-Utilities
-
-.. autofunction:: arguments.parse_args()
-
 
 AMICI
 -------------------------------------------------------------------------------
@@ -27,6 +23,7 @@ Utilities
 
 .. autofunction:: amici_utils.extract_amici_model_name()
 
+
 Antimony
 -------------------------------------------------------------------------------
 
@@ -37,8 +34,6 @@ Model writing
 General Utilities
 
 .. autofunction:: antimony_utils.extract_antimony_model_name()
-
-.. autofunction:: antimony_utils.load_input_data_file()
 
 Writing Utilities
 
