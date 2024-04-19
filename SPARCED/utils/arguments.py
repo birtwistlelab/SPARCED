@@ -35,13 +35,17 @@ def parse_args():
     parser.add_argument('-c', '--compound',      default=None,
                         help="name of the additional compound in the simulation media")
     parser.add_argument('-d', '--dose',          default=0.0,
-                        help="concentration in nM of the additional compound in the simulation media")
+                         help="concentration in nM of the additional compound \
+                               in the simulation media")
     parser.add_argument('-e', '--egf',           default=1.0,
-                        help="EGF concentration (nM) in the simulation media")
+                        help="EGF extracellular volume concentration (nM) in \
+                              the simulation media")
     parser.add_argument('-i', '--insulin',       default=17.21,
-                        help="insulin concentration (nM) in the simulation media")
+                        help="insulin extracellular volume concentration (nM) \
+                              in the simulation media")
     parser.add_argument('-n', '--name',          default="SPARCED",
-                        help="desired name for the generated model / name of the input model")
+                        help="desired name for the generated model / name of \
+                              the input model")
     parser.add_argument('-s', '--simulation',    default="GrowthStim",
                         help="desired name for the simulation")
     parser.add_argument('-p', '--population',    default=1,
@@ -53,6 +57,7 @@ def parse_args():
     parser.add_argument('-w', '--wild',          action='store_true',
                         help="running wild (without SPARCED hard-coded values/behaviors")
     parser.add_argument('-x', '--exchange',      default=30,
-                        help="timeframe between modules information exchange during the simulation")
+                         help="timeframe between modules information exchange \
+                               during the simulation")
     return(parser.parse_args())
 
