@@ -20,7 +20,11 @@ def parse_args():
     parser.add_argument('-D', '--deterministic', action="store_true",
                         help="run simulation in deterministic mode")
     parser.add_argument('-I', '--inputdir',      default="./data/core/",
-                        help="relative path to the input directory")
+                        help="relative path to the input directory for model creation")
+    parser.add_argument('-J', '--inputsim',      default="./data/simulation/",
+                        help="relative path to the input directory for model simulation")
+    parser.add_argument('-L', '--ligands',       default="ligands.txt",
+                        help="name of the input ligands concentrations file")
     parser.add_argument('-M', '--stoichmatrix',  default="StoicMat.txt",
                         help="name of the input stoichiometric matrix file")
     parser.add_argument('-O', '--outputdir',     default="./models/SPARCED-standard/",
