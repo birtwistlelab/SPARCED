@@ -79,7 +79,7 @@ def create_model(f_observables: str, model_name: str, f_compartments: str,
     # Compile the SBML model into an AMICI model
     model_output_dir = output_dir_path + "amici_" + model_name
     compile_sbml_to_amici(sbml_file_name, model_output_dir, f_observables,
-                          compartments, species)
+                          compartments, species, verbose)
     if verbose: print("{name}: Sucess compiling the model"
                      .format(name=model_name))
 

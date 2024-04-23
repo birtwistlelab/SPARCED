@@ -10,7 +10,7 @@ from compilation.utils.amici_scripts.amici_utils import *
 
 def compile_sbml_to_amici(sbml_file_name: str, model_output_dir: str,
                           f_observables: str, compartments: np.ndarray,
-                          species: np.ndarray) -> None:
+                          species: np.ndarray, verbose: bool) -> None:
     """Compile the given SBML model into an AMICI model
 
     Warning:
