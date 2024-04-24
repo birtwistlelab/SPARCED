@@ -141,7 +141,7 @@ class RunUnitTest:
         # Load the SBML model
         model = SPARCED.getModel()
         solver = model.getSolver()
-        solver.setMaxSteps = 1e10
+        solver.setMaxSteps = 1e10 ### Check on the necessity of this
 
         #----------------------Job Asisgnment-------------------------------#
         list_of_jobs = utm._total_tasks(conditions_df, measurement_df)

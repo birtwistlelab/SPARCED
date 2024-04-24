@@ -1,5 +1,5 @@
 observableId	simulationConditionId	measurement	time
-cPARP_total	BAD_total	0	172800
-cPARP_total	BIM_total	0	172800
-PARP_total	BAD_total	0	172800
-PARP_total	BIM_total	0	172800
+cPARP_total	BAD_total		172800
+cPARP_total	BIM_total		172800
+PARP_total	BAD_total		172800
+PARP_total	BIM_total		172800

@@ -70,12 +70,13 @@ class SPARCED_CBS:
         parp_value = self.model.getInitialStates()[species_ids.index('PARP')]
 
         if parp_value < cPARP_value:
-            print(cPARP_value)
             pass # need to find a new way to move to next loop after this. 
 
         # Set the perturbations for the simulation
 
         self.model = self._set_perturbations(condition)
+
+        # print(f'BAD parameters set to {self.model.getParameterById("k1827").getValue()}, {self.model.getParameterById("k1830").getValue()}')
 
         # Set the timepoints for the simulation
         simulation_timeframe = (
@@ -240,7 +241,7 @@ class SPARCED_CBS:
         for species in growth_factors:
             self.model = utm._set_species_value(self.model, species, 0) 
 
-        xoutS_all, _, _ = RunSPARCED(flagD=1, 
+        xoutS_all, _, _ = RunSPARCED(flagD=0, 
                                      th=simulation_time,
                                      spdata = [],
                                      genedata = [], 
