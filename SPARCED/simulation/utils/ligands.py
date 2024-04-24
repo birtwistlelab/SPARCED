@@ -3,6 +3,7 @@
 
 import numpy as np
 
+from utils.arguments import parse_args
 from utils.data_handling import load_input_data_file
 
 
@@ -29,6 +30,13 @@ def basic_ligands(c_egf: float=0.0, c_ins: float=0.0) -> np.ndarray:
                      ['F',      float(0.0)],                    # FGF
                      ['I',      float(0.0)],                    # IGF
                      ['INS',    float(c_ins)]], dtype=object))  # Insulin
+
+def basic_ligands_from_arguments() -> np.ndarray:
+    """
+    Call basic ligands function while passing arguments values
+    """
+    args = parse_args()
+    return(basic_ligands(args.egf, args.insulin))
 
 def load_input_ligands(f_input: str) -> np.ndarray:
     """Load ligands concentrations from the given input dat a file

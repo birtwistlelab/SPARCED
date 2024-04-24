@@ -20,8 +20,7 @@ from simulation.launchers import *
 # You may want to load a custom extracellular concentration of ligands.
 # The basic function is usefull if you don't want to add any ligands or if you
 # need to adjust only EGF and/or insulin concentrations.
-# TODO: implement reading arguments
-ligands = basic_ligands(1.0, 17.21) # WARNING: hard-coded values
+ligands = basic_ligands_from_arguments()
 # If you need to adjust more species or simply if you're more comfortable
 # working with input files, use the load function instead.
 # ligands = load_input_ligands(your_file_path)
