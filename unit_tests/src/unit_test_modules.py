@@ -229,7 +229,7 @@ class UnitTestModules:
         except RuntimeError:
             model.setFixedParameterById(parameter, parameter_value)
         
-        print(f"Parameter {parameter} set to {model.getParameterById(parameter).getValue()}")
+        print(f"Parameter {parameter} set to {model.getParameterById(parameter)}")
 
         return model
 
