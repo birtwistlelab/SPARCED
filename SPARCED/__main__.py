@@ -7,14 +7,14 @@
 from compilation.utils import *
 from compilation.create_model import *
 # Model simulation
-from simulation.ligands import *
-from simulation.run import *
+from simulation.utils.ligands import *
+from simulation.launchers import *
 
 # First step is to build the model.
 # You may also want to comment this section out and run a model that was
 # previously built instead.
 # Note that building the model may take several minutes.
-launch_model_creation() # Process parsed arguments and launch model creation
+# launch_model_creation() # Process parsed arguments and launch model creation
 
 # Second step is to set the initial conditions.
 # You may want to load a custom extracellular concentration of ligands.
@@ -26,5 +26,6 @@ ligands = basic_ligands(1.0, 17.21) # WARNING: hard-coded values
 # working with input files, use the load function instead.
 # ligands = load_input_ligands(your_file_path)
 
-# Run model
-run_model(ligands)
+# Finally you can run an experiment, i.e. one or several cell simulations
+# within the given initial conditions.
+launch_experiment_simulation(ligands) # Process parsed arguments and launch experiment
