@@ -99,18 +99,4 @@ SPARCED
 
 -   'Species1 Model Identifier' + '_' + 'Species1 Conc.' + '_' +'Species$n Model identifier' + '_' + 'Species$n Conc.' +'_' + time
 
-## Figure 4A Unit Test Notes:
 
--   Basic look at the unit test shows that its a comparison of cell % death over time, with 3 time intervals: 24, 48, and 72 hours.
-
-### Questions:
-
--   How did they generate the cell population?
-
--   What was used to create cell death?
-
--   What species/observable did they use to calculate cell death
-
--   First Set of Conditions: all growth factors are set to 0 and etoposide (k316_3) was set to 100uM
-
--   Second conditions had EGF set to 20ng/mL and insulin set to 10ug/mL.
