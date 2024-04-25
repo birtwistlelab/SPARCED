@@ -17,7 +17,7 @@ def parse_args():
                         help="name of the input observables file")
     parser.add_argument('-C', '--compartments',  default="Compartments.txt",
                         help="name of the input compartments file")
-    parser.add_argument('-D', '--deterministic', action="store_true",
+    parser.add_argument('-D', '--deterministic', action="store_false",
                         help="run simulation in deterministic mode")
     parser.add_argument('-I', '--inputdir',      default="./data/core/",
                         help="relative path to the input directory for model creation")
