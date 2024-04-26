@@ -94,7 +94,7 @@ def launch_model_creation():
     f_observables = args.inputdir + args.observables
     f_compartments = args.inputdir + args.compartments                          
     f_stoichmatrix = args.inputdir + args.stoichmatrix                          
-    f_output_params = args.inputdir + args.outputparams                         
+    f_output_params = args.outputdir + args.outputparams                         
     f_ratelaws = args.inputdir + args.ratelaws                                  
     f_species = args.inputdir + args.species                                    
     # Create model                                                              
