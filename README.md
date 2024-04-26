@@ -14,13 +14,13 @@ are sub-models of the large-scale mechanistic model.
 ## Instructions & Beginners
 
 A beginner's installation guide of SPARCED for newcomers in computer science
-is available [here](installation-guide.md)
+is available [here](docs/source/installation-guide.md)
 
 ## Replicate our results
 
 You will find specific instructions on how to run the model (including previous
 versions) as described in each of our published papers
-[here](papers/summary.rst).
+[here](docs/sourcepapers/summary.rst).
 
 ## Dependencies
 
@@ -33,7 +33,7 @@ the minimal required versions.
 ## Further information
 
 More information on the model itself can be found in this documentation, in
-particular in the [section dedicated to our papers](papers/summary.rst).
+particular in the [section dedicated to our papers](docs/source/papers/summary.rst).
 
 ## Acknowledgments
 
