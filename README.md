@@ -20,7 +20,7 @@ is available [here](docs/source/installation-guide.md)
 
 You will find specific instructions on how to run the model (including previous
 versions) as described in each of our published papers
-[here](docs/sourcepapers/summary.rst).
+[here](docs/sourcepapers).
 
 ## Dependencies
 
@@ -33,7 +33,7 @@ the minimal required versions.
 ## Further information
 
 More information on the model itself can be found in this documentation, in
-particular in the [section dedicated to our papers](docs/source/papers/summary.rst).
+particular in the [section dedicated to our papers](docs/source/papers).
 
 ## Acknowledgments
 
