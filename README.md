@@ -20,7 +20,7 @@ is available [here](docs/source/installation-guide.md)
 
 You will find specific instructions on how to run the model (including previous
 versions) as described in each of our published papers
-[here](docs/sourcepapers).
+[here](docs/source/papers).
 
 ## Dependencies
 
@@ -40,8 +40,8 @@ particular in the [section dedicated to our papers](docs/source/papers).
 SPARCED is a product of the [Birtwistle Lab](http://www.birtwistlelab.com/).
 
 We greatly appreciate the help from multiple colloborators, including:
-  - the [Feltus Lab](https://www.clemson.edu/science/departments/genetics-biochemistry/people/profiles/ffeltus)
-  - the [Hasenauer Lab](https://www.mathematics-and-life-sciences.uni-bonn.de/en/group-members/jan-hasenauer)
+  - the [Feltus Lab](https://www.clemson.edu/science/academics/departments/genbio/about/profiles/ffeltus)
+  - the [Hasenauer Lab](https://www.mathematics-and-life-sciences.uni-bonn.de/en/research/hasenauer-group)
   - [Robert C. Blake](https://bbs.llnl.gov/RobertBlake.html) from LLNL
 
 _This material is based on work supported by the National Science Foundation
