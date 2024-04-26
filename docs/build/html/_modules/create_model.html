@@ -80,7 +80,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
@@ -215,7 +215,7 @@
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Sucess compiling the model&quot;</span>
                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span></div>
 
-<span class="k">def</span> <span class="nf">launch_model_creation</span><span class="p">():</span>
+<div class="viewcode-block" id="launch_model_creation"><a class="viewcode-back" href="../reference/compilation.html#create_model.launch_model_creation">[docs]</a><span class="k">def</span> <span class="nf">launch_model_creation</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Small routine to process parsed arguments and call create_model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -226,13 +226,13 @@
     <span class="n">f_observables</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">observables</span>
     <span class="n">f_compartments</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">compartments</span>                          
     <span class="n">f_stoichmatrix</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">stoichmatrix</span>                          
-    <span class="n">f_output_params</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">outputparams</span>                         
+    <span class="n">f_output_params</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">outputparams</span>                         
     <span class="n">f_ratelaws</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">ratelaws</span>                                  
     <span class="n">f_species</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">species</span>                                    
     <span class="c1"># Create model                                                              </span>
     <span class="n">create_model</span><span class="p">(</span><span class="n">f_observables</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">,</span> <span class="n">f_stoichmatrix</span><span class="p">,</span>
                  <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span><span class="p">,</span> <span class="n">f_output_params</span><span class="p">,</span> <span class="n">f_ratelaws</span><span class="p">,</span> <span class="n">f_species</span><span class="p">,</span>
-                 <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">)</span>
+                 <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">)</span></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">launch_model_creation</span><span class="p">()</span>
