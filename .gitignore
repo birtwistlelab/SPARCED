@@ -1,3 +1,10 @@
+# Python files
+*.py[cod]
+__pycache__/
+
+# Simulation results
+SPARCED/results
+
 old*
 *.ipynb_check*
 .nextflow*
