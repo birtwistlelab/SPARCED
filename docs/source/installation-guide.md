@@ -1,5 +1,4 @@
 # The SPARCED Installation Guide for Absolute Beginners
--------------------------------------------------------------------------------
 _Written by Aurore Amrit_
 
 Hi! 🌄

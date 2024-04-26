@@ -2,8 +2,6 @@
 Welcome to SPARCED's documentation!
 ===============================================================================
 
-This is the index / landing page
-
 .. toctree::
    contents
 

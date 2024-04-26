@@ -6,6 +6,5 @@ Documentation for SPARCED
 
 
 .. toctree::
-    docker
     notebook
     hands-on

@@ -81,6 +81,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
 </ul>
@@ -140,9 +141,9 @@
 <span class="kn">import</span> <span class="nn">libsbml</span>
 
 <span class="kn">from</span> <span class="nn">utils.arguments</span> <span class="kn">import</span> <span class="n">parse_args</span>
-<span class="kn">from</span> <span class="nn">compilation.utils.amici_scripts.model_compilation</span> <span class="kn">import</span> <span class="n">compile_sbml_to_amici</span>
-<span class="kn">from</span> <span class="nn">compilation.utils.antimony_scripts.model_writing</span> <span class="kn">import</span> <span class="n">antimony_write_model</span>
-<span class="kn">from</span> <span class="nn">compilation.utils.sbml_scripts.model_annotation</span> <span class="kn">import</span> <span class="n">sbml_annotate_model</span>
+<span class="kn">from</span> <span class="nn">compilation.amici_scripts.model_compilation</span> <span class="kn">import</span> <span class="n">compile_sbml_to_amici</span>
+<span class="kn">from</span> <span class="nn">compilation.antimony_scripts.model_writing</span> <span class="kn">import</span> <span class="n">antimony_write_model</span>
+<span class="kn">from</span> <span class="nn">compilation.sbml_scripts.model_annotation</span> <span class="kn">import</span> <span class="n">sbml_annotate_model</span>
 
 
 <div class="viewcode-block" id="create_model"><a class="viewcode-back" href="../reference/compilation.html#create_model.create_model">[docs]</a><span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span><span class="n">f_observables</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -210,7 +211,7 @@
     <span class="c1"># Compile the SBML model into an AMICI model</span>
     <span class="n">model_output_dir</span> <span class="o">=</span> <span class="n">output_dir_path</span> <span class="o">+</span> <span class="s2">&quot;amici_&quot;</span> <span class="o">+</span> <span class="n">model_name</span>
     <span class="n">compile_sbml_to_amici</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">model_output_dir</span><span class="p">,</span> <span class="n">f_observables</span><span class="p">,</span>
-                          <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
+                          <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Sucess compiling the model&quot;</span>
                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span></div>
 

@@ -10,6 +10,7 @@ Contents Table
    tutorials/summary
    papers/summary
    reference/summary
+   future-dev
    license
 
 Indices and tables

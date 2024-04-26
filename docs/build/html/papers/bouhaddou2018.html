@@ -83,6 +83,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="summary.html">Replicate Published Papers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
 </ul>
@@ -132,7 +133,46 @@
 	</div>
   <section id="bouhaddou-2018-model">
 <h1>Bouhaddou 2018 model<a class="headerlink" href="#bouhaddou-2018-model" title="Permalink to this heading">¶</a></h1>
-<p>How to replicate the Bouhaddou results</p>
+<p>Files to exactly replicate Bouhaddou2018 model are located in SPARCED Brep
+[TODO: explain how to get back to prior version].</p>
+<p>In this format, mRNAs and protein species are tracked in separate variables.
+The number of species and ratelaws are also the same Bouhaddou2018 model.
+SPARCED is the new, updated and cleaned up version.</p>
+<section id="model-testing-and-performance">
+<h2>Model Testing and Performance<a class="headerlink" href="#model-testing-and-performance" title="Permalink to this heading">¶</a></h2>
+<p>The Docker image of the model and simulations are tested with multiple machines
+(see bellow). The simulation times are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">Model</span> <span class="n">file</span> <span class="n">creation</span> <span class="n">time</span><span class="p">:</span> <span class="o">~</span> <span class="mi">2</span> <span class="nb">min</span>
+<span class="o">-</span> <span class="n">Model</span> <span class="n">compilation</span> <span class="n">time</span><span class="p">:</span> <span class="mi">15</span><span class="o">-</span><span class="mi">25</span> <span class="nb">min</span> <span class="p">(</span><span class="n">depends</span> <span class="n">on</span> <span class="n">model</span> <span class="n">size</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">Model</span> <span class="n">simulation</span> <span class="n">time</span><span class="p">:</span> <span class="o">~</span> <span class="mi">1</span> <span class="nb">min</span> <span class="k">for</span> <span class="mi">24</span><span class="o">-</span><span class="n">hour</span> <span class="n">simulation</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Ubuntu-Desktops:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Ubuntu 18.04, Intel Core i7 3930 CPU &#64; 3.20 Ghz, 32 GB, DDR3, Nvidia GTX
+690 GPU</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Windows-Desktops:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Windows 10 Education, Intel Core i5-3470 CPU &#64; 3.20 Ghz, 8.00 GB RAM,
+Nvidia GTX 650 GPU, 64-bit operating system</p></li>
+<li><p>Windows 10 Education, Intel Core i7-9700 CPU &#64;5.00 GHz, 32.00 GB RAM,
+Nvidia RTW 2070 GPU, 64-bit operating system</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>Windows-Laptops:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Windows 10 Pro, Intel Core i7-8550U CPU &#64; 2.00 GHz, 16.00 GB RAM, Intel UHD
+620 GPU, 64-bit operating system</p></li>
+<li><p>Windows 10 Education, Intel Core i7-10705H CPU &#64; 2.60 GHz, 16.00 GB RAM,
+Nvidia GTX 1660ti GPU, 64-bit operating system</p></li>
+</ul>
+</section>
 </section>
 
 

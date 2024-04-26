@@ -12,11 +12,13 @@ import sphinx_pdj_theme
 # -- Path setup --------------------------------------------------------------
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 sys.path.insert(0, os.path.abspath('../../SPARCED'))
-sys.path.insert(0, os.path.abspath('../../SPARCED/utils'))
-sys.path.insert(0, os.path.abspath('../../SPARCED/compilation'))
-sys.path.insert(0, os.path.abspath('../../SPARCED/compilation/utils/amici_scripts'))
-sys.path.insert(0, os.path.abspath('../../SPARCED/compilation/utils/antimony_scripts'))
-sys.path.insert(0, os.path.abspath('../../SPARCED/compilation/utils/sbml_scripts'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/src'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/src/compilation'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/src/compilation/amici_scripts'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/src/compilation/antimony_scripts'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/src/compilation/sbml_scripts'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/src/simulation'))
+sys.path.insert(0, os.path.abspath('../../SPARCED/src/simulation/utils'))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information

@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>data_handling &mdash; SPARCED 1.4.0 documentation</title>
+  <title>Mutsuddy 2023 model &mdash; SPARCED 1.4.0 documentation</title>
   
 
   
@@ -36,7 +36,9 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
-        <link rel="up" title="Module code" href="index.html"/>
+        <link rel="up" title="Replicate Published Papers" href="summary.html"/>
+        <link rel="next" title="Reference" href="../reference/summary.html"/>
+        <link rel="prev" title="Erdem 2022 model" href="erdem2022.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -74,13 +76,14 @@
 	
           
           
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Contents Table</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="summary.html">Replicate Published Papers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
 </ul>
@@ -128,33 +131,23 @@
 	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
 	  </dark-mode-toggle>
 	</div>
-  <h1>Source code for data_handling</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
+  <section id="mutsuddy-2023-model">
+<h1>Mutsuddy 2023 model<a class="headerlink" href="#mutsuddy-2023-model" title="Permalink to this heading">¶</a></h1>
+<p>How to replicate the Mutsuddy results</p>
+</section>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-
-<div class="viewcode-block" id="load_input_data_file"><a class="viewcode-back" href="../reference/utils.html#data_handling.load_input_data_file">[docs]</a><span class="k">def</span> <span class="nf">load_input_data_file</span><span class="p">(</span><span class="n">f_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the given input data file </span>
-
-<span class="sd">    Load an input data file structured as tab separated.</span>
-
-<span class="sd">    Arguments:</span>
-<span class="sd">        f_input: The input data file.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        A numpy array containing the data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">))</span>
-                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">f_input</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
-
-</pre></div>
 
 	    </div>
             <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../reference/summary.html" class="btn btn-neutral float-right" title="Reference">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="erdem2022.html" class="btn btn-neutral" title="Erdem 2022 model"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

@@ -5,4 +5,5 @@ Replicate Published Papers
 .. toctree::
    bouhaddou2018
    erdem2022
+   mutsuddy2023
 

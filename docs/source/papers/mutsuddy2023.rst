@@ -1,6 +1,5 @@
 ===============================================================================
-Docker Container
+Mutsuddy 2023 model
 ===============================================================================
 
-How to install and use the docker container
-
+How to replicate the Mutsuddy results
