@@ -9,6 +9,7 @@ Main function for model creation
 
 .. autofunction:: create_model.create_model()
 
+.. autofunction:: create_model.launch_model_creation()
 
 AMICI
 -------------------------------------------------------------------------------

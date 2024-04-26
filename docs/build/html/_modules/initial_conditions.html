@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>Reference Documentation &mdash; SPARCED 1.4.0 documentation</title>
+  <title>initial_conditions &mdash; SPARCED 1.4.0 documentation</title>
   
 
   
@@ -36,9 +36,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
-        <link rel="up" title="Contents Table" href="../contents.html"/>
-        <link rel="next" title="Data" href="data.html"/>
-        <link rel="prev" title="Mutsuddy 2023 model" href="../papers/mutsuddy2023.html"/>
+        <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -76,13 +74,13 @@
 	
           
           
-              <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Contents Table</a><ul class="current">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Reference Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
@@ -131,76 +129,42 @@
 	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
 	  </dark-mode-toggle>
 	</div>
-  <section id="reference-documentation">
-<h1>Reference Documentation<a class="headerlink" href="#reference-documentation" title="Permalink to this heading">¶</a></h1>
-<section id="models">
-<h2>Models<a class="headerlink" href="#models" title="Permalink to this heading">¶</a></h2>
-<p>SPARCED-standard will soon be the reference model.
-In the meantime, we consider SPARCED-notebook as the reference.</p>
-</section>
-<section id="input-files">
-<h2>Input files<a class="headerlink" href="#input-files" title="Permalink to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="data.html#core">Core</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data.html#compartments">Compartments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data.html#observables">Observables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data.html#ratelaws">Ratelaws</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data.html#species">Species</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data.html#stoicmat">StoicMat</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="data.html#simulation">Simulation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data.html#ligands">ligands</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data.html#genereg">GeneReg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data.html#omicsdata">OmicsData</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="source-code">
-<h2>Source code<a class="headerlink" href="#source-code" title="Permalink to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">General Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#arguments">Arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#data-handling">Data handling</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="compilation.html">Model Creation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="compilation.html#general">General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compilation.html#amici">AMICI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compilation.html#antimony">Antimony</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compilation.html#sbml">SBML</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="simulation.html">Model Simulation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="simulation.html#general">General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation.html#utilities">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation.html#modules">Modules</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-</section>
+  <h1>Source code for initial_conditions</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">utils.data_handling</span> <span class="kn">import</span> <span class="n">load_input_data_file</span>
+
+
+<div class="viewcode-block" id="load_species_initial_conditions"><a class="viewcode-back" href="../reference/simulation.html#initial_conditions.load_species_initial_conditions">[docs]</a><span class="k">def</span> <span class="nf">load_species_initial_conditions</span><span class="p">(</span><span class="n">f_species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ligands</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                                    <span class="n">compound</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dose</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create species initial conditions array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Warning: first line is considered as a header and hence skipped</span>
+    <span class="c1"># Species names should be on first column</span>
+    <span class="c1"># Species initial conditions, should be on third column</span>
+    <span class="n">species</span> <span class="o">=</span> <span class="n">load_input_data_file</span><span class="p">(</span><span class="n">f_species</span><span class="p">)</span>
+    <span class="n">species_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">species_initial_conditions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">species</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">species_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_names</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">species_initial_conditions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_initial_conditions</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="c1"># Any concentration bellow 1e-6 is considered as zero (0)</span>
+    <span class="n">species_initial_conditions</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">species_initial_conditions</span> <span class="o">&lt;=</span> <span class="mf">1e-6</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="c1"># Adjust ligands concentration</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">ligands</span><span class="p">:</span>
+        <span class="n">species_initial_conditions</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">species_names</span> <span class="o">==</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">compound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">species_initial_conditions</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">species_names</span> <span class="o">==</span> <span class="n">compound</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dose</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">species_initial_conditions</span><span class="p">)</span></div>
+
+</pre></div>
 
 	    </div>
             <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="data.html" class="btn btn-neutral float-right" title="Data">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../papers/mutsuddy2023.html" class="btn btn-neutral" title="Mutsuddy 2023 model"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

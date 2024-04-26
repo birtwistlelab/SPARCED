@@ -36,7 +36,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
-        <link rel="up" title="Reference" href="summary.html"/>
+        <link rel="up" title="Reference Documentation" href="summary.html"/>
         <link rel="next" title="Future developments" href="../future-dev.html"/>
         <link rel="prev" title="Model Creation" href="compilation.html"/>
 
@@ -82,7 +82,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="summary.html">Reference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="summary.html">Reference Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
@@ -133,6 +133,95 @@
 	</div>
   <section id="model-simulation">
 <h1>Model Simulation<a class="headerlink" href="#model-simulation" title="Permalink to this heading">¶</a></h1>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this heading">¶</a></h2>
+<p>Main functions to run a model simulation</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="launchers.launch_experiment_simulation">
+<span class="sig-prename descclassname"><span class="pre">launchers.</span></span><span class="sig-name descname"><span class="pre">launch_experiment_simulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/launchers.html#launch_experiment_simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#launchers.launch_experiment_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Small routine to process parsed arguments and call run_model</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="run_model.run_experiment">
+<span class="sig-prename descclassname"><span class="pre">run_model.</span></span><span class="sig-name descname"><span class="pre">run_experiment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/run_model.html#run_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#run_model.run_experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run an experiment (one or several cells with the same initial conditions)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="run_model.run_single_simulation">
+<span class="sig-prename descclassname"><span class="pre">run_model.</span></span><span class="sig-name descname"><span class="pre">run_single_simulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/run_model.html#run_single_simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#run_model.run_single_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a single simulation of SPARCED</p>
+</dd></dl>
+
+</section>
+<section id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading">¶</a></h2>
+<p>Initial conditions</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="initial_conditions.load_species_initial_conditions">
+<span class="sig-prename descclassname"><span class="pre">initial_conditions.</span></span><span class="sig-name descname"><span class="pre">load_species_initial_conditions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/initial_conditions.html#load_species_initial_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#initial_conditions.load_species_initial_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create species initial conditions array</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ligands.basic_ligands">
+<span class="sig-prename descclassname"><span class="pre">ligands.</span></span><span class="sig-name descname"><span class="pre">basic_ligands</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ligands.html#basic_ligands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ligands.basic_ligands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic ligands setup</p>
+<p>Use passed arguments to set EGF and insulin values.
+Set all remaining ligands (HER, HGF, PDGF, FGF and IGF) to zero.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>SPARCED symbols for ligands are hard-coded.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c_egf</strong> – The extracellular concentration of EGF (nM).</p></li>
+<li><p><strong>c_ins</strong> – The extracellular concentration of insulin (nM).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array containing ligands symbols and concentrations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ligands.basic_ligands_from_arguments">
+<span class="sig-prename descclassname"><span class="pre">ligands.</span></span><span class="sig-name descname"><span class="pre">basic_ligands_from_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ligands.html#basic_ligands_from_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ligands.basic_ligands_from_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call basic ligands function while passing arguments values</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ligands.load_input_ligands">
+<span class="sig-prename descclassname"><span class="pre">ligands.</span></span><span class="sig-name descname"><span class="pre">load_input_ligands</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ligands.html#load_input_ligands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ligands.load_input_ligands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load ligands concentrations from the given input dat a file</p>
+<p>Load an input ligands concentrations file structured as tab separated,
+and remove the first column (human-readable) to keep only the second
+(SPARCED symbol) and third (concentration in nM) columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f_input</strong> – The input ligands concentrations file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array containing ligands symbols and concentrations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Output</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="output.save_simulation_output">
+<span class="sig-prename descclassname"><span class="pre">output.</span></span><span class="sig-name descname"><span class="pre">save_simulation_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/output.html#save_simulation_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#output.save_simulation_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save simulation results in three files: species, genes and time</p>
+</dd></dl>
+
+</section>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this heading">¶</a></h2>
+<p>Documentation for those files is not available yet.</p>
+</section>
 </section>
 
 
