@@ -12298,8 +12298,8 @@
           <speciesReference species="damageSSB" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Ma"/>
           <modifierSpeciesReference species="Me"/>
+          <modifierSpeciesReference species="Ma"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -12732,9 +12732,9 @@
           <speciesReference species="Mdi" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Mdp21"/>
           <modifierSpeciesReference species="Md"/>
           <modifierSpeciesReference species="Mdp27"/>
+          <modifierSpeciesReference species="Mdp21"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -12927,13 +12927,13 @@
           <speciesReference species="Mei" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Mep21"/>
-          <modifierSpeciesReference species="Map21"/>
+          <modifierSpeciesReference species="Me"/>
           <modifierSpeciesReference species="Mep27"/>
           <modifierSpeciesReference species="Mai"/>
           <modifierSpeciesReference species="Ma"/>
           <modifierSpeciesReference species="Map27"/>
-          <modifierSpeciesReference species="Me"/>
+          <modifierSpeciesReference species="Mep21"/>
+          <modifierSpeciesReference species="Map21"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -13319,13 +13319,13 @@
           <speciesReference species="Mai" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Mep21"/>
-          <modifierSpeciesReference species="Map21"/>
+          <modifierSpeciesReference species="Mei"/>
+          <modifierSpeciesReference species="Me"/>
           <modifierSpeciesReference species="Mep27"/>
           <modifierSpeciesReference species="Ma"/>
           <modifierSpeciesReference species="Map27"/>
-          <modifierSpeciesReference species="Mei"/>
-          <modifierSpeciesReference species="Me"/>
+          <modifierSpeciesReference species="Mep21"/>
+          <modifierSpeciesReference species="Map21"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -13873,9 +13873,9 @@
           <speciesReference species="Mbi" stoichiometry="1" constant="true"/>
         </listOfProducts>
         <listOfModifiers>
+          <modifierSpeciesReference species="Mb"/>
           <modifierSpeciesReference species="Mbp27"/>
           <modifierSpeciesReference species="Mbp21"/>
-          <modifierSpeciesReference species="Mb"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
