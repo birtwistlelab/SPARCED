@@ -5,7 +5,7 @@ import amici
 import libsbml
 import numpy as np
 
-from compilation.utils.amici_scripts.amici_utils import *
+from compilation.amici_scripts.amici_utils import *
 
 
 def compile_sbml_to_amici(sbml_file_name: str, model_output_dir: str,

@@ -6,9 +6,9 @@ import numpy as np
 
 from utils.arguments import parse_args
 from utils.data_handling import load_input_data_file
-from compilation.utils.antimony_scripts.antimony_utils import *
-from compilation.utils.antimony_scripts.antimony_write import *
-from compilation.utils.antimony_scripts.antimony_write_IC import *
+from compilation.antimony_scripts.antimony_utils import *
+from compilation.antimony_scripts.antimony_write import *
+from compilation.antimony_scripts.antimony_write_IC import *
 
 def antimony_write_model(f_antimony: str, f_compartments: str,
                          f_stoichmatrix: str, f_output_parameters: str,

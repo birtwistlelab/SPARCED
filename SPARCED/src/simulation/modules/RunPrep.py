@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 def RunPrep(flagD,Vn,model):
-    kGsRead = pd.read_csv('./data/simulation/OmicsData.txt',header=0,index_col=0,sep="\t")
+    kGsRead = pd.read_csv('./../data/simulation/OmicsData.txt',header=0,index_col=0,sep="\t")
     gExp_mpc = np.float64(kGsRead.values[:,0])
     mExp_mpc = np.float64(kGsRead.values[:,1])
     kGin = np.float64(kGsRead.values[:,2])
@@ -12,7 +12,7 @@ def RunPrep(flagD,Vn,model):
     kTCd = np.float64(kGsRead.values[:,6])
 
     # Read-in the activators matrix and assign concentrations of activators
-    TARsRead = pd.read_csv('./data/simulation/GeneReg.txt',header=0,index_col=0,sep="\t")
+    TARsRead = pd.read_csv('./../data/simulation/GeneReg.txt',header=0,index_col=0,sep="\t")
     TARs0 = (TARsRead.values)
     numberofTARs = len(TARsRead.columns)
     spnames = [ele for ele in model.getStateIds()]

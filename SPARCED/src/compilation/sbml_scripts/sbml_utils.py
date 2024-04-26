@@ -1,6 +1,8 @@
 #/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import libsbml
+
 
 def write_compartments_annotations(f_sbml, compartments):
     """Set compartments annotations in the given SBML file

@@ -4,7 +4,7 @@
 import libsbml
 import numpy as np
 
-from compilation.utils.sbml_scripts.sbml_utils import *
+from compilation.sbml_scripts.sbml_utils import *
 
 
 def sbml_annotate_model(sbml_file_name: str, species: np.ndarray,
