@@ -18,10 +18,11 @@ from simulation.utils.output import save_simulation_output
 # leave the rest as is.
 
 def run_experiment(model_name: str, model_path: str, simulation_name: str,
-                   sbml_model: str, is_deterministic: bool, exchange: int,
-                   population: int, duration: float, f_species: str, ligands: np.ndarray,
-                   f_genereg: str, f_omics: str, verbose: bool,
-                   is_SPARCED: bool, compound: str=None, dose: str=None) -> None:
+                   output_sim: str, sbml_model: str, is_deterministic: bool,
+                   exchange: int, population: int, duration: float,
+                   f_species: str, ligands: np.ndarray, f_genereg: str,
+                   f_omics: str, verbose: bool, is_SPARCED: bool,
+                   compound: str=None, dose: str=None) -> None:
     """
     Run an experiment (one or several cells with the same initial conditions)
     """
@@ -39,12 +40,12 @@ def run_experiment(model_name: str, model_path: str, simulation_name: str,
     # Run experiment
     cell_number = 0
     while cell_number < int(population):
-        run_single_simulation(model, simulation_name, cell_number, sbml_model,
+        run_single_simulation(model, simulation_name, output_sim, cell_number, sbml_model,
                               is_deterministic, exchange, duration,
                               species_initial_conditions, verbose, f_genereg, f_omics)
         cell_number += 1  
 
-def run_single_simulation(model, simulation_name: str, simulation_number: int,
+def run_single_simulation(model, simulation_name: str, output_sim: str, simulation_number: int,
                           sbml_model: str, is_deterministic: bool,
                           exchange: int, duration: float,
                           species_initial_conditions: np.ndarray,
@@ -66,7 +67,7 @@ def run_single_simulation(model, simulation_name: str, simulation_number: int,
                 please do not exit.\n".format(name=simulation_name,
                                               number=simulation_number))
     # Save output
-    save_simulation_output(model, simulation_name, simulation_number,
+    save_simulation_output(model, simulation_name, simulation_number, output_sim,
                            xoutS_all, xoutG_all, tout_all)
     if verbose:
         print("{name} n°{number}: Simulation saved.\n"

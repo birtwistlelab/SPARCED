@@ -37,6 +37,9 @@ def parse_args():
                         help="name of the input ratelaws file")
     parser.add_argument('-S', '--species',       default="Species.txt",
                         help="name of the input species file")
+    parser.add_argument('-W', '--outputsim',    default="./../results/New-Simulation/",
+                        help="relative path to the directory where simulation \
+                              results will be saved")
     parser.add_argument('-X', '--omics',        default="OmicsData.txt",
                         help="name of the simulation omics data file")
     # Lowcase letter => running options

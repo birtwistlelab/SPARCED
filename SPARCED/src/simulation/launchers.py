@@ -30,7 +30,7 @@ def launch_experiment_simulation(ligands: np.ndarray) -> None:
                                      simulation_name=args.simulation,
                                      size = args.population))
         sys.exit(0)
-    run_experiment(args.name, model_path, args.simulation, sbml_model,
+    run_experiment(args.name, model_path, args.simulation, args.outputsim, sbml_model,
                    args.deterministic, args.exchange, args.population,
                    args.time, f_species, ligands, f_genereg, f_omics,
                    args.verbose, is_SPARCED, args.compound, args.dose)
