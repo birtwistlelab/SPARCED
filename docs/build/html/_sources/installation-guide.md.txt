@@ -146,7 +146,7 @@ Unless you decide to set it otherwise, you will have to manually activate the
 ### Python Packages
 ```bash
 conda install matplotlib pandas scipy
-pip install python-libsbml
+pip install python-libsbml==5.18.0
 pip install -Iv antimony==2.12.0.1 # WARNING: antimony >= 2.13.0 doesn't work with SPARCED
 ```
 ### The Amici Package
