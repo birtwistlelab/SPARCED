@@ -12,6 +12,8 @@ def save_simulation_output(model, simulation_name: str, simulation_number: int,
     Save simulation results in three files: species, genes and time
     """
 
+    # TODO: ensure that the last character of the output_sim parameter is a dash,
+    # otherwise if verbose ask the user if he meant to add one
     # Species
     columnsS = [ele for ele in model.getStateIds()]
     condsSDF = pd.DataFrame(data = xoutS_all, columns = columnsS)
