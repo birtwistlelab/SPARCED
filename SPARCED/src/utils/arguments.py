@@ -19,6 +19,8 @@ def parse_args():
                         help="name of the input compartments file")
     parser.add_argument('-D', '--deterministic', action="store_false",
                         help="run simulation in deterministic mode")
+    parser.add_argument('-G', '--genereg',       default="GeneReg.txt",
+                        help="name of the simulation gene regulation file")
     parser.add_argument('-I', '--inputdir',      default="./../data/core/",
                         help="relative path to the input directory for model creation")
     parser.add_argument('-J', '--inputsim',      default="./../data/simulation/",
@@ -35,6 +37,8 @@ def parse_args():
                         help="name of the input ratelaws file")
     parser.add_argument('-S', '--species',       default="Species.txt",
                         help="name of the input species file")
+    parser.add_argument('-X', '--omics',        default="OmicsData.txt",
+                        help="name of the simulation omics data file")
     # Lowcase letter => running options
     parser.add_argument('-c', '--compound',      default=None,
                         help="name of the additional compound in the simulation media")

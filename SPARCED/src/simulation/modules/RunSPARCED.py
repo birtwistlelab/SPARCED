@@ -7,7 +7,7 @@ import pandas as pd
 from simulation.modules.SGEmodule import SGEmodule
 from simulation.modules.RunPrep import RunPrep
 
-def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
+def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model, f_genereg: str, f_omics: str):
     ts = 30 # time-step to update mRNA numbers
     NSteps = int(th*3600/ts)
     tout_all = np.arange(0,th*3600+1,ts) 
@@ -25,7 +25,7 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
         spdata = np.float(spdata0.values[:,1])  
     
     # calculate 
-    genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)  
+    genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model, f_genereg, f_omics)  
     
     xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
     xoutS_all[0,:] = spdata # 24hr time point

@@ -20,8 +20,8 @@ from simulation.utils.output import save_simulation_output
 def run_experiment(model_name: str, model_path: str, simulation_name: str,
                    sbml_model: str, is_deterministic: bool, exchange: int,
                    population: int, duration: float, f_species: str, ligands: np.ndarray,
-                   verbose: bool, is_SPARCED: bool, compound: str=None,
-                   dose: str=None) -> None:
+                   f_genereg: str, f_omics: str, verbose: bool,
+                   is_SPARCED: bool, compound: str=None, dose: str=None) -> None:
     """
     Run an experiment (one or several cells with the same initial conditions)
     """
@@ -41,14 +41,14 @@ def run_experiment(model_name: str, model_path: str, simulation_name: str,
     while cell_number < int(population):
         run_single_simulation(model, simulation_name, cell_number, sbml_model,
                               is_deterministic, exchange, duration,
-                              species_initial_conditions, verbose)
-        cell_number += 1 
+                              species_initial_conditions, verbose, f_genereg, f_omics)
+        cell_number += 1  
 
 def run_single_simulation(model, simulation_name: str, simulation_number: int,
                           sbml_model: str, is_deterministic: bool,
                           exchange: int, duration: float,
                           species_initial_conditions: np.ndarray,
-                          verbose: bool) -> None:
+                          verbose: bool, f_genereg: str, f_omics: str) -> None:
     """
     Run a single simulation of SPARCED
     """
@@ -60,7 +60,7 @@ def run_single_simulation(model, simulation_name: str, simulation_number: int,
     # Run the simulation
     xoutS_all, xoutG_all, tout_all = RunSPARCED(is_deterministic, float(duration),
                                                 species_initial_conditions, [],
-                                                sbml_model, model)
+                                                sbml_model, model, f_genereg, f_omics) 
     if verbose:
         print("{name} n°{number}: Simulation is over. Now saving results, \
                 please do not exit.\n".format(name=simulation_name,

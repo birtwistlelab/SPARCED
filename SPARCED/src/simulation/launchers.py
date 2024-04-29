@@ -17,6 +17,8 @@ def launch_experiment_simulation(ligands: np.ndarray) -> None:
     # Process arguments
     is_SPARCED = not args.wild # if it's not wild then it's SPARCED
     f_species = args.inputdir + args.species
+    f_genereg = args.inputsim + args.genereg
+    f_omics = args.inputsim + args.omics
     model_path = args.outputdir + "amici_" + args.name
     sbml_model = args.outputdir + "sbml_" + args.name + ".xml"
     try:
@@ -30,8 +32,8 @@ def launch_experiment_simulation(ligands: np.ndarray) -> None:
         sys.exit(0)
     run_experiment(args.name, model_path, args.simulation, sbml_model,
                    args.deterministic, args.exchange, args.population,
-                   args.time, f_species, ligands, args.verbose, is_SPARCED,
-                   args.compound, args.dose)
+                   args.time, f_species, ligands, f_genereg, f_omics,
+                   args.verbose, is_SPARCED, args.compound, args.dose)
 
 
 if __name__ == '__main__':
