@@ -97,7 +97,8 @@ class VisualizationPlotting:
                     axes[row, col].plot(xvals, yvals, 
                                         label=visualization_df['legendEntry'][i], 
                                         color=visualization_df['Color'][i], 
-                                        linewidth=3)
+                                        linewidth=3,
+                                        alpha=0.7)
 
             elif plot_type == 'BarPlot':
                 condition = visualization_df['datasetId'][i]
@@ -117,8 +118,6 @@ class VisualizationPlotting:
             axes[row, col].set_xscale(xScale)
             axes[row, col].set_yscale(yScale)
             axes[row, col].set_title(visualization_df['plotName'][i], weight='bold')
-            axes[row, col].set_xlim(0, 5)
-            axes[row, col].set_ylim(0, 150)
 
         # Remove unused subplots
         for i in range(len(unique_plots), num_rows * num_cols):
@@ -142,8 +141,8 @@ class VisualizationPlotting:
                         unique_lines[idx] = line
 
         # Create a legend using unique handles and labels
-        # fig.legend(unique_lines, unique_labels, loc='lower right', bbox_to_anchor=(1.05, 1), frameon=False)
-        fig.legend(unique_lines, unique_labels, frameon=False)
+        fig.legend(unique_lines, unique_labels, loc='lower right', frameon=False)
+        # fig.legend(unique_lines, unique_labels, frameon=False)
         
 
         # # Adjust layout

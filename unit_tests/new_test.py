@@ -28,12 +28,14 @@ def create_directories(name, custom_input_files: Optional[int] = None):
         os.chdir(cd + '/' + name)
         os.mkdir('scripts')
 
-    # Copy create and run model files into the new directory
-    shutil.copy(cd + '/src/run_unit_test.py', os.path.join(os.getcwd(), 'scripts/run_unit_test.py'))
     
     #If user defines preference Copy 'input_files' directory and its contents into the new directory
     if custom_input_files == 1:
         shutil.copytree(wd + '/input_files', os.path.join(os.getcwd(), 'input_files'))
+        # shutil.copy(cd + 'run_model_test.py', os.path.join(os.getcwd(), 'scripts/run_model_test.py'))
+    else:
+            # Copy create and run model files into the new directory
+      shutil.copy(cd + '/src/run_unit_test.py', os.path.join(os.getcwd(), 'scripts/run_unit_test.py'))
 
     # Create 'petab_files' directory within the new directory
     os.makedirs(os.path.join(os.getcwd(), 'petab_files'))
@@ -60,7 +62,7 @@ def create_directories(name, custom_input_files: Optional[int] = None):
       observable_files:
         - observables.tsv
       sbml_files:
-        - SPARCEDo4a_v1.xml
+        - SPARCED.xml
       model_specifications:
         - model_specifications.tsv
       visualization_files:

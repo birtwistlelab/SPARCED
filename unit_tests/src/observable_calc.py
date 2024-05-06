@@ -131,7 +131,7 @@ class CellDeathMetrics:
                     time_of_death[condition].append(np.nan)
         return time_of_death
     
-    def average_time_to_death(self):   
+    def average_time_to_death(self, time: Optional[str] = None):   
         """"Returns the time for the average simulated cell death for each condition in the results dictionary
         
         output: dictionary containing the average time to death for each condition"""
@@ -139,6 +139,10 @@ class CellDeathMetrics:
         time_of_death = self.time_to_death()
         for condition, cell_times in self.time_to_death().items():
             time_of_death[condition] = np.mean([time for time in time_of_death[condition] if time is not None])
+            if time == 'minutes':
+                time_of_death[condition] = time_of_death[condition] / 60
+            if time == 'hours':
+                time_of_death[condition] = time_of_death[condition] / 3600
 
         return time_of_death
 

@@ -55,7 +55,7 @@ class SPARCED_CBS:
         if 'heterogenize' in condition and not math.isnan(condition['heterogenize']):
             
             self.model = self._heterogenize(condition)
-            print('heterogenized')
+            print(f'{condition["conditionId"]} heterogenized')
         
         if 'preequilibrationConditionId' in condition and not math.isnan(
             condition['preequilibrationConditionId']):
@@ -73,7 +73,6 @@ class SPARCED_CBS:
             pass # need to find a new way to move to next loop after this. 
 
         # Set the perturbations for the simulation
-
         self.model = self._set_perturbations(condition)
 
         # print(f'BAD parameters set to {self.model.getParameterById("k1827").getValue()}, {self.model.getParameterById("k1830").getValue()}')
@@ -84,11 +83,9 @@ class SPARCED_CBS:
                                 [self.measurement_df['simulationConditionId']\
                                                     .isin(condition)]
                                                     .max()
-                                                        )
+                                                        )/3600
         
         self.model.setTimepoints(np.linspace(0, 30))
-
-        species_initializations = np.array(self.model.getInitialStates())
 
         #Find gene sampling method, flagD
         perturbations = list(self.conditions_df.columns[2:]) 
@@ -98,33 +95,16 @@ class SPARCED_CBS:
             flagD = 1
 
         # Run the simulation
-        if flagD == 0:
-            xoutS_all, xoutG_all, tout_all = RunSPARCED(
-                                        flagD=flagD,
-                                            th=(simulation_timeframe/3600),
-                                                spdata=[],
-                                                    genedata=[],
-                                                        sbml_file=self.sbml_file,
-                                                            model=self.model
-                                                            )
+        xoutS_all, xoutG_all, tout_all = RunSPARCED(
+                                    flagD=flagD,
+                                        th=simulation_timeframe,
+                                            spdata=[],
+                                                genedata=[],
+                                                    sbml_file=self.sbml_file,
+                                                        model=self.model
+                                                        )
             
-        else:
-            #Deterministic simulation (integrated-SBML)
-            import amici
 
-            # Set the number of records as the number of unique timepoints
-            self.model.setTimepoints(np.linspace(0, simulation_timeframe, 1000))
-
-            solver = self.model.getSolver()
-            solver.setMaxSteps = 1e10
-
-            rdata_o4a = amici.runAmiciSimulation(self.model,solver)
-
-            xoutS_all = rdata_o4a['x']
-            tout_all = rdata_o4a['t']
-            xoutG_all = []
-
-        print(xoutS_all[-1, 105])
         return xoutS_all, tout_all, xoutG_all
 
 
@@ -201,20 +181,30 @@ class SPARCED_CBS:
             try:
                 self.model = utm._set_species_value(self.model, perturbant, 
                                                      condition[perturbant])
+                continue
             except:
                 pass
 
             try:
                 self.model = utm._set_parameter_value(self.model, perturbant, 
                                                      condition[perturbant])
+                continue
             except:
                 pass
 
             try:
                 self.model = utm._set_compartmental_volume(self.model, perturbant, 
                                                      condition[perturbant])
+                continue
             except:
                 pass
+            try:
+                utm._set_transcription_values(gene=perturbant,
+                                               value=condition[perturbant])
+                continue
+            except:
+                pass
+
 
         return self.model
 
@@ -252,4 +242,3 @@ class SPARCED_CBS:
         self.model.setInitialStates(xoutS_all[-1])
     
         return self.model
-    

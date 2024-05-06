@@ -259,3 +259,23 @@ class UnitTestModules:
         model.setInitialStates(species_initializations)
         
         return model
+    
+    @staticmethod
+    def _set_transcription_values(gene: str, value: int):
+        """This function sets the value of a parameter within the SBML model.
+        input:
+            model: libsbml.Model - the SBML model
+            gene: str - the gene to knockout
+        output:
+            model: libsbml.Model - the updated SBML model
+        """
+        import pandas as pd
+        if gene.lower().strip() in open('OmicsData.txt', 'r').read().lower().strip():
+            with open('OmicsData.txt', 'r') as omics_data_file:
+                omics_data = pd.read_csv(omics_data_file, sep = '\t', index_col=0)
+                omics_data.loc[gene, 'kTCleak'] = value
+                omics_data.loc[gene, 'kTCmaxs'] = value
+                omics_data.loc[gene, 'kTCd'] = value
+                omics_data.to_csv('OmicsData.txt', sep = '\t')
+        else:
+            pass

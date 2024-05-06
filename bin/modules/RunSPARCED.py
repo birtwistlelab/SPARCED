@@ -3,7 +3,6 @@ import importlib
 import amici
 import numpy as np
 import pandas as pd
-import os
 
 from modules.SGEmodule import SGEmodule
 from modules.RunPrep import RunPrep
@@ -12,10 +11,6 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     ts = 30 # time-step to update mRNA numbers
     NSteps = int(th*3600/ts)
     tout_all = np.arange(0,th*3600+1,ts) 
-    
-    # cd = os.getcwd()
-    # wd = os.path.dirname(cd)
-    # input_path = os.path.join(wd,'input_files')
     
     # Read-in the model SBML to get compartmental volumes (used to convert nM to mpc and vice versa)
     sbml_reader = libsbml.SBMLReader()
@@ -26,19 +21,13 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     mpc2nM_Vc = (1E9/(Vc*6.023E+23))
     splist = list(model.getStateIds())
     if len(spdata)==0: # if no initial condition values are supplied, use the input file information
-        # spdata0 = pd.read_csv(os.path.join(input_path,'Species.txt'),header=0,index_col=0,sep="\t")
-        # spdata = np.float(spdata0.values[:,1])  
-        spdata = np.array(model.getInitialStates())
+        spdata = model.getInitialStates()
     
     # calculate 
-    genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)
-    
+    genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)  
     
     xoutS_all = np.zeros(shape=(NSteps+1,len(spdata)))
-    
-
     xoutS_all[0,:] = spdata # 24hr time point
-    # xoutG_all = np.zeros(shape=(1,len(genedata)))
     xoutG_all = np.zeros(shape=(NSteps+1,len(genedata)))
     xoutG_all[0,:] = genedata  
     
@@ -62,13 +51,10 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
         # Run the simulation:
         rdata = amici.runAmiciSimulation(model, solver)  
         # Store the end point as next 30sec time-point:
-            
         xoutS_all[qq+1,:] = rdata._swigptr.x[-n_sp:]
- 
         rdata = None
         # Store active/inactive gene states:
         xoutG_all[qq+1,:] = genedata
-
         # check for cell death:
         if xoutS_all[-1,PARPind] < xoutS_all[-1,cPARPind]: 
             print('Apoptosis happened')
