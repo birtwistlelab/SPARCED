@@ -1,0 +1,7 @@
+EGF	E	0.0
+HER	H	0.0
+HGF	HGF	0.0
+PDGF	P	0.0
+FGF	F	0.0
+IGF	I	0.0
+Insulin	INS	0.0

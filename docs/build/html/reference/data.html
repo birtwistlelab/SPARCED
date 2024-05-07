@@ -1,0 +1,280 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="" lang="" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="">
+    <link rel="icon" type="image/x-icon" href="">
+
+  
+  <title>Data &mdash; SPARCED 1.4.0 documentation</title>
+  
+
+  
+
+  
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+
+
+  <link rel="stylesheet" href="../_static/css/img.css" type="text/css"/>
+  
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/pdj.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="../_static/css/darker.css" type="text/css" media="(prefers-color-scheme: dark)"/>
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+        <link rel="up" title="Reference Documentation" href="summary.html"/>
+        <link rel="next" title="General Utilities" href="utils.html"/>
+        <link rel="prev" title="Reference Documentation" href="summary.html"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="module" src="https://googlechromelabs.github.io/dark-mode-toggle/src/dark-mode-toggle.mjs"></script>
+
+  </head>
+
+  <body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+	
+        <a href="../index.html" class="fa fa-home"> SPARCED </a>
+	
+	
+        <div role="search">
+	  
+	  <form id ="rtd-search-form" class="wy-form"
+		action="../search.html" method="get">
+	    <input type="text" name="q" placeholder="Search docs" />
+	    <input type="hidden" name="check_keywords" value="yes" />
+	    <input type="hidden" name="area" value="default" />
+	  </form>
+	  
+	</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Contents Table</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="summary.html">Reference Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+
+      </div>
+      &nbsp;
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      <nav class="wy-nav-top" id="barra-mobile" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">SPARCED </a>
+      </nav>
+
+      <div class="wy-nav-content">
+	<div class="fundo-claro">
+	</div>
+	<div class="fundo-escuro">
+	</div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+	    
+	    <!-- <ul class="wy-breadcrumbs"> -->
+	    <!--   <li><a href="#">Docs</a> &raquo;</li> -->
+
+	    <!--   <li>Features</li> -->
+	    <!--   <li class="wy-breadcrumbs-aside"> -->
+
+	    <!-- 	<a href="_sources/index.txt" rel="nofollow"> View page source</a> -->
+
+	    <!--   </li> -->
+	    <!-- </ul> -->
+	    <!-- <hr/> -->
+	  </div>
+          <div role="main" class="">
+
+	    <div id="content" class="hfeed entry-container hentry">
+      	<div id="dark-mode-toggle-container">
+	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
+	  </dark-mode-toggle>
+	</div>
+  <section id="data">
+<h1>Data<a class="headerlink" href="#data" title="Permalink to this heading">¶</a></h1>
+<p>Input data files are written in TSV (tab separated value) format.
+A conversion script from Excel to TSV is available in the
+<a class="reference internal" href="utils.html"><span class="std std-doc">general utilities</span></a>.</p>
+<section id="core">
+<h2>Core<a class="headerlink" href="#core" title="Permalink to this heading">¶</a></h2>
+<p>The core subfolder is dedicated to input files necessary for model creation
+(core SPARCED).</p>
+<section id="compartments">
+<h3>Compartments<a class="headerlink" href="#compartments" title="Permalink to this heading">¶</a></h3>
+<p>The columns are corresponding to:</p>
+<ul class="simple">
+<li><p>Compartment’s name</p></li>
+<li><p>Compartment’s volume</p></li>
+<li><p>Annotation in GO terms</p></li>
+</ul>
+</section>
+<section id="observables">
+<h3>Observables<a class="headerlink" href="#observables" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="ratelaws">
+<h3>Ratelaws<a class="headerlink" href="#ratelaws" title="Permalink to this heading">¶</a></h3>
+<p>The columns are corresponding to:</p>
+<ul class="simple">
+<li><p>Reaction’s name</p></li>
+<li><p>Compartment’s correction</p></li>
+<li><p>A single coefficient for mass action laws, or the full reaction for more
+elaborated laws</p></li>
+<li><p>Values of the coefficients you passed in the law, by order of appearance in
+the equation</p></li>
+</ul>
+</section>
+<section id="species">
+<h3>Species<a class="headerlink" href="#species" title="Permalink to this heading">¶</a></h3>
+<p>The columns are corresponding to:</p>
+<ul class="simple">
+<li><p>Specie’s name</p></li>
+<li><p>Species location, which must be a valid compartment</p></li>
+<li><p>Initial concentration of the specie</p></li>
+<li><p>Annotation in ENSEMBL</p></li>
+<li><p>Annotation in HGNC</p></li>
+</ul>
+</section>
+<section id="stoicmat">
+<h3>StoicMat<a class="headerlink" href="#stoicmat" title="Permalink to this heading">¶</a></h3>
+<p><strong>WARNING:</strong> This file is <em>huge</em>, do not attempt to open with anything else but
+Excel, or be prepared for a crash. You have been warned.</p>
+</section>
+</section>
+<section id="simulation">
+<h2>Simulation<a class="headerlink" href="#simulation" title="Permalink to this heading">¶</a></h2>
+<p>The simulation subfolder is dedicated to input files necessary to run a SPARCED
+model simulation.</p>
+<section id="ligands">
+<h3>ligands<a class="headerlink" href="#ligands" title="Permalink to this heading">¶</a></h3>
+<p>The columns are corresponding to:</p>
+<ul class="simple">
+<li><p>Ligand’s human-readable name</p></li>
+<li><p>Ligand’s name, which must be a valid specie</p></li>
+<li><p>Ligand’s initial concentration</p></li>
+</ul>
+</section>
+<section id="genereg">
+<h3>GeneReg<a class="headerlink" href="#genereg" title="Permalink to this heading">¶</a></h3>
+<p>Don’t touch this.</p>
+</section>
+<section id="omicsdata">
+<h3>OmicsData<a class="headerlink" href="#omicsdata" title="Permalink to this heading">¶</a></h3>
+<p>Don’t touch this.</p>
+</section>
+</section>
+</section>
+
+
+	    </div>
+            <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="utils.html" class="btn btn-neutral float-right" title="General Utilities">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="summary.html" class="btn btn-neutral" title="Reference Documentation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2024, The Birtwistle Lab.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/jucacrispim/sphinx_pdj_theme">theme</a> provided by <a href="https://poraodojuca.dev">Porão do Juca</a>.
+
+</footer>
+	</div>
+	</div>
+	  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.4.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/underscore.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/doctools.js">
+
+    </script>
+
+  
+
+   <script type="text/javascript"
+           src="../_static/js/theme.js"></script>
+
+   <script type="text/javascript"
+           src="../_static/js/pdj.js"></script>
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  </body>
+</html>
