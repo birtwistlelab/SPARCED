@@ -28,18 +28,18 @@ sparced_root = ('/'.join(wd.split(os.path.sep)[:wd.split(os.path.sep)
 # sys.path.append(os.path.join(sparced_root, 'unit_tests/src'))
 src_dir = os.path.join(sparced_root, 'unit_tests/src')
 sys.path.append(src_dir)
-sys.path.append(os.path.join(src_dir, 'SPARCEDo4a_v1'))
+sys.path.append(os.path.join(src_dir, 'SPARCED'))
 from petab_file_loader import PEtabFileLoader
 from unit_test_modules import UnitTestModules as utm
 from sparced_condition_based_simulation import SPARCED_CBS as cbs
 from observable_calc import ObservableCalculator
 from visualization_plotting import VisualizationPlotting
-import SPARCEDo4a_v1 as SPARCED
+import SPARCED
 
 # copy the SBML model into the PEtab input files directory
-shutil.copy(os.path.join(src_dir, 'SPARCEDo4a_v1.xml'), 
+shutil.copy(os.path.join(src_dir, 'SPARCED.xml'), 
             os.path.join(os.path.dirname(os.getcwd()), 
-                         'petab_files/SPARCEDo4a_v1.xml'))
+                         'petab_files/SPARCED.xml'))
 
 parser = argparse.ArgumentParser(
     description='Provide arguments to build the SPARCED model')
@@ -141,7 +141,7 @@ class RunUnitTest:
         # Load the SBML model
         model = SPARCED.getModel()
         solver = model.getSolver()
-        solver.setMaxSteps = 1e10
+        solver.setMaxSteps = 1e10 ### Check on the necessity of this
 
         #----------------------Job Asisgnment-------------------------------#
         list_of_jobs = utm._total_tasks(conditions_df, measurement_df)

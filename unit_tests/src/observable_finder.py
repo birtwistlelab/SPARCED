@@ -42,7 +42,9 @@ def _get_observable_formula(model: libsbml.Model, observable: str):
 
             specie_compartment = species.get(index).getCompartment()
             
-            specie_compartment_volume = [compartment.getVolume() for compartment in compartments if compartment.getId() == specie_compartment][0]
+            specie_compartment_volume = [compartment.getVolume() 
+                                         for compartment in compartments 
+                                         if compartment.getId() == specie_compartment][0]
 
             Volume_ratio = specie_compartment_volume / cytoplasm_volume
 
