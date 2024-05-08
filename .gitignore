@@ -4,6 +4,8 @@ __pycache__/
 
 # Simulation results
 SPARCED/results
+# Except the default folder
+!SPARCED/results/New-Simulation/README.md
 
 old*
 *.ipynb_check*
