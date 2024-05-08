@@ -19,7 +19,7 @@ from simulation.utils.output import save_simulation_output
 
 def run_experiment(model_name: str, model_path: str, simulation_name: str,
                    output_sim: str, sbml_model: str, is_deterministic: bool,
-                   exchange: int, population: int, duration: float,
+                   exchange: int, popsize: int, duration: float,
                    f_species: str, ligands: np.ndarray, f_genereg: str,
                    f_omics: str, verbose: bool, is_SPARCED: bool,
                    compound: str=None, dose: str=None) -> None:
@@ -39,7 +39,7 @@ def run_experiment(model_name: str, model_path: str, simulation_name: str,
     species_initial_conditions = load_species_initial_conditions(f_species, ligands, compound, dose)
     # Run experiment
     cell_number = 0
-    while cell_number < int(population):
+    while cell_number < int(popsize):
         run_single_simulation(model, simulation_name, output_sim, cell_number, sbml_model,
                               is_deterministic, exchange, duration,
                               species_initial_conditions, verbose, f_genereg, f_omics)
