@@ -22,16 +22,16 @@ def launch_experiment_simulation(ligands: np.ndarray) -> None:
     model_path = args.outputdir + "amici_" + args.name
     sbml_model = args.outputdir + "sbml_" + args.name + ".xml"
     try:
-        assert args.population > 0
+        assert args.popsize > 0
     except:
         print("{model_name}-{simulation_name}: Cell population size should be \
                superior to zero (0). Current population size is: {size}.\n \
                Aborting now.".format(model_name=args.name,
                                      simulation_name=args.simulation,
-                                     size = args.population))
+                                     size = args.popsize))
         sys.exit(0)
     run_experiment(args.name, model_path, args.simulation, args.outputsim, sbml_model,
-                   args.deterministic, args.exchange, args.population,
+                   args.deterministic, args.exchange, args.popsize,
                    args.time, f_species, ligands, f_genereg, f_omics,
                    args.verbose, is_SPARCED, args.compound, args.dose)
 

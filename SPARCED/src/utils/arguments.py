@@ -58,7 +58,7 @@ def parse_args():
                               the input model")
     parser.add_argument('-s', '--simulation',    default="GrowthStim",
                         help="desired name for the simulation output files")
-    parser.add_argument('-p', '--population',    default=1,
+    parser.add_argument('-p', '--popsize',    default=1,
                         help="desired cell population size for the simulation")
     parser.add_argument('-t', '--time',          default=1.0,
                         help="desired virtual duration of the simulation (h)")
