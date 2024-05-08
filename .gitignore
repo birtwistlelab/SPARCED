@@ -3,9 +3,8 @@
 __pycache__/
 
 # Simulation results except the README in default folder
-!SPARCED/results
 SPARCED/results/*
-!SPARCED/results/New-Simulation/
+!SPARCED/results/New-Simulation
 SPARCED/results/New-Simulation/*
 !SPARCED/results/New-Simulation/README.md
 
