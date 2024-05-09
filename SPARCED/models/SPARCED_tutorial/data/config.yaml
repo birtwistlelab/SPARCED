@@ -11,5 +11,5 @@ simulation:
     omics: "Omics.txt"
     perturbations:
         root: "perturbations"
-        settings: "default.txt"
+        default: "default.txt"
 
