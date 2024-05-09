@@ -1,0 +1,2 @@
+EGF	E	1.0
+Insulin	INS	17.21
