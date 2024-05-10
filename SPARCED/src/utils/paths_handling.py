@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 
-def append_subfolder(folder: str | os.PathLike, subfolder: str):
+def append_subfolder(folder: str | os.PathLike, subfolder: str) -> tuple[str | os.PathLike, bool]:
     """Append a subfolder to a folder path
 
     Arguments:
