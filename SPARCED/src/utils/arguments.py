@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('-m', '--model',                default="./../models/",
                         help="relative path to the directory containing the \
                               models folders")
-    parser.add_argument('n', '--name',                  default=None,
+    parser.add_argument('-n', '--name',                  default=None,
                         help="name of the model\nCompilation: desired name for \
                               the generated model (should be identical to \
                               model's folder name).\nSimulation: name of the \
