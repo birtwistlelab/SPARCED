@@ -1,0 +1,3 @@
+observableId	observableFormula	noiseFormula
+sigmoid_hill_summation	"((EE1*1.0) + (HE3*1.0) + (HE4*1.0) + (HGF_Met*1.0) + (PPr*1.0) + (Fr*1.0)) + ((EE1E2*1.0)+ (EE1Ev3*1.0) + (EE1E1*1.0) + (EE1E3*1.0) + (EE1E4*1.0) + (E2HE3*1.0) + (E1HE3*1.0) + (HE3E3*1.0) + (HE3Ev3*1.0) + (HE3E4*1.0) + (E2HE4*1.0) + (HE4Ev3*1.0) + (E1HE4*1.0) + (E3HE4*1.0)+ (HE4E4*1.0) + (HGF_Met_Met*1.0) + (PPrPr*1.0) + (FFrFr*1.0) + (IIrIr*1.0) + (INS_Isr_Isr*1)) + (2*((EE1EE1*1.0) + (EE1HE3*1.0) + (EE1HE4*1.0) + (HE3HE3*1.0) + (HE3HE4*1.0) + (HE4HE4*1.0) + (HGF_Met_HGF_Met*1.0) + (PPrPPr*1.0) + (FFrFFr*1.0) + (IIrIrI*1.0) + (INS_Isr_Isr_INS*1.0)))
+"	1

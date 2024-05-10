@@ -1,0 +1,6 @@
+plotId	plotName	plotTypeSimulation	plotTypeData	datasetId	xValues	yValues	xLabel	xScale	yLabel	yScale	legendEntry	Color
+plot1		LinePlot		L30	time	cPARP_total	Time (hours)	linear	cPARP (nM)	linear	L = 30	purple
+plot1		LinePlot		L1	time	cPARP_total	Time (hours)	linear	cPARP (nM)	linear	L = 1	gold
+plot1		LinePlot		L10	time	cPARP_total	Time (hours)	linear	cPARP (nM)	linear	L = 10	green
+plot1		LinePlot		L20	time	cPARP_total	Time (hours)	linear	cPARP (nM)	linear	"L = 20 "	red
+plot1		LinePlot		L2Em17	time	cPARP_total	Time (hours)	linear	cPARP (nM)	linear	L = Base	blue

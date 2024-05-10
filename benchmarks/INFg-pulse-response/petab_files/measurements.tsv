@@ -1,0 +1,7 @@
+observableId	simulationConditionId	measurement	time
+STAT1*Dn	egf only		28800
+SOCS1c	egf only		28800
+SOCS1_m	egf only		28800
+STAT1*Dn	EGF_IFNG		28800
+SOCS1c	EGF_IFNG		28800
+SOCS1_m	EGF_IFNG		28800

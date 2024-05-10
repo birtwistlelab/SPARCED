@@ -1,0 +1,15 @@
+conditionId	flagD
+EGF_0.0	1
+EGF_0.1	1
+EGF_1	1
+EGF_10	1
+INS_0.17	1
+INS_1.7	1
+INS_17.0	1
+INS_1721.0	1
+EGF_INS_0.01_0.17	1
+EGF_INS_0.01_1721.0	1
+EGF_INS_10_0.17	1
+EGF_INS_10_1721.0	1
+serum_starved	1
+Neg_Control	1

@@ -1,0 +1,5 @@
+observableId	observableFormula	noiseFormula
+Cd_total	Md*1.0	1
+Ce_total	Me*1.0	1
+Ca_total	Ma*1.0	1
+Cb_total	Mb*1.0	1

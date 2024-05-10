@@ -1,0 +1,5 @@
+observableId	observableFormula	noiseParameter
+STAT1*Dn	STAT1nuc	1
+SOCS1c	SOCS1	1
+SOCS1_m	m_SOCS1	1
+IFN stats	IFN	1

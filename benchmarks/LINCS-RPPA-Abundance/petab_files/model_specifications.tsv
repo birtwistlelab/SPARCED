@@ -1,0 +1,6 @@
+conditionId	flagD	num_cells	heterogenize
+serum_fed_equilibrium	1	1	1
+EGF	1	1	1
+HGF only	1	1	1
+serum starved	1	1	1
+EGF_IFNG	1	1	1

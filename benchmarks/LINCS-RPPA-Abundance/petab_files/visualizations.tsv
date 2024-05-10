@@ -1,0 +1,297 @@
+plotId	plotName	plotTypeSimulation	plotTypeData	datasetId	xValues	yValues	xLabel	xScale	yLabel	yScale	legendEntry	Color
+plot1	cMyc abundance	LinePlot		EGF	time	cMyc abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot1	cMyc abundance	LinePlot		HGF only	time	cMyc abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot1	cMyc abundance	LinePlot		serum starved	time	cMyc abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot2	EGFR abundance	LinePlot		EGF	time	EGFR abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot2	EGFR abundance	LinePlot		HGF only	time	EGFR abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot2	EGFR abundance	LinePlot		serum starved	time	EGFR abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot3	MET abundance	LinePlot		EGF	time	MET abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot3	MET abundance	LinePlot		HGF only	time	MET abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot3	MET abundance	LinePlot		serum starved	time	MET abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot4	AKT abundance	LinePlot		EGF	time	AKT abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot5	pAKT abundance	LinePlot		EGF	time	pAKT abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot6	ppAKT abundance	LinePlot		EGF	time	ppAKT abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot7	ATM abundance	LinePlot		EGF	time	ATM abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot8	ATMP abunance	LinePlot		EGF	time	ATMP abunance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot9	ATRac abundance	LinePlot		EGF	time	ATRac abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot10	pBAD abundance	LinePlot		EGF	time	pBAD abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot11	Bax abundance	LinePlot		EGF	time	Bax abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot12	Bcl2 abundance	LinePlot		EGF	time	Bcl2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot13	Bcl2c abundance	LinePlot		EGF	time	Bcl2c abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot14	BIM abundance	LinePlot		EGF	time	BIM abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot15	Bid abundance	LinePlot		EGF	time	Bid abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot16	BRaf abundance	LinePlot		EGF	time	BRaf abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot17	C3 abundance	LinePlot		EGF	time	C3 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot18	C8 abundance	LinePlot		EGF	time	C8 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot19	Cb abundance	LinePlot		EGF	time	Cb abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot20	Cd abundance	LinePlot		EGF	time	Cd abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot21	Ce abundance	LinePlot		EGF	time	Ce abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot22	Pb abundance	LinePlot		EGF	time	Pb abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot23	p21 abundance	LinePlot		EGF	time	p21 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot24	p27 abundance	LinePlot		EGF	time	p27 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot25	Chk1 abundance	LinePlot		EGF	time	Chk1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot26	bCATENIN abundance	LinePlot		EGF	time	bCATENIN abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot27	pbCATENIN abundance	LinePlot		EGF	time	pbCATENIN abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot28	Smac abundance	LinePlot		EGF	time	Smac abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot29	E2F abundance	LinePlot		EGF	time	E2F abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot30	pE1 abundance	LinePlot		EGF	time	pE1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot31	EIF4E abundance	LinePlot		EGF	time	EIF4E abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot32	EIF4EBP1 abundance	LinePlot		EGF	time	EIF4EBP1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot33	pEIF4EBP1 abundance	LinePlot		EGF	time	pEIF4EBP1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot34	E2 abundance	LinePlot		EGF	time	E2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot35	pE2 abundance	LinePlot		EGF	time	pE2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot36	E3 abundance	LinePlot		EGF	time	E3 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot37	pE3 abundance	LinePlot		EGF	time	pE3 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot38	FOXO abundance	LinePlot		EGF	time	FOXO abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot39	pFOXO abundance	LinePlot		EGF	time	pFOXO abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot40	GSK3b abundance	LinePlot		EGF	time	GSK3b abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot41	pGSK3b abundance	LinePlot		EGF	time	pGSK3b abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot42	Ir abundance	LinePlot		EGF	time	Ir abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot44	Isr abundance	LinePlot		EGF	time	Isr abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot45	IRS abundance	LinePlot		EGF	time	IRS abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot46	MEK abundance	LinePlot		EGF	time	MEK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot47	ppMEK abundance	LinePlot		EGF	time	ppMEK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot48	ERK abundance	LinePlot		EGF	time	ERK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot49	ppERK abundance	LinePlot		EGF	time	ppERK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot50	pMdm2 abundance	LinePlot		EGF	time	pMdm2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot51	pHGF abundance	LinePlot		EGF	time	pHGF abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot52	MSH6 abundance	LinePlot		EGF	time	MSH6 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot53	mTOR abundance	LinePlot		EGF	time	mTOR abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot54	RasD abundance	LinePlot		EGF	time	RasD abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot55	PARP abundance	LinePlot		EGF	time	PARP abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot56	Pr abundance	LinePlot		EGF	time	Pr abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot57	PDK1 abundance	LinePlot		EGF	time	PDK1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot58	PI3KC1 + PI3K1 abundance	LinePlot		EGF	time	PI3KC1 + PI3K1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot59	PI3KR1 + PI3K1 abundance	LinePlot		EGF	time	PI3KR1 + PI3K1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot60	PKC abundance	LinePlot		EGF	time	PKC abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot61	PTEN abundance	LinePlot		EGF	time	PTEN abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot62	CRaf abundance	LinePlot		EGF	time	CRaf abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot63	RasT_CRaf abundance	LinePlot		EGF	time	RasT_CRaf abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot66	Rheb abundance	LinePlot		EGF	time	Rheb abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot67	Rictor abundance	LinePlot		EGF	time	Rictor abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot68	RSK abundance	LinePlot		EGF	time	RSK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot69	pRSK abundance	LinePlot		EGF	time	pRSK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot70	S6K abundance	LinePlot		EGF	time	S6K abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot71	pS6K abundance	LinePlot		EGF	time	pS6K abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot72	Raptor abundance	LinePlot		EGF	time	Raptor abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot73	p53 abundance	LinePlot		EGF	time	p53 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot74	TSC1 abundance	LinePlot		EGF	time	TSC1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot75	TSC2 abundance	LinePlot		EGF	time	TSC2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot76	pTSC2 abunance	LinePlot		EGF	time	pTSC2 abunance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot77	wee1 abundance	LinePlot		EGF	time	wee1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF	red
+plot4	AKT abundance	LinePlot		HGF only	time	AKT abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot5	pAKT abundance	LinePlot		HGF only	time	pAKT abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot6	ppAKT abundance	LinePlot		HGF only	time	ppAKT abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot7	ATM abundance	LinePlot		HGF only	time	ATM abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot8	ATMP abunance	LinePlot		HGF only	time	ATMP abunance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot9	ATRac abundance	LinePlot		HGF only	time	ATRac abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot10	pBAD abundance	LinePlot		HGF only	time	pBAD abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot11	Bax abundance	LinePlot		HGF only	time	Bax abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot12	Bcl2 abundance	LinePlot		HGF only	time	Bcl2 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot13	Bcl2c abundance	LinePlot		HGF only	time	Bcl2c abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot14	BIM abundance	LinePlot		HGF only	time	BIM abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot15	Bid abundance	LinePlot		HGF only	time	Bid abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot16	BRaf abundance	LinePlot		HGF only	time	BRaf abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot17	C3 abundance	LinePlot		HGF only	time	C3 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot18	C8 abundance	LinePlot		HGF only	time	C8 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot19	Cb abundance	LinePlot		HGF only	time	Cb abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot20	Cd abundance	LinePlot		HGF only	time	Cd abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot21	Ce abundance	LinePlot		HGF only	time	Ce abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot22	Pb abundance	LinePlot		HGF only	time	Pb abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot23	p21 abundance	LinePlot		HGF only	time	p21 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot24	p27 abundance	LinePlot		HGF only	time	p27 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot25	Chk1 abundance	LinePlot		HGF only	time	Chk1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot26	bCATENIN abundance	LinePlot		HGF only	time	bCATENIN abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot27	pbCATENIN abundance	LinePlot		HGF only	time	pbCATENIN abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot28	Smac abundance	LinePlot		HGF only	time	Smac abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot29	E2F abundance	LinePlot		HGF only	time	E2F abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot30	pE1 abundance	LinePlot		HGF only	time	pE1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot31	EIF4E abundance	LinePlot		HGF only	time	EIF4E abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot32	EIF4EBP1 abundance	LinePlot		HGF only	time	EIF4EBP1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot33	pEIF4EBP1 abundance	LinePlot		HGF only	time	pEIF4EBP1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot34	E2 abundance	LinePlot		HGF only	time	E2 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot35	pE2 abundance	LinePlot		HGF only	time	pE2 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot36	E3 abundance	LinePlot		HGF only	time	E3 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot37	pE3 abundance	LinePlot		HGF only	time	pE3 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot38	FOXO abundance	LinePlot		HGF only	time	FOXO abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot39	pFOXO abundance	LinePlot		HGF only	time	pFOXO abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot40	GSK3b abundance	LinePlot		HGF only	time	GSK3b abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot41	pGSK3b abundance	LinePlot		HGF only	time	pGSK3b abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot42	Ir abundance	LinePlot		HGF only	time	Ir abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot44	Isr abundance	LinePlot		HGF only	time	Isr abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot45	IRS abundance	LinePlot		HGF only	time	IRS abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot46	MEK abundance	LinePlot		HGF only	time	MEK abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot47	ppMEK abundance	LinePlot		HGF only	time	ppMEK abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot48	ERK abundance	LinePlot		HGF only	time	ERK abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot49	ppERK abundance	LinePlot		HGF only	time	ppERK abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot50	pMdm2 abundance	LinePlot		HGF only	time	pMdm2 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot51	pHGF abundance	LinePlot		HGF only	time	pHGF abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot52	MSH6 abundance	LinePlot		HGF only	time	MSH6 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot53	mTOR abundance	LinePlot		HGF only	time	mTOR abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot54	RasD abundance	LinePlot		HGF only	time	RasD abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot55	PARP abundance	LinePlot		HGF only	time	PARP abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot56	Pr abundance	LinePlot		HGF only	time	Pr abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot57	PDK1 abundance	LinePlot		HGF only	time	PDK1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot58	PI3KC1 + PI3K1 abundance	LinePlot		HGF only	time	PI3KC1 + PI3K1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot59	PI3KR1 + PI3K1 abundance	LinePlot		HGF only	time	PI3KR1 + PI3K1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot60	PKC abundance	LinePlot		HGF only	time	PKC abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot61	PTEN abundance	LinePlot		HGF only	time	PTEN abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot62	CRaf abundance	LinePlot		HGF only	time	CRaf abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot63	RasT_CRaf abundance	LinePlot		HGF only	time	RasT_CRaf abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot66	Rheb abundance	LinePlot		HGF only	time	Rheb abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot67	Rictor abundance	LinePlot		HGF only	time	Rictor abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot68	RSK abundance	LinePlot		HGF only	time	RSK abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot69	pRSK abundance	LinePlot		HGF only	time	pRSK abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot70	S6K abundance	LinePlot		HGF only	time	S6K abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot71	pS6K abundance	LinePlot		HGF only	time	pS6K abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot72	Raptor abundance	LinePlot		HGF only	time	Raptor abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot73	p53 abundance	LinePlot		HGF only	time	p53 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot74	TSC1 abundance	LinePlot		HGF only	time	TSC1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot75	TSC2 abundance	LinePlot		HGF only	time	TSC2 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot76	pTSC2 abunance	LinePlot		HGF only	time	pTSC2 abunance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot77	wee1 abundance	LinePlot		HGF only	time	wee1 abundance	Time (hours)	linear	Abundance (nM)	linear	HGF	green
+plot4	AKT abundance	LinePlot		serum starved	time	AKT abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot5	pAKT abundance	LinePlot		serum starved	time	pAKT abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot6	ppAKT abundance	LinePlot		serum starved	time	ppAKT abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot7	ATM abundance	LinePlot		serum starved	time	ATM abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot8	ATMP abunance	LinePlot		serum starved	time	ATMP abunance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot9	ATRac abundance	LinePlot		serum starved	time	ATRac abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot10	pBAD abundance	LinePlot		serum starved	time	pBAD abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot11	Bax abundance	LinePlot		serum starved	time	Bax abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot12	Bcl2 abundance	LinePlot		serum starved	time	Bcl2 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot13	Bcl2c abundance	LinePlot		serum starved	time	Bcl2c abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot14	BIM abundance	LinePlot		serum starved	time	BIM abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot15	Bid abundance	LinePlot		serum starved	time	Bid abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot16	BRaf abundance	LinePlot		serum starved	time	BRaf abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot17	C3 abundance	LinePlot		serum starved	time	C3 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot18	C8 abundance	LinePlot		serum starved	time	C8 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot19	Cb abundance	LinePlot		serum starved	time	Cb abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot20	Cd abundance	LinePlot		serum starved	time	Cd abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot21	Ce abundance	LinePlot		serum starved	time	Ce abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot22	Pb abundance	LinePlot		serum starved	time	Pb abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot23	p21 abundance	LinePlot		serum starved	time	p21 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot24	p27 abundance	LinePlot		serum starved	time	p27 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot25	Chk1 abundance	LinePlot		serum starved	time	Chk1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot26	bCATENIN abundance	LinePlot		serum starved	time	bCATENIN abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot27	pbCATENIN abundance	LinePlot		serum starved	time	pbCATENIN abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot28	Smac abundance	LinePlot		serum starved	time	Smac abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot29	E2F abundance	LinePlot		serum starved	time	E2F abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot30	pE1 abundance	LinePlot		serum starved	time	pE1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot31	EIF4E abundance	LinePlot		serum starved	time	EIF4E abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot32	EIF4EBP1 abundance	LinePlot		serum starved	time	EIF4EBP1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot33	pEIF4EBP1 abundance	LinePlot		serum starved	time	pEIF4EBP1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot34	E2 abundance	LinePlot		serum starved	time	E2 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot35	pE2 abundance	LinePlot		serum starved	time	pE2 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot36	E3 abundance	LinePlot		serum starved	time	E3 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot37	pE3 abundance	LinePlot		serum starved	time	pE3 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot38	FOXO abundance	LinePlot		serum starved	time	FOXO abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot39	pFOXO abundance	LinePlot		serum starved	time	pFOXO abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot40	GSK3b abundance	LinePlot		serum starved	time	GSK3b abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot41	pGSK3b abundance	LinePlot		serum starved	time	pGSK3b abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot42	Ir abundance	LinePlot		serum starved	time	Ir abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot44	Isr abundance	LinePlot		serum starved	time	Isr abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot45	IRS abundance	LinePlot		serum starved	time	IRS abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot46	MEK abundance	LinePlot		serum starved	time	MEK abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot47	ppMEK abundance	LinePlot		serum starved	time	ppMEK abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot48	ERK abundance	LinePlot		serum starved	time	ERK abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot49	ppERK abundance	LinePlot		serum starved	time	ppERK abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot50	pMdm2 abundance	LinePlot		serum starved	time	pMdm2 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot51	pHGF abundance	LinePlot		serum starved	time	pHGF abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot52	MSH6 abundance	LinePlot		serum starved	time	MSH6 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot53	mTOR abundance	LinePlot		serum starved	time	mTOR abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot54	RasD abundance	LinePlot		serum starved	time	RasD abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot55	PARP abundance	LinePlot		serum starved	time	PARP abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot56	Pr abundance	LinePlot		serum starved	time	Pr abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot57	PDK1 abundance	LinePlot		serum starved	time	PDK1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot58	PI3KC1 + PI3K1 abundance	LinePlot		serum starved	time	PI3KC1 + PI3K1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot59	PI3KR1 + PI3K1 abundance	LinePlot		serum starved	time	PI3KR1 + PI3K1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot60	PKC abundance	LinePlot		serum starved	time	PKC abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot61	PTEN abundance	LinePlot		serum starved	time	PTEN abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot62	CRaf abundance	LinePlot		serum starved	time	CRaf abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot63	RasT_CRaf abundance	LinePlot		serum starved	time	RasT_CRaf abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot66	Rheb abundance	LinePlot		serum starved	time	Rheb abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot67	Rictor abundance	LinePlot		serum starved	time	Rictor abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot68	RSK abundance	LinePlot		serum starved	time	RSK abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot69	pRSK abundance	LinePlot		serum starved	time	pRSK abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot70	S6K abundance	LinePlot		serum starved	time	S6K abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot71	pS6K abundance	LinePlot		serum starved	time	pS6K abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot72	Raptor abundance	LinePlot		serum starved	time	Raptor abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot73	p53 abundance	LinePlot		serum starved	time	p53 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot74	TSC1 abundance	LinePlot		serum starved	time	TSC1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot75	TSC2 abundance	LinePlot		serum starved	time	TSC2 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot76	pTSC2 abunance	LinePlot		serum starved	time	pTSC2 abunance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot77	wee1 abundance	LinePlot		serum starved	time	wee1 abundance	Time (hours)	linear	Abundance (nM)	linear	serum starved	purple
+plot1	cMyc abundance	LinePlot		EGF_IFNG	time	cMyc abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot2	EGFR abundance	LinePlot		EGF_IFNG	time	EGFR abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot3	MET abundance	LinePlot		EGF_IFNG	time	MET abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot4	AKT abundance	LinePlot		EGF_IFNG	time	AKT abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot5	pAKT abundance	LinePlot		EGF_IFNG	time	pAKT abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot6	ppAKT abundance	LinePlot		EGF_IFNG	time	ppAKT abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot7	ATM abundance	LinePlot		EGF_IFNG	time	ATM abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot8	ATMP abunance	LinePlot		EGF_IFNG	time	ATMP abunance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot9	ATRac abundance	LinePlot		EGF_IFNG	time	ATRac abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot10	pBAD abundance	LinePlot		EGF_IFNG	time	pBAD abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot11	Bax abundance	LinePlot		EGF_IFNG	time	Bax abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot12	Bcl2 abundance	LinePlot		EGF_IFNG	time	Bcl2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot13	Bcl2c abundance	LinePlot		EGF_IFNG	time	Bcl2c abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot14	BIM abundance	LinePlot		EGF_IFNG	time	BIM abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot15	Bid abundance	LinePlot		EGF_IFNG	time	Bid abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot16	BRaf abundance	LinePlot		EGF_IFNG	time	BRaf abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot17	C3 abundance	LinePlot		EGF_IFNG	time	C3 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot18	C8 abundance	LinePlot		EGF_IFNG	time	C8 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot19	Cb abundance	LinePlot		EGF_IFNG	time	Cb abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot20	Cd abundance	LinePlot		EGF_IFNG	time	Cd abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot21	Ce abundance	LinePlot		EGF_IFNG	time	Ce abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot22	Pb abundance	LinePlot		EGF_IFNG	time	Pb abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot23	p21 abundance	LinePlot		EGF_IFNG	time	p21 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot24	p27 abundance	LinePlot		EGF_IFNG	time	p27 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot25	Chk1 abundance	LinePlot		EGF_IFNG	time	Chk1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot26	bCATENIN abundance	LinePlot		EGF_IFNG	time	bCATENIN abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot27	pbCATENIN abundance	LinePlot		EGF_IFNG	time	pbCATENIN abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot28	Smac abundance	LinePlot		EGF_IFNG	time	Smac abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot29	E2F abundance	LinePlot		EGF_IFNG	time	E2F abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot30	pE1 abundance	LinePlot		EGF_IFNG	time	pE1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot31	EIF4E abundance	LinePlot		EGF_IFNG	time	EIF4E abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot32	EIF4EBP1 abundance	LinePlot		EGF_IFNG	time	EIF4EBP1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot33	pEIF4EBP1 abundance	LinePlot		EGF_IFNG	time	pEIF4EBP1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot34	E2 abundance	LinePlot		EGF_IFNG	time	E2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot35	pE2 abundance	LinePlot		EGF_IFNG	time	pE2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot36	E3 abundance	LinePlot		EGF_IFNG	time	E3 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot37	pE3 abundance	LinePlot		EGF_IFNG	time	pE3 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot38	FOXO abundance	LinePlot		EGF_IFNG	time	FOXO abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot39	pFOXO abundance	LinePlot		EGF_IFNG	time	pFOXO abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot40	GSK3b abundance	LinePlot		EGF_IFNG	time	GSK3b abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot41	pGSK3b abundance	LinePlot		EGF_IFNG	time	pGSK3b abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot42	Ir abundance	LinePlot		EGF_IFNG	time	Ir abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot44	Isr abundance	LinePlot		EGF_IFNG	time	Isr abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot45	IRS abundance	LinePlot		EGF_IFNG	time	IRS abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot46	MEK abundance	LinePlot		EGF_IFNG	time	MEK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot47	ppMEK abundance	LinePlot		EGF_IFNG	time	ppMEK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot48	ERK abundance	LinePlot		EGF_IFNG	time	ERK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot49	ppERK abundance	LinePlot		EGF_IFNG	time	ppERK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot50	pMdm2 abundance	LinePlot		EGF_IFNG	time	pMdm2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot51	pHGF abundance	LinePlot		EGF_IFNG	time	pHGF abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot52	MSH6 abundance	LinePlot		EGF_IFNG	time	MSH6 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot53	mTOR abundance	LinePlot		EGF_IFNG	time	mTOR abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot54	RasD abundance	LinePlot		EGF_IFNG	time	RasD abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot55	PARP abundance	LinePlot		EGF_IFNG	time	PARP abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot56	Pr abundance	LinePlot		EGF_IFNG	time	Pr abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot57	PDK1 abundance	LinePlot		EGF_IFNG	time	PDK1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot58	PI3KC1 + PI3K1 abundance	LinePlot		EGF_IFNG	time	PI3KC1 + PI3K1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot59	PI3KR1 + PI3K1 abundance	LinePlot		EGF_IFNG	time	PI3KR1 + PI3K1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot60	PKC abundance	LinePlot		EGF_IFNG	time	PKC abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot61	PTEN abundance	LinePlot		EGF_IFNG	time	PTEN abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot62	CRaf abundance	LinePlot		EGF_IFNG	time	CRaf abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot63	RasT_CRaf abundance	LinePlot		EGF_IFNG	time	RasT_CRaf abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot66	Rheb abundance	LinePlot		EGF_IFNG	time	Rheb abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot67	Rictor abundance	LinePlot		EGF_IFNG	time	Rictor abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot68	RSK abundance	LinePlot		EGF_IFNG	time	RSK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot69	pRSK abundance	LinePlot		EGF_IFNG	time	pRSK abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot70	S6K abundance	LinePlot		EGF_IFNG	time	S6K abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot71	pS6K abundance	LinePlot		EGF_IFNG	time	pS6K abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot72	Raptor abundance	LinePlot		EGF_IFNG	time	Raptor abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot73	p53 abundance	LinePlot		EGF_IFNG	time	p53 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot74	TSC1 abundance	LinePlot		EGF_IFNG	time	TSC1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot75	TSC2 abundance	LinePlot		EGF_IFNG	time	TSC2 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot76	pTSC2 abunance	LinePlot		EGF_IFNG	time	pTSC2 abunance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
+plot77	wee1 abundance	LinePlot		EGF_IFNG	time	wee1 abundance	Time (hours)	linear	Abundance (nM)	linear	EGF+IFN	gold
