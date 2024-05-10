@@ -3,8 +3,8 @@
 
 # This script is an example of how to build and run the SPARCED model.
 
-# Model creation
-from compilation.create_model import *
+# Model compilation
+from compilation.launcher import launch_model_creation
 # Model simulation
 from simulation.utils.ligands import *
 from simulation.launchers import *
