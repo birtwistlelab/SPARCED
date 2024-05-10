@@ -28,11 +28,13 @@ def launch_model_creation() -> None:
     verbose = args.verbose
     # Model
     model_name = load_model_name(args.name)
-    model_path = load_model_path(args.model, model_name)
+    model_path = append_subfolder(args.model, model_name, True)
     # Input data files
     input_files = load_compilation_input_files(model_path, args.input_data, args.yaml)
+    # Output parameters
+    output_parameters_path = append_subfolder(model_path, args.output_parameters)
     # Call create_model
-    create_model(model_name, model_path, input_files, args.output_parameters,
+    create_model(model_name, model_path, input_files, output_parameters_path,
                  verbose, is_SPARCED)
 
 def load_compilation_input_files(model_path: str | os.PathLike, data_folder: str,
@@ -57,29 +59,19 @@ def load_compilation_input_files(model_path: str | os.PathLike, data_folder: str
     """
 
     # Load data and YAML paths
-    data_path, error = append_subfolder(model_path, data_folder)
-    yaml_path, error = append_subfolder(data_path, yaml_name)
-    try:
-        assert not error
-    except:
-        print("ERROR: Data or YAML path doesn't exist. Aborting now.")
-        sys.exit(0)
+    data_path = append_subfolder(model_path, data_folder, True)
+    yaml_path = append_subfolder(data_path, yaml_name, True)
     # Read input data files structure in YAML configuration file
     with yaml_path.open() as f:
         input_files_structure = yaml.safe_load(f)
     compilation_files = input_files_structure["compilation"]
     # Load root of compilation input data files
     compilation_root = compilation_files.pop("root", None)
-    compilation_data_path, error = append_subfolder(data_path, compilation_root)
-    try:
-        assert not error
-    except:
-        print("ERROR: Compilation data input files folder doesn't exist. Aborting now.")
-        sys.exit(0)
+    compilation_data_path = append_subfolder(data_path, compilation_root, True)
     # Reconstruct full path for each input file listed in the dictionnary
     for input_file in compilation_files.keys():
         if compilation_files[input_file] != None:
-            compilation_files[input_file], error = append_subfolder(compilation_data_path, compilation_files[input_file])
+            compilation_files[input_file] = append_subfolder(compilation_data_path, compilation_files[input_file])
     return(compilation_files)
 
 def load_model_name(name: str) -> str:
@@ -105,26 +97,6 @@ def load_model_name(name: str) -> str:
     # Clean name
     model_name = name.replace('-', '_')
     return(model_name)
-
-def load_model_path(models_folder: str, model_name: str) -> str | os.PathLike:
-    """Ensure correctness of model path
-
-    Arguments:
-        models_folder: The path to the models folder.
-        model_name: The conform model name.
-
-    Returns:
-        The correct model's resulting path.
-    """
-    
-    model_path, error = append_subfolder(models_folder, model_name)
-    try:
-        assert not error
-    except:
-        print("{name}: Model path doesn't exist. Aborting now."
-               .format(name=model_name))
-        sys.exit(0)
-    return(model_path)
 
 
 if __name__ == '__main__':

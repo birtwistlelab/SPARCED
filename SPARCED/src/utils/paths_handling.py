@@ -35,7 +35,7 @@ def append_subfolder(folder: str | os.PathLike, subfolder: str,
     try:
         assert subfolder_path.exists()
     except:
-        print("WARNING: Subfolder doesn't exist. This is normal if you are
+        print("WARNING: Subfolder doesn't exist. This is normal if you are \
                creating a new subfolder.\nSubfolder name: {name}."
                .format(name=subfolder))
         if abort_on_error:
