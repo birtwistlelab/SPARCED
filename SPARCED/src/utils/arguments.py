@@ -12,19 +12,19 @@ def parse_args():
     """
     
     parser = argparse.ArgumentParser()
-    # Model creation
+    # Compilation
     parser.add_argument('-i', '--input_data',           default="data/",
                         help="name of the model subfolder containing the \
                               SPARCED formated input files")
     parser.add_argument('-o', '--output_parameters',    default="out_Parameters.txt",
                         help="desired name for the output parameters file")
-    # Model creation & simulation
+    # Compilation & simulation
     parser.add_argument('-m', '--model',                default="./../models/",
                         help="relative path to the directory containing the \
                               models folders")
     parser.add_argument('n', '--name',                  default=None,
-                        help="name of the model\nModel creation: desired name \
-                              for the generated model (should be identical to \
+                        help="name of the model\nCompilation: desired name for \
+                              the generated model (should be identical to \
                               model's folder name).\nSimulation: name of the \
                               input model.")
     # Simulation
