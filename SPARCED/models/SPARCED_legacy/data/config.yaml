@@ -1,4 +1,4 @@
-model:
+compilation:
     root: "model"
     compartments: "Compartments.txt"
     observables: "Observables.txt"
