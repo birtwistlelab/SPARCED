@@ -32,7 +32,7 @@ def launch_model_creation() -> None:
     # Output parameters
     output_parameters_path = append_subfolder(model_path, args.output_parameters)
     # Runtime booleans
-    is_SPARCEd = not args.wild  # if it's not wild then it's SPARCED
+    is_SPARCED = not args.wild  # if it's not wild then it's SPARCED
     verbose = args.verbose
     # Call create_model
     create_model(model_name, model_path, input_files, output_parameters_path,
