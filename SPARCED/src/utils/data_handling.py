@@ -6,7 +6,7 @@ import sys
 
 import numpy as np
 import pandas as pd
-import pathlib as Path
+from pathlib import Path
 import yaml
 
 def append_subfolder(folder: str | os.PathLike, subfolder: str,
