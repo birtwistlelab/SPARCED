@@ -64,7 +64,7 @@ def convert_excel_to_tsv(f_excel: str) -> None:
     data.to_csv((f_excel.split("."))[0] + ".txt", sep="\t") 
 
 def load_input_data_config(model_path: str | os.PathLike, data_folder: str,
-                           yaml_name: str) -> dict[str, str | os.PathLike];
+                           yaml_name: str) -> dict[str, str | os.PathLike]:
     """Load input data files paths configuration
 
     Note:
