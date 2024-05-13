@@ -1,31 +1,46 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+
+import libsbml
 import numpy as np
 
-from utils.data_handling import load_input_data_file
 
+def load_species_initial_conditions(sbml_path: str | os.PathLike, 
+                                    perturbations: np.ndarray=None) -> np.ndarray:
+    """Create species initial conditions array
 
-def load_species_initial_conditions(f_species: str, ligands: np.ndarray,
-                                    compound: str=None, dose: float=None) -> np.ndarray:
+    Load initial conditions from the SBML model and update according to
+    perturbations.
+
+    Arguments:
+        sbml_path:  The path to the SBML model.
+        perturbations: An array containing the pertubations to apply.
+
+    Returns:
+        The initial conditions array.
     """
-    Create species initial conditions array
-    """
-    # Warning: first line is considered as a header and hence skipped
-    # Species names should be on first column
-    # Species initial conditions, should be on third column
-    species = load_input_data_file(f_species)
+
+    # Load SBML model
+    sbml_reader = libsbml.SBMLReader()
+    sbml_doc = sbml_reader.readSBML(sbml_path)
+    sbml_model = sbml_doc.getModel()
+    # Read species
     species_names = []
     species_initial_conditions = []
-    for row in species[1:]:
-        species_names = np.append(species_names, str(row[0]))
-        species_initial_conditions = np.append(species_initial_conditions, float(row[2]))
+    for i in range(0, sbml_model.getNumSpecies()):
+        s = sbml_model.getSpecies(i)
+        s_name = s.getId()
+        s_IC = s.getInitialConcentration()
+        if s_name != '':
+            species_names = np.append(species_names, s_name)
+            species_initial_conditions = np.append(species_initial_conditions, sp_IC)
     # Any concentration bellow 1e-6 is considered as zero (0)
     species_initial_conditions[np.argwhere(species_initial_conditions <= 1e-6)] = 0.0
-    # Adjust ligands concentration
-    for l in ligands:
-        species_initial_conditions[np.argwhere(species_names == l[0])] = l[1]
-    if compound is not None:
-        species_initial_conditions[np.argwhere(species_names == compound)] = float(dose)
+    # Apply perturbations
+    if perturbations is not None:
+        for p in perturbations:
+            species_initial_conditions[np.argwhere(species_names == p[0])] = p[1]
     return(species_initial_conditions)
 
