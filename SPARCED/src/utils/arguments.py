@@ -6,15 +6,20 @@ import argparse
 
 def parse_args():
     """Retrieve and parse arguments necessary for model creation
-    
+
+    Arguments:
+        None
+
     Returns:
         A namespace populated with all the attributes.
     """
     
     parser = argparse.ArgumentParser()
+    
     # Compilation
     parser.add_argument('-o', '--output_parameters',    default="out_Parameters.txt",
                         help="desired name for the output parameters file")
+    
     # Compilation & simulation
     parser.add_argument('-i', '--input_data',           default="data/",
                         help="name of the model subfolder containing the \
@@ -60,5 +65,6 @@ def parse_args():
     parser.add_argument('-x', '--exchange',             default=30,
                          help="timeframe between modules information exchange \
                                during the simulation")
+
     return(parser.parse_args())
 
