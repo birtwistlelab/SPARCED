@@ -37,7 +37,7 @@ def antimony_write_model(model_name: str, f_antimony: str | os.PathLike,
         # Header
         if (is_SPARCED):
             f.write("# PanCancer Model by Birtwistle Lab\n")
-        f.write("model {antimony}()\n\n".format(antimony=model_name))
+        f.write("model {name}()\n\n".format(name=model_name))
         # Compartments
         compartments = load_input_data_file(str(input_files["compartments"]))
         antimony_write_compartments_names(f, compartments)
