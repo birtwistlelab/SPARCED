@@ -11,7 +11,7 @@ import libsbml
 from compilation.amici_scripts.model_compilation import compile_sbml_to_amici
 from compilation.antimony_scripts.model_writing import antimony_write_model
 from compilation.sbml_scripts.model_annotation import sbml_annotate_model
-from utils.paths_handling import append_subfolder
+from utils.data_handling import append_subfolder
 
 def create_model(model_name: str, model_path: str | os.PathLike,
                  input_files: dict[str, str | os.PathLike],
