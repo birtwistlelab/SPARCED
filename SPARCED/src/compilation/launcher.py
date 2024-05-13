@@ -4,8 +4,6 @@
 import os
 import sys
 
-import yaml
-
 from compilation.create_model import create_model
 from utils.arguments import parse_args
 from utils.data_handling import *
@@ -25,9 +23,6 @@ def launch_model_creation() -> None:
     """
 
     args = parse_args()
-    # Runtime booleans
-    is_SPARCED = not args.wild  # if its not wild then it's SPARCED
-    verbose = args.verbose
     # Model
     model_name = sanitize_model_name(args.name)
     model_path = append_subfolder(args.model, model_name, True)
@@ -35,6 +30,9 @@ def launch_model_creation() -> None:
     input_files = load_compilation_input_files(model_path, args.input_data, args.yaml)
     # Output parameters
     output_parameters_path = append_subfolder(model_path, args.output_parameters)
+    # Runtime booleans
+    is_SPARCEd = not args.wild  # if it's not wild then it's SPARCED
+    versbose = args.verbose
     # Call create_model
     create_model(model_name, model_path, input_files, output_parameters_path,
                  verbose, is_SPARCED)
@@ -42,14 +40,6 @@ def launch_model_creation() -> None:
 def load_compilation_input_files(model_path: str | os.PathLike, data_folder: str,
                                  yaml_name: str) -> dict[str, str | os.PathLike]:
     """Load compilation input data files paths dictionnary
-
-    Note:
-        File structure is assumed to be organized as follow:
-        > model folder
-        > data subfolder with YAML configuration file describing input data
-        organization
-        > model compilation sub-subfolder containing the input data files
-        required for model compilation
 
     Arguments:
         model_path: The model folder path.
