@@ -48,11 +48,6 @@ def parse_args():
                         help="name of the perturbations file to use (will \
                               override default)")
     # -- Lowercase
-    parser.add_argument('-c', '--compound',             default=None,
-                        help="name of the compound (for example a drug) you \
-                              wish to adjust")
-    parser.add_argument('-d', '--dose',                 default=0.0,
-                        help="concentration of the specified compound (nM)")
     parser.add_argument('-p', '--population_size',      default=1,
                         help="desired cell population size for the simulation")
     parser.add_argument('-r', '--results',              default="./../results/New-Simulation/",
