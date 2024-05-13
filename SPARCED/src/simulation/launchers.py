@@ -31,9 +31,11 @@ def launch_experiment_simulation(perturbations: np.ndarray) -> None:
     amici_name = "amici_" + model_name
     amici_path = append_subfolder(args.model, amici_name, True)
     sbml_name = "sbml_" + model_name + ".xml"
-    sbml_path = append.subfolder(args.model, sbml_name, True)
+    sbml_path = append_subfolder(args.model, sbml_name, True)
     # Input data files
-    input_files = load_simulation_input_files(model_path, args.input_data, args.yaml)
+    input_folder = append.subfolder(model_path, args.input_data, True)
+    input_files = load_simulation_input_files(input_folder, args.yaml)
+    perturbations: load_perturbations(input_folder, input_files["perturbations"], args.perturbations)
     # Population size
     popsize = sanitize_popsize(args.popsize)
     # Runtime booleans
@@ -42,6 +44,35 @@ def launch_experiment_simulation(perturbations: np.ndarray) -> None:
     run_experiment(model_name, args.simulation, args.results, amici_path,
                    sbml_path, input_files, perturbations, args.deterministic,
                    args.popsize, args.time, args.exchange, args.verbose, is_SPARCED)
+
+def load_perturbations(input_folder: str | os.PathLike,
+                       config: dict[str, str], file: str=None) -> np.ndarray:
+    """Load perturbations
+
+    Load an input perturbations file structured as tab separated, and remove
+    the first column (human-readable) to keep only the second (SPARCED symbol)
+    and the third (concentration in nM) columns.
+
+    Arguments:
+        input_folder
+        config
+        file
+
+    Returns:
+        A numpy array containing ligands symbols and concentrations.
+    """
+        
+    perturbations_root = append_subfolder(input_folder, config["root"])
+    # Choose the file to load
+    if file != None:
+        perturbations_file = append_subfolder(perturbations_root, file)
+    else:
+        perturbations_file = append_subfolder(perturbations_root, config["default"])
+    perturbations = load_input_data_file(perturbations_file)
+    # Convert concentrations from strings to floats
+    for row in perturbations:
+        row[2] = float(row[2])
+    return(perturbations[:,1:])
 
 def load_simulation_input_files(model_path: str | os.PathLike, data_folder: str,
                                 yaml_name: stre) -> dict[str, str | os.PathLike]:

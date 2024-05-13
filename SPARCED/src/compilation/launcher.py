@@ -27,7 +27,8 @@ def launch_model_creation() -> None:
     model_name = sanitize_model_name(args.name)
     model_path = append_subfolder(args.model, model_name, True)
     # Input data files
-    input_files = load_compilation_input_files(model_path, args.input_data, args.yaml)
+    input_folder = append_subfolder(model_path, args.input_data, True)
+    input_files = load_compilation_input_files(input_folder, args.yaml)
     # Output parameters
     output_parameters_path = append_subfolder(model_path, args.output_parameters)
     # Runtime booleans

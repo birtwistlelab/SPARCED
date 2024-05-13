@@ -63,8 +63,7 @@ def convert_excel_to_tsv(f_excel: str) -> None:
     data = pd.read_excel(f_excel, header=0, index_col=0)
     data.to_csv((f_excel.split("."))[0] + ".txt", sep="\t") 
 
-def load_input_data_config(model_path: str | os.PathLike, data_folder: str,
-                           yaml_name: str) -> dict[str, str | os.PathLike]:
+def load_input_data_config(data_path: str | os.PathLike, yaml_name: str) -> dict[str, str | os.PathLike]:
     """Load input data files paths configuration
 
     Note:
@@ -76,8 +75,7 @@ def load_input_data_config(model_path: str | os.PathLike, data_folder: str,
         data files
 
     Arguments:
-        model_path: The model folder path.
-        data_folder: The input data files folder name.
+        data_path: The input data files folder path.
         yaml_name: The YAML configuration file name.
 
     Returns:
@@ -85,7 +83,6 @@ def load_input_data_config(model_path: str | os.PathLike, data_folder: str,
     """
 
     # Load data and YAML paths
-    data_path = append_subfolder(model_path, data_folder, True)
     yaml_path = append_subfolder(data_path, yaml_name, True)
     # Read input data files structure in YAML configuration file
     with yaml_path.open() as f:
