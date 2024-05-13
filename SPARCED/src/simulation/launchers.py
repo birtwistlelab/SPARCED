@@ -12,7 +12,7 @@ from utils.sanitize import *
 from simulation.run_model import run_experiment
 
 
-def launch_experiment_simulation(perturbations: np.ndarray) -> None:
+def launch_experiment_simulation() -> None:
     """Launch experiment simulation function
 
     Small routine to process the parsed arguments and call run_model()
@@ -29,11 +29,11 @@ def launch_experiment_simulation(perturbations: np.ndarray) -> None:
     model_name = sanitize_model_name(args.name)
     model_path = append_subfolder(args.model, model_name, True)
     amici_name = "amici_" + model_name
-    amici_path = append_subfolder(args.model, amici_name, True)
+    amici_path = append_subfolder(model_path, amici_name, True)
     sbml_name = "sbml_" + model_name + ".xml"
-    sbml_path = append_subfolder(args.model, sbml_name, True)
+    sbml_path = append_subfolder(model_path, sbml_name, True)
     # Input data files
-    input_folder = append.subfolder(model_path, args.input_data, True)
+    input_folder = append_subfolder(model_path, args.input_data, True)
     input_files = load_simulation_input_files(input_folder, args.yaml)
     perturbations: load_perturbations(input_folder, input_files["perturbations"], args.perturbations)
     # Population size
@@ -74,8 +74,7 @@ def load_perturbations(input_folder: str | os.PathLike,
         row[2] = float(row[2])
     return(perturbations[:,1:])
 
-def load_simulation_input_files(model_path: str | os.PathLike, data_folder: str,
-                                yaml_name: stre) -> dict[str, str | os.PathLike]:
+def load_simulation_input_files(data_folder: str | os.PathLike, yaml_name: str) -> dict[str, str | os.PathLike]:
     """Load simulation input data files paths dictionnary
 
     Arguments:
@@ -87,12 +86,11 @@ def load_simulation_input_files(model_path: str | os.PathLike, data_folder: str,
         A dictionnary containing all the input data file paths.
     """
 
-    input_files_configuration = load_input_data_config(model_path, data_folder,
-                                                       yaml_name)
+    input_files_configuration = load_input_data_config(data_folder, yaml_name)
     simulation_files = input_files_configuration["simulation"]
     # Load root of simulation input data files
     simulation_root = simulation_files.pop("root", None)
-    simulation_data_path = append_subfolder(data_path, simulation_root, True)
+    simulation_data_path = append_subfolder(data_folder, simulation_root, True)
     # Reconstruct full path for each input file listed in the dictionnary
     for input_file in simulation_files.keys():
         if input_file != "perturbations":
