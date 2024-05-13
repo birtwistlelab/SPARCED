@@ -9,7 +9,11 @@ Main function for model creation
 
 .. autofunction:: create_model.create_model()
 
-.. autofunction:: create_model.launch_model_creation()
+Launcher
+
+.. autofunction:: launcher.launch_model_creation()
+
+.. autofunction:: load_compilation_input_files() 
 
 AMICI
 -------------------------------------------------------------------------------
@@ -32,9 +36,6 @@ Model writing
 
 .. autofunction:: model_writing.antimony_write_model()
 
-General Utilities
-
-.. autofunction:: antimony_utils.extract_antimony_model_name()
 
 Writing Utilities
 

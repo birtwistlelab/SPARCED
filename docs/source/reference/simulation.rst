@@ -7,11 +7,15 @@ General
 
 Main functions to run a model simulation
 
-.. autofunction:: launchers.launch_experiment_simulation()
-
 .. autofunction:: run_model.run_experiment()
 
 .. autofunction:: run_model.run_single_simulation()
+
+Launchers
+
+.. autofuncton:: launchers.launch_experiment_simulation()
+
+.. autofunction:: load_simulation_input_files()
 
 Utilities
 -------------------------------------------------------------------------------
