@@ -35,9 +35,9 @@ def launch_experiment_simulation() -> None:
     # Input data files
     input_folder = append_subfolder(model_path, args.input_data, True)
     input_files = load_simulation_input_files(input_folder, args.yaml)
-    perturbations: load_perturbations(input_folder, input_files["perturbations"], args.perturbations)
+    perturbations = load_perturbations(input_folder, input_files["perturbations"], args.perturbations)
     # Population size
-    popsize = sanitize_popsize(args.popsize)
+    popsize = sanitize_popsize(args.population_size)
     # Runtime booleans
     is_SPARCED = not args.wild  # if it's not wild then it's SPARCED
     verbose = args.verbose
