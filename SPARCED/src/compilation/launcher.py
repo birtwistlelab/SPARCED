@@ -38,8 +38,7 @@ def launch_model_creation() -> None:
     create_model(model_name, model_path, input_files, output_parameters_path,
                  verbose, is_SPARCED)
 
-def load_compilation_input_files(model_path: str | os.PathLike, data_folder: str,
-                                 yaml_name: str) -> dict[str, str | os.PathLike]:
+def load_compilation_input_files(data_folder: str | os.PathLike, yaml_name: str) -> dict[str, str | os.PathLike]:
     """Load compilation input data files paths dictionnary
 
     Arguments:
@@ -51,12 +50,11 @@ def load_compilation_input_files(model_path: str | os.PathLike, data_folder: str
         A dictionnary containing all the input data file paths.
     """
 
-    input_files_configuration = load_input_data_config(model_path, data_folder,
-                                                       yaml_name)
+    input_files_configuration = load_input_data_config(data_folder, yaml_name)
     compilation_files = input_files_configuration["compilation"]
     # Load root of compilation input data files
     compilation_root = compilation_files.pop("root", None)
-    compilation_data_path = append_subfolder(data_path, compilation_root, True)
+    compilation_data_path = append_subfolder(data_folder, compilation_root, True)
     # Reconstruct full path for each input file listed in the dictionnary
     for input_file in compilation_files.keys():
         if compilation_files[input_file] != None:
