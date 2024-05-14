@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>Jupyter Notebook &mdash; SPARCED 2.0.0 documentation</title>
+  <title>launcher &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -36,9 +36,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
-        <link rel="up" title="Tutorials" href="summary.html"/>
-        <link rel="next" title="SPARCED Hands-On Primer Tutorial" href="hands-on.html"/>
-        <link rel="prev" title="Tutorials" href="summary.html"/>
+        <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -76,7 +74,7 @@
 	
           
           
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html#instructions-beginners">Instructions &amp; Beginners</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about.html#replicate-our-results">Replicate our results</a></li>
@@ -85,10 +83,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../about.html#acknowledgments">Acknowledgments</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Contents Table</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="summary.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
@@ -107,9 +105,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#clean">Clean</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="summary.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Jupyter Notebook</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/notebook.html">Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a><ul>
@@ -169,23 +167,78 @@
 	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
 	  </dark-mode-toggle>
 	</div>
-  <section id="jupyter-notebook">
-<h1>Jupyter Notebook<a class="headerlink" href="#jupyter-notebook" title="Permalink to this heading">¶</a></h1>
-<p>How to run SPARCED in a Jupyter Notebook and what we provide</p>
-</section>
+  <h1>Source code for launcher</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">compilation.create_model</span> <span class="kn">import</span> <span class="n">create_model</span>
+<span class="kn">from</span> <span class="nn">utils.arguments</span> <span class="kn">import</span> <span class="n">parse_args</span>
+<span class="kn">from</span> <span class="nn">utils.data_handling</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">utils.sanitize</span> <span class="kn">import</span> <span class="n">sanitize_model_name</span>
+
+
+<div class="viewcode-block" id="launch_model_creation"><a class="viewcode-back" href="../reference/compilation.html#launcher.launch_model_creation">[docs]</a><span class="k">def</span> <span class="nf">launch_model_creation</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Launch model creation function</span>
+
+<span class="sd">    Small routine to process the parsed arguments and call create_model()</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        None.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="c1"># Model</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="n">sanitize_model_name</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">model_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Input data files</span>
+    <span class="n">input_folder</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">input_data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">input_files</span> <span class="o">=</span> <span class="n">load_compilation_input_files</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">yaml</span><span class="p">)</span>
+    <span class="c1"># Output parameters</span>
+    <span class="n">output_parameters_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output_parameters</span><span class="p">)</span>
+    <span class="c1"># Runtime booleans</span>
+    <span class="n">is_SPARCED</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">wild</span>  <span class="c1"># if it&#39;s not wild then it&#39;s SPARCED</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
+    <span class="c1"># Call create_model</span>
+    <span class="n">create_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">model_path</span><span class="p">,</span> <span class="n">input_files</span><span class="p">,</span> <span class="n">output_parameters_path</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">load_compilation_input_files</span><span class="p">(</span><span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">yaml_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load compilation input data files paths dictionnary</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        model_path: The model folder path.</span>
+<span class="sd">        data_folder: The input data files folder name.</span>
+<span class="sd">        yaml_name: The YAML configuration file name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionnary containing all the input data file paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">input_files_configuration</span> <span class="o">=</span> <span class="n">load_input_data_config</span><span class="p">(</span><span class="n">data_folder</span><span class="p">,</span> <span class="n">yaml_name</span><span class="p">)</span>
+    <span class="n">compilation_files</span> <span class="o">=</span> <span class="n">input_files_configuration</span><span class="p">[</span><span class="s2">&quot;compilation&quot;</span><span class="p">]</span>
+    <span class="c1"># Load root of compilation input data files</span>
+    <span class="n">compilation_root</span> <span class="o">=</span> <span class="n">compilation_files</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">compilation_data_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">data_folder</span><span class="p">,</span> <span class="n">compilation_root</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Reconstruct full path for each input file listed in the dictionnary</span>
+    <span class="k">for</span> <span class="n">input_file</span> <span class="ow">in</span> <span class="n">compilation_files</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">compilation_files</span><span class="p">[</span><span class="n">input_file</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">compilation_files</span><span class="p">[</span><span class="n">input_file</span><span class="p">]</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">compilation_data_path</span><span class="p">,</span> <span class="n">compilation_files</span><span class="p">[</span><span class="n">input_file</span><span class="p">])</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">compilation_files</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">launch_model_creation</span><span class="p">()</span>
+
+</pre></div>
 
 	    </div>
             <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="hands-on.html" class="btn btn-neutral float-right" title="SPARCED Hands-On Primer Tutorial">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="summary.html" class="btn btn-neutral" title="Tutorials"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

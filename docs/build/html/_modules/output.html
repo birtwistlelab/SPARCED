@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>output &mdash; SPARCED 1.4.0 documentation</title>
+  <title>output &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -75,6 +75,14 @@
           
           
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#instructions-beginners">Instructions &amp; Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#replicate-our-results">Replicate our results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#further-information">Further information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
@@ -86,6 +94,36 @@
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#environment">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#virtualbox-guest-additions">VirtualBox Guest Additions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#openmpi">OpenMPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#git-github-ssh">Git, GitHub &amp; SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#anaconda">Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#todo-docker">TODO: Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#sparced">SPARCED 🎆</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#clean">Clean</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/notebook.html">Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../papers/bouhaddou2018.html">Bouhaddou 2018 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/erdem2022.html">Erdem 2022 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/mutsuddy2023.html">Mutsuddy 2023 model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#input-files">Input files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#source-code">Source code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
           
@@ -138,16 +176,18 @@
 
 
 <div class="viewcode-block" id="save_simulation_output"><a class="viewcode-back" href="../reference/simulation.html#output.save_simulation_output">[docs]</a><span class="k">def</span> <span class="nf">save_simulation_output</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">simulation_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">simulation_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                           <span class="n">xoutS_all</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">xoutG_all</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                           <span class="n">tout_all</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                           <span class="n">output_sim</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">xoutS_all</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                           <span class="n">xoutG_all</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tout_all</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save simulation results in three files: species, genes and time</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># TODO: ensure that the last character of the output_sim parameter is a dash,</span>
+    <span class="c1"># otherwise if verbose ask the user if he meant to add one</span>
     <span class="c1"># Species</span>
     <span class="n">columnsS</span> <span class="o">=</span> <span class="p">[</span><span class="n">ele</span> <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">getStateIds</span><span class="p">()]</span>
     <span class="n">condsSDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">xoutS_all</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">columnsS</span><span class="p">)</span>
-    <span class="n">condsSDF</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">simulation_name</span> <span class="o">+</span> <span class="s1">&#39;_S_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">simulation_number</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">condsSDF</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_sim</span> <span class="o">+</span> <span class="n">simulation_name</span> <span class="o">+</span> <span class="s1">&#39;_S_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">simulation_number</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">condsSDF</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># Genes</span>
     <span class="n">columnsG</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">columnsS</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;m_&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
@@ -156,10 +196,10 @@
     <span class="n">resi</span> <span class="o">=</span> <span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;m_&#39;</span><span class="p">,</span> <span class="s1">&#39;ig_&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">columnsG</span><span class="p">]</span>
     <span class="n">columnsG2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">resa</span><span class="p">,</span> <span class="n">resi</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">condsGDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">xoutG_all</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">columnsG2</span><span class="p">)</span>
-    <span class="n">condsGDF</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">simulation_name</span> <span class="o">+</span> <span class="s1">&#39;_G_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">simulation_number</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">condsGDF</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_sim</span> <span class="o">+</span> <span class="n">simulation_name</span> <span class="o">+</span> <span class="s1">&#39;_G_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">simulation_number</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">condsGDF</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># Time</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">simulation_name</span> <span class="o">+</span> <span class="s1">&#39;_T_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">simulation_number</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">tout_all</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span></div>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">output_sim</span> <span class="o">+</span> <span class="n">simulation_name</span> <span class="o">+</span> <span class="s1">&#39;_T_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">simulation_number</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">tout_all</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 </pre></div>
 
@@ -185,7 +225,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

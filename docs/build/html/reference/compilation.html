@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>Model Creation &mdash; SPARCED 1.4.0 documentation</title>
+  <title>Model Creation &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Reference Documentation" href="summary.html"/>
         <link rel="next" title="Model Simulation" href="simulation.html"/>
         <link rel="prev" title="General Utilities" href="utils.html"/>
@@ -77,6 +77,14 @@
           
           
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#instructions-beginners">Instructions &amp; Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#replicate-our-results">Replicate our results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#further-information">Further information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Contents Table</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
@@ -88,6 +96,36 @@
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#environment">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#virtualbox-guest-additions">VirtualBox Guest Additions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#openmpi">OpenMPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#git-github-ssh">Git, GitHub &amp; SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#anaconda">Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#todo-docker">TODO: Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#sparced">SPARCED 🎆</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#clean">Clean</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/notebook.html">Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../papers/bouhaddou2018.html">Bouhaddou 2018 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/erdem2022.html">Erdem 2022 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/mutsuddy2023.html">Mutsuddy 2023 model</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="summary.html">Reference Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="summary.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html#input-files">Input files</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="summary.html#source-code">Source code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
           
@@ -139,36 +177,61 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="create_model.create_model">
 <span class="sig-prename descclassname"><span class="pre">create_model.</span></span><span class="sig-name descname"><span class="pre">create_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/create_model.html#create_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_model.create_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate Antimony, SBML and AMICI models based on given input data</p>
+<dd><p>Generate Antimony, SBML and AMICI models based on given input data files.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The model name should not contain any dash (‘-’) characters as those
+are not supported by Antimony.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f_observables</strong> (<em>[</em><em>str</em><em>]</em>) – path to the observables file</p></li>
-<li><p><strong>model_name</strong> (<em>[</em><em>str</em><em>]</em>) – desired name for the generated Antimony, SBML and AMICI models</p></li>
-<li><p><strong>f_compartments</strong> (<em>[</em><em>str</em><em>]</em>) – path to the compartments &amp; volumes file</p></li>
-<li><p><strong>f_stoichmatrix</strong> (<em>[</em><em>str</em><em>]</em>) – path to the stoichiometric matrix file</p></li>
-<li><p><strong>f_output_dir_path</strong> (<em>[</em><em>str</em><em>]</em>) – path to the desired output directory</p></li>
-<li><p><strong>f_output_parameters</strong> (<em>[</em><em>str</em><em>]</em>) – path to the output parameters file</p></li>
-<li><p><strong>f_ratelaws</strong> – path to the ratelaws file</p></li>
-<li><p><strong>f_ratelaws</strong> – [str]</p></li>
-<li><p><strong>f_species</strong> (<em>[</em><em>str</em><em>]</em>) – path to the species file</p></li>
-<li><p><strong>verbose</strong> (<em>[</em><em>bool</em><em>]</em>) – verbose</p></li>
-<li><p><strong>is_SPARCED</strong> (<em>[</em><em>bool</em><em>]</em>) – activate hard-coded behaviors for SPARCED</p></li>
+<li><p><strong>model_name</strong> – The name of the model.</p></li>
+<li><p><strong>model_path</strong> – The path to the model folder.</p></li>
+<li><p><strong>input_files</strong> – A dictionnary containing paths towards input data file.</p></li>
+<li><p><strong>output_parameters</strong> – The desired name for the output parameters file.</p></li>
+<li><p><strong>verbose</strong> – Verbose.</p></li>
+<li><p><strong>is_SPARCED</strong> – Use SPARCED hard-coded values/behaviors.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Nothing TODO change this</p>
+<dd class="field-even"><p>Nothing.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[void]</p>
+</dl>
+</dd></dl>
+
+<p>Launcher</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="launcher.launch_model_creation">
+<span class="sig-prename descclassname"><span class="pre">launcher.</span></span><span class="sig-name descname"><span class="pre">launch_model_creation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/launcher.html#launch_model_creation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#launcher.launch_model_creation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch model creation function</p>
+<p>Small routine to process the parsed arguments and call create_model()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None.</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="create_model.launch_model_creation">
-<span class="sig-prename descclassname"><span class="pre">create_model.</span></span><span class="sig-name descname"><span class="pre">launch_model_creation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/create_model.html#launch_model_creation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_model.launch_model_creation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Small routine to process parsed arguments and call create_model</p>
+<dt class="sig sig-object py" id="launcher.load_compilation_input_files">
+<span class="sig-prename descclassname"><span class="pre">launcher.</span></span><span class="sig-name descname"><span class="pre">load_compilation_input_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/launcher.html#load_compilation_input_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#launcher.load_compilation_input_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load compilation input data files paths dictionnary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_path</strong> – The model folder path.</p></li>
+<li><p><strong>data_folder</strong> – The input data files folder name.</p></li>
+<li><p><strong>yaml_name</strong> – The YAML configuration file name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionnary containing all the input data file paths.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -238,9 +301,8 @@ found in the file path string.</p>
 <dt class="sig sig-object py" id="model_writing.antimony_write_model">
 <span class="sig-prename descclassname"><span class="pre">model_writing.</span></span><span class="sig-name descname"><span class="pre">antimony_write_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_writing.html#antimony_write_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_writing.antimony_write_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an Antimony file</p>
-<p>Provided an empty Antimony file and some SPARCED formatted data on
-compartments, stoichiometric matrix, ratelaws, and species, generate the
-content of the Antimony file.</p>
+<p>Provided an empty Antimony file and paths to the SPARCED formatted input
+data files, generate the content of the Antimony file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This process also creates a parameters file as an output.</p>
@@ -248,37 +310,14 @@ content of the Antimony file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f_antimony</strong> – The name of the empty Antimony file to write in.</p></li>
-<li><p><strong>f_compartments</strong> – The name of the input compartments file.</p></li>
-<li><p><strong>f_stoichmatrix</strong> – The name of the input schiochiometric matrix file.</p></li>
+<li><p><strong>f_antimony</strong> – The path of the empty Antimony file to write in.</p></li>
+<li><p><strong>input_files</strong> – The dictionnary containing the input data files paths.</p></li>
 <li><p><strong>f_output_parameters</strong> – The name of the output parameters file.</p></li>
-<li><p><strong>f_ratelaws</strong> – The name of the input ratelaws file.</p></li>
-<li><p><strong>f_species</strong> – The name of the input species file.</p></li>
 <li><p><strong>is_SPARCED</strong> – A flag to raise SPARCED specific behavior or not.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The contents of the compartments and species files.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<p>General Utilities</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="antimony_utils.extract_antimony_model_name">
-<span class="sig-prename descclassname"><span class="pre">antimony_utils.</span></span><span class="sig-name descname"><span class="pre">extract_antimony_model_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/antimony_utils.html#extract_antimony_model_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#antimony_utils.extract_antimony_model_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract the model name from the given Antimony file path</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The model name is considered to be preceded by the last “<a href="#id1"><span class="problematic" id="id2">ant_</span></a>” prefix
-found and followed by the first dot “.” found in the file path string.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>f_antimony</strong> – The name of the Antimony file.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The extracted model name.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -561,7 +600,7 @@ the array.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

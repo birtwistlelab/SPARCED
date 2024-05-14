@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>create_model &mdash; SPARCED 1.4.0 documentation</title>
+  <title>create_model &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -75,6 +75,14 @@
           
           
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#instructions-beginners">Instructions &amp; Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#replicate-our-results">Replicate our results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#further-information">Further information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
@@ -86,6 +94,36 @@
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#environment">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#virtualbox-guest-additions">VirtualBox Guest Additions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#openmpi">OpenMPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#git-github-ssh">Git, GitHub &amp; SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#anaconda">Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#todo-docker">TODO: Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#sparced">SPARCED 🎆</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#clean">Clean</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/notebook.html">Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../papers/bouhaddou2018.html">Bouhaddou 2018 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/erdem2022.html">Erdem 2022 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/mutsuddy2023.html">Mutsuddy 2023 model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#input-files">Input files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#source-code">Source code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
           
@@ -140,63 +178,55 @@
 <span class="kn">from</span> <span class="nn">antimony</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">libsbml</span>
 
-<span class="kn">from</span> <span class="nn">utils.arguments</span> <span class="kn">import</span> <span class="n">parse_args</span>
 <span class="kn">from</span> <span class="nn">compilation.amici_scripts.model_compilation</span> <span class="kn">import</span> <span class="n">compile_sbml_to_amici</span>
 <span class="kn">from</span> <span class="nn">compilation.antimony_scripts.model_writing</span> <span class="kn">import</span> <span class="n">antimony_write_model</span>
 <span class="kn">from</span> <span class="nn">compilation.sbml_scripts.model_annotation</span> <span class="kn">import</span> <span class="n">sbml_annotate_model</span>
+<span class="kn">from</span> <span class="nn">utils.data_handling</span> <span class="kn">import</span> <span class="n">append_subfolder</span>
 
-
-<div class="viewcode-block" id="create_model"><a class="viewcode-back" href="../reference/compilation.html#create_model.create_model">[docs]</a><span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span><span class="n">f_observables</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                 <span class="n">f_stoichmatrix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                 <span class="n">f_output_parameters</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_ratelaws</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                 <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
+<div class="viewcode-block" id="create_model"><a class="viewcode-back" href="../reference/compilation.html#create_model.create_model">[docs]</a><span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span>
+                 <span class="n">input_files</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span>
+                 <span class="n">output_parameters</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                 <span class="n">is_SPARCED</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate Antimony, SBML and AMICI models based on given input data</span>
-<span class="sd">    </span>
-<span class="sd">    :param f_observables: path to the observables file</span>
-<span class="sd">    :type f_observables: [str]</span>
-<span class="sd">    :param model_name: desired name for the generated Antimony, SBML and AMICI models</span>
-<span class="sd">    :type model_name: [str]</span>
-<span class="sd">    :param f_compartments: path to the compartments &amp; volumes file</span>
-<span class="sd">    :type f_compartments: [str]</span>
-<span class="sd">    :param f_stoichmatrix: path to the stoichiometric matrix file</span>
-<span class="sd">    :type f_stoichmatrix: [str]</span>
-<span class="sd">    :param f_output_dir_path: path to the desired output directory</span>
-<span class="sd">    :type f_output_dir_path: [str]</span>
-<span class="sd">    :param f_output_parameters: path to the output parameters file</span>
-<span class="sd">    :type f_output_parameters: [str]</span>
-<span class="sd">    :param f_ratelaws: path to the ratelaws file</span>
-<span class="sd">    :param f_ratelaws: [str]</span>
-<span class="sd">    :param f_species: path to the species file</span>
-<span class="sd">    :type f_species: [str]</span>
-<span class="sd">    :param verbose: verbose</span>
-<span class="sd">    :type verbose: [bool]</span>
-<span class="sd">    :param is_SPARCED: activate hard-coded behaviors for SPARCED</span>
-<span class="sd">    :type is_SPARCED: [bool]</span>
-<span class="sd">    :return: Nothing TODO change this</span>
-<span class="sd">    :rtype: [void]</span>
+<span class="sd">    Generate Antimony, SBML and AMICI models based on given input data files.</span>
 
+<span class="sd">    Warning:</span>
+<span class="sd">        The model name should not contain any dash (&#39;-&#39;) characters as those</span>
+<span class="sd">        are not supported by Antimony.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        model_name: The name of the model.</span>
+<span class="sd">        model_path: The path to the model folder.</span>
+<span class="sd">        input_files: A dictionnary containing paths towards input data file.</span>
+<span class="sd">        output_parameters: The desired name for the output parameters file.</span>
+<span class="sd">        verbose: Verbose.</span>
+<span class="sd">        is_SPARCED: Use SPARCED hard-coded values/behaviors.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="c1"># ------------------------------- ANTIMONY --------------------------------</span>
     <span class="c1"># Create and load an Antimony model</span>
-    <span class="n">antimony_file_name</span> <span class="o">=</span> <span class="n">output_dir_path</span> <span class="o">+</span> <span class="s2">&quot;ant_&quot;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
-    <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span> <span class="o">=</span> <span class="n">antimony_write_model</span><span class="p">(</span><span class="n">antimony_file_name</span><span class="p">,</span>
-                            <span class="n">f_compartments</span><span class="p">,</span> <span class="n">f_stoichmatrix</span><span class="p">,</span> <span class="n">f_output_parameters</span><span class="p">,</span>
-                            <span class="n">f_ratelaws</span><span class="p">,</span> <span class="n">f_species</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">)</span>
+    <span class="n">antimony_model_name</span> <span class="o">=</span> <span class="s2">&quot;ant_&quot;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+    <span class="n">antimony_file_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">antimony_model_name</span><span class="p">)</span>
+    <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span> <span class="o">=</span> <span class="n">antimony_write_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">antimony_file_path</span><span class="p">,</span>
+                                                 <span class="n">input_files</span><span class="p">,</span> <span class="n">output_parameters</span><span class="p">,</span>
+                                                 <span class="n">is_SPARCED</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="ow">not</span> <span class="n">loadFile</span><span class="p">(</span><span class="n">antimony_file_name</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">loadFile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">antimony_file_path</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Failed to load Antimony file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Success loading Antimony file&quot;</span>
+         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Success loading Antimony file&quot;</span>
                          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
     <span class="c1"># --------------------------------- SBML ----------------------------------</span>
     <span class="c1"># Convert the newly created Antimony model into an SBML model</span>
-    <span class="n">sbml_file_name</span> <span class="o">=</span> <span class="n">output_dir_path</span> <span class="o">+</span> <span class="s2">&quot;sbml_&quot;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.xml&quot;</span>
+    <span class="n">sbml_file_name</span> <span class="o">=</span> <span class="s2">&quot;sbml_&quot;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.xml&quot;</span>
+    <span class="n">sbml_file_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">sbml_file_name</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="ow">not</span> <span class="n">writeSBMLFile</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">writeSBMLFile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sbml_file_path</span><span class="p">),</span> <span class="n">model_name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Failed to convert Antimony file to SBML&quot;</span>
              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
@@ -206,36 +236,15 @@
                          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
     <span class="c1"># Annotate the SBML model</span>
     <span class="k">if</span> <span class="n">is_SPARCED</span><span class="p">:</span>
-        <span class="n">sbml_annotate_model</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">compartments</span><span class="p">)</span>
+        <span class="n">sbml_annotate_model</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sbml_file_path</span><span class="p">),</span> <span class="n">species</span><span class="p">,</span> <span class="n">compartments</span><span class="p">)</span>
     <span class="c1"># --------------------------------- AMICI ---------------------------------</span>
     <span class="c1"># Compile the SBML model into an AMICI model</span>
-    <span class="n">model_output_dir</span> <span class="o">=</span> <span class="n">output_dir_path</span> <span class="o">+</span> <span class="s2">&quot;amici_&quot;</span> <span class="o">+</span> <span class="n">model_name</span>
-    <span class="n">compile_sbml_to_amici</span><span class="p">(</span><span class="n">sbml_file_name</span><span class="p">,</span> <span class="n">model_output_dir</span><span class="p">,</span> <span class="n">f_observables</span><span class="p">,</span>
-                          <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+    <span class="n">amici_folder_name</span> <span class="o">=</span> <span class="s2">&quot;amici_&quot;</span> <span class="o">+</span> <span class="n">model_name</span>
+    <span class="n">amici_folder_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">amici_folder_name</span><span class="p">)</span>
+    <span class="n">compile_sbml_to_amici</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sbml_file_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">amici_folder_path</span><span class="p">),</span>
+                          <span class="n">input_files</span><span class="p">[</span><span class="s2">&quot;observables&quot;</span><span class="p">],</span> <span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">: Sucess compiling the model&quot;</span>
                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="launch_model_creation"><a class="viewcode-back" href="../reference/compilation.html#create_model.launch_model_creation">[docs]</a><span class="k">def</span> <span class="nf">launch_model_creation</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Small routine to process parsed arguments and call create_model</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
-    <span class="c1"># Process arguments</span>
-    <span class="n">is_SPARCED</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">wild</span>  <span class="c1"># if it&#39;s not wild then it&#39;s SPARCED</span>
-    <span class="c1"># Add path of input directory to input files names                          </span>
-    <span class="n">f_observables</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">observables</span>
-    <span class="n">f_compartments</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">compartments</span>                          
-    <span class="n">f_stoichmatrix</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">stoichmatrix</span>                          
-    <span class="n">f_output_params</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">outputparams</span>                         
-    <span class="n">f_ratelaws</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">ratelaws</span>                                  
-    <span class="n">f_species</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">species</span>                                    
-    <span class="c1"># Create model                                                              </span>
-    <span class="n">create_model</span><span class="p">(</span><span class="n">f_observables</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">,</span> <span class="n">f_stoichmatrix</span><span class="p">,</span>
-                 <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span><span class="p">,</span> <span class="n">f_output_params</span><span class="p">,</span> <span class="n">f_ratelaws</span><span class="p">,</span> <span class="n">f_species</span><span class="p">,</span>
-                 <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">)</span></div>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">launch_model_creation</span><span class="p">()</span>
 
 </pre></div>
 
@@ -261,7 +270,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

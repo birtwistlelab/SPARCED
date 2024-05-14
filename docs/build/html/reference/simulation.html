@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>Model Simulation &mdash; SPARCED 1.4.0 documentation</title>
+  <title>Model Simulation &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Reference Documentation" href="summary.html"/>
         <link rel="next" title="Future developments" href="../future-dev.html"/>
         <link rel="prev" title="Model Creation" href="compilation.html"/>
@@ -175,21 +175,94 @@
 <h2>General<a class="headerlink" href="#general" title="Permalink to this heading">¶</a></h2>
 <p>Main functions to run a model simulation</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="launchers.launch_experiment_simulation">
-<span class="sig-prename descclassname"><span class="pre">launchers.</span></span><span class="sig-name descname"><span class="pre">launch_experiment_simulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/launchers.html#launch_experiment_simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#launchers.launch_experiment_simulation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Small routine to process parsed arguments and call run_model</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="run_model.run_experiment">
 <span class="sig-prename descclassname"><span class="pre">run_model.</span></span><span class="sig-name descname"><span class="pre">run_experiment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/run_model.html#run_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#run_model.run_experiment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run an experiment (one or several cells with the same initial conditions)</p>
+<dd><p>Run an experiment</p>
+<p>Run an experiment consisting of one or several cells within the same
+initial conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_name</strong> – The name of the model.</p></li>
+<li><p><strong>simulation_name</strong> – The desired name for the simulation results.</p></li>
+<li><p><strong>output_sim</strong> – The path where to store the results.</p></li>
+<li><p><strong>model_path</strong> – The path to the AMICI model folder.</p></li>
+<li><p><strong>sbml_model</strong> – The path to the SBML model.</p></li>
+<li><p><strong>input_files</strong> – A dictionnary containing simualation input files paths.</p></li>
+<li><p><strong>is_deterministic</strong> – Run on deterministic mode.</p></li>
+<li><p><strong>popsize</strong> – The cell population size in the experiment.</p></li>
+<li><p><strong>duration</strong> – The duration of the experiment.</p></li>
+<li><p><strong>exchange</strong> – The timeframe between module information exchange.</p></li>
+<li><p><strong>verbose</strong> – Verbose.</p></li>
+<li><p><strong>is_SPARCED</strong> – Use SPARCED hard-coded values/behaviors.</p></li>
+<li><p><strong>perturbations</strong> – An array containing changes to make to initial conditions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="run_model.run_single_simulation">
 <span class="sig-prename descclassname"><span class="pre">run_model.</span></span><span class="sig-name descname"><span class="pre">run_single_simulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/run_model.html#run_single_simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#run_model.run_single_simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a single simulation of SPARCED</p>
+</dd></dl>
+
+<p>Launchers</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="launchers.launch_experiment_simulation">
+<span class="sig-prename descclassname"><span class="pre">launchers.</span></span><span class="sig-name descname"><span class="pre">launch_experiment_simulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/launchers.html#launch_experiment_simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#launchers.launch_experiment_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch experiment simulation function</p>
+<p>Small routine to process the parsed arguments and call run_model()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>perturbations</strong> – The array specifying initial conditions perturbations.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="launchers.load_perturbations">
+<span class="sig-prename descclassname"><span class="pre">launchers.</span></span><span class="sig-name descname"><span class="pre">load_perturbations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/launchers.html#load_perturbations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#launchers.load_perturbations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load perturbations</p>
+<p>Load an input perturbations file structured as tab separated, and remove
+the first column (human-readable) to keep only the second (SPARCED symbol)
+and the third (concentration in nM) columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_folder</strong> – </p></li>
+<li><p><strong>config</strong> – </p></li>
+<li><p><strong>file</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array containing ligands symbols and concentrations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="launchers.load_simulation_input_files">
+<span class="sig-prename descclassname"><span class="pre">launchers.</span></span><span class="sig-name descname"><span class="pre">load_simulation_input_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/launchers.html#load_simulation_input_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#launchers.load_simulation_input_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load simulation input data files paths dictionnary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_path</strong> – The model folder path.</p></li>
+<li><p><strong>data_folder</strong> – The input data files folder name.</p></li>
+<li><p><strong>yaml_name</strong> – The YAML configuration file name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionnary containing all the input data file paths.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -200,50 +273,17 @@
 <dt class="sig sig-object py" id="initial_conditions.load_species_initial_conditions">
 <span class="sig-prename descclassname"><span class="pre">initial_conditions.</span></span><span class="sig-name descname"><span class="pre">load_species_initial_conditions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/initial_conditions.html#load_species_initial_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#initial_conditions.load_species_initial_conditions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create species initial conditions array</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ligands.basic_ligands">
-<span class="sig-prename descclassname"><span class="pre">ligands.</span></span><span class="sig-name descname"><span class="pre">basic_ligands</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ligands.html#basic_ligands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ligands.basic_ligands" title="Permalink to this definition">¶</a></dt>
-<dd><p>Basic ligands setup</p>
-<p>Use passed arguments to set EGF and insulin values.
-Set all remaining ligands (HER, HGF, PDGF, FGF and IGF) to zero.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>SPARCED symbols for ligands are hard-coded.</p>
-</div>
+<p>Load initial conditions from the SBML model and update according to
+perturbations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>c_egf</strong> – The extracellular concentration of EGF (nM).</p></li>
-<li><p><strong>c_ins</strong> – The extracellular concentration of insulin (nM).</p></li>
+<li><p><strong>sbml_path</strong> – The path to the SBML model.</p></li>
+<li><p><strong>perturbations</strong> – An array containing the pertubations to apply.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A numpy array containing ligands symbols and concentrations.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ligands.basic_ligands_from_arguments">
-<span class="sig-prename descclassname"><span class="pre">ligands.</span></span><span class="sig-name descname"><span class="pre">basic_ligands_from_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ligands.html#basic_ligands_from_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ligands.basic_ligands_from_arguments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Call basic ligands function while passing arguments values</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ligands.load_input_ligands">
-<span class="sig-prename descclassname"><span class="pre">ligands.</span></span><span class="sig-name descname"><span class="pre">load_input_ligands</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ligands.html#load_input_ligands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ligands.load_input_ligands" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load ligands concentrations from the given input dat a file</p>
-<p>Load an input ligands concentrations file structured as tab separated,
-and remove the first column (human-readable) to keep only the second
-(SPARCED symbol) and third (concentration in nM) columns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>f_input</strong> – The input ligands concentrations file.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A numpy array containing ligands symbols and concentrations.</p>
+<dd class="field-even"><p>The initial conditions array.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -294,7 +334,7 @@ and remove the first column (human-readable) to keep only the second
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>General Utilities &mdash; SPARCED 1.4.0 documentation</title>
+  <title>General Utilities &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Reference Documentation" href="summary.html"/>
         <link rel="next" title="Model Creation" href="compilation.html"/>
         <link rel="prev" title="Data" href="data.html"/>
@@ -173,9 +173,138 @@
 <h1>General Utilities<a class="headerlink" href="#general-utilities" title="Permalink to this heading">¶</a></h1>
 <section id="arguments">
 <h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="arguments.parse_args">
+<span class="sig-prename descclassname"><span class="pre">arguments.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arguments.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arguments.parse_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve and parse arguments necessary for model creation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namespace populated with all the attributes.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="data-handling">
 <h2>Data handling<a class="headerlink" href="#data-handling" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="data_handling.append_subfolder">
+<span class="sig-prename descclassname"><span class="pre">data_handling.</span></span><span class="sig-name descname"><span class="pre">append_subfolder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/data_handling.html#append_subfolder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data_handling.append_subfolder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a subfolder to a folder path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> – The folder path.</p></li>
+<li><p><strong>subfolder</strong> – The subfolder name.</p></li>
+<li><p><strong>abort_on_error</strong> – Abort process when encountering an error.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The subfolder’s path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="data_handling.convert_excel_to_tsv">
+<span class="sig-prename descclassname"><span class="pre">data_handling.</span></span><span class="sig-name descname"><span class="pre">convert_excel_to_tsv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/data_handling.html#convert_excel_to_tsv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data_handling.convert_excel_to_tsv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an Excel file to TSV (SPARCED’s standard input format)</p>
+<p>This function creates a new .txt file at the same location than the passed
+Excel file.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is some old code written four years ago, it hasn’t been tested since.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f_excel</strong> – The Excel sheet path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="data_handling.load_input_data_config">
+<span class="sig-prename descclassname"><span class="pre">data_handling.</span></span><span class="sig-name descname"><span class="pre">load_input_data_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/data_handling.html#load_input_data_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data_handling.load_input_data_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load input data files paths configuration</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>File structure is assumed to be organized as follow:
+&gt; model folder
+&gt; data subfolder containing a YAML configuration file describing input
+data organization
+&gt; model compilation and simulation sub-subfolders containing the input
+data files</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> – The input data files folder path.</p></li>
+<li><p><strong>yaml_name</strong> – The YAML configuration file name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionnary containing all the input data file paths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="data_handling.load_input_data_file">
+<span class="sig-prename descclassname"><span class="pre">data_handling.</span></span><span class="sig-name descname"><span class="pre">load_input_data_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/data_handling.html#load_input_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#data_handling.load_input_data_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the given input data file</p>
+<p>Load an input data file structured as tab separated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f_input</strong> – The input data file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array containing the data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="sanitization">
+<h2>Sanitization<a class="headerlink" href="#sanitization" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="sanitize.sanitize_model_name">
+<span class="sig-prename descclassname"><span class="pre">sanitize.</span></span><span class="sig-name descname"><span class="pre">sanitize_model_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sanitize.html#sanitize_model_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sanitize.sanitize_model_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure conformity of model name</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As Antimony cannot handle the dash (‘-’) character in a model name, any
+occurence of this character is replaced with an underscore (‘_’).</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – The model name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The corresponding conform model name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sanitize.sanitize_popsize">
+<span class="sig-prename descclassname"><span class="pre">sanitize.</span></span><span class="sig-name descname"><span class="pre">sanitize_popsize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sanitize.html#sanitize_popsize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sanitize.sanitize_popsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure validity of population size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>popsize</strong> – The population size.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The population size if valid.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
@@ -211,7 +340,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

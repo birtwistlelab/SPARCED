@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>model_writing &mdash; SPARCED 1.4.0 documentation</title>
+  <title>model_writing &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -75,17 +75,55 @@
           
           
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#instructions-beginners">Instructions &amp; Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#replicate-our-results">Replicate our results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#further-information">Further information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#environment">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#virtualbox-guest-additions">VirtualBox Guest Additions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#openmpi">OpenMPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#git-github-ssh">Git, GitHub &amp; SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#anaconda">Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#todo-docker">TODO: Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#sparced">SPARCED 🎆</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#clean">Clean</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/notebook.html">Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../papers/bouhaddou2018.html">Bouhaddou 2018 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/erdem2022.html">Erdem 2022 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/mutsuddy2023.html">Mutsuddy 2023 model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#input-files">Input files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#source-code">Source code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
           
@@ -133,56 +171,52 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">import</span> <span class="nn">antimony</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">utils.arguments</span> <span class="kn">import</span> <span class="n">parse_args</span>
 <span class="kn">from</span> <span class="nn">utils.data_handling</span> <span class="kn">import</span> <span class="n">load_input_data_file</span>
-<span class="kn">from</span> <span class="nn">compilation.antimony_scripts.antimony_utils</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">compilation.antimony_scripts.antimony_write</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">compilation.antimony_scripts.antimony_write_IC</span> <span class="kn">import</span> <span class="o">*</span>
 
-<div class="viewcode-block" id="antimony_write_model"><a class="viewcode-back" href="../reference/compilation.html#model_writing.antimony_write_model">[docs]</a><span class="k">def</span> <span class="nf">antimony_write_model</span><span class="p">(</span><span class="n">f_antimony</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                         <span class="n">f_stoichmatrix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_output_parameters</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                         <span class="n">f_ratelaws</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> \
-                         <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<div class="viewcode-block" id="antimony_write_model"><a class="viewcode-back" href="../reference/compilation.html#model_writing.antimony_write_model">[docs]</a><span class="k">def</span> <span class="nf">antimony_write_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">f_antimony</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span>
+                         <span class="n">input_files</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span>
+                         <span class="n">f_output_parameters</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span>
+                         <span class="n">is_SPARCED</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate an Antimony file</span>
 
-<span class="sd">    Provided an empty Antimony file and some SPARCED formatted data on</span>
-<span class="sd">    compartments, stoichiometric matrix, ratelaws, and species, generate the</span>
-<span class="sd">    content of the Antimony file.</span>
+<span class="sd">    Provided an empty Antimony file and paths to the SPARCED formatted input</span>
+<span class="sd">    data files, generate the content of the Antimony file.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        This process also creates a parameters file as an output.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        f_antimony: The name of the empty Antimony file to write in.</span>
-<span class="sd">        f_compartments: The name of the input compartments file.</span>
-<span class="sd">        f_stoichmatrix: The name of the input schiochiometric matrix file.</span>
+<span class="sd">        f_antimony: The path of the empty Antimony file to write in.</span>
+<span class="sd">        input_files: The dictionnary containing the input data files paths.</span>
 <span class="sd">        f_output_parameters: The name of the output parameters file.</span>
-<span class="sd">        f_ratelaws: The name of the input ratelaws file.</span>
-<span class="sd">        f_species: The name of the input species file.</span>
 <span class="sd">        is_SPARCED: A flag to raise SPARCED specific behavior or not.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The contents of the compartments and species files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f_antimony</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">f_antimony</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="c1"># Header</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">is_SPARCED</span><span class="p">):</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# PanCancer Model by Birtwistle Lab</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">model_name</span> <span class="o">=</span> <span class="n">extract_antimony_model_name</span><span class="p">(</span><span class="n">f_antimony</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;model </span><span class="si">{antimony}</span><span class="s2">()</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">antimony</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;model </span><span class="si">{name}</span><span class="s2">()</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
         <span class="c1"># Compartments</span>
-        <span class="n">compartments</span> <span class="o">=</span> <span class="n">load_input_data_file</span><span class="p">(</span><span class="n">f_compartments</span><span class="p">)</span>
+        <span class="n">compartments</span> <span class="o">=</span> <span class="n">load_input_data_file</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">input_files</span><span class="p">[</span><span class="s2">&quot;compartments&quot;</span><span class="p">]))</span>
         <span class="n">antimony_write_compartments_names</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">compartments</span><span class="p">)</span>
         <span class="c1"># Species</span>
-        <span class="n">species</span> <span class="o">=</span> <span class="n">load_input_data_file</span><span class="p">(</span><span class="n">f_species</span><span class="p">)</span>
+        <span class="n">species</span> <span class="o">=</span> <span class="n">load_input_data_file</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">input_files</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]))</span>
         <span class="n">antimony_write_species_names</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
         <span class="c1"># Reactions</span>
-        <span class="n">param_names</span><span class="p">,</span> <span class="n">param_vals</span> <span class="o">=</span> <span class="n">antimony_write_reactions</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">f_ratelaws</span><span class="p">,</span>
-                                  <span class="n">f_stoichmatrix</span><span class="p">,</span> <span class="n">f_output_parameters</span><span class="p">)</span>
+        <span class="n">param_names</span><span class="p">,</span> <span class="n">param_vals</span> <span class="o">=</span> <span class="n">antimony_write_reactions</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_files</span><span class="p">[</span><span class="s2">&quot;ratelaws&quot;</span><span class="p">]),</span>
+                                  <span class="nb">str</span><span class="p">(</span><span class="n">input_files</span><span class="p">[</span><span class="s2">&quot;stoicmat&quot;</span><span class="p">]),</span> <span class="n">f_output_parameters</span><span class="p">)</span>
         <span class="c1"># Initial conditions</span>
         <span class="n">antimony_write_compartments_IC</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">compartments</span><span class="p">)</span>
         <span class="n">antimony_write_species_IC</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span>
@@ -195,19 +229,6 @@
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">end&quot;</span><span class="p">)</span> 
     <span class="k">return</span><span class="p">(</span><span class="n">compartments</span><span class="p">,</span> <span class="n">species</span><span class="p">)</span></div>
 
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
-    <span class="c1"># Add path of input directory to input files names</span>
-    <span class="n">antimony_model_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span> <span class="o">+</span> <span class="s2">&quot;ant_&quot;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
-    <span class="n">f_compartments</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">compartments</span>
-    <span class="n">f_stoichmatrix</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">stoichmatrix</span>
-    <span class="n">f_output_params</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">outputparams</span>
-    <span class="n">f_ratelaws</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">ratelaws</span>
-    <span class="n">f_species</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">species</span>
-    <span class="c1"># Write model</span>
-    <span class="n">antimony_write_model</span><span class="p">(</span><span class="n">antimony_model_name</span><span class="p">,</span> <span class="n">f_compartments</span><span class="p">,</span> <span class="n">f_stoichmatrix</span><span class="p">,</span>
-                         <span class="n">f_output_params</span><span class="p">,</span> <span class="n">f_ratelaws</span><span class="p">,</span> <span class="n">f_species</span><span class="p">)</span>
 </pre></div>
 
 	    </div>
@@ -232,7 +253,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

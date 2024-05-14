@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>Jupyter Notebook &mdash; SPARCED 2.0.0 documentation</title>
+  <title>sanitize &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -36,9 +36,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
-        <link rel="up" title="Tutorials" href="summary.html"/>
-        <link rel="next" title="SPARCED Hands-On Primer Tutorial" href="hands-on.html"/>
-        <link rel="prev" title="Tutorials" href="summary.html"/>
+        <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -76,7 +74,7 @@
 	
           
           
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html#instructions-beginners">Instructions &amp; Beginners</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about.html#replicate-our-results">Replicate our results</a></li>
@@ -85,10 +83,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../about.html#acknowledgments">Acknowledgments</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">Contents Table</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="summary.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
@@ -107,9 +105,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#clean">Clean</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="summary.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Jupyter Notebook</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/notebook.html">Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a><ul>
@@ -169,23 +167,65 @@
 	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
 	  </dark-mode-toggle>
 	</div>
-  <section id="jupyter-notebook">
-<h1>Jupyter Notebook<a class="headerlink" href="#jupyter-notebook" title="Permalink to this heading">¶</a></h1>
-<p>How to run SPARCED in a Jupyter Notebook and what we provide</p>
-</section>
+  <h1>Source code for sanitize</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="sanitize_model_name"><a class="viewcode-back" href="../reference/utils.html#sanitize.sanitize_model_name">[docs]</a><span class="k">def</span> <span class="nf">sanitize_model_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure conformity of model name</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        As Antimony cannot handle the dash (&#39;-&#39;) character in a model name, any</span>
+<span class="sd">        occurence of this character is replaced with an underscore (&#39;_&#39;).</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        name: The model name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The corresponding conform model name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Ensure that a name is specified</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: Please specify a model name. Aborting now.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Sanitize name</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sanitize_popsize"><a class="viewcode-back" href="../reference/utils.html#sanitize.sanitize_popsize">[docs]</a><span class="k">def</span> <span class="nf">sanitize_popsize</span><span class="p">(</span><span class="n">popsize</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">abort_on_error</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure validity of population size</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        popsize: The population size.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The population size if valid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">popsize</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: Cell population size should be superior to zero (0). </span><span class="se">\</span>
+<span class="s2">                Current population size is: </span><span class="si">{size}</span><span class="s2">.&quot;</span>
+              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">popsize</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">abort_on_error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aborting now.&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting automatically population size to one (1).&quot;</span><span class="p">)</span>
+            <span class="n">popsize</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">popsize</span><span class="p">)</span></div>
+
+</pre></div>
 
 	    </div>
             <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="hands-on.html" class="btn btn-neutral float-right" title="SPARCED Hands-On Primer Tutorial">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="summary.html" class="btn btn-neutral" title="Tutorials"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

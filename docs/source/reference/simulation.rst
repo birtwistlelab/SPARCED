@@ -13,9 +13,11 @@ Main functions to run a model simulation
 
 Launchers
 
-.. autofuncton:: launchers.launch_experiment_simulation()
+.. autofunction:: launchers.launch_experiment_simulation()
 
-.. autofunction:: load_simulation_input_files()
+.. autofunction:: launchers.load_perturbations()
+
+.. autofunction:: launchers.load_simulation_input_files()
 
 Utilities
 -------------------------------------------------------------------------------
@@ -23,12 +25,6 @@ Utilities
 Initial conditions
 
 .. autofunction:: initial_conditions.load_species_initial_conditions()
-
-.. autofunction:: ligands.basic_ligands()
-
-.. autofunction:: ligands.basic_ligands_from_arguments()
-
-.. autofunction:: ligands.load_input_ligands()
 
 Output
 

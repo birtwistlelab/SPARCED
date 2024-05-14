@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>Index &mdash; SPARCED 1.4.0 documentation</title>
+  <title>Index &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="#"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="SPARCED 1.4.0 documentation" href="index.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
@@ -171,11 +171,11 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#L"><strong>L</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#W"><strong>W</strong></a>
@@ -192,10 +192,10 @@
 </li>
       <li><a href="reference/compilation.html#model_writing.antimony_write_model">antimony_write_model() (in module model_writing)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/compilation.html#antimony_write.antimony_write_reactions">antimony_write_reactions() (in module antimony_write)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/compilation.html#antimony_write_IC.antimony_write_reactions_IC">antimony_write_reactions_IC() (in module antimony_write_IC)</a>
 </li>
       <li><a href="reference/compilation.html#antimony_write_IC.antimony_write_species_IC">antimony_write_species_IC() (in module antimony_write_IC)</a>
@@ -204,17 +204,7 @@
 </li>
       <li><a href="reference/compilation.html#antimony_write.antimony_write_unit_definitions">antimony_write_unit_definitions() (in module antimony_write)</a>
 </li>
-  </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/simulation.html#ligands.basic_ligands">basic_ligands() (in module ligands)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/simulation.html#ligands.basic_ligands_from_arguments">basic_ligands_from_arguments() (in module ligands)</a>
+      <li><a href="reference/utils.html#data_handling.append_subfolder">append_subfolder() (in module data_handling)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -226,6 +216,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/utils.html#data_handling.convert_excel_to_tsv">convert_excel_to_tsv() (in module data_handling)</a>
+</li>
       <li><a href="reference/compilation.html#create_model.create_model">create_model() (in module create_model)</a>
 </li>
   </ul></td>
@@ -245,10 +237,6 @@
       <li><a href="reference/compilation.html#amici_utils.extract_amici_model_name">extract_amici_model_name() (in module amici_utils)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/compilation.html#antimony_utils.extract_antimony_model_name">extract_antimony_model_name() (in module antimony_utils)</a>
-</li>
-  </ul></td>
 </tr></table>
 
 <h2 id="L">L</h2>
@@ -256,13 +244,29 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/simulation.html#launchers.launch_experiment_simulation">launch_experiment_simulation() (in module launchers)</a>
 </li>
-      <li><a href="reference/compilation.html#create_model.launch_model_creation">launch_model_creation() (in module create_model)</a>
+      <li><a href="reference/compilation.html#launcher.launch_model_creation">launch_model_creation() (in module launcher)</a>
+</li>
+      <li><a href="reference/compilation.html#launcher.load_compilation_input_files">load_compilation_input_files() (in module launcher)</a>
+</li>
+      <li><a href="reference/utils.html#data_handling.load_input_data_config">load_input_data_config() (in module data_handling)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/simulation.html#ligands.load_input_ligands">load_input_ligands() (in module ligands)</a>
+      <li><a href="reference/utils.html#data_handling.load_input_data_file">load_input_data_file() (in module data_handling)</a>
+</li>
+      <li><a href="reference/simulation.html#launchers.load_perturbations">load_perturbations() (in module launchers)</a>
+</li>
+      <li><a href="reference/simulation.html#launchers.load_simulation_input_files">load_simulation_input_files() (in module launchers)</a>
 </li>
       <li><a href="reference/simulation.html#initial_conditions.load_species_initial_conditions">load_species_initial_conditions() (in module initial_conditions)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/utils.html#arguments.parse_args">parse_args() (in module arguments)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -282,10 +286,14 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/simulation.html#output.save_simulation_output">save_simulation_output() (in module output)</a>
+      <li><a href="reference/utils.html#sanitize.sanitize_model_name">sanitize_model_name() (in module sanitize)</a>
+</li>
+      <li><a href="reference/utils.html#sanitize.sanitize_popsize">sanitize_popsize() (in module sanitize)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/simulation.html#output.save_simulation_output">save_simulation_output() (in module output)</a>
+</li>
       <li><a href="reference/compilation.html#model_annotation.sbml_annotate_model">sbml_annotate_model() (in module model_annotation)</a>
 </li>
   </ul></td>
@@ -327,7 +335,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.4.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

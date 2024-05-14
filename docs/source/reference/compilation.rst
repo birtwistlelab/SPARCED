@@ -13,7 +13,7 @@ Launcher
 
 .. autofunction:: launcher.launch_model_creation()
 
-.. autofunction:: load_compilation_input_files() 
+.. autofunction:: launcher.load_compilation_input_files() 
 
 AMICI
 -------------------------------------------------------------------------------

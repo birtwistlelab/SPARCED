@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="">
 
   
-  <title>launchers &mdash; SPARCED 1.4.0 documentation</title>
+  <title>launchers &mdash; SPARCED 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="SPARCED 1.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -171,39 +171,102 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">utils.arguments</span> <span class="kn">import</span> <span class="n">parse_args</span>
+<span class="kn">from</span> <span class="nn">utils.data_handling</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">utils.sanitize</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">simulation.run_model</span> <span class="kn">import</span> <span class="n">run_experiment</span>
 
 
-<div class="viewcode-block" id="launch_experiment_simulation"><a class="viewcode-back" href="../reference/simulation.html#launchers.launch_experiment_simulation">[docs]</a><span class="k">def</span> <span class="nf">launch_experiment_simulation</span><span class="p">(</span><span class="n">ligands</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Small routine to process parsed arguments and call run_model</span>
+<div class="viewcode-block" id="launch_experiment_simulation"><a class="viewcode-back" href="../reference/simulation.html#launchers.launch_experiment_simulation">[docs]</a><span class="k">def</span> <span class="nf">launch_experiment_simulation</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Launch experiment simulation function</span>
+
+<span class="sd">    Small routine to process the parsed arguments and call run_model()</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        perturbations:  The array specifying initial conditions perturbations.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
-    <span class="c1"># Process arguments</span>
-    <span class="n">is_SPARCED</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">wild</span> <span class="c1"># if it&#39;s not wild then it&#39;s SPARCED</span>
-    <span class="n">f_species</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputdir</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">species</span>
-    <span class="n">f_genereg</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputsim</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">genereg</span>
-    <span class="n">f_omics</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">inputsim</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">omics</span>
-    <span class="n">model_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span> <span class="o">+</span> <span class="s2">&quot;amici_&quot;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">name</span>
-    <span class="n">sbml_model</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">outputdir</span> <span class="o">+</span> <span class="s2">&quot;sbml_&quot;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.xml&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">population</span> <span class="o">&gt;</span> <span class="mi">0</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{model_name}</span><span class="s2">-</span><span class="si">{simulation_name}</span><span class="s2">: Cell population size should be </span><span class="se">\</span>
-<span class="s2">               superior to zero (0). Current population size is: </span><span class="si">{size}</span><span class="s2">.</span><span class="se">\n</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">               Aborting now.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                     <span class="n">simulation_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">simulation</span><span class="p">,</span>
-                                     <span class="n">size</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">population</span><span class="p">))</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">run_experiment</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">model_path</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">simulation</span><span class="p">,</span> <span class="n">sbml_model</span><span class="p">,</span>
-                   <span class="n">args</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">exchange</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
-                   <span class="n">args</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">f_species</span><span class="p">,</span> <span class="n">ligands</span><span class="p">,</span> <span class="n">f_genereg</span><span class="p">,</span> <span class="n">f_omics</span><span class="p">,</span>
-                   <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">compound</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">dose</span><span class="p">)</span></div>
+    <span class="c1"># Model</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="n">sanitize_model_name</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">model_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">amici_name</span> <span class="o">=</span> <span class="s2">&quot;amici_&quot;</span> <span class="o">+</span> <span class="n">model_name</span>
+    <span class="n">amici_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">amici_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">sbml_name</span> <span class="o">=</span> <span class="s2">&quot;sbml_&quot;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.xml&quot;</span>
+    <span class="n">sbml_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">sbml_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Input data files</span>
+    <span class="n">input_folder</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">input_data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">input_files</span><span class="p">,</span> <span class="n">perturbations</span> <span class="o">=</span> <span class="n">load_simulation_input_files</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">yaml</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">perturbations</span><span class="p">)</span>
+    <span class="c1"># Population size</span>
+    <span class="n">popsize</span> <span class="o">=</span> <span class="n">sanitize_popsize</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">population_size</span><span class="p">)</span>
+    <span class="c1"># Runtime booleans</span>
+    <span class="n">is_SPARCED</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">wild</span>  <span class="c1"># if it&#39;s not wild then it&#39;s SPARCED</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
+    <span class="n">run_experiment</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">simulation</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">results</span><span class="p">,</span> <span class="n">amici_path</span><span class="p">,</span>
+                   <span class="n">sbml_path</span><span class="p">,</span> <span class="n">input_files</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span> <span class="n">popsize</span><span class="p">,</span>
+                   <span class="n">args</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">exchange</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">is_SPARCED</span><span class="p">,</span> <span class="n">perturbations</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="load_perturbations"><a class="viewcode-back" href="../reference/simulation.html#launchers.load_perturbations">[docs]</a><span class="k">def</span> <span class="nf">load_perturbations</span><span class="p">(</span><span class="n">input_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span>
+                       <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load perturbations</span>
+
+<span class="sd">    Load an input perturbations file structured as tab separated, and remove</span>
+<span class="sd">    the first column (human-readable) to keep only the second (SPARCED symbol)</span>
+<span class="sd">    and the third (concentration in nM) columns.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        input_folder</span>
+<span class="sd">        config</span>
+<span class="sd">        file</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A numpy array containing ligands symbols and concentrations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+    <span class="n">perturbations_root</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;root&quot;</span><span class="p">])</span>
+    <span class="c1"># Choose the file to load</span>
+    <span class="k">if</span> <span class="n">file</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">perturbations_file</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">perturbations_root</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">perturbations_file</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">perturbations_root</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">])</span>
+    <span class="n">perturbations</span> <span class="o">=</span> <span class="n">load_input_data_file</span><span class="p">(</span><span class="n">perturbations_file</span><span class="p">)</span>
+    <span class="c1"># Convert concentrations from strings to floats</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">perturbations</span><span class="p">:</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">perturbations</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:])</span></div>
+
+<div class="viewcode-block" id="load_simulation_input_files"><a class="viewcode-back" href="../reference/simulation.html#launchers.load_simulation_input_files">[docs]</a><span class="k">def</span> <span class="nf">load_simulation_input_files</span><span class="p">(</span><span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">yaml_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">p_file</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load simulation input data files paths dictionnary</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        model_path: The model folder path.</span>
+<span class="sd">        data_folder: The input data files folder name.</span>
+<span class="sd">        yaml_name: The YAML configuration file name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionnary containing all the input data file paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">input_files_configuration</span> <span class="o">=</span> <span class="n">load_input_data_config</span><span class="p">(</span><span class="n">data_folder</span><span class="p">,</span> <span class="n">yaml_name</span><span class="p">)</span>
+    <span class="n">simulation_files</span> <span class="o">=</span> <span class="n">input_files_configuration</span><span class="p">[</span><span class="s2">&quot;simulation&quot;</span><span class="p">]</span>
+    <span class="c1"># Load root of simulation input data files</span>
+    <span class="n">simulation_root</span> <span class="o">=</span> <span class="n">simulation_files</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">simulation_data_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">data_folder</span><span class="p">,</span> <span class="n">simulation_root</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Reconstruct full path for each input file listed in the dictionnary</span>
+    <span class="k">for</span> <span class="n">input_file</span> <span class="ow">in</span> <span class="n">simulation_files</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">input_file</span> <span class="o">!=</span> <span class="s2">&quot;perturbations&quot;</span><span class="p">:</span>
+            <span class="n">simulation_files</span><span class="p">[</span><span class="n">input_file</span><span class="p">]</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">simulation_data_path</span><span class="p">,</span> <span class="n">simulation_files</span><span class="p">[</span><span class="n">input_file</span><span class="p">])</span>
+    <span class="c1"># Load perturbations</span>
+    <span class="n">perturbations</span> <span class="o">=</span> <span class="n">load_perturbations</span><span class="p">(</span><span class="n">simulation_data_path</span><span class="p">,</span> <span class="n">simulation_files</span><span class="p">[</span><span class="s2">&quot;perturbations&quot;</span><span class="p">],</span> <span class="n">p_file</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">simulation_files</span><span class="p">,</span> <span class="n">perturbations</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -233,7 +296,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
