@@ -35,7 +35,7 @@ def load_species_initial_conditions(sbml_path: str | os.PathLike,
         s_IC = s.getInitialConcentration()
         if s_name != '':
             species_names = np.append(species_names, s_name)
-            species_initial_conditions = np.append(species_initial_conditions, sp_IC)
+            species_initial_conditions = np.append(species_initial_conditions, s_IC)
     # Any concentration bellow 1e-6 is considered as zero (0)
     species_initial_conditions[np.argwhere(species_initial_conditions <= 1e-6)] = 0.0
     # Apply perturbations

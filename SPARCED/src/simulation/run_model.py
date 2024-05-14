@@ -19,7 +19,7 @@ def run_experiment(model_name: str, simulation_name: str,
                    input_files: dict[str, str | os.PathLike],
                    is_deterministic: bool, popsize: int, duration: float,
                    exchange: int, verbose: bool, is_SPARCED: bool,
-                   perturbation: np.ndarray=None) -> None:
+                   perturbations: np.ndarray=None) -> None:
     """Run an experiment
 
     Run an experiment consisting of one or several cells within the same

@@ -34,16 +34,15 @@ def launch_experiment_simulation() -> None:
     sbml_path = append_subfolder(model_path, sbml_name, True)
     # Input data files
     input_folder = append_subfolder(model_path, args.input_data, True)
-    input_files = load_simulation_input_files(input_folder, args.yaml)
-    perturbations = load_perturbations(input_folder, input_files["perturbations"], args.perturbations)
+    input_files, perturbations = load_simulation_input_files(input_folder, args.yaml, args.perturbations)
     # Population size
     popsize = sanitize_popsize(args.population_size)
     # Runtime booleans
     is_SPARCED = not args.wild  # if it's not wild then it's SPARCED
     verbose = args.verbose
     run_experiment(model_name, args.simulation, args.results, amici_path,
-                   sbml_path, input_files, perturbations, args.deterministic,
-                   args.popsize, args.time, args.exchange, args.verbose, is_SPARCED)
+                   sbml_path, input_files, args.deterministic, popsize,
+                   args.time, args.exchange, args.verbose, is_SPARCED, perturbations)
 
 def load_perturbations(input_folder: str | os.PathLike,
                        config: dict[str, str], file: str=None) -> np.ndarray:
@@ -74,7 +73,7 @@ def load_perturbations(input_folder: str | os.PathLike,
         row[2] = float(row[2])
     return(perturbations[:,1:])
 
-def load_simulation_input_files(data_folder: str | os.PathLike, yaml_name: str) -> dict[str, str | os.PathLike]:
+def load_simulation_input_files(data_folder: str | os.PathLike, yaml_name: str, p_file: str=None) -> dict[str, str | os.PathLike]:
     """Load simulation input data files paths dictionnary
 
     Arguments:
@@ -95,7 +94,9 @@ def load_simulation_input_files(data_folder: str | os.PathLike, yaml_name: str) 
     for input_file in simulation_files.keys():
         if input_file != "perturbations":
             simulation_files[input_file] = append_subfolder(simulation_data_path, simulation_files[input_file])
-    return(simulation_files)
+    # Load perturbations
+    perturbations = load_perturbations(simulation_data_path, simulation_files["perturbations"], p_file)
+    return(simulation_files, perturbations)
 
 
 if __name__ == '__main__':
