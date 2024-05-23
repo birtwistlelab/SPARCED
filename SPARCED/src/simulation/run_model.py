@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from simulation.modules.RunSPARCED import RunSPARCED
-from simulation.utils.initial_conditions import load_species_initial_conditions
+from simulation.utils.initial_conditions import *
 from simulation.utils.output import save_simulation_output
 
 
@@ -19,7 +19,9 @@ def run_experiment(model_name: str, simulation_name: str,
                    input_files: dict[str, str | os.PathLike],
                    is_deterministic: bool, popsize: int, duration: float,
                    exchange: int, verbose: bool, is_SPARCED: bool,
-                   perturbations: np.ndarray=None) -> None:
+                   perturbations: np.ndarray=None,
+                   incubation_conditions: np.ndarray=None,
+                   incubation_duration: float=None) -> None:
     """Run an experiment
 
     Run an experiment consisting of one or several cells within the same
@@ -51,12 +53,27 @@ def run_experiment(model_name: str, simulation_name: str,
         print("{model_name}: Successfully loaded {module}\n"
                .format(model_name=model_name, module=model_module)) 
     # Set time points
+    if incubation_duration == None:
+        incubation_duration = 0.0
     model.setTimepoints(np.linspace(0, exchange, 2))
     # Compute initial conditions
-    species_initial_conditions, temp = load_species_initial_conditions(sbml_model, perturbations)
+    if incubation_duration > 0.0:
+        species_initial_conditions, species_names = load_species_initial_conditions(sbml_model, incubation_conditions)
+    else:
+        species_initial_conditions = load_species_initial_conditions(sbml_model, perturbations)[0]
     # Run experiment
     cell_number = 0
     while cell_number < int(popsize):
+        if incubation_duration > 0.0:
+            xoutS_incub = run_single_simulation(model, simulation_name + "_incub",
+                          output_sim, cell_number, sbml_model, is_deterministic,
+                          exchange, incubation_duration,
+                          species_initial_conditions, verbose,
+                          input_files["genereg"], input_files["omics"])
+            for specie in range(len(species_initial_conditions)):
+                species_initial_conditions[specie] = xoutS_incub[-1:,idx]
+            apply_perturbations(species_initial_conditions, species_names,
+                                perturbations)
         run_single_simulation(model, simulation_name, output_sim, cell_number, sbml_model,
                               is_deterministic, exchange, duration,
                               species_initial_conditions, verbose,
@@ -90,4 +107,5 @@ def run_single_simulation(model, simulation_name: str, output_sim: str, simulati
     if verbose:
         print("{name} n°{number}: Simulation saved.\n"
               .format(name=simulation_name, number=simulation_number))
+    return(xoutS_all)
 
