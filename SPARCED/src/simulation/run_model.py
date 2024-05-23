@@ -53,7 +53,7 @@ def run_experiment(model_name: str, simulation_name: str,
     # Set time points
     model.setTimepoints(np.linspace(0, exchange, 2))
     # Compute initial conditions
-    species_initial_conditions = load_species_initial_conditions(sbml_model, perturbations)
+    species_initial_conditions, temp = load_species_initial_conditions(sbml_model, perturbations)
     # Run experiment
     cell_number = 0
     while cell_number < int(popsize):
