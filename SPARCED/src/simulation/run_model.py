@@ -71,7 +71,7 @@ def run_experiment(model_name: str, simulation_name: str,
                           species_initial_conditions, verbose,
                           input_files["genereg"], input_files["omics"])
             for specie in range(len(species_initial_conditions)):
-                species_initial_conditions[specie] = xoutS_incub[-1:,idx]
+                species_initial_conditions[specie] = xoutS_incub[-1:,specie]
             apply_perturbations(species_initial_conditions, species_names,
                                 perturbations)
         run_single_simulation(model, simulation_name, output_sim, cell_number, sbml_model,

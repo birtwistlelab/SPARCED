@@ -12,4 +12,8 @@ simulation:
     perturbations:
         root: "perturbations"
         default: "default.txt"
+    incubation:
+        root: "perturbations"
+        default: "default.txt"
+        duration: 0.0
 
