@@ -18,7 +18,7 @@ def launch_experiment_simulation() -> None:
     Small routine to process the parsed arguments and call run_model()
 
     Arguments:
-        perturbations:  The array specifying initial conditions perturbations.
+        None.
 
     Returns:
         Nothing.
@@ -32,17 +32,25 @@ def launch_experiment_simulation() -> None:
     amici_path = append_subfolder(model_path, amici_name, True)
     sbml_name = "sbml_" + model_name + ".xml"
     sbml_path = append_subfolder(model_path, sbml_name, True)
-    # Input data files
+    # Load simulation conditions data files
     input_folder = append_subfolder(model_path, args.input_data, True)
-    input_files, perturbations = load_simulation_input_files(input_folder, args.yaml, args.perturbations)
+    simulation_files = load_simulation_config(input_folder, args.yaml)
+    # Load incubation and perturbations
+    perturbations = incubation_conditions = incubation_duration = None
+    if "perturbations" in simulation_files:
+        perturbations = load_perturbations(simulation_files["root"], simulation_files["perturbations"], args.perturbations)
+    if "incubation" in simulation_files:
+        incubation_conditions = load_perturbations(simulation_files["root"], simulation_files["incubation"], args.perturbations)
+        incubation_duration = float(simulation_files["incubation"]["duration"])
     # Population size
     popsize = sanitize_popsize(args.population_size)
     # Runtime booleans
     is_SPARCED = not args.wild  # if it's not wild then it's SPARCED
     verbose = args.verbose
     run_experiment(model_name, args.simulation, args.results, amici_path,
-                   sbml_path, input_files, args.deterministic, popsize,
-                   args.time, args.exchange, args.verbose, is_SPARCED, perturbations)
+                   sbml_path, simulation_files, args.deterministic, popsize,
+                   args.time, args.exchange, args.verbose, is_SPARCED,
+                   perturbations, incubation_conditions, incubation_duration)
 
 def load_perturbations(input_folder: str | os.PathLike,
                        config: dict[str, str], file: str=None) -> np.ndarray:
@@ -73,30 +81,18 @@ def load_perturbations(input_folder: str | os.PathLike,
         row[2] = float(row[2])
     return(perturbations[:,1:])
 
-def load_simulation_input_files(data_folder: str | os.PathLike, yaml_name: str, p_file: str=None) -> dict[str, str | os.PathLike]:
-    """Load simulation input data files paths dictionnary
-
-    Arguments:
-        model_path: The model folder path.
-        data_folder: The input data files folder name.
-        yaml_name: The YAML configuration file name.
-
-    Returns:
-        A dictionnary containing all the input data file paths.
-    """
-
-    input_files_configuration = load_input_data_config(data_folder, yaml_name)
-    simulation_files = input_files_configuration["simulation"]
-    # Load root of simulation input data files
-    simulation_root = simulation_files.pop("root", None)
-    simulation_data_path = append_subfolder(data_folder, simulation_root, True)
-    # Reconstruct full path for each input file listed in the dictionnary
+def load_simulation_config(data_folder, f_config):
+    # Load the YAML configuration file in a dictionnary
+    simulation_files = load_input_data_config(data_folder, f_config)
+    # Use only the portion related to simulation data
+    simulation_files = simulation_files["simulation"]
+    # Reconstruct full path for each input file listed
+    simulation_files["root"] = append_subfolder(data_folder, simulation_files["root"], True)
+    keys_to_exclude = ['root', 'perturbations', 'incubation']
     for input_file in simulation_files.keys():
-        if input_file != "perturbations":
-            simulation_files[input_file] = append_subfolder(simulation_data_path, simulation_files[input_file])
-    # Load perturbations
-    perturbations = load_perturbations(simulation_data_path, simulation_files["perturbations"], p_file)
-    return(simulation_files, perturbations)
+        if input_file not in keys_to_exclude:
+            simulation_files[input_file] = append_subfolder(simulation_files["root"], simulation_files[input_file], True)
+    return(simulation_files) 
 
 
 if __name__ == '__main__':
