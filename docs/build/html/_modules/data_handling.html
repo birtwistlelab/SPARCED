@@ -1,0 +1,342 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="" lang="" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="">
+    <link rel="icon" type="image/x-icon" href="">
+
+  
+  <title>data_handling &mdash; SPARCED 2.0.0 documentation</title>
+  
+
+  
+
+  
+
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+
+
+  <link rel="stylesheet" href="../_static/css/img.css" type="text/css"/>
+  
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/pdj.css" type="text/css" />
+  
+
+  
+
+  <link rel="stylesheet" href="../_static/css/darker.css" type="text/css" media="(prefers-color-scheme: dark)"/>
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="SPARCED 2.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="module" src="https://googlechromelabs.github.io/dark-mode-toggle/src/dark-mode-toggle.mjs"></script>
+
+  </head>
+
+  <body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+	
+        <a href="../index.html" class="fa fa-home"> SPARCED </a>
+	
+	
+        <div role="search">
+	  
+	  <form id ="rtd-search-form" class="wy-form"
+		action="../search.html" method="get">
+	    <input type="text" name="q" placeholder="Search docs" />
+	    <input type="hidden" name="check_keywords" value="yes" />
+	    <input type="hidden" name="area" value="default" />
+	  </form>
+	  
+	</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#instructions-beginners">Instructions &amp; Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#replicate-our-results">Replicate our results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#further-information">Further information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about.html#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contents.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">The SPARCED Installation Guide for Absolute Beginners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#environment">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#virtualbox-guest-additions">VirtualBox Guest Additions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#openmpi">OpenMPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#git-github-ssh">Git, GitHub &amp; SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#anaconda">Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#todo-docker">TODO: Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#sparced">SPARCED 🎆</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation-guide.html#clean">Clean</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/summary.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/notebook.html">Jupyter Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/hands-on.html">SPARCED Hands-On Primer Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../papers/summary.html">Replicate Published Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../papers/bouhaddou2018.html">Bouhaddou 2018 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/erdem2022.html">Erdem 2022 model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../papers/mutsuddy2023.html">Mutsuddy 2023 model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/summary.html">Reference Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#input-files">Input files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/summary.html#source-code">Source code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../future-dev.html">Future developments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+          
+        
+
+      </div>
+      &nbsp;
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      <nav class="wy-nav-top" id="barra-mobile" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">SPARCED </a>
+      </nav>
+
+      <div class="wy-nav-content">
+	<div class="fundo-claro">
+	</div>
+	<div class="fundo-escuro">
+	</div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+	    
+	    <!-- <ul class="wy-breadcrumbs"> -->
+	    <!--   <li><a href="#">Docs</a> &raquo;</li> -->
+
+	    <!--   <li>Features</li> -->
+	    <!--   <li class="wy-breadcrumbs-aside"> -->
+
+	    <!-- 	<a href="_sources/index.txt" rel="nofollow"> View page source</a> -->
+
+	    <!--   </li> -->
+	    <!-- </ul> -->
+	    <!-- <hr/> -->
+	  </div>
+          <div role="main" class="">
+
+	    <div id="content" class="hfeed entry-container hentry">
+      	<div id="dark-mode-toggle-container">
+	  <dark-mode-toggle appearance="toggle" dark="switch to light mode" light="switch to dark mode">
+	  </dark-mode-toggle>
+	</div>
+  <h1>Source code for data_handling</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<div class="viewcode-block" id="append_subfolder"><a class="viewcode-back" href="../reference/utils.html#data_handling.append_subfolder">[docs]</a><span class="k">def</span> <span class="nf">append_subfolder</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">subfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                     <span class="n">abort_on_error</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">:</span>          
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Append a subfolder to a folder path</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        folder: The folder path.</span>
+<span class="sd">        subfolder: The subfolder name.</span>
+<span class="sd">        abort_on_error: Abort process when encountering an error.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The subfolder&#39;s path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">folder</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Folder doesn&#39;t exist. This is never normal.</span><span class="se">\n</span><span class="s2">Folder name:</span><span class="si">{name}</span><span class="s2">.&quot;</span>
+              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">folder</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">abort_on_error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aborting now.&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">subfolder_path</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">subfolder</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">subfolder_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Subfolder doesn&#39;t exist yet. This is normal if you are creating a new subfolder.</span><span class="se">\n</span><span class="s2">Subfolder name: </span><span class="si">{name}</span><span class="s2">.&quot;</span>
+              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">subfolder</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">abort_on_error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aborting now.&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">subfolder_path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="convert_excel_to_tsv"><a class="viewcode-back" href="../reference/utils.html#data_handling.convert_excel_to_tsv">[docs]</a><span class="k">def</span> <span class="nf">convert_excel_to_tsv</span><span class="p">(</span><span class="n">f_excel</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an Excel file to TSV (SPARCED&#39;s standard input format)           </span>
+
+<span class="sd">    This function creates a new .txt file at the same location than the passed  </span>
+<span class="sd">    Excel file.</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">        This is some old code written four years ago, it hasn&#39;t been tested since.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        f_excel: The Excel sheet path.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Nothing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">f_excel</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">((</span><span class="n">f_excel</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span> </div>
+
+<div class="viewcode-block" id="load_input_data_config"><a class="viewcode-back" href="../reference/utils.html#data_handling.load_input_data_config">[docs]</a><span class="k">def</span> <span class="nf">load_input_data_config</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">yaml_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load input data files paths configuration</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        File structure is assumed to be organized as follow:</span>
+<span class="sd">        &gt; model folder</span>
+<span class="sd">        &gt; data subfolder containing a YAML configuration file describing input</span>
+<span class="sd">        data organization</span>
+<span class="sd">        &gt; model compilation and simulation sub-subfolders containing the input</span>
+<span class="sd">        data files</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        data_path: The input data files folder path.</span>
+<span class="sd">        yaml_name: The YAML configuration file name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionnary containing all the input data file paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Load data and YAML paths</span>
+    <span class="n">yaml_path</span> <span class="o">=</span> <span class="n">append_subfolder</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">yaml_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Read input data files structure in YAML configuration file</span>
+    <span class="k">with</span> <span class="n">yaml_path</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">input_files_configuration</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">input_files_configuration</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="load_input_data_file"><a class="viewcode-back" href="../reference/utils.html#data_handling.load_input_data_file">[docs]</a><span class="k">def</span> <span class="nf">load_input_data_file</span><span class="p">(</span><span class="n">f_input</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the given input data file</span>
+
+<span class="sd">    Load an input data file structured as tab separated.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        f_input: The input data file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A numpy array containing the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">f_input</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+</pre></div>
+
+	    </div>
+            <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2024, The Birtwistle Lab.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/jucacrispim/sphinx_pdj_theme">theme</a> provided by <a href="https://poraodojuca.dev">Porão do Juca</a>.
+
+</footer>
+	</div>
+	</div>
+	  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/underscore.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/_sphinx_javascript_frameworks_compat.js">
+
+    </script>
+    <script type="text/javascript" src="../_static/doctools.js">
+
+    </script>
+
+  
+
+   <script type="text/javascript"
+           src="../_static/js/theme.js"></script>
+
+   <script type="text/javascript"
+           src="../_static/js/pdj.js"></script>
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  </body>
+</html>

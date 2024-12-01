@@ -1,0 +1,16 @@
+observableId	preequilibrationConditionId	simulationConditionId	measurement	time
+cPARP_total	serum_fed_equilibrium	serum_fed_equilibrium		86400
+cPARP_total	serum_fed_equilibrium	L_0p0385	89.79	18000
+cPARP_total	serum_fed_equilibrium	L_0p1925	93.53	18000
+cPARP_total	serum_fed_equilibrium	L_0p385	88.4	18000
+cPARP_total	serum_fed_equilibrium	L_1p925	79.53	18000
+cPARP_total	serum_fed_equilibrium	L_3p85	58.08	18000
+cPARP_total	serum_fed_equilibrium	L_19p25	36.34	18000
+cPARP_total	serum_fed_equilibrium	L38p5	20.18	18000
+PARP_total	serum_fed_equilibrium	L_0p0385	89.79	18000
+PARP_total	serum_fed_equilibrium	L_0p1925	93.53	18000
+PARP_total	serum_fed_equilibrium	L_0p385	88.4	18000
+PARP_total	serum_fed_equilibrium	L_1p925	79.53	18000
+PARP_total	serum_fed_equilibrium	L_3p85	58.08	18000
+PARP_total	serum_fed_equilibrium	L_19p25	36.34	18000
+PARP_total	serum_fed_equilibrium	L38p5	20.18	18000

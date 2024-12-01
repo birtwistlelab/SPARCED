@@ -1,0 +1,7 @@
+plotId	plotName	plotTypeSimulation	datasetId	xValues	yValues	xLabel	xScale	yLabel	yScale	Color	legendEntry
+plot1	Deterministic	LinePlot	egf only	time	STAT1*Dn	Time (hr)	linear	STAT1 (nM)	linear	black	EGF = 1.562
+plot1	Deterministic	LinePlot	EGF_IFNG	time	STAT1*Dn	Time (hr)	linear	STAT1 (nM)	linear	red	EGF + IFN = 1.5625 + 1.166
+plot2	Deterministic	LinePlot	egf only	time	SOCS1c	Time (hr)	linear	SOCS1 (nM)	linear	black	EGF = 1.562
+plot2	Deterministic	LinePlot	EGF_IFNG	time	SOCS1c	Time (hr)	linear	SOCS1 (nM)	linear	red	EGF + IFN = 1.5625 + 1.166
+plot3	Deterministic	LinePlot	egf only	time	SOCS1_m	Time (hr)	linear	mSOCS1 (nM)	linear	black	EGF = 1.562
+plot3	Deterministic	LinePlot	EGF_IFNG	time	SOCS1_m	Time (hr)	linear	mSOCS1 (nM)	linear	red	EGF + IFN = 1.5625 + 1.166

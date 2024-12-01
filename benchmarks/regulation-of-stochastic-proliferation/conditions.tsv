@@ -1,0 +1,6 @@
+conditionId	conditionName	MEKi	AKTi	E	H	HGF	P	F	I	INS
+EGF_only	cell cycle progression over 30 hours, EGF stimulus only	0	0	10	0	0	0	0	0	0
+INS_only	cell cycle progression over 30 hours, INS stimulus only	0	0	0	0	0	0	0	0	1721
+EGF_INS	cell cycle progression over 30 hours, INS and EGF stimulus	0	0	10	0	0	0	0	0	1721
+EGF_INS_MEKi	cell cycle progression over 30 hours, INS, EKT, and ERKi stimulus	10000	0	10	0	0	0	0	0	1721
+EGF_INS_AKTi	cell cycle progression over 30 hours, INS, EKT, and AKTi stimulus	0	10000	10	0	0	0	0	0	1721

@@ -1,0 +1,3 @@
+# Run Jupyter Notebook
+jupyterlab==4.1.6
+notebook==7.1.3

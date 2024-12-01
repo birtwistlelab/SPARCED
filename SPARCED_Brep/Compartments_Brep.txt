@@ -1,5 +1,0 @@
-compartments	volume	GOterms
-Cytoplasm	5.25e-12	GO:0005737
-Extracellular	5e-05	GO:0005576
-Nucleus	1.75e-12	GO:0005634
-Mitochondrion	3.675e-13	GO:0005739

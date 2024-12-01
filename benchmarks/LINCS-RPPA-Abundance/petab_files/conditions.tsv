@@ -1,0 +1,6 @@
+conditionId	conditionName	E	HGF	I	IFN
+serum_fed_equilibrium	serum fed pre-condition	9.82E-17	2.47E-15	0.02	0
+EGF	EGF only treatment	1.5625	2.47E-15	0.02	0
+HGF only	HGF only treatment	9.82E-17	416.67	0.02	0
+serum starved	serum starved simulation, only using 0.02nM IGF	9.82E-17	2.47E-15	0.02	0
+EGF_IFNG	"EGF and Interferon-gamma "	1.5625	2.47E-15	0.02	1.166

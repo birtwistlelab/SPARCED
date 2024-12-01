@@ -1,0 +1,15 @@
+compilation:
+    root: "model"
+    compartments: "Compartments.txt"
+    observables: "Observables.txt"
+    ratelaws: "Ratelaws.txt"
+    species: "Species.txt"
+    stoicmat: "StoicMat.txt"
+simulation:
+    root: "simulation"
+    genereg: "GeneReg.txt"
+    omics: "OmicsData.txt"
+    perturbations:
+        root: "perturbations"
+        default: "default.txt"
+

@@ -1,0 +1,6 @@
+conditionId	flagD	heterogenize	num_cells
+EGF_only	0	86400	30
+INS_only	0	86400	30
+EGF_INS	0	86400	30
+EGF_INS_MEKi	0	86400	30
+EGF_INS_AKTi	0	86400	30

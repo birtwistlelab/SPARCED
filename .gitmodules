@@ -1,4 +1,0 @@
-[submodule "kube-runner"]
-	path = kube-runner
-	url = https://github.com/SystemsGenetics/kube-runner.git
-	ignore = dirty

@@ -1,0 +1,64 @@
+observableId	preequilibrationConditionId	simulationConditionId	measurement	time
+cMyc abundance	serum_fed_equilibrium	serum_fed_equilibrium		86400
+cMyc abundance	serum_fed_equilibrium	EGF	0.0599474284989293	3600
+cMyc abundance	serum_fed_equilibrium	HGF only	0.0938006682370534	3600
+cMyc abundance	serum_fed_equilibrium	serum starved	-0.00673884008598343	3600
+cMyc abundance	serum_fed_equilibrium	EGF	0.0855000844976374	14400
+cMyc abundance	serum_fed_equilibrium	HGF only	-0.112041241649314	14400
+cMyc abundance	serum_fed_equilibrium	serum starved	-0.361368378919934	14400
+cMyc abundance	serum_fed_equilibrium	EGF	0.175498387909299	28800
+cMyc abundance	serum_fed_equilibrium	HGF only	0.17541475878018	28800
+cMyc abundance	serum_fed_equilibrium	serum starved	-0.27925364009848	28800
+cMyc abundance	serum_fed_equilibrium	EGF	0.32268550554809	86400
+cMyc abundance	serum_fed_equilibrium	HGF only	0.129529132170238	86400
+cMyc abundance	serum_fed_equilibrium	serum starved	-0.280621131641666	86400
+cMyc abundance	serum_fed_equilibrium	EGF	0.394548895977395	172800
+cMyc abundance	serum_fed_equilibrium	HGF only	-0.00561599800759121	172800
+cMyc abundance	serum_fed_equilibrium	serum starved	-0.318142819607446	172800
+EGFR abundance	serum_fed_equilibrium	serum_fed_equilibrium		86400
+EGFR abundance	serum_fed_equilibrium	EGF	-0.087103468185354	3600
+EGFR abundance	serum_fed_equilibrium	HGF only	0.118911223909431	3600
+EGFR abundance	serum_fed_equilibrium	serum starved	0.0775888211027501	3600
+EGFR abundance	serum_fed_equilibrium	EGF	-0.18295173656872	14400
+EGFR abundance	serum_fed_equilibrium	HGF only	0.248367869060545	14400
+EGFR abundance	serum_fed_equilibrium	serum starved	0.182848206449254	14400
+EGFR abundance	serum_fed_equilibrium	EGF	-0.167745625903945	28800
+EGFR abundance	serum_fed_equilibrium	HGF only	0.384616279893279	28800
+EGFR abundance	serum_fed_equilibrium	serum starved	0.331748641500046	28800
+EGFR abundance	serum_fed_equilibrium	EGF	-0.188558613639205	86400
+EGFR abundance	serum_fed_equilibrium	HGF only	0.591160552949434	86400
+EGFR abundance	serum_fed_equilibrium	serum starved	0.295526061250708	86400
+EGFR abundance	serum_fed_equilibrium	EGF	-0.347042183270257	172800
+EGFR abundance	serum_fed_equilibrium	HGF only	0.929644046343301	172800
+EGFR abundance	serum_fed_equilibrium	serum starved	0.0946805643656513	172800
+MET abundance	serum_fed_equilibrium	serum_fed_equilibrium		86400
+MET abundance	serum_fed_equilibrium	EGF	0.0565318541921711	3600
+MET abundance	serum_fed_equilibrium	HGF only	0.202664730725198	3600
+MET abundance	serum_fed_equilibrium	serum starved	0.055671268063112	3600
+MET abundance	serum_fed_equilibrium	EGF	0.0233065726496385	14400
+MET abundance	serum_fed_equilibrium	HGF only	0.0310915324388854	14400
+MET abundance	serum_fed_equilibrium	serum starved	0.0126753060095639	14400
+MET abundance	serum_fed_equilibrium	EGF	0.0253930338970618	28800
+MET abundance	serum_fed_equilibrium	HGF only	-3.17E-04	28800
+MET abundance	serum_fed_equilibrium	serum starved	0.0213179527522755	28800
+MET abundance	serum_fed_equilibrium	EGF	0.0487495495871492	86400
+MET abundance	serum_fed_equilibrium	HGF only	0.0788053436275799	86400
+MET abundance	serum_fed_equilibrium	serum starved	0.00841636776635907	86400
+MET abundance	serum_fed_equilibrium	EGF	0.0835590487048961	172800
+MET abundance	serum_fed_equilibrium	HGF only	0.0927399301705634	172800
+MET abundance	serum_fed_equilibrium	serum starved	0.0428163323439834	172800
+cMyc abundance	serum_fed_equilibrium	EGF_IFNG		3600
+cMyc abundance	serum_fed_equilibrium	EGF_IFNG		14400
+cMyc abundance	serum_fed_equilibrium	EGF_IFNG		28800
+cMyc abundance	serum_fed_equilibrium	EGF_IFNG		86400
+cMyc abundance	serum_fed_equilibrium	EGF_IFNG		172800
+MET abundance	serum_fed_equilibrium	EGF_IFNG		3600
+MET abundance	serum_fed_equilibrium	EGF_IFNG		14400
+MET abundance	serum_fed_equilibrium	EGF_IFNG		28800
+MET abundance	serum_fed_equilibrium	EGF_IFNG		86400
+MET abundance	serum_fed_equilibrium	EGF_IFNG		172800
+EGFR abundance	serum_fed_equilibrium	EGF_IFNG		3600
+EGFR abundance	serum_fed_equilibrium	EGF_IFNG		14400
+EGFR abundance	serum_fed_equilibrium	EGF_IFNG		28800
+EGFR abundance	serum_fed_equilibrium	EGF_IFNG		86400
+EGFR abundance	serum_fed_equilibrium	EGF_IFNG		172800

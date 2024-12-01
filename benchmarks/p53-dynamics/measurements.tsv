@@ -1,0 +1,5 @@
+observableId	simulationConditionId	measurement	time
+p53_pulse	DamageDSB_1	1000	108000
+p53_pulse	DamageDSB_4	1000	108000
+p53_pulse	DamageDSB_10	1000	108000
+p53_pulse	DamageDSB_25	1000	108000

@@ -1,0 +1,19 @@
+compilation:
+    root: "model"
+    compartments: "legacy_Compartments.txt"
+    observables: "legacy_Observables.txt"
+    ratelaws: "legacy_Ratelaws.txt"
+    species: "legacy_Species.txt"
+    stoicmat: "legacy_StoicMat.txt"
+simulation:
+    root: "simulation"
+    genereg: "legacy_GeneReg.txt"
+    omics: "legacy_OmicsData.txt"
+    perturbations:
+        root: "perturbations"
+        default: "default.txt"
+    incubation:
+        root: "perturbations"
+        default: "default.txt"
+        duration: 0.0
+
