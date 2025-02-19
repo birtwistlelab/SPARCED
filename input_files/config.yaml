@@ -1,0 +1,40 @@
+# SPARCED-1.4
+# Last update: 2025-02-19
+
+
+# General infos
+name: "SPARCED"
+header: "Erdem et al., Nat Commun 2022"
+location: "input_files"
+user: " Jonah R. Huggins"
+
+# Compilation
+compilation:
+    directory: "model"
+    files:
+      compartments: "Compartments.txt"
+      output_parameters: "output_parameters.txt"  # This file is generated upon compilation
+      ratelaws: "Ratelaws.txt"
+      species: "standard_Species.txt"
+
+# Experiment settings
+simulation:
+  name: "Experiment_1-Default"
+  population_size: 1
+  verbose: True
+  exchange: 30
+  gene_regulation: "GeneReg.txt"
+  omics: "OmicsData.txt"
+
+  
+  # Protocol steps
+  protocol:
+    name: "Simulation"
+    hybrid: True
+    duration: 24.0
+    perturbations: "perturbations.tsv"
+    perturbations_id: "default"
+
+  # Individual Model Exceptions
+  #Exceptions:
+  
