@@ -10,7 +10,7 @@ user: " Jonah R. Huggins"
 
 # Compilation
 compilation:
-    directory: "model"
+    directory: "input_files"
     files:
       compartments: "Compartments.txt"
       output_parameters: "output_parameters.txt"  # This file is generated upon compilation
@@ -19,22 +19,34 @@ compilation:
 
 # Experiment settings
 simulation:
-  name: "Experiment_1-Default"
+  model: 
+    amici: "jupyter_notebooks/SPARCED"
+    sbml: "jupyter_notebooks/SPARCED.xml"
   population_size: 1
   verbose: True
   exchange: 30
-  gene_regulation: "GeneReg.txt"
-  omics: "OmicsData.txt"
+  data:
+    gene_regulation: "GeneReg.txt"
+    omics: "OmicsData.txt"
 
-  
   # Protocol steps
   protocol:
-    name: "Simulation"
+    name: "Experiment_1-Default"
     hybrid: True
     duration: 24.0
-    perturbations: "perturbations.tsv"
-    perturbations_id: "default"
+    perturbations: 
+      parameters: {}
+      species: {'E': 0.0, 'INS': 0.0}
+
 
   # Individual Model Exceptions
-  #Exceptions:
+  Exceptions:
+    omics:
+      kGac: {'Ce': 0.0} # Placeholder
+    gene_regulation:
+      kGac: {'Ce': 0.0} # Placeholder
   
+  results:
+    filename: "Experiment_1-results"
+    directory: "results"
+

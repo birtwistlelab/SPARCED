@@ -1,118 +1,118 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Filename: runModel.py
+Created: 2025-02-19
+Author(s):
+Description:
+"""
 
-import libsbml
-import importlib
-import amici
-import amici.plotting
+
+#<-----------------------------Import Packages------------------------------->
 import os
-import sys
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-from datetime import datetime
-import scipy.stats
 import argparse
 
-from modules.RunSPARCED import RunSPARCED
-
-
-
-# SBML model we want to import
-sbml_file = 'SPARCED.xml'
-# Name of the model that will also be the name of the python module
-model_name = sbml_file[0:-4]
-# Directory to which the generated model code is written
-model_output_dir = model_name
-
-
+import RunSPARCED
+from utils.data_handler import Results
+from utils.config_manager import ConfigManager
+from utils.model_handler import PerturbationHandler
+from utils.model_factory import create_model_handler
+from singe.singe_engine import SINGEEngine
 
 parser = argparse.ArgumentParser(description='Provide arguments to build the SPARCED model')
-parser.add_argument('--deterministic', metavar='flagD', type=int, help='0 for deterministic run, 1 for stochastic')
-parser.add_argument('--time', metavar='time', type=int, help='experiment run time (in hours)')
-parser.add_argument('--Vn', metavar='Vn', help='the volume of the nucleus in liters')
-parser.add_argument('--Vc', metavar='Vc', help='the volume of the cytoplasm in liters')
-parser.add_argument('--outfile', metavar='outfile', help='the prefix for the name of the output files')
+parser.add_argument('--config_path', '-p', metavar='config', help='the path to the configuration file')
 args = parser.parse_args()
 
 
-if args.time == None or args.deterministic == None or args.Vn == None or args.Vc == None or args.outfile == None:
-    print("ERROR: missing arguments. Need to pass --time, --deterministic, --Vn, --Vc, --outfile. Use -h for help.")
+if args.config_path == None:
+    print("ERROR: missing arguments. Need to pass --config_path. Use -h for help.")
 
-flagD = args.deterministic
-th = args.time
-Vn = float(args.Vn)
-Vc = float(args.Vc)
-outfile = args.outfile
-ts = 30
+class Simulation:
+    """
+    Represents the simulation entrypoint.
+    """
+    def __init__(self, args):
+        """
+        Initialize the SimulationEntry class.
+        """
+        self.config_manager = ConfigManager(args.config_path)
+
+    def run(self):
+        """
+        Run the simulation.
+        """
+        
+        # First, instantiate the ODE model handler
+        model_handler = create_model_handler(self.config_manager.get("simulation.model.sbml"), 
+                                             self.config_manager.get("simulation.model.amici"))
+        
+        perturbants = self.config_manager.get("simulation.perturbations", {})
+
+        self.perturbations = PerturbationHandler(model_handler, perturbants)
+        self.perturbations.apply_perturbations()
 
 
-if flagD == 0:
-    flagWr = 1
-    nmxlsfile = outfile
+        # Next, instantiate the SINGE engine
+        singe_engine = SINGEEngine()
+
+        # Instatiate the SPARCED class, run simulation, return results
+        results = RunSPARCED(model_handler, singe_engine).run()
+
+        # Save results to file. Note; save_data method takes !tuple! datatype as input
+        Results(os.path.join(self.config_manager.get("simulation.results.directory"), 
+                self.config_manager.get("simulation.results.filename"))).save_data(results)
+
+if __name__ == "__main__":
+    Simulation(args).run()
+
+# th = args.time
+# Vn = float(args.Vn)
+# Vc = float(args.Vc)
+# outfile = args.outfile
+# ts = 30
+
+
+# if flagD == 0:
+#     flagWr = 1
+#     nmxlsfile = outfile
     
-    sys.path.insert(0, os.path.abspath(model_output_dir))
+#     sys.path.insert(0, os.path.abspath(model_output_dir))
 
-    species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
+#     species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
 
-    species_initializations = []
-    for row in species_sheet[1:]:
-        species_initializations.append(float(row[2]))
-    species_initializations = np.array(species_initializations)
+#     species_initializations = []
+#     for row in species_sheet[1:]:
+#         species_initializations.append(float(row[2]))
+#     species_initializations = np.array(species_initializations)
 
-    model_module = importlib.import_module(model_name)
-    model = model_module.getModel()
-    solver = model.getSolver() # Create solver instance
-    solver.setMaxSteps = 1e10
-    model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
+#     model_module = importlib.import_module(model_name)
+#     model = model_module.getModel()
+#     solver = model.getSolver() # Create solver instance
+#     solver.setMaxSteps = 1e10
+#     model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
-    
-    if flagWr==1:
-        columnsS=[ele for ele in model.getStateIds()]
-        columnsG = [x for n, x in enumerate(columnsS) if 'm_' in x]
-        columnsG = columnsG[1:]
-        resa = [sub.replace('m_', 'ag_') for sub in columnsG]
-        resi = [sub.replace('m_', 'ig_') for sub in columnsG]
-        columnsG2 = np.concatenate((resa, resi), axis=None)
-        condsSDF = pd.DataFrame(data=xoutS_all,columns=columnsS)
-        condsSDF.to_excel(nmxlsfile+'S_0.xlsx')
-        condsSDF = None
-        condsGDF = pd.DataFrame(data=xoutG_all,columns=columnsG2)
-        condsGDF.to_excel(nmxlsfile+'G_0.xlsx')
-        condsGDF = None
+#     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
 
-elif flagD == 1:
-    flagWr = 1
-    nmxlsfile = outfile
 
-    sys.path.insert(0, os.path.abspath(model_output_dir))
-    species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
+# elif flagD == 1:
+#     flagWr = 1
+#     nmxlsfile = outfile
 
-    species_initializations = []
-    for row in species_sheet[1:]:
-        species_initializations.append(float(row[2]))
+#     sys.path.insert(0, os.path.abspath(model_output_dir))
+#     species_sheet = np.array([np.array(line.strip().split("\t")) for line in open('Species.txt', encoding='latin-1')])
 
-    species_initializations = np.array(species_initializations)
-    species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
+#     species_initializations = []
+#     for row in species_sheet[1:]:
+#         species_initializations.append(float(row[2]))
 
-    model_module = importlib.import_module(model_name)
-    model = model_module.getModel()
-    solver = model.getSolver()          # Create solver instance
-    solver.setMaxSteps = 1e10
-    model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
+#     species_initializations = np.array(species_initializations)
+#     species_initializations[np.argwhere(species_initializations <= 1e-6)] = 0.0
 
-    xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
+#     model_module = importlib.import_module(model_name)
+#     model = model_module.getModel()
+#     solver = model.getSolver()          # Create solver instance
+#     solver.setMaxSteps = 1e10
+#     model.setTimepoints(np.linspace(0,ts)) # np.linspace(0, 30) # set timepoints
 
-    if flagWr==1:
-        columnsS=[ele for ele in model.getStateIds()]
-        columnsG = [x for n, x in enumerate(columnsS) if 'm_' in x]
-        columnsG = columnsG[1:]
-        resa = [sub.replace('m_', 'ag_') for sub in columnsG]
-        resi = [sub.replace('m_', 'ig_') for sub in columnsG]
-        columnsG2 = np.concatenate((resa, resi), axis=None)
-        condsSDF = pd.DataFrame(data=xoutS_all,columns=columnsS)
-        condsSDF.to_excel(nmxlsfile+'S.xlsx')
-        condsSDF = None
-        condsGDF = pd.DataFrame(data=xoutG_all,columns=columnsG2)
-        condsGDF.to_excel(nmxlsfile+'G.xlsx')
-        condsGDF = None
+#     xoutS_all, xoutG_all, tout_all = RunSPARCED(flagD,th,species_initializations,[],sbml_file,model)
+
