@@ -9,8 +9,8 @@ Description: Handles loading, storing, and sending configuration file informatio
 """
 # -----------------------Package Import & Defined Arguements-------------------#
 import os
-import yaml
 import json
+import yaml
 
 class ConfigManager:
     """
@@ -19,7 +19,7 @@ class ConfigManager:
     def __init__(self, filepath):
         self.filepath = filepath
         self.config = {}
-        self.config_loader = self.get_config_loader(filepath)
+        self.config_loader = get_config_loader(filepath)
         self.config = self.config_loader.config
 
     def load_config(self):
@@ -35,6 +35,9 @@ class ConfigManager:
         return value
 
 class YAMLConfigLoader(ConfigManager):
+    """
+    Loads configuration from a YAML file.
+    """
     def __init__(self, filepath):
         super().__init__(filepath)  # Call parent constructor
         self.load_config()  # Load config upon initialization
@@ -44,12 +47,15 @@ class YAMLConfigLoader(ConfigManager):
         try:
             with open(self.filepath, encoding = 'utf-8', mode = 'r') as file:
                 self.config = yaml.safe_load(file) or {}
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Configuration file not found: {self.filepath}")
-        except yaml.YAMLError as e:
-            raise ValueError(f"Error parsing YAML file: {e}")
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(f"Configuration file not found: {self.filepath}") from exc
+        except yaml.YAMLError as exc:
+            raise ValueError(f"Error parsing YAML file: {exc}") from exc
         
 class JSONConfigLoader(ConfigManager):
+    """
+    Loads configuration from a JSON file.
+    """
     def __init__(self, filepath):
         super().__init__(filepath)  # Call parent constructor
         self.load_config()  # Load config upon initialization
@@ -59,10 +65,10 @@ class JSONConfigLoader(ConfigManager):
         try:
             with open(self.filepath, encoding = 'utf-8', mode = 'r') as file:
                 self.config = json.load(file) or {}
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Configuration file not found: {self.filepath}")
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Error parsing JSON file: {e}")
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(f"Configuration file not found: {self.filepath}") from exc
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"Error parsing JSON file: {exc}") from exc
 
 @staticmethod
 def get_config_loader(filepath):
@@ -70,9 +76,9 @@ def get_config_loader(filepath):
     ext = os.path.splitext(filepath)[1].lower()
     if ext == ".yaml":
         return YAMLConfigLoader(filepath)
-    elif ext == ".json":
+    if ext == ".json":
         return JSONConfigLoader(filepath)
-    else:
-        raise ValueError(f"Unsupported file extension: {ext}")
-    
+
+    raise ValueError(f"Unsupported file extension: {ext}")
+
 # -----------------------------End of config_manager.py-------------------------#

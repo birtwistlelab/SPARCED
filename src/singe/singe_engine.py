@@ -17,7 +17,8 @@ Description: SINGE - (S)tochastic (I)ntegrated (N)etwork for (G)ene (E)xpression
 import os
 import numpy as np
 
-from src.singe.singe_prep import SINGEPrep
+from singe_prep import SINGEPrep
+
 
 #<------------------------------Parent Class--------------------------------->
 class SINGEEngine:
@@ -27,19 +28,25 @@ class SINGEEngine:
     implementation of stochastic gene expression, written as the stochastic half
     of the SPARCED algorithm.
     """
-    def __init__(self):
-        self.singe_prep = SINGEPrep()
+    def __init__(self, perturbed_model, gene_regulation, omics_data, solver_flag, model_exceptions):
+        """
+        Initialize the SINGEEngine class.
+        """
+        self.solver_flag = solver_flag
+        self.model_exceptions = model_exceptions
+
+        self.prep = SINGEPrep(perturbed_model, gene_regulation, omics_data, self.solver_flag, self.model_exceptions)
 
     def update_model(self, model, exchange):
         """
         Update the model with stochastic gene expression.
         """
         # Prepare the model for stochastic gene expression
-        self.singe_prep.prepare_model(model, exchange)
+        self.prep.prepare_model(model, exchange)
 
     def simulate(self, duration):
         """
         Simulate the model with stochastic gene expression.
         """
         # Simulate the model with stochastic gene expression
-        self.singe_prep.simulate(duration)
+        self.prep.simulate(duration)

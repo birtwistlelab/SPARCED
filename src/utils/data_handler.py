@@ -68,11 +68,17 @@ class Omics(DataHandler):
 
     def load_data(self):
         """Load omics data."""
-        self.data = pd.read_csv(self.data_path, sep='\t')
+        self.data = pd.read_csv(self.data_path, header = 0, index_col= 0, sep='\t')
 
     def modify_data(self, data):
         """Modify omics data."""
         self.data = data
+
+    def getColumn(self, cname):
+        """
+        Retrieves column as np.float64 vector array.
+        """
+        return np.array(self.data[cname].values, dtype=np.float64)
 
     def save_data(self):
         """Save omics data."""
@@ -90,11 +96,17 @@ class GeneRegulation(DataHandler):
 
     def load_data(self):
         """Load gene regulation data."""
-        self.data = pd.read_csv(self.data_path, sep='\t')
+        self.data = pd.read_csv(self.data_path, header = 0, index_col= 0, sep='\t')
 
     def modify_data(self, data):
         """Modify gene regulation data."""
         self.data = data
+
+    def getColumn(self, cname):
+        """
+        Retrieves column as np.float64 vector array.
+        """
+        return np.array(self.data[cname].values, dtype=np.float64)
 
     def save_data(self):
         """Save gene regulation data."""
