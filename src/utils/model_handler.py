@@ -9,12 +9,15 @@ Description:
 
 
 #<-----------------------------Import Packages------------------------------->
+from types import SimpleNamespace
+
 import importlib
 import amici
 import libsbml
 import numpy as np
 import tellurium as te
 
+from data_handler import Omics, GeneRegulation # Remove when SINGE data model created.
 #<------------------------------Parent Class--------------------------------->
 # Parent class
 class ModelHandler:
@@ -68,6 +71,7 @@ class SBMLModelHandler(ModelHandler):
        
     def modify_species(self, species_name, value):
         """No need to override this method for SBML models."""
+        super().modify_species()
 
     def module_exchange(self, exchange=30):
         """No need to override this method for SBML models."""
@@ -81,6 +85,15 @@ class SBMLModelHandler(ModelHandler):
         retrieves the volume of a particular component by name.
         """
         return self.model.getCompartment(compartment).getVolume()
+    
+    def getInitialConcentrations(self):
+        """Returns a NumPy array of all species' initial concentrations from an SBML model."""
+        return np.array([species.getInitialConcentration() if species.isSetInitialConcentration()
+                         else species.getInitialAmount() if species.isSetInitialAmount()
+                         else 0.0 # Set to 0 if the species doesn't have a value.
+                         for species in (self.model.getListOfSpecies(i)
+                                         for i in range(self.model.getNumSpecies()))
+                        ], dtype=np.float64)
 
 # Child class for AMICI
 class AMICIModelHandler(SBMLModelHandler):
@@ -159,6 +172,37 @@ class TelluriumModelHandler(SBMLModelHandler):
         results = self.model.simulate()
         print("Tellurium simulation complete.")
         return results
+
+class SINGEModelHandler(ModelHandler):
+    """
+    Handles loading, manipulating, and simulating the SINGE model.
+    """
+    def __init__(self, model_path):
+        super().__init__(model_path)
+        self.load_model()
+
+    def load_model(self): # Future: Update with proper data model commands
+        """
+        Loads an instance of the SINGE model from path.
+        """
+        omics_path, genereg_path = self.model_path
+
+        omics = Omics(omics_path)
+
+        genereg = GeneRegulation(genereg_path)
+
+        self.model = SimpleNamespace(omics, genereg)
+        if self.model is None:
+            raise ValueError(f"Failed to load SINGE model from {self.model_path}")
+    
+    def modify_parameter(self, param_name, value): 
+        return super().modify_parameter(param_name, value) # Placeholder
+    
+    def modify_species(self, species_name, value):
+        return super().modify_species(species_name, value) # Placeholder
+    
+    def simulate(self): 
+        return super().simulate() # Placeholder
 
 class PerturbationHandler:
     """

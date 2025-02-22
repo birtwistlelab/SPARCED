@@ -19,8 +19,8 @@ class ConfigManager:
     def __init__(self, filepath):
         self.filepath = filepath
         self.config = {}
-        self.config_loader = get_config_loader(filepath)
-        self.config = self.config_loader.config
+        config_loader = get_config_loader(filepath)
+        self.config = config_loader.config
 
     def load_config(self):
         """Placeholder method to be implemented by subclasses."""

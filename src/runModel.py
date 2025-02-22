@@ -13,7 +13,7 @@ import os
 import argparse
 
 from run_sparced import RunSPARCED
-from utils.data_handler import Results, Omics, GeneRegulation
+from utils.data_handler import Results
 from utils.config_manager import ConfigManager
 from utils.model_handler import PerturbationHandler
 from utils.model_factory import create_model_handler
@@ -42,8 +42,8 @@ class Simulation:
         Run the simulation.
         """
         # Get the gene regulation and Omics data paths from the config file
-        gene_regulation = GeneRegulation(self.config_manager.get("simulation.data.gene_regulation"))
-        omics_data = Omics(self.config_manager.get("simulation.data.omics"))
+        gene_regulation = self.config_manager.get("simulation.data.gene_regulation")
+        omics_data = self.config_manager.get("simulation.data.omics")
 
         # First, instantiate the ODE model handler
         model_handler = create_model_handler(self.config_manager.get("simulation.model.sbml"),
@@ -52,11 +52,8 @@ class Simulation:
         # Apply perturbations to the model
         perturbants = self.config_manager.get("simulation.perturbations", {})
 
-        perturbed_model = PerturbationHandler(model_handler)
-        perturbed_model.apply_perturbations(perturbants)
-
-        # Set the ODE simulation time before exchanging info with SINGE
-        perturbed_model.model_handler.module_exchange(self.config_manager.get("simulation.exchange"))
+        ode_model = PerturbationHandler(model_handler)
+        ode_model.apply_perturbations(perturbants)
 
         # Get Model Exceptions from the config file
         model_exceptions = self.config_manager.get("simulation.model.exceptions", None)
@@ -64,15 +61,20 @@ class Simulation:
         # Get true/false statement on using hybrid setting
         solver_flag = self.config_manager.get("simulation.protocol.hybrid", False)
 
-        # Next, instantiate the SINGE engine
-        singe_engine = SINGEEngine(perturbed_model, gene_regulation, omics_data, solver_flag, model_exceptions)
-       
         # Set the overall simulation time
         duration = self.config_manager.get("simulation.protocol.duration", 0)
         exchange = self.config_manager.get("simulation.exchange", 30)
 
+        # Future: Integrate components of pertrubed model into SINGE model and remove from function. 
+        singe_model = SINGEEngine(gene_regulation, 
+                                  omics_data, 
+                                  solver_flag, 
+                                  duration, 
+                                  exchange, 
+                                  model_exceptions)
+
         # Instatiate the SPARCED class, run simulation, return results
-        results = RunSPARCED(perturbed_model, singe_engine).run(duration, exchange)
+        results = RunSPARCED(ode_model, singe_model, duration, exchange)
 
         # Save results to file. Note; save_data method takes !tuple! datatype as input
         Results(os.path.join(self.config_manager.get("simulation.results.directory"),

@@ -38,11 +38,29 @@ simulation:
       parameters: {}
       species: {'E': 0.0, 'INS': 0.0}
 
-
   # Individual Model Exceptions
   Exceptions:
     omics:
-      kGac: {'Ce': 0.0} # Placeholder
+      Exp RNA: {'RB1': 17, 
+                'E2F1': 17,
+                'E2F2': 17,
+                'E2F3': 17,
+                'CCNE1': 17,
+                'CCNE2': 17,
+                'SKP2': 17,
+                'CDC25A': 17,
+                'CDC25B': 17,
+                'CDC25C': 17,
+                'CCNA2': 17,
+                'CDKN1B': 17,
+                'CDH1': 17,
+                'CCNB1': 17,
+                'CDC20': 17,
+                'WEE1': 17,
+                'CHEK1': 17
+                }
+      kGac: {'Ce': 17,}
+
     gene_regulation:
       kGac: {'Ce': 0.0} # Placeholder
   

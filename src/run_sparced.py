@@ -18,34 +18,26 @@ class RunSPARCED:
     Simulate an AMICI model using the SPARCED algorithm.
     """
 
-    def __init__(self, model_handler, singe_engine):
+    def __init__(self, model_handler, singe_model, duration=0, exchange=30):
         """
         Initialize the RunSPARCED class.
         """
         self.model_handler = model_handler
-        self.singe_engine = singe_engine
+        self.singe_model = singe_model
 
-    def run(self, duration=100, exchange=30):
-        """
-        Run the SPARCED algorithm.
-        """
-
-        # Create the Preparation point
-        prep = SPARCEDPrep(self.model_handler)
-
-        ### Find better place for this
-        step_number = prep.retrieve_steps_number(duration, exchange)
-
-        # Time trajectories for simulation
-        time = prep.time_trajectories(duration, exchange)
-
-        
+        self.prep = SPARCEDPrep(self.model_handler, duration, exchange)
 
 
-        # Simulate the model using the SINGE engine
-        self.singe_engine.update_model(self.model_handler.model, exchange)
-        self.singe_engine.simulate(duration)
+        def _run(self):
+            """runs an instance of the SPARCED model."""
 
-        # Return the model
-        return self.singe_engine
 
+
+
+
+            # Simulate the model using the SINGE engine
+            self.singe_engine.update_model(self.model_handler.model, exchange)
+            self.singe_engine.simulate(duration)
+
+            # Return the model
+            return self.singe_engine

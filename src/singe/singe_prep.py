@@ -1,7 +1,7 @@
 #!/bin/bash python3
 # -*- coding: utf-8 -*-
 """
-Filename: singe_prep.py
+Filename: prep.py
 Created: 2025-02-19
 Author(s): Jonah R. Huggins
 Description: SINGE - (S)tochastic (I)ntegrated (N)etwork for (G)ene (E)xpression
@@ -14,74 +14,114 @@ Description: SINGE - (S)tochastic (I)ntegrated (N)etwork for (G)ene (E)xpression
 """
 
 #<-----------------------------Import Packages------------------------------->
-import os
 from types import SimpleNamespace
-import pandas as pd
+
+import numpy as np
+
+from src.utils.model_handler import SINGEModelHandler
+from solver_handler import SolverHandler
+from bioexception_handler import ModelExceptions
 #<------------------------------Parent Class--------------------------------->
 class SINGEPrep:
     """
     Prepares a stochastic gene expression model for simulation within the SPARCED algorithm.
     """
-    def __init__(self, perturbed_model, solver, omics, genereg, exceptions = None):
-        self.perturbed_model = perturbed_model
+
+    def __init__(self, solver, omics, genereg, duration, exchange, exceptions = None):
+        self.prep = SINGEModelHandler((omics, genereg)) #Currently tuple so model handler doesn't break parent class.
+        self.duration = duration
+        self.exchange = exchange
+        self.prep.Vn = 1.7500E-12 # Nuclear Volume
+        self.prep.Vc = 5.2500E-12 # Cytoplasmic Volume
         self.solver = solver
         self.model_exceptions = exceptions
-        self.prep(omics, genereg)
 
-    def prep(self, omics, genereg):
-        """
-        Prepares the first round of simulation for the SINGEEngine
-        """
+        solver_data = SimpleNamespace()
+
+        solver_data.number_of_genes = int(len(self.prep.model.omics.GCN))
+
+        solver_data.sum_of_genes = int(sum(self.prep.model.omics.GCN)) # sum of gene copy numbers
+
+        self._makeGenePositionMatrix(solver_data.number_of_genes,
+                                    solver_data.sum_of_genes)
+
+        return_data = SolverHandler(self.solver, solver_data, self.prep) # Handles solver-flag related tasks
+
+        self.prep.gene_state_vector, self.prep.gene_state_data = (return_data.gene_state_vector, 
+                                                                return_data.gene_state_data)
         
-        # Cytoplasmic and nuclear volume handled by SBMLModelHandler. Let it do it's job!
-        cytoplasm_volume = self.perturbed_model.sbml_model.getVolume("Cytoplasm")
-        nuclear_volume = self.perturbed_model.sbml_model.getVolume("Nucleus")
+        self._staticGeneActivationRate()
+        self._staticGeneInactivationRate()
+        self._makeTARTrajectories(solver_data.number_of_genes)
+        self._makeEmptyResultsMatrix
 
-        omics = self._extract_omics_vals(omics)
-        genereg = self._extract_genereg_vals(genereg)
-
-        number_of_genes = int(len(omics.GCN))
+        self.prep = ModelExceptions(self.prep, self.model_exceptions)
 
         ## Start here on model exceptions routine. 
-
-        return cytoplasm_volume, nuclear_volume, omics
-
-    def _extract_omics_vals(self, omics):
-        """
-        retrieves the omics data values as np.float64 arrays from data_handler.py, 
-        returns them for easier calculations.
-
-        Returns:
-        GCN (np.float64): Gene Copy Number in molecules per cell units
-        mRCN (np.float64): mRNA Copy Number in molecules per cell units
-        kGin (np.float64): Rate of Gene inactivation
-        kGac (np.float64): Rate of Gene activation
-        kTCleak (np.float64): Rate of Transcriptional leakage
-        kTCmaxs (np.float64): Rate of Transcriptional maximal production
-        kTCd (np.float64): Rate of Transcriptional degradation 
-        """
-        return SimpleNamespace(
-            GCN = omics.getColumn('Exp GCN'),  #(G)ene (C)opy (N)umber in molecules per cell units
-            mRCN = omics.getColumn('Exp RNA'), # (mR)NA (C)opy (N)umber in molecules per cell units
-            kGin = omics.getColumn('kGin'), # Rate, (k), of (G)ene (in)activation
-            kGac = omics.getColumn('kGac'), # Rate, (k), of (G)ene (ac)tivation
-            kTCleak = omics.getColumn('kTCleak'), #Rate, (k), of (T)rans(C)riptional leakage
-            kTCmaxs = omics.getColumn('kTCmaxs'), #Rate, (k), of (T)rans(C)riptional (m)aximal production
-            kTCd = omics.getColumn('kTCd'), #Rate, (k), of (T)rans(C)riptional (d)egradation
-        )
+        ### here, mRNA species for cellcycle are turned to 17
+        # mExp_mpc[indsDm] = 17.0 # modify cell cycle gene mRNA numbers to 17
     
-    def _extract_genereg_vals(self, genereg):
+    def _makeGenePositionMatrix(self, number_of_genes, sum_of_genes):
         """
-        retrieves the gene regulation data values as np.float64 arrays from data_handler.py, 
+        builds a positional matrix of gene locations using the numbers of genes provided.
         """
-        #(T)rans(C)riptional (A)ctivators & (R)epressors
-        TARs = genereg.values
+        index = 0
 
-         # genereg file format makes column names TAR-species
-        number_of_TARs = len(genereg.columns)
+        # Create a template matrix for storing gene positions
+        gene_position_matrix = np.zeros((number_of_genes, sum_of_genes))
 
-        species_names = [name for name in self.perturbed_model.model.getStateIds()]
+        for gene in range(number_of_genes):
+            gene_position_matrix[gene, index:index+int(self.prep.model.omics.GCN[gene])] = 1.0
 
-        species_indices = [species_names.index(name) for name in TARs.columns]
+            index = index + int(self.prep.model.omics.GCN[gene])
 
-        return TARs, number_of_TARs, species_indices
+        self.prep.gene_position_matrix = gene_position_matrix
+
+    def _staticGeneActivationRate(self):
+        """For now, the SPARCED model only uses one instance of the gene activation rate
+        this method drops the activation rate vector (singe_model.omics.kGac) and returns
+        only the first instance in the vector"""
+        self.prep.kGac = self.prep.model.omics.kGac[0]
+    
+    def _staticGeneInactivationRate(self):
+        """For now, the SPARCED model only uses one instance of the gene inactivation rate
+        this method drops the inactivation rate vector (singe_model.omics.kGac) and returns
+        only the first instance in the vector"""
+        self.prep.kGin = self.prep.model.omics.kGin[0]
+
+    def _makeTARTrajectoreis(self, number_of_genes):
+        """Makes a [number_of_genes, number_of_TARs] shape array for ... [Talk to marc]"""
+        self.prep.tcnas = np.ones((number_of_genes, self.prep.model.genereg.number_of_TARs))
+        self.prep.tck50as = np.zeros((number_of_genes, self.prep.model.genereg.number_of_TARs))
+        self.prep.tcrs = np.zeros((number_of_genes, self.prep.model.genereg.number_of_TARs))
+        self.prep.tck50rs = np.zeros((number_of_genes, self.prep.model.genereg.number_of_TARs))
+
+        for gene in range(number_of_genes):
+            for TAR in range(self.prep.model.genereg.number_of_TARs)
+
+            partial_ARs = self.prep.model.genereg.TARs[gene, TAR].find(';')
+
+            if partial_ARs > 0:
+                nH = np.float(self.prep.model.genereg.TARs[gene,TAR][0:partial_ARs])
+                kH = np.float(self.prep.model.genereg.TARs[gene,TAR][partial_ARs+2::])
+                if nH>0:
+                    self.prep.tcnas[gene,TAR] = nH
+                    self.prep.tck50as[gene,TAR] = kH
+                else:
+                    self.prep.tcnrs[gene,TAR] = abs(nH)
+                    self.prep.tck50rs[gene,TAR] = kH
+
+            self.prep.nanomoles = 1.0E9
+            self.prep.AVAGADRO = 6.023E+23
+
+            mpc2nmcf_Vn = self.prep.nanomoles/(self.prep.Vn*self.prep.AVAGADRO)
+
+            self.prep.tck50as = self.prep.tck50as*(1/mpc2nmcf_Vn)
+            self.prep.tck50rs = self.prep.tck50rs*(1/mpc2nmcf_Vn)
+    
+    def _makeEmptyResultsMatrix(self):
+        "Makes empty matrix for the results to be stored in"
+        self.prep.genes = np.zeros(shape=((int(self.duration*3600/self.exchange)+1, 
+                                            len(self.prep.gene_state_data))))
+        
+        self.prep.genes[0, :] = self.prep.gene_state_data

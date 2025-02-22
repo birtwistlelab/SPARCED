@@ -9,6 +9,8 @@ Description:
 """
 #<-----------------------------Import Packages------------------------------->
 import os
+from types import SimpleNamespace
+
 import pandas as pd
 import numpy as np
 
@@ -68,17 +70,42 @@ class Omics(DataHandler):
 
     def load_data(self):
         """Load omics data."""
-        self.data = pd.read_csv(self.data_path, header = 0, index_col= 0, sep='\t')
+        omics_df = pd.read_csv(self.data_path, header = 0, index_col= 0, sep='\t')
+        self.data = self._extract_omics_vals(omics_df)
 
     def modify_data(self, data):
         """Modify omics data."""
         self.data = data
 
-    def getColumn(self, cname):
+    def getColumn(self, omics_df, cname):
         """
         Retrieves column as np.float64 vector array.
         """
-        return np.array(self.data[cname].values, dtype=np.float64)
+        return np.array(omics_df[cname].values, dtype=np.float64)
+    
+    def _extract_omics_vals(self, omics_df):
+        """
+        retrieves the omics data values as np.float64 arrays from data_handler.py, 
+        returns them for easier calculations.
+
+        Returns:
+        GCN (np.float64): Gene Copy Number in molecules per cell units
+        mRCN (np.float64): mRNA Copy Number in molecules per cell units
+        kGin (np.float64): Rate of Gene inactivation
+        kGac (np.float64): Rate of Gene activation
+        kTCleak (np.float64): Rate of Transcriptional leakage
+        kTCmaxs (np.float64): Rate of Transcriptional maximal production
+        kTCd (np.float64): Rate of Transcriptional degradation 
+        """
+        return SimpleNamespace(
+            GCN = self.getColumn(omics_df, 'Exp GCN'),  #(G)ene (C)opy (N)umber in molecules per cell units
+            mRCN = self.getColumn(omics_df,'Exp RNA'), # (mR)NA (C)opy (N)umber in molecules per cell units
+            kGin = self.getColumn(omics_df,'kGin'), # Rate, (k), of (G)ene (in)activation
+            kGac = self.getColumn(omics_df,'kGac'), # Rate, (k), of (G)ene (ac)tivation
+            kTCleak = self.getColumn(omics_df,'kTCleak'), #Rate, (k), of (T)rans(C)riptional leakage
+            kTCmaxs = self.getColumn(omics_df,'kTCmaxs'), #Rate, (k), of (T)rans(C)riptional (m)aximal production
+            kTCd = self.getColumn(omics_df, 'kTCd'), #Rate, (k), of (T)rans(C)riptional (d)egradation
+        )
 
     def save_data(self):
         """Save omics data."""
@@ -96,7 +123,8 @@ class GeneRegulation(DataHandler):
 
     def load_data(self):
         """Load gene regulation data."""
-        self.data = pd.read_csv(self.data_path, header = 0, index_col= 0, sep='\t')
+        genereg_df = pd.read_csv(self.data_path, header = 0, index_col= 0, sep='\t')
+        self.data = self._extract_genereg_vals(genereg_df)
 
     def modify_data(self, data):
         """Modify gene regulation data."""
@@ -107,6 +135,18 @@ class GeneRegulation(DataHandler):
         Retrieves column as np.float64 vector array.
         """
         return np.array(self.data[cname].values, dtype=np.float64)
+    
+    def _extract_genereg_vals(self, genereg_df):
+        """
+        retrieves the gene regulation data values as np.float64 arrays from data_handler.py, 
+        """
+        #(T)ranscriptional (A)ctivators & (R)epressors
+        TARs = genereg_df.values
+
+         # genereg file format makes column names TAR-species
+        number_of_TARs = len(genereg_df.columns)
+
+        return SimpleNamespace(TARs, number_of_TARs)
 
     def save_data(self):
         """Save gene regulation data."""
