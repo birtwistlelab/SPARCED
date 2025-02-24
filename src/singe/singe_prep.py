@@ -20,7 +20,7 @@ import numpy as np
 
 from src.utils.model_handler import SINGEModelHandler
 from solver_handler import SolverHandler
-from bioexception_handler import ModelExceptions
+from core.bioexception_handler import ModelExceptions
 #<------------------------------Parent Class--------------------------------->
 class SINGEPrep:
     """
@@ -31,36 +31,37 @@ class SINGEPrep:
         self.prep = SINGEModelHandler((omics, genereg)) #Currently tuple so model handler doesn't break parent class.
         self.duration = duration
         self.exchange = exchange
-        self.prep.Vn = 1.7500E-12 # Nuclear Volume
-        self.prep.Vc = 5.2500E-12 # Cytoplasmic Volume
+        NANOMOLES = 1.0E9
+        AVAGADRO = 6.023E+23
+        Vn = 1.7500E-12 # Nuclear Volume
+        Vc = 5.2500E-12 # Cytoplasmic Volume
+        #molecules per cell 2 nanomolar conversion factor for Volume of (Nuc, Cyt)
+        self.prep.mpc2nmcf_Vn = NANOMOLES/(Vn*AVAGADRO)
+        self.prep.mpc2nmcf_Vc = NANOMOLES/(Vc*AVAGADRO)
+        
         self.solver = solver
         self.model_exceptions = exceptions
 
         solver_data = SimpleNamespace()
 
-        solver_data.number_of_genes = int(len(self.prep.model.omics.GCN))
+        self.prep.number_of_genes = int(len(self.prep.model.omics.GCN))
 
-        solver_data.sum_of_genes = int(sum(self.prep.model.omics.GCN)) # sum of gene copy numbers
+        self.prep.sum_of_genes = int(sum(self.prep.model.omics.GCN)) # sum of gene copy numbers
 
-        self._makeGenePositionMatrix(solver_data.number_of_genes,
-                                    solver_data.sum_of_genes)
+        self._makeGenePositionMatrix(self.prep.number_of_genes,
+                                    self.prep.sum_of_genes)
 
-        return_data = SolverHandler(self.solver, solver_data, self.prep) # Handles solver-flag related tasks
+        return_data = SolverHandler(self.solver, self.prep) # Handles solver-flag related tasks
+        self.prep.gene_state_vector = return_data.make_gene_vector()
+        self.prep.gene_state_vector = return_data.calc_gene_state_data()
 
-        self.prep.gene_state_vector, self.prep.gene_state_data = (return_data.gene_state_vector, 
-                                                                return_data.gene_state_data)
-        
         self._staticGeneActivationRate()
         self._staticGeneInactivationRate()
         self._makeTARTrajectories(solver_data.number_of_genes)
-        self._makeEmptyResultsMatrix
+        self._makeEmptyResultsMatrix()
 
         self.prep = ModelExceptions(self.prep, self.model_exceptions)
 
-        ## Start here on model exceptions routine. 
-        ### here, mRNA species for cellcycle are turned to 17
-        # mExp_mpc[indsDm] = 17.0 # modify cell cycle gene mRNA numbers to 17
-    
     def _makeGenePositionMatrix(self, number_of_genes, sum_of_genes):
         """
         builds a positional matrix of gene locations using the numbers of genes provided.
@@ -111,17 +112,12 @@ class SINGEPrep:
                     self.prep.tcnrs[gene,TAR] = abs(nH)
                     self.prep.tck50rs[gene,TAR] = kH
 
-            self.prep.nanomoles = 1.0E9
-            self.prep.AVAGADRO = 6.023E+23
-
-            mpc2nmcf_Vn = self.prep.nanomoles/(self.prep.Vn*self.prep.AVAGADRO)
-
-            self.prep.tck50as = self.prep.tck50as*(1/mpc2nmcf_Vn)
-            self.prep.tck50rs = self.prep.tck50rs*(1/mpc2nmcf_Vn)
+            self.prep.tck50as = self.prep.tck50as*(1/self.prep.mpc2nmcf_Vn)
+            self.prep.tck50rs = self.prep.tck50rs*(1/self.prep.mpc2nmcf_Vn)
     
     def _makeEmptyResultsMatrix(self):
-        "Makes empty matrix for the results to be stored in"
-        self.prep.genes = np.zeros(shape=((int(self.duration*3600/self.exchange)+1, 
-                                            len(self.prep.gene_state_data))))
+        """Makes empty matrix for the results to be stored in"""
+        self.prep.gene_results = np.zeros(shape=((int(self.duration*3600/self.exchange)+1, 
+                                                len(self.prep.gene_state_data))))
         
-        self.prep.genes[0, :] = self.prep.gene_state_data
+        self.prep.gene_results[0, :] = self.prep.gene_state_data

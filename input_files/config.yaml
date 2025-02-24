@@ -63,7 +63,10 @@ simulation:
 
     gene_regulation:
       kGac: {'Ce': 0.0} # Placeholder
-  
+
+    Thresholds: # Provide mathematical expressions
+      apoptosis_marker: "cPARP > PARP"
+
   results:
     filename: "Experiment_1-results"
     directory: "results"

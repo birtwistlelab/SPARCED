@@ -71,7 +71,7 @@ class SBMLModelHandler(ModelHandler):
        
     def modify_species(self, species_name, value):
         """No need to override this method for SBML models."""
-        super().modify_species()
+        super().modify_species(species_name, value)
 
     def module_exchange(self, exchange=30):
         """No need to override this method for SBML models."""
@@ -86,6 +86,10 @@ class SBMLModelHandler(ModelHandler):
         """
         return self.model.getCompartment(compartment).getVolume()
     
+    def get_species_ids(self):
+        """Returns a list of all species IDs in the SBML model."""
+        return [self.model.getSpecies(i).getId() for i in range(self.model.getNumSpecies())]
+
     def getInitialConcentrations(self):
         """Returns a NumPy array of all species' initial concentrations from an SBML model."""
         return np.array([species.getInitialConcentration() if species.isSetInitialConcentration()
@@ -173,7 +177,7 @@ class TelluriumModelHandler(SBMLModelHandler):
         print("Tellurium simulation complete.")
         return results
 
-class SINGEModelHandler(ModelHandler):
+class SINGEModelHandler(SBMLModelHandler):
     """
     Handles loading, manipulating, and simulating the SINGE model.
     """

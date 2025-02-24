@@ -47,9 +47,10 @@ class SPARCEDPrep:
 
     def _makeEmptyResultsMatrix(self):
         "Makes empty matrix for the results to be stored in"
-        self.prep.species = np.zeros(shape=(self.prep.step_number+1,
+        self.prep.species_results = np.zeros(shape=(self.prep.step_number+1,
                                             len(self.model_handler.sbml_model.getInitialConcentrations())))
-        self.prep.species[0,:] = self.model_handler.sbml_model.getInitialConcentrations() # 24hr time point
+        
+        self.prep.species_results[0,:] = self.model_handler.sbml_model.getInitialConcentrations() # 24hr time point
 
     def _get_sparced_vals(self):
         """extract hard coded (non-extensible) attributes from SPARCED. 
