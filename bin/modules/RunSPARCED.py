@@ -22,7 +22,7 @@ def RunSPARCED(flagD,th,spdata,genedata,sbml_file,model):
     splist = list(model.getStateIds())
     if len(spdata)==0: # if no initial condition values are supplied, use the input file information
         spdata0 = pd.read_csv('Species.txt',header=0,index_col=0,sep="\t")
-        spdata = np.float(spdata0.values[:,1])  
+        spdata = np.float64(spdata0.values[:,1])  
     
     # calculate 
     genedata, GenePositionMatrix, AllGenesVec, kTCmaxs, kTCleak, kGin_1, kGac_1, kTCd, TARs0, tcnas, tcnrs, tck50as, tck50rs, spIDs = RunPrep(flagD,Vn,model)  
