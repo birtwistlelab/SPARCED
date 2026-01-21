@@ -4,6 +4,6 @@ matplotlib==3.2.1
 numpy==1.22.0
 pandas==1.0.3
 xlrd==1.2.0
-scipy==1.4.1
+scipy==1.10.0
 python-libsbml==5.18.0
 antimony==2.11.0
