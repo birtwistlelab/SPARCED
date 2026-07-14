@@ -265,7 +265,7 @@ vD13	Nucleus	kD13*Wip1	0.0001944444
 vD14	Nucleus	kD14_1*((damageDSB^kD14_2)/((kD14_3^kD14_2)+(damageDSB^kD14_2)))	2.777778	20	2
 vD15	Nucleus	kD15_1*ATMP*(Wip1^kD15_2)/((Wip1^kD15_2)+(kD15_3^kD15_2))	0.01388889	4	200
 vD16	Nucleus	kD16*ATMP	0.002083333
-vD17	Nucleus	kD17_1*((damageSSB^kD517_2)/((kD17_3^kD17_2)+(damageSSB^kD17_2)))	1.25	20	2
+vD17	Nucleus	kD17_1*((damageSSB^kD17_2)/((kD17_3^kD17_2)+(damageSSB^kD17_2)))	1.25	20	2
 vD18	Nucleus	kD18*ATRac	0.002083333
 vD19	Nucleus	MDM2product1/kD19	122.2128
 vD20	Nucleus	p53ac/kD20	122.2128
